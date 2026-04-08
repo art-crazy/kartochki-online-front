@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Карточки-онлайн — Дашборд</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #111110;
+  --bg2: #1a1918;
+  --bg3: #222120;
+  --border: #2a2927;
+  --border2: #333230;
+  --text: #e8e4dc;
+  --text2: #888580;
+  --text3: #555350;
+  --accent: #e8440a;
+  --accent-hover: #c93a08;
+  --accent-dim: rgba(232,68,10,0.12);
+  --success: #1D9E75;
+  --success-dim: rgba(29,158,117,0.12);
+  --font-display: 'Unbounded', sans-serif;
+  --font-body: 'Golos Text', sans-serif;
+  --sidebar-w: 220px;
+}
+
+html, body { height: 100%; font-family: var(--font-body); background: var(--bg); color: var(--text); overflow: hidden; }
+
+/* ── LAYOUT ── */
+.app { display: grid; grid-template-columns: var(--sidebar-w) 1fr; height: 100vh; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+}
+
+.sidebar-logo {
+  padding: 1.25rem 1.25rem 0;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  text-decoration: none;
+  display: block;
+}
+.sidebar-logo span { color: var(--accent); }
+
+.sidebar-nav {
+  flex: 1;
+  padding: 1.5rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+}
+
+.nav-section {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  padding: 0 0.5rem;
+  margin: 1rem 0 0.4rem;
+}
+.nav-section:first-child { margin-top: 0; }
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text2);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+.nav-item:hover { background: var(--bg3); color: var(--text); }
+.nav-item.active { background: var(--accent-dim); color: var(--accent); }
+.nav-item.active .nav-icon { color: var(--accent); }
+.nav-icon { font-size: 1rem; width: 18px; text-align: center; flex-shrink: 0; }
+
+.nav-badge {
+  margin-left: auto;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 100px;
+}
+
+.sidebar-bottom {
+  padding: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+.plan-card {
+  background: var(--accent-dim);
+  border: 1px solid rgba(232,68,10,0.2);
+  border-radius: 10px;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.plan-label { font-size: 0.7rem; color: var(--accent); font-weight: 700; margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.plan-usage { font-size: 0.78rem; color: var(--text2); margin-bottom: 0.5rem; }
+.plan-bar { height: 4px; background: var(--border2); border-radius: 2px; overflow: hidden; }
+.plan-fill { height: 100%; width: 70%; background: var(--accent); border-radius: 2px; }
+.plan-upgrade { display: block; text-align: center; font-size: 0.75rem; font-weight: 600; color: var(--accent); text-decoration: none; margin-top: 0.6rem; }
+.plan-upgrade:hover { opacity: 0.8; }
+
+.user-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.user-row:hover { background: var(--bg3); }
+.avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e8440a, #f5a623);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+.user-info { flex: 1; min-width: 0; }
+.user-name { font-size: 0.82rem; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.user-plan { font-size: 0.7rem; color: var(--text3); }
+.user-chevron { color: var(--text3); font-size: 0.7rem; }
+
+/* ── MAIN ── */
+.main {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── HEADER ── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.75rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.header-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+.header-sub { font-size: 0.78rem; color: var(--text3); margin-top: 1px; }
+
+.header-actions { display: flex; align-items: center; gap: 0.75rem; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: none;
+  text-decoration: none;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border2); }
+.btn-ghost:hover { background: var(--bg3); color: var(--text); border-color: var(--border2); }
+
+/* ── CONTENT ── */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.75rem;
+}
+
+/* SCREENS */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ── DASHBOARD HOME ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.stat-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  transition: border-color 0.15s;
+}
+.stat-card:hover { border-color: var(--border2); }
+.stat-label { font-size: 0.75rem; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.5rem; }
+.stat-value { font-family: var(--font-display); font-size: 1.8rem; font-weight: 900; letter-spacing: -0.04em; color: var(--text); line-height: 1; margin-bottom: 0.4rem; }
+.stat-sub { font-size: 0.78rem; color: var(--text3); }
+.stat-accent { color: var(--accent); }
+.stat-bar { height: 3px; background: var(--border); border-radius: 2px; margin-top: 0.75rem; overflow: hidden; }
+.stat-bar-fill { height: 100%; border-radius: 2px; background: var(--accent); }
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.section-link { font-size: 0.78rem; color: var(--text3); text-decoration: none; transition: color 0.15s; cursor: pointer; }
+.section-link:hover { color: var(--accent); }
+
+/* PROJECTS GRID */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.project-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.project-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+
+.project-preview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  padding: 10px 10px 0;
+  background: var(--bg3);
+}
+.project-thumb {
+  aspect-ratio: 3/4;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.t1 { background: linear-gradient(135deg, #0f3460, #e94560); }
+.t2 { background: linear-gradient(135deg, #1a472a, #52b788); }
+.t3 { background: linear-gradient(135deg, #2d1b69, #f5a623); }
+.t4 { background: linear-gradient(135deg, #2c3e50, #f39c12); }
+.t5 { background: linear-gradient(135deg, #6a0572, #e040fb); }
+.t6 { background: linear-gradient(135deg, #1b4332, #95d5b2); }
+.t7 { background: linear-gradient(135deg, #c0392b, #e74c3c); }
+.t8 { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+.t9 { background: linear-gradient(135deg, #2c3e50, #bdc3c7); }
+
+.project-info { padding: 0.85rem; }
+.project-name { font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 0.3rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.project-meta { display: flex; align-items: center; justify-content: space-between; }
+.project-count { font-size: 0.72rem; color: var(--text3); }
+.project-mp {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+.mp-wb { background: rgba(120,60,180,0.2); color: #b886f5; }
+.mp-ozon { background: rgba(0,100,220,0.2); color: #5ba3f5; }
+
+/* NEW PROJECT CARD */
+.project-new {
+  background: transparent;
+  border: 1px dashed var(--border2);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 2rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  min-height: 170px;
+  color: var(--text3);
+}
+.project-new:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+.project-new-icon { font-size: 1.5rem; }
+.project-new-label { font-size: 0.82rem; font-weight: 600; }
+
+/* QUICK START */
+.quickstart {
+  background: linear-gradient(135deg, var(--bg2) 0%, var(--bg3) 100%);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.quickstart-icon {
+  width: 48px; height: 48px;
+  background: var(--accent-dim);
+  border: 1px solid rgba(232,68,10,0.2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+.quickstart-text { flex: 1; }
+.quickstart-title { font-size: 0.92rem; font-weight: 600; color: var(--text); margin-bottom: 0.25rem; }
+.quickstart-sub { font-size: 0.8rem; color: var(--text3); }
+
+/* ── PROJECTS LIST ── */
+.projects-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
+.project-row {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.project-row:hover { border-color: var(--border2); background: var(--bg3); }
+
+.project-row-thumbs {
+  display: flex;
+  gap: 3px;
+  flex-shrink: 0;
+}
+.project-row-thumb {
+  width: 28px;
+  aspect-ratio: 3/4;
+  border-radius: 3px;
+}
+
+.project-row-info { flex: 1; min-width: 0; }
+.project-row-name { font-size: 0.88rem; font-weight: 600; color: var(--text); margin-bottom: 0.2rem; }
+.project-row-sub { font-size: 0.75rem; color: var(--text3); }
+
+.project-row-actions { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
+.icon-btn {
+  width: 30px; height: 30px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--text3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  transition: all 0.15s;
+}
+.icon-btn:hover { background: var(--bg3); color: var(--text); border-color: var(--border2); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  z-index: 200;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
+
+/* EMPTY STATE */
+.empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text3);
+}
+.empty-icon { font-size: 2.5rem; margin-bottom: 1rem; opacity: 0.5; }
+.empty-title { font-size: 0.95rem; font-weight: 600; color: var(--text2); margin-bottom: 0.5rem; }
+.empty-sub { font-size: 0.82rem; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <a href="index.html" class="sidebar-logo">карточки<span>.</span>онлайн</a>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section">Главное</div>
+
+      <button class="nav-item active" id="nav-home" onclick="switchScreen('home', this)">
+        <span class="nav-icon">⊞</span> Дашборд
+      </button>
+      <button class="nav-item" id="nav-generate" onclick="switchScreen('generate', this)">
+        <span class="nav-icon">⚡</span> Генерация
+        <span class="nav-badge">Новое</span>
+      </button>
+      <button class="nav-item" id="nav-projects" onclick="switchScreen('projects', this)">
+        <span class="nav-icon">◫</span> Проекты
+      </button>
+
+      <div class="nav-section">Аккаунт</div>
+
+      <button class="nav-item" id="nav-billing" onclick="switchScreen('billing', this)">
+        <span class="nav-icon">◈</span> Тарифы
+      </button>
+      <button class="nav-item" id="nav-settings" onclick="switchScreen('settings', this)">
+        <span class="nav-icon">◎</span> Настройки
+      </button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="plan-card">
+        <div class="plan-label">Бесплатный план</div>
+        <div class="plan-usage">7 из 10 карточек</div>
+        <div class="plan-bar"><div class="plan-fill"></div></div>
+        <a href="#" class="plan-upgrade" onclick="switchScreen('billing', document.getElementById('nav-billing')); return false;">Перейти на Про →</a>
+      </div>
+      <div class="user-row">
+        <div class="avatar">ИИ</div>
+        <div class="user-info">
+          <div class="user-name">Иван Иванов</div>
+          <div class="user-plan">Бесплатный план</div>
+        </div>
+        <span class="user-chevron">⌄</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- HEADER -->
+    <header class="header" id="main-header">
+      <div>
+        <div class="header-title" id="header-title">Дашборд</div>
+        <div class="header-sub" id="header-sub">Среда, 8 апреля 2025</div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-ghost" onclick="showToast('Уведомлений нет')">🔔</button>
+        <button class="btn btn-primary" onclick="switchScreen('generate', document.getElementById('nav-generate'))">+ Создать карточки</button>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- HOME -->
+      <div class="screen active" id="screen-home">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Карточек создано</div>
+            <div class="stat-value">7 <span style="font-size:1rem;color:var(--text3)">/ 10</span></div>
+            <div class="stat-sub">осталось <span class="stat-accent">3 карточки</span></div>
+            <div class="stat-bar"><div class="stat-bar-fill" style="width:70%"></div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Проектов</div>
+            <div class="stat-value">3</div>
+            <div class="stat-sub">WB: 2 · Ozon: 1</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Тариф</div>
+            <div class="stat-value" style="font-size:1.2rem">Бесплатный</div>
+            <div class="stat-sub">Обновляется 1 мая</div>
+          </div>
+        </div>
+
+        <div class="section-header">
+          <div class="section-title">Последние проекты</div>
+          <span class="section-link" onclick="switchScreen('projects', document.getElementById('nav-projects'))">Все проекты →</span>
+        </div>
+
+        <div class="projects-grid">
+          <div class="project-card" onclick="showToast('Открываем проект...')">
+            <div class="project-preview" style="padding:10px 10px 0">
+              <div class="project-thumb t1"></div>
+              <div class="project-thumb t2"></div>
+              <div class="project-thumb t3"></div>
+            </div>
+            <div class="project-info">
+              <div class="project-name">Кроссовки Nike Air Max</div>
+              <div class="project-meta">
+                <span class="project-count">6 карточек · 2 дня назад</span>
+                <span class="project-mp mp-wb">WB</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-card" onclick="showToast('Открываем проект...')">
+            <div class="project-preview" style="padding:10px 10px 0">
+              <div class="project-thumb t4"></div>
+              <div class="project-thumb t5"></div>
+              <div class="project-thumb t6"></div>
+            </div>
+            <div class="project-info">
+              <div class="project-name">Крем для рук увлажняющий</div>
+              <div class="project-meta">
+                <span class="project-count">8 карточек · 5 дней назад</span>
+                <span class="project-mp mp-ozon">Ozon</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-new" onclick="switchScreen('generate', document.getElementById('nav-generate'))">
+            <div class="project-new-icon">+</div>
+            <div class="project-new-label">Новый проект</div>
+          </div>
+        </div>
+
+        <div class="section-header" style="margin-top:0.25rem">
+          <div class="section-title">Быстрый старт</div>
+        </div>
+        <div class="quickstart">
+          <div class="quickstart-icon">⚡</div>
+          <div class="quickstart-text">
+            <div class="quickstart-title">Создай карточки прямо сейчас</div>
+            <div class="quickstart-sub">Загрузи фото товара — получи 6 готовых карточек для WB или Ozon за 30 секунд</div>
+          </div>
+          <button class="btn btn-primary" onclick="switchScreen('generate', document.getElementById('nav-generate'))">Начать →</button>
+        </div>
+      </div>
+
+      <!-- PROJECTS -->
+      <div class="screen" id="screen-projects">
+        <div class="projects-list">
+          <div class="project-row" onclick="showToast('Открываем проект...')">
+            <div class="project-row-thumbs">
+              <div class="project-row-thumb t1"></div>
+              <div class="project-row-thumb t2"></div>
+              <div class="project-row-thumb t3"></div>
+            </div>
+            <div class="project-row-info">
+              <div class="project-row-name">Кроссовки Nike Air Max</div>
+              <div class="project-row-sub">6 карточек · Wildberries · 2 дня назад</div>
+            </div>
+            <span class="project-mp mp-wb">WB</span>
+            <div class="project-row-actions">
+              <button class="icon-btn" onclick="event.stopPropagation(); showToast('Скачиваем...')">↓</button>
+              <button class="icon-btn" onclick="event.stopPropagation(); showToast('Удалено')">✕</button>
+            </div>
+          </div>
+
+          <div class="project-row" onclick="showToast('Открываем проект...')">
+            <div class="project-row-thumbs">
+              <div class="project-row-thumb t4"></div>
+              <div class="project-row-thumb t5"></div>
+              <div class="project-row-thumb t6"></div>
+            </div>
+            <div class="project-row-info">
+              <div class="project-row-name">Крем для рук увлажняющий</div>
+              <div class="project-row-sub">8 карточек · Ozon · 5 дней назад</div>
+            </div>
+            <span class="project-mp mp-ozon">Ozon</span>
+            <div class="project-row-actions">
+              <button class="icon-btn" onclick="event.stopPropagation(); showToast('Скачиваем...')">↓</button>
+              <button class="icon-btn" onclick="event.stopPropagation(); showToast('Удалено')">✕</button>
+            </div>
+          </div>
+
+          <div class="project-row" onclick="showToast('Открываем проект...')">
+            <div class="project-row-thumbs">
+              <div class="project-row-thumb t7"></div>
+              <div class="project-row-thumb t8"></div>
+              <div class="project-row-thumb t9"></div>
+            </div>
+            <div class="project-row-info">
+              <div class="project-row-name">Сумка кожаная женская</div>
+              <div class="project-row-sub">6 карточек · Wildberries · 1 неделю назад</div>
+            </div>
+            <span class="project-mp mp-wb">WB</span>
+            <div class="project-row-actions">
+              <button class="icon-btn" onclick="event.stopPropagation(); showToast('Скачиваем...')">↓</button>
+              <button class="icon-btn" onclick="event.stopPropagation(); showToast('Удалено')">✕</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GENERATE placeholder -->
+      <div class="screen" id="screen-generate">
+        <div class="empty">
+          <div class="empty-icon">⚡</div>
+          <div class="empty-title">Экран генерации</div>
+          <div class="empty-sub">Следующий экран в разработке</div>
+        </div>
+      </div>
+
+      <!-- BILLING placeholder -->
+      <div class="screen" id="screen-billing">
+        <div class="empty">
+          <div class="empty-icon">◈</div>
+          <div class="empty-title">Тарифы</div>
+          <div class="empty-sub">Следующий экран в разработке</div>
+        </div>
+      </div>
+
+      <!-- SETTINGS placeholder -->
+      <div class="screen" id="screen-settings">
+        <div class="empty">
+          <div class="empty-icon">◎</div>
+          <div class="empty-title">Настройки</div>
+          <div class="empty-sub">Следующий экран в разработке</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-dot"></span>
+  <span id="toast-text"></span>
+</div>
+
+<script>
+const headers = {
+  home:      { title: 'Дашборд',   sub: 'Среда, 8 апреля 2025' },
+  generate:  { title: 'Генерация', sub: 'Создайте карточки товаров' },
+  projects:  { title: 'Проекты',   sub: '3 проекта' },
+  billing:   { title: 'Тарифы',    sub: 'Управление подпиской' },
+  settings:  { title: 'Настройки', sub: 'Аккаунт и профиль' },
+};
+
+function switchScreen(name, navEl) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  if (navEl) navEl.classList.add('active');
+  const h = headers[name];
+  if (h) {
+    document.getElementById('header-title').textContent = h.title;
+    document.getElementById('header-sub').textContent = h.sub;
+  }
+  if (name === 'generate') {
+    window.location.href = 'generate.html';
+  }
+}
+
+let toastTimer;
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toast-text').textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>

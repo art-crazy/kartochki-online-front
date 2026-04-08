@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Карточки-онлайн — Настройки</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #111110;
+  --bg2: #1a1918;
+  --bg3: #222120;
+  --bg4: #282625;
+  --border: #2a2927;
+  --border2: #333230;
+  --text: #e8e4dc;
+  --text2: #888580;
+  --text3: #555350;
+  --accent: #e8440a;
+  --accent-hover: #c93a08;
+  --accent-dim: rgba(232,68,10,0.12);
+  --accent-border: rgba(232,68,10,0.25);
+  --danger: #c0392b;
+  --danger-dim: rgba(192,57,43,0.1);
+  --danger-border: rgba(192,57,43,0.25);
+  --success: #1D9E75;
+  --success-dim: rgba(29,158,117,0.1);
+  --success-border: rgba(29,158,117,0.25);
+  --font-display: 'Unbounded', sans-serif;
+  --font-body: 'Golos Text', sans-serif;
+  --sidebar-w: 220px;
+}
+
+html, body { height: 100%; font-family: var(--font-body); background: var(--bg); color: var(--text); overflow: hidden; }
+.app { display: grid; grid-template-columns: var(--sidebar-w) 1fr; height: 100vh; }
+
+/* SIDEBAR */
+.sidebar { background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; }
+.sidebar-logo { padding: 1.25rem 1.25rem 0; font-family: var(--font-display); font-size: 0.85rem; font-weight: 900; letter-spacing: -0.03em; color: var(--text); text-decoration: none; display: block; }
+.sidebar-logo span { color: var(--accent); }
+.sidebar-nav { flex: 1; padding: 1.5rem 0.75rem; display: flex; flex-direction: column; gap: 2px; overflow-y: auto; }
+.nav-section { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); padding: 0 0.5rem; margin: 1rem 0 0.4rem; }
+.nav-section:first-child { margin-top: 0; }
+.nav-item { display: flex; align-items: center; gap: 0.65rem; padding: 0.6rem 0.75rem; border-radius: 8px; font-size: 0.85rem; font-weight: 500; color: var(--text2); cursor: pointer; transition: all 0.15s; border: none; background: none; width: 100%; text-align: left; text-decoration: none; }
+.nav-item:hover { background: var(--bg3); color: var(--text); }
+.nav-item.active { background: var(--accent-dim); color: var(--accent); }
+.nav-icon { font-size: 1rem; width: 18px; text-align: center; flex-shrink: 0; }
+.sidebar-bottom { padding: 0.75rem; border-top: 1px solid var(--border); }
+.plan-card { background: var(--accent-dim); border: 1px solid var(--accent-border); border-radius: 10px; padding: 0.75rem; margin-bottom: 0.75rem; }
+.plan-label { font-size: 0.7rem; color: var(--accent); font-weight: 700; margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.plan-usage { font-size: 0.78rem; color: var(--text2); margin-bottom: 0.5rem; }
+.plan-bar { height: 4px; background: var(--border2); border-radius: 2px; overflow: hidden; }
+.plan-fill { height: 100%; width: 70%; background: var(--accent); border-radius: 2px; }
+.plan-upgrade { display: block; text-align: center; font-size: 0.75rem; font-weight: 600; color: var(--accent); text-decoration: none; margin-top: 0.6rem; }
+.user-row { display: flex; align-items: center; gap: 0.65rem; padding: 0.5rem; border-radius: 8px; cursor: pointer; transition: background 0.15s; }
+.user-row:hover { background: var(--bg3); }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #e8440a, #f5a623); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: #fff; flex-shrink: 0; }
+.user-info { flex: 1; min-width: 0; }
+.user-name { font-size: 0.82rem; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.user-plan { font-size: 0.7rem; color: var(--text3); }
+
+/* MAIN */
+.main { display: flex; flex-direction: column; overflow: hidden; }
+.header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.75rem; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.header-title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; letter-spacing: -0.03em; }
+.header-sub { font-size: 0.78rem; color: var(--text3); margin-top: 1px; }
+
+/* SETTINGS LAYOUT */
+.settings-wrap { flex: 1; display: grid; grid-template-columns: 180px 1fr; overflow: hidden; }
+
+/* SETTINGS NAV */
+.settings-nav { border-right: 1px solid var(--border); padding: 1.25rem 0.75rem; display: flex; flex-direction: column; gap: 2px; overflow-y: auto; }
+.settings-nav-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.55rem 0.75rem; border-radius: 8px; font-size: 0.82rem; font-weight: 500; color: var(--text3); cursor: pointer; transition: all 0.15s; border: none; background: none; width: 100%; text-align: left; }
+.settings-nav-item:hover { background: var(--bg3); color: var(--text2); }
+.settings-nav-item.active { background: var(--bg3); color: var(--text); }
+.settings-nav-icon { width: 16px; text-align: center; flex-shrink: 0; font-size: 0.85rem; }
+
+/* SETTINGS CONTENT */
+.settings-content { overflow-y: auto; padding: 1.75rem; }
+
+.tab { display: none; }
+.tab.active { display: flex; flex-direction: column; gap: 1.5rem; max-width: 600px; }
+
+/* SECTION CARD */
+.settings-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.settings-card-header {
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+.settings-card-title { font-size: 0.88rem; font-weight: 700; color: var(--text); margin-bottom: 0.2rem; }
+.settings-card-sub { font-size: 0.75rem; color: var(--text3); }
+
+.settings-card-body { padding: 1.25rem; display: flex; flex-direction: column; gap: 1.1rem; }
+
+/* AVATAR ROW */
+.avatar-row { display: flex; align-items: center; gap: 1.25rem; }
+.avatar-big {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e8440a, #f5a623);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  position: relative;
+  cursor: pointer;
+}
+.avatar-edit {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 20px; height: 20px;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.6rem;
+}
+.avatar-info { flex: 1; }
+.avatar-name { font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.25rem; }
+.avatar-email { font-size: 0.78rem; color: var(--text3); margin-bottom: 0.6rem; }
+.avatar-actions { display: flex; gap: 0.5rem; }
+
+/* FORM ROWS */
+.form-row { display: flex; flex-direction: column; gap: 0.4rem; }
+.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-label { font-size: 0.75rem; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; }
+.form-input {
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  background: var(--bg3);
+  border: 1.5px solid var(--border2);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.form-input:focus { border-color: var(--accent); }
+.form-input::placeholder { color: var(--text3); }
+.form-input:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* BUTTONS */
+.btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1rem; border-radius: 8px; font-family: var(--font-body); font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.15s; border: none; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border2); }
+.btn-ghost:hover { background: var(--bg3); color: var(--text); }
+.btn-danger { background: var(--danger-dim); color: var(--danger); border: 1px solid var(--danger-border); }
+.btn-danger:hover { background: rgba(192,57,43,0.18); }
+
+/* TOGGLE ROW */
+.toggle-row-setting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.toggle-row-setting:last-child { border-bottom: none; padding-bottom: 0; }
+.toggle-row-setting:first-child { padding-top: 0; }
+.toggle-info { flex: 1; }
+.toggle-title { font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 0.15rem; }
+.toggle-desc { font-size: 0.75rem; color: var(--text3); line-height: 1.5; }
+.sw { width: 36px; height: 20px; background: var(--border2); border-radius: 100px; position: relative; cursor: pointer; transition: background 0.2s; border: none; flex-shrink: 0; margin-left: 1rem; }
+.sw.on { background: var(--success); }
+.sw-knob { position: absolute; width: 14px; height: 14px; background: #fff; border-radius: 50%; top: 3px; left: 3px; transition: transform 0.2s; }
+.sw.on .sw-knob { transform: translateX(16px); }
+
+/* DANGER ZONE */
+.danger-zone {
+  background: var(--danger-dim);
+  border: 1px solid var(--danger-border);
+  border-radius: 14px;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.danger-info .danger-title { font-size: 0.88rem; font-weight: 700; color: var(--danger); margin-bottom: 0.25rem; }
+.danger-info .danger-desc { font-size: 0.78rem; color: var(--text3); line-height: 1.55; }
+
+/* CONNECTED ACCOUNTS */
+.connected-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.connected-item:last-child { border-bottom: none; padding-bottom: 0; }
+.connected-item:first-child { padding-top: 0; }
+.connected-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--bg3); border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+.connected-info { flex: 1; }
+.connected-name { font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 0.15rem; }
+.connected-status { font-size: 0.72rem; }
+.status-on { color: var(--success); }
+.status-off { color: var(--text3); }
+
+/* API KEY */
+.api-key-row { display: flex; gap: 0.5rem; }
+.api-key-input { flex: 1; font-family: monospace; font-size: 0.8rem; letter-spacing: 0.04em; color: var(--text3); }
+
+/* SAVED BADGE */
+.saved-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--success-dim);
+  color: var(--success);
+  border: 1px solid var(--success-border);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border-radius: 100px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.saved-badge.show { opacity: 1; }
+
+/* MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px); z-index: 100; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+.modal-overlay.show { opacity: 1; pointer-events: all; }
+.modal { background: var(--bg2); border: 1px solid var(--border2); border-radius: 18px; padding: 2rem; width: 100%; max-width: 380px; transform: translateY(20px); transition: transform 0.25s; }
+.modal-overlay.show .modal { transform: translateY(0); }
+.modal-icon { font-size: 2rem; margin-bottom: 1rem; }
+.modal-title { font-family: var(--font-display); font-size: 1rem; font-weight: 900; letter-spacing: -0.03em; margin-bottom: 0.5rem; }
+.modal-sub { font-size: 0.82rem; color: var(--text3); margin-bottom: 1.5rem; line-height: 1.65; }
+.modal-confirm-input { margin-bottom: 1.25rem; }
+.modal-confirm-label { font-size: 0.75rem; color: var(--text3); margin-bottom: 0.4rem; display: block; }
+.modal-actions { display: flex; gap: 0.75rem; }
+.modal-btn { flex: 1; padding: 0.75rem; border-radius: 10px; font-family: var(--font-body); font-size: 0.88rem; font-weight: 700; cursor: pointer; border: none; transition: all 0.15s; }
+.modal-btn-cancel { background: var(--bg3); color: var(--text2); }
+.modal-btn-danger { background: var(--danger); color: #fff; opacity: 0.4; pointer-events: none; transition: all 0.2s; }
+.modal-btn-danger.ready { opacity: 1; pointer-events: all; }
+
+/* TOAST */
+.toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--bg2); border: 1px solid var(--border2); border-radius: 10px; padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--text); display: flex; align-items: center; gap: 0.6rem; z-index: 200; box-shadow: 0 8px 30px rgba(0,0,0,0.4); transform: translateY(100px); opacity: 0; transition: all 0.3s; }
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <a href="dashboard.html" class="sidebar-logo">карточки<span>.</span>онлайн</a>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Главное</div>
+      <a href="dashboard.html" class="nav-item"><span class="nav-icon">⊞</span> Дашборд</a>
+      <a href="generate.html" class="nav-item"><span class="nav-icon">⚡</span> Генерация</a>
+      <a href="dashboard.html" class="nav-item"><span class="nav-icon">◫</span> Проекты</a>
+      <div class="nav-section">Аккаунт</div>
+      <a href="billing.html" class="nav-item"><span class="nav-icon">◈</span> Тарифы</a>
+      <a href="settings.html" class="nav-item active"><span class="nav-icon">◎</span> Настройки</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="plan-card">
+        <div class="plan-label">Бесплатный план</div>
+        <div class="plan-usage">7 из 10 карточек</div>
+        <div class="plan-bar"><div class="plan-fill"></div></div>
+        <a href="billing.html" class="plan-upgrade">Перейти на Про →</a>
+      </div>
+      <div class="user-row">
+        <div class="avatar">ИИ</div>
+        <div class="user-info">
+          <div class="user-name">Иван Иванов</div>
+          <div class="user-plan">Бесплатный план</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <header class="header">
+      <div>
+        <div class="header-title">Настройки</div>
+        <div class="header-sub">Профиль и параметры аккаунта</div>
+      </div>
+    </header>
+
+    <div class="settings-wrap">
+
+      <!-- SETTINGS NAV -->
+      <nav class="settings-nav">
+        <button class="settings-nav-item active" onclick="switchTab('profile', this)">
+          <span class="settings-nav-icon">◉</span> Профиль
+        </button>
+        <button class="settings-nav-item" onclick="switchTab('security', this)">
+          <span class="settings-nav-icon">◈</span> Безопасность
+        </button>
+        <button class="settings-nav-item" onclick="switchTab('notifications', this)">
+          <span class="settings-nav-icon">◎</span> Уведомления
+        </button>
+        <button class="settings-nav-item" onclick="switchTab('integrations', this)">
+          <span class="settings-nav-icon">◫</span> Интеграции
+        </button>
+        <button class="settings-nav-item" onclick="switchTab('danger', this)">
+          <span class="settings-nav-icon" style="color:var(--danger)">⚠</span>
+          <span style="color:var(--danger)">Удаление</span>
+        </button>
+      </nav>
+
+      <!-- SETTINGS CONTENT -->
+      <div class="settings-content">
+
+        <!-- PROFILE -->
+        <div class="tab active" id="tab-profile">
+
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <div class="settings-card-title">Фото профиля</div>
+              <div class="settings-card-sub">Отображается в шапке и письмах</div>
+            </div>
+            <div class="settings-card-body">
+              <div class="avatar-row">
+                <div class="avatar-big" onclick="showToast('Загрузка фото...')">
+                  ИИ
+                  <div class="avatar-edit">✎</div>
+                </div>
+                <div class="avatar-info">
+                  <div class="avatar-name">Иван Иванов</div>
+                  <div class="avatar-email">ivan@example.com</div>
+                  <div class="avatar-actions">
+                    <button class="btn btn-ghost" onclick="showToast('Выберите файл...')">Загрузить фото</button>
+                    <button class="btn btn-ghost" onclick="showToast('Фото удалено')">Удалить</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <div class="settings-card-title">Личные данные</div>
+              <div class="settings-card-sub">Имя и контактная информация</div>
+            </div>
+            <div class="settings-card-body">
+              <div class="form-row-2">
+                <div class="form-row">
+                  <label class="form-label">Имя</label>
+                  <input type="text" class="form-input" value="Иван" id="firstName">
+                </div>
+                <div class="form-row">
+                  <label class="form-label">Фамилия</label>
+                  <input type="text" class="form-input" value="Иванов" id="lastName">
+                </div>
+              </div>
+              <div class="form-row">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-input" value="ivan@example.com" id="email">
+              </div>
+              <div class="form-row">
+                <label class="form-label">Телефон</label>
+                <input type="tel" class="form-input" placeholder="+7 (___) ___-__-__" id="phone">
+              </div>
+              <div style="display:flex;align-items:center;gap:1rem">
+                <button class="btn btn-primary" onclick="saveProfile()">Сохранить</button>
+                <span class="saved-badge" id="saved-profile">✓ Сохранено</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <div class="settings-card-title">Настройки по умолчанию</div>
+              <div class="settings-card-sub">Применяются при каждой новой генерации</div>
+            </div>
+            <div class="settings-card-body">
+              <div class="form-row">
+                <label class="form-label">Площадка по умолчанию</label>
+                <select class="form-input" style="cursor:pointer">
+                  <option>Wildberries</option>
+                  <option>Ozon</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label class="form-label">Стиль по умолчанию</label>
+                <select class="form-input" style="cursor:pointer">
+                  <option>Минимализм</option>
+                  <option>Яркий</option>
+                  <option>Тёмный</option>
+                  <option>Белый фон</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label class="form-label">Количество карточек по умолчанию</label>
+                <select class="form-input" style="cursor:pointer">
+                  <option>3 карточки</option>
+                  <option selected>6 карточек</option>
+                  <option>8 карточек</option>
+                </select>
+              </div>
+              <button class="btn btn-primary" onclick="saveDefaults()">Сохранить настройки</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- SECURITY -->
+        <div class="tab" id="tab-security">
+
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <div class="settings-card-title">Смена пароля</div>
+              <div class="settings-card-sub">Последнее изменение: никогда</div>
+            </div>
+            <div class="settings-card-body">
+              <div class="form-row">
+                <label class="form-label">Текущий пароль</label>
+                <input type="password" class="form-input" placeholder="••••••••" id="cur-pw">
+              </div>
+              <div class="form-row">
+                <label class="form-label">Новый пароль</label>
+                <input type="password" class="form-input" placeholder="Минимум 8 символов" id="new-pw">
+              </div>
+              <div class="form-row">
+                <label class="form-label">Повторите новый пароль</label>
+                <input type="password" class="form-input" placeholder="••••••••" id="confirm-pw">
+              </div>
+              <button class="btn btn-primary" onclick="changePw()">Изменить пароль</button>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <div class="settings-card-title">Двухфакторная аутентификация</div>
+              <div class="settings-card-sub">Защита аккаунта при входе</div>
+            </div>
+            <div class="settings-card-body">
+              <div class="toggle-row-setting">
+                <div class="toggle-info">
+                  <div class="toggle-title">2FA через приложение</div>
+                  <div class="toggle-desc">Google Authenticator, Яндекс.Ключ и другие TOTP-приложения</div>
+                </div>
+                <button class="sw" onclick="toggleSw(this)"><div class="sw-knob"></div></button>
+              </div>
+              <div class="toggle-row-setting">
+                <div class="toggle-info">
+                  <div class="toggle-title">SMS-подтверждение</div>
+                  <div class="toggle-desc">Код на номер телефона при каждом входе</div>
+                </div>
+                <button class="sw" onclick="toggleSw(this)"><div class="sw-knob"></div></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <div class="settings-card-title">Активные сессии</div>
+              <div class="settings-card-sub">Устройства с активным входом</div>
+            </div>
+            <div class="settings-card-body">
+              <div class="connected-item">
+                <div class="connected-icon">💻</div>
+                <div class="connected-info">
+                  <div class="connected-name">MacBook Pro · Chrome</div>
+                  <div class="connected-status status-on">● Текущая сессия · Москва</div>
+                </div>
+              </div>
+              <div class="connected-item">
+                <div class="connected-icon">📱</div>
+                <div class="connected-info">
+                  <div class="connected-name">iPhone 15 · Safari</div>
+                  <div class="connected-status status-off">2 дня назад · Москва</div>
+                </div>
+                <button class="btn btn-ghost" style="font-size:0.75rem;padding:0.3rem 0.7rem" onclick="showToast('Сессия завершена')">Завершить</button>
+              </div>
+              <button class="btn btn-danger" style="margin-top:0.25rem" onclick="showToast('Все сессии завершены')">Завершить все остальные сессии</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- NOTIFICATIONS -->
+        <div class="tab" id="tab-notifications">
+
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <div class="settings-card-title">Email-уведомления</div>
+              <div class="settings-card-sub">На адрес ivan@example.com</div>
+            </div>
+            <div class="settings-card-body">
+              <div class="toggle-row-setting">
+                <div class="toggle-info">
+                  <div class="toggle-title">Генерация завершена</div>
+                  <div class="toggle-desc">Письмо когда карточки готовы к скачиванию</div>
+                </div>
+                <button class="sw on" onclick="toggleSw(this)"><div class="sw-knob"></div></button>
+              </div>
+              <div class="toggle-row-setting">
+                <div class="toggle-info">
+                  <div class="toggle-title">Лимит карточек заканчивается</div>
+                  <div class="toggle-desc">При достижении 80% от лимита тарифа</div>
+                </div>
+                <button class="sw on" onclick="toggleSw(this)"><div class="sw-knob"></div></button>
+              </div>
+              <div class="toggle-row-setting">
+                <div class="toggle-info">
+                  <div class="toggle-title">Новости продукта</div>
+                  <div class="toggle-desc">Обновления, новые функции и советы</div>
+                </div>
+                <button class="sw" onclick="toggleSw(this)"><div class="sw-knob"></div></button>
+              </div>
+              <div class="toggle-row-setting">
+                <div class="toggle-info">
+                  <div class="toggle-title">Напоминание об оплате</div>
+                  <div class="toggle-desc">За 3 дня до списания или окончания подписки</div>
+                </div>
+                <button class="sw on" onclick="toggleSw(this)"><div class="sw-knob"></div></button>
+              </div>
+              <div class="toggle-row-setting">
+                <div class="toggle-info">
+                  <div class="toggle-title">Маркетинговые письма</div>
+                  <div class="toggle-desc">Акции, скидки и специальные предложения</div>
+                </div>
+                <button class="sw" onclick="toggleSw(this)"><div class="sw-knob"></div></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <div class="settings-card-title">Telegram-уведомления</div>
+              <div class="settings-card-sub">Мгновенные оповещения в мессенджере</div>
+            </div>
+            <div class="settings-card-body">
+              <div class="toggle-row-setting">
+                <div class="toggle-info">
+                  <div class="toggle-title">Подключить Telegram-бота</div>
+                  <div class="toggle-desc">Уведомления о готовых карточках прямо в мессенджер</div>
+                </div>
+                <button class="btn btn-ghost" style="font-size:0.78rem" onclick="showToast('Открываем бота...')">Подключить</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- INTEGRATIONS -->
+        <div class="tab" id="tab-integrations">
+
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <div class="settings-card-title">Подключённые аккаунты</div>
+              <div class="settings-card-sub">Для быстрого входа и интеграций</div>
+            </div>
+            <div class="settings-card-body">
+              <div class="connected-item">
+                <div class="connected-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                </div>
+                <div class="connected-info">
+                  <div class="connected-name">Google</div>
+                  <div class="connected-status status-on">● Подключён · ivan@gmail.com</div>
+                </div>
+                <button class="btn btn-ghost" style="font-size:0.75rem;padding:0.3rem 0.7rem" onclick="showToast('Аккаунт отключён')">Отключить</button>
+              </div>
+              <div class="connected-item">
+                <div class="connected-icon">✈</div>
+                <div class="connected-info">
+                  <div class="connected-name">Telegram</div>
+                  <div class="connected-status status-off">Не подключён</div>
+                </div>
+                <button class="btn btn-ghost" style="font-size:0.75rem;padding:0.3rem 0.7rem" onclick="showToast('Открываем Telegram...')">Подключить</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <div class="settings-card-title">API-ключ</div>
+              <div class="settings-card-sub">Для интеграции с вашими системами (тариф Бизнес)</div>
+            </div>
+            <div class="settings-card-body">
+              <div class="form-row">
+                <label class="form-label">Ваш API-ключ</label>
+                <div class="api-key-row">
+                  <input type="password" class="form-input api-key-input" value="sk-kartochki-xxxxxxxxxxxxxxxxxxxx" id="apiKey" readonly>
+                  <button class="btn btn-ghost" onclick="toggleApiKey()">Показать</button>
+                  <button class="btn btn-ghost" onclick="copyApiKey()">Копировать</button>
+                </div>
+              </div>
+              <button class="btn btn-danger" onclick="showToast('Ключ перевыпущен')">Перевыпустить ключ</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- DANGER ZONE -->
+        <div class="tab" id="tab-danger">
+
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <div class="settings-card-title">Экспорт данных</div>
+              <div class="settings-card-sub">Скачать все ваши карточки и данные аккаунта</div>
+            </div>
+            <div class="settings-card-body">
+              <p style="font-size:0.82rem;color:var(--text3);line-height:1.65">Вы получите ZIP-архив со всеми сгенерированными карточками и данными профиля в формате JSON. Архив будет готов в течение нескольких минут и отправлен на email.</p>
+              <button class="btn btn-ghost" onclick="showToast('Запрос отправлен — ждите письмо')">Запросить экспорт</button>
+            </div>
+          </div>
+
+          <div class="danger-zone">
+            <div class="danger-info">
+              <div class="danger-title">Удалить аккаунт</div>
+              <div class="danger-desc">Это действие необратимо. Все проекты, карточки и данные будут удалены без возможности восстановления.</div>
+            </div>
+            <button class="btn btn-danger" onclick="openDeleteModal()">Удалить аккаунт</button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE MODAL -->
+<div class="modal-overlay" id="deleteModal" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-icon">⚠</div>
+    <div class="modal-title">Удалить аккаунт?</div>
+    <div class="modal-sub">Это действие необратимо. Введите слово <strong style="color:var(--danger)">УДАЛИТЬ</strong> для подтверждения.</div>
+    <div class="modal-confirm-input">
+      <label class="modal-confirm-label">Подтверждение</label>
+      <input type="text" class="form-input" placeholder="УДАЛИТЬ" id="deleteConfirm" oninput="checkDeleteConfirm(this.value)">
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn modal-btn-cancel" onclick="closeModalDirect()">Отмена</button>
+      <button class="modal-btn modal-btn-danger" id="deleteFinalBtn" onclick="handleDelete()">Удалить навсегда</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-dot"></span>
+  <span id="toast-text"></span>
+</div>
+
+<script>
+function switchTab(name, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.settings-nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  el.classList.add('active');
+}
+
+function toggleSw(btn) {
+  btn.classList.toggle('on');
+  showToast(btn.classList.contains('on') ? 'Включено' : 'Отключено');
+}
+
+function saveProfile() {
+  const badge = document.getElementById('saved-profile');
+  badge.classList.add('show');
+  showToast('Профиль сохранён');
+  setTimeout(() => badge.classList.remove('show'), 2500);
+}
+
+function saveDefaults() { showToast('Настройки по умолчанию сохранены'); }
+
+function changePw() {
+  const cur = document.getElementById('cur-pw').value;
+  const nw = document.getElementById('new-pw').value;
+  const cf = document.getElementById('confirm-pw').value;
+  if (!cur || !nw || !cf) return showToast('Заполните все поля');
+  if (nw !== cf) return showToast('Пароли не совпадают');
+  if (nw.length < 8) return showToast('Минимум 8 символов');
+  showToast('Пароль изменён');
+  document.getElementById('cur-pw').value = '';
+  document.getElementById('new-pw').value = '';
+  document.getElementById('confirm-pw').value = '';
+}
+
+function toggleApiKey() {
+  const input = document.getElementById('apiKey');
+  input.type = input.type === 'password' ? 'text' : 'password';
+}
+
+function copyApiKey() {
+  navigator.clipboard?.writeText(document.getElementById('apiKey').value);
+  showToast('API-ключ скопирован');
+}
+
+function openDeleteModal() {
+  document.getElementById('deleteConfirm').value = '';
+  document.getElementById('deleteFinalBtn').classList.remove('ready');
+  document.getElementById('deleteModal').classList.add('show');
+}
+
+function checkDeleteConfirm(val) {
+  document.getElementById('deleteFinalBtn').classList.toggle('ready', val === 'УДАЛИТЬ');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('deleteModal')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('deleteModal').classList.remove('show');
+}
+
+function handleDelete() {
+  closeModalDirect();
+  showToast('Аккаунт удалён. Перенаправляем...');
+  setTimeout(() => { window.location.href = 'auth.html'; }, 2000);
+}
+
+let toastTimer;
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toast-text').textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>

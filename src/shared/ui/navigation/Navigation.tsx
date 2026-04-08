@@ -104,12 +104,17 @@ export function Avatar({
 export function Breadcrumbs({ items }: { items: ReadonlyArray<string> }) {
   return (
     <div className={styles.breadcrumbs}>
-      {items.map((item, index) => (
-        <span key={item} className={index === items.length - 1 ? styles.breadcrumbCurrent : undefined}>
-          {item}
-          {index < items.length - 1 ? " ›" : ""}
-        </span>
-      ))}
+      {items.map((item, index) =>
+        index === items.length - 1 ? (
+          <span key={item} className={styles.breadcrumbCurrent}>
+            {item}
+          </span>
+        ) : (
+          <Link key={item} href="#" className={styles.breadcrumbLink}>
+            {item}
+          </Link>
+        ),
+      )}
     </div>
   );
 }

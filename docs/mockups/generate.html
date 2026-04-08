@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Карточки-онлайн — Генерация</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #111110;
+  --bg2: #1a1918;
+  --bg3: #222120;
+  --bg4: #282625;
+  --border: #2a2927;
+  --border2: #333230;
+  --text: #e8e4dc;
+  --text2: #888580;
+  --text3: #555350;
+  --accent: #e8440a;
+  --accent-hover: #c93a08;
+  --accent-dim: rgba(232,68,10,0.12);
+  --accent-border: rgba(232,68,10,0.25);
+  --success: #1D9E75;
+  --success-dim: rgba(29,158,117,0.1);
+  --font-display: 'Unbounded', sans-serif;
+  --font-body: 'Golos Text', sans-serif;
+  --sidebar-w: 220px;
+}
+
+html, body { height: 100%; font-family: var(--font-body); background: var(--bg); color: var(--text); overflow: hidden; }
+
+.app { display: grid; grid-template-columns: var(--sidebar-w) 1fr; height: 100vh; }
+
+/* ── SIDEBAR (same as dashboard) ── */
+.sidebar { background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; }
+.sidebar-logo { padding: 1.25rem 1.25rem 0; font-family: var(--font-display); font-size: 0.85rem; font-weight: 900; letter-spacing: -0.03em; color: var(--text); text-decoration: none; display: block; }
+.sidebar-logo span { color: var(--accent); }
+.sidebar-nav { flex: 1; padding: 1.5rem 0.75rem; display: flex; flex-direction: column; gap: 2px; overflow-y: auto; }
+.nav-section { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); padding: 0 0.5rem; margin: 1rem 0 0.4rem; }
+.nav-section:first-child { margin-top: 0; }
+.nav-item { display: flex; align-items: center; gap: 0.65rem; padding: 0.6rem 0.75rem; border-radius: 8px; font-size: 0.85rem; font-weight: 500; color: var(--text2); cursor: pointer; transition: all 0.15s; border: none; background: none; width: 100%; text-align: left; text-decoration: none; }
+.nav-item:hover { background: var(--bg3); color: var(--text); }
+.nav-item.active { background: var(--accent-dim); color: var(--accent); }
+.nav-icon { font-size: 1rem; width: 18px; text-align: center; flex-shrink: 0; }
+.nav-badge { margin-left: auto; background: var(--accent); color: #fff; font-size: 0.65rem; font-weight: 700; padding: 1px 6px; border-radius: 100px; }
+.sidebar-bottom { padding: 0.75rem; border-top: 1px solid var(--border); }
+.plan-card { background: var(--accent-dim); border: 1px solid var(--accent-border); border-radius: 10px; padding: 0.75rem; margin-bottom: 0.75rem; }
+.plan-label { font-size: 0.7rem; color: var(--accent); font-weight: 700; margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.plan-usage { font-size: 0.78rem; color: var(--text2); margin-bottom: 0.5rem; }
+.plan-bar { height: 4px; background: var(--border2); border-radius: 2px; overflow: hidden; }
+.plan-fill { height: 100%; width: 70%; background: var(--accent); border-radius: 2px; }
+.plan-upgrade { display: block; text-align: center; font-size: 0.75rem; font-weight: 600; color: var(--accent); text-decoration: none; margin-top: 0.6rem; }
+.user-row { display: flex; align-items: center; gap: 0.65rem; padding: 0.5rem; border-radius: 8px; cursor: pointer; transition: background 0.15s; }
+.user-row:hover { background: var(--bg3); }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #e8440a, #f5a623); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: #fff; flex-shrink: 0; }
+.user-info { flex: 1; min-width: 0; }
+.user-name { font-size: 0.82rem; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.user-plan { font-size: 0.7rem; color: var(--text3); }
+
+/* ── MAIN ── */
+.main { display: flex; flex-direction: column; overflow: hidden; }
+
+.header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.75rem; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.header-title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; letter-spacing: -0.03em; color: var(--text); }
+.header-sub { font-size: 0.78rem; color: var(--text3); margin-top: 1px; }
+.btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.1rem; border-radius: 8px; font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.15s; border: none; text-decoration: none; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border2); }
+.btn-ghost:hover { background: var(--bg3); color: var(--text); }
+.btn-success { background: var(--success); color: #fff; }
+.btn-success:hover { background: #178a65; }
+
+/* ── GENERATE LAYOUT ── */
+.generate-wrap {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  overflow: hidden;
+}
+
+/* ── LEFT PANEL ── */
+.left-panel {
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 1.25rem;
+  gap: 1.25rem;
+}
+
+.panel-section { display: flex; flex-direction: column; gap: 0.6rem; }
+
+.panel-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text3);
+}
+
+/* UPLOAD ZONE */
+.upload-zone {
+  border: 1.5px dashed var(--border2);
+  border-radius: 12px;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--bg3);
+  position: relative;
+  overflow: hidden;
+}
+.upload-zone:hover, .upload-zone.drag { border-color: var(--accent); background: var(--accent-dim); }
+.upload-zone.has-file { border-style: solid; border-color: var(--success); background: var(--success-dim); }
+
+.upload-icon { font-size: 1.8rem; margin-bottom: 0.5rem; display: block; }
+.upload-title { font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 0.25rem; }
+.upload-sub { font-size: 0.75rem; color: var(--text3); }
+
+.upload-preview {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+.upload-zone.has-file .upload-default { display: none; }
+.upload-zone.has-file .upload-preview { display: flex; }
+
+.preview-img-wrap {
+  width: 80px;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.preview-img { width: 100%; height: 100%; object-fit: cover; }
+.preview-filename { font-size: 0.75rem; color: var(--text2); font-weight: 500; }
+.preview-change { font-size: 0.72rem; color: var(--accent); cursor: pointer; }
+
+/* CHIPS */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  padding: 0.35rem 0.75rem;
+  border-radius: 100px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1.5px solid var(--border2);
+  cursor: pointer;
+  transition: all 0.15s;
+  background: transparent;
+  color: var(--text3);
+  font-family: var(--font-body);
+}
+.chip:hover { border-color: var(--text2); color: var(--text2); }
+.chip.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+.chip.active-accent { background: var(--accent-dim); color: var(--accent); border-color: var(--accent-border); }
+
+/* TOGGLE ROW */
+.toggle-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.toggle-btn {
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: 1.5px solid var(--border2);
+  background: transparent;
+  color: var(--text3);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+.toggle-btn:hover { border-color: var(--text2); color: var(--text2); }
+.toggle-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+/* COUNT SELECTOR */
+.count-selector { display: flex; gap: 6px; }
+.count-btn {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1.5px solid var(--border2);
+  background: transparent;
+  color: var(--text3);
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+}
+.count-btn:hover { border-color: var(--text2); color: var(--text); }
+.count-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+/* PROJECT NAME */
+.form-input {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  background: var(--bg3);
+  border: 1.5px solid var(--border2);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.form-input:focus { border-color: var(--accent); }
+.form-input::placeholder { color: var(--text3); }
+
+/* GENERATE BTN */
+.generate-btn {
+  width: 100%;
+  padding: 0.85rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  letter-spacing: -0.01em;
+  margin-top: auto;
+}
+.generate-btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+.generate-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* ── RIGHT PANEL ── */
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.results-title { font-size: 0.85rem; font-weight: 600; color: var(--text2); }
+.results-actions { display: flex; gap: 0.5rem; }
+
+.results-body { flex: 1; overflow-y: auto; padding: 1.5rem; }
+
+/* STATES */
+.state { display: none; height: 100%; }
+.state.active { display: flex; }
+
+/* EMPTY STATE */
+.state-empty {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem;
+  color: var(--text3);
+}
+.empty-visual {
+  display: grid;
+  grid-template-columns: repeat(3, 60px);
+  gap: 6px;
+  opacity: 0.2;
+  margin-bottom: 0.5rem;
+}
+.empty-thumb {
+  aspect-ratio: 3/4;
+  border-radius: 6px;
+  background: var(--border2);
+}
+.empty-title { font-size: 0.95rem; font-weight: 600; color: var(--text2); }
+.empty-sub { font-size: 0.82rem; max-width: 280px; line-height: 1.6; }
+
+/* LOADING STATE */
+.state-loading {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.loading-ring {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  border: 3px solid var(--border2);
+  border-top-color: var(--accent);
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-text { text-align: center; }
+.loading-title { font-family: var(--font-display); font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 0.4rem; letter-spacing: -0.02em; }
+.loading-sub { font-size: 0.8rem; color: var(--text3); }
+
+.loading-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 260px;
+}
+.loading-step {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--text3);
+  transition: color 0.3s;
+}
+.loading-step.done { color: var(--success); }
+.loading-step.active { color: var(--text); }
+.step-dot {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.6rem;
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+.loading-step.done .step-dot { background: var(--success); border-color: var(--success); color: #fff; }
+.loading-step.active .step-dot { border-color: var(--accent); background: var(--accent-dim); }
+
+/* SKELETON GRID */
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  width: 100%;
+}
+.skeleton-card {
+  aspect-ratio: 3/4;
+  border-radius: 12px;
+  background: var(--bg3);
+  overflow: hidden;
+  position: relative;
+}
+.skeleton-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%);
+  animation: skel 1.4s ease infinite;
+}
+@keyframes skel {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+/* RESULT STATE */
+.state-result { flex-direction: column; gap: 0; }
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.result-card {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  transition: all 0.15s;
+  position: relative;
+  cursor: pointer;
+}
+.result-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+.result-card:hover .card-overlay { opacity: 1; }
+
+.card-visual {
+  aspect-ratio: 3/4;
+  position: relative;
+  overflow: hidden;
+}
+.card-visual-inner {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem;
+}
+
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.overlay-btn {
+  background: #fff;
+  color: #111;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+
+.card-footer {
+  padding: 0.65rem 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.card-label { font-size: 0.75rem; font-weight: 600; color: var(--text2); }
+.card-dl {
+  width: 24px; height: 24px;
+  border-radius: 5px;
+  border: 1px solid var(--border2);
+  background: none;
+  color: var(--text3);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem;
+  transition: all 0.15s;
+}
+.card-dl:hover { background: var(--bg3); color: var(--text); }
+
+/* GRADIENTS */
+.g1 { background: linear-gradient(160deg, #0f3460 0%, #e94560 100%); }
+.g2 { background: linear-gradient(160deg, #1a472a 0%, #52b788 100%); }
+.g3 { background: linear-gradient(160deg, #2d1b69 0%, #f5a623 100%); }
+.g4 { background: linear-gradient(160deg, #2c3e50 0%, #f39c12 100%); }
+.g5 { background: linear-gradient(160deg, #6a0572 0%, #e040fb 100%); }
+.g6 { background: linear-gradient(160deg, #1b4332 0%, #95d5b2 100%); }
+
+/* TOAST */
+.toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--bg2); border: 1px solid var(--border2); border-radius: 10px; padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--text); display: flex; align-items: center; gap: 0.6rem; z-index: 200; box-shadow: 0 8px 30px rgba(0,0,0,0.4); transform: translateY(100px); opacity: 0; transition: all 0.3s ease; }
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <a href="dashboard.html" class="sidebar-logo">карточки<span>.</span>онлайн</a>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Главное</div>
+      <a href="dashboard.html" class="nav-item"><span class="nav-icon">⊞</span> Дашборд</a>
+      <a href="generate.html" class="nav-item active"><span class="nav-icon">⚡</span> Генерация <span class="nav-badge">Новое</span></a>
+      <a href="dashboard.html" class="nav-item"><span class="nav-icon">◫</span> Проекты</a>
+      <div class="nav-section">Аккаунт</div>
+      <a href="#" class="nav-item"><span class="nav-icon">◈</span> Тарифы</a>
+      <a href="#" class="nav-item"><span class="nav-icon">◎</span> Настройки</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="plan-card">
+        <div class="plan-label">Бесплатный план</div>
+        <div class="plan-usage">7 из 10 карточек</div>
+        <div class="plan-bar"><div class="plan-fill"></div></div>
+        <a href="#" class="plan-upgrade">Перейти на Про →</a>
+      </div>
+      <div class="user-row">
+        <div class="avatar">ИИ</div>
+        <div class="user-info">
+          <div class="user-name">Иван Иванов</div>
+          <div class="user-plan">Бесплатный план</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <header class="header">
+      <div>
+        <div class="header-title">Генерация карточек</div>
+        <div class="header-sub">Загрузи фото — получи готовый сет</div>
+      </div>
+      <div style="display:flex;gap:0.75rem">
+        <button class="btn btn-ghost" onclick="resetAll()">↺ Сбросить</button>
+      </div>
+    </header>
+
+    <div class="generate-wrap">
+
+      <!-- LEFT: SETTINGS -->
+      <div class="left-panel">
+
+        <!-- UPLOAD -->
+        <div class="panel-section">
+          <div class="panel-label">Фото товара</div>
+          <div class="upload-zone" id="uploadZone" onclick="triggerUpload()" ondragover="onDrag(event)" ondragleave="offDrag(event)" ondrop="onDrop(event)">
+            <div class="upload-default">
+              <span class="upload-icon">↑</span>
+              <div class="upload-title">Перетащи или нажми</div>
+              <div class="upload-sub">JPG, PNG до 10 МБ</div>
+            </div>
+            <div class="upload-preview">
+              <div class="preview-img-wrap">
+                <img class="preview-img" id="previewImg" src="" alt="">
+              </div>
+              <div class="preview-filename" id="previewName">photo.jpg</div>
+              <div class="preview-change" onclick="event.stopPropagation(); triggerUpload()">Заменить фото</div>
+            </div>
+          </div>
+          <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFile(this)">
+        </div>
+
+        <!-- MARKETPLACE -->
+        <div class="panel-section">
+          <div class="panel-label">Площадка</div>
+          <div class="toggle-row">
+            <button class="toggle-btn active" id="mp-wb" onclick="selectMP('wb')">
+              <span style="color:#b886f5">●</span> Wildberries
+            </button>
+            <button class="toggle-btn" id="mp-ozon" onclick="selectMP('ozon')">
+              <span style="color:#5ba3f5">●</span> Ozon
+            </button>
+          </div>
+        </div>
+
+        <!-- STYLE -->
+        <div class="panel-section">
+          <div class="panel-label">Стиль</div>
+          <div class="chips" id="style-chips">
+            <button class="chip active" onclick="selectChip(this, 'style-chips')">Минимализм</button>
+            <button class="chip" onclick="selectChip(this, 'style-chips')">Яркий</button>
+            <button class="chip" onclick="selectChip(this, 'style-chips')">Тёмный</button>
+            <button class="chip" onclick="selectChip(this, 'style-chips')">Белый фон</button>
+          </div>
+        </div>
+
+        <!-- CARD TYPES -->
+        <div class="panel-section">
+          <div class="panel-label">Типы карточек</div>
+          <div class="chips" id="type-chips">
+            <button class="chip active-accent" onclick="toggleTypeChip(this)">Главная</button>
+            <button class="chip active-accent" onclick="toggleTypeChip(this)">Инфографика</button>
+            <button class="chip active-accent" onclick="toggleTypeChip(this)">Состав</button>
+            <button class="chip active-accent" onclick="toggleTypeChip(this)">Размеры</button>
+            <button class="chip" onclick="toggleTypeChip(this)">Преимущества</button>
+            <button class="chip" onclick="toggleTypeChip(this)">Детали</button>
+          </div>
+        </div>
+
+        <!-- COUNT -->
+        <div class="panel-section">
+          <div class="panel-label">Количество карточек</div>
+          <div class="count-selector">
+            <button class="count-btn" onclick="selectCount(this)">3</button>
+            <button class="count-btn active" onclick="selectCount(this)">6</button>
+            <button class="count-btn" onclick="selectCount(this)">8</button>
+          </div>
+        </div>
+
+        <!-- PROJECT NAME -->
+        <div class="panel-section">
+          <div class="panel-label">Название проекта</div>
+          <input type="text" class="form-input" id="projectName" placeholder="Например: Кроссовки Nike">
+        </div>
+
+        <button class="generate-btn" id="generateBtn" onclick="startGenerate()">
+          ⚡ Сгенерировать карточки
+        </button>
+
+      </div>
+
+      <!-- RIGHT: RESULTS -->
+      <div class="right-panel">
+        <div class="results-header">
+          <div class="results-title" id="resultsTitle">Результат появится здесь</div>
+          <div class="results-actions" id="resultsActions" style="display:none">
+            <button class="btn btn-ghost" onclick="showToast('Сохранено в проекты')">◫ Сохранить</button>
+            <button class="btn btn-success" onclick="showToast('Скачиваем ZIP...')">↓ Скачать все</button>
+          </div>
+        </div>
+
+        <div class="results-body">
+
+          <!-- EMPTY -->
+          <div class="state active" id="state-empty" style="align-items:center;justify-content:center;flex-direction:column;gap:1rem;text-align:center;color:var(--text3)">
+            <div class="empty-visual">
+              <div class="empty-thumb"></div>
+              <div class="empty-thumb"></div>
+              <div class="empty-thumb"></div>
+              <div class="empty-thumb"></div>
+              <div class="empty-thumb"></div>
+              <div class="empty-thumb"></div>
+            </div>
+            <div class="empty-title">Карточки ещё не созданы</div>
+            <div class="empty-sub">Загрузи фото товара и нажми «Сгенерировать» — готовый сет появится здесь</div>
+          </div>
+
+          <!-- LOADING -->
+          <div class="state" id="state-loading" style="flex-direction:column;align-items:center;justify-content:center;gap:1.5rem">
+            <div class="loading-ring"></div>
+            <div class="loading-text">
+              <div class="loading-title" id="loadingTitle">Обрабатываем фото...</div>
+              <div class="loading-sub" id="loadingSub">Это займёт около 15–30 секунд</div>
+            </div>
+            <div class="loading-steps">
+              <div class="loading-step" id="step1">
+                <div class="step-dot">1</div>
+                <span>Удаление фона</span>
+              </div>
+              <div class="loading-step" id="step2">
+                <div class="step-dot">2</div>
+                <span>Генерация карточек</span>
+              </div>
+              <div class="loading-step" id="step3">
+                <div class="step-dot">3</div>
+                <span>Применение стиля</span>
+              </div>
+              <div class="loading-step" id="step4">
+                <div class="step-dot">4</div>
+                <span>Финальная сборка</span>
+              </div>
+            </div>
+            <div class="skeleton-grid" style="width:100%;margin-top:0.5rem">
+              <div class="skeleton-card"></div>
+              <div class="skeleton-card"></div>
+              <div class="skeleton-card"></div>
+              <div class="skeleton-card"></div>
+              <div class="skeleton-card"></div>
+              <div class="skeleton-card"></div>
+            </div>
+          </div>
+
+          <!-- RESULT -->
+          <div class="state" id="state-result" style="flex-direction:column;gap:1.25rem">
+            <div class="cards-grid">
+              <div class="result-card">
+                <div class="card-visual"><div class="card-visual-inner g1"></div><div class="card-overlay"><button class="overlay-btn" onclick="showToast('Скачиваем...')">↓ Скачать</button></div></div>
+                <div class="card-footer"><span class="card-label">Главная</span><button class="card-dl" onclick="showToast('Скачиваем...')">↓</button></div>
+              </div>
+              <div class="result-card">
+                <div class="card-visual"><div class="card-visual-inner g2"></div><div class="card-overlay"><button class="overlay-btn" onclick="showToast('Скачиваем...')">↓ Скачать</button></div></div>
+                <div class="card-footer"><span class="card-label">Инфографика</span><button class="card-dl" onclick="showToast('Скачиваем...')">↓</button></div>
+              </div>
+              <div class="result-card">
+                <div class="card-visual"><div class="card-visual-inner g3"></div><div class="card-overlay"><button class="overlay-btn" onclick="showToast('Скачиваем...')">↓ Скачать</button></div></div>
+                <div class="card-footer"><span class="card-label">Состав</span><button class="card-dl" onclick="showToast('Скачиваем...')">↓</button></div>
+              </div>
+              <div class="result-card">
+                <div class="card-visual"><div class="card-visual-inner g4"></div><div class="card-overlay"><button class="overlay-btn" onclick="showToast('Скачиваем...')">↓ Скачать</button></div></div>
+                <div class="card-footer"><span class="card-label">Размеры</span><button class="card-dl" onclick="showToast('Скачиваем...')">↓</button></div>
+              </div>
+              <div class="result-card">
+                <div class="card-visual"><div class="card-visual-inner g5"></div><div class="card-overlay"><button class="overlay-btn" onclick="showToast('Скачиваем...')">↓ Скачать</button></div></div>
+                <div class="card-footer"><span class="card-label">Преимущества</span><button class="card-dl" onclick="showToast('Скачиваем...')">↓</button></div>
+              </div>
+              <div class="result-card">
+                <div class="card-visual"><div class="card-visual-inner g6"></div><div class="card-overlay"><button class="overlay-btn" onclick="showToast('Скачиваем...')">↓ Скачать</button></div></div>
+                <div class="card-footer"><span class="card-label">Детали</span><button class="card-dl" onclick="showToast('Скачиваем...')">↓</button></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <span class="toast-dot"></span>
+  <span id="toast-text"></span>
+</div>
+
+<script>
+// Upload
+function triggerUpload() { document.getElementById('fileInput').click(); }
+
+function handleFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('previewImg').src = e.target.result;
+    document.getElementById('previewName').textContent = file.name.length > 20 ? file.name.slice(0,18)+'...' : file.name;
+    document.getElementById('uploadZone').classList.add('has-file');
+  };
+  reader.readAsDataURL(file);
+}
+
+function onDrag(e) { e.preventDefault(); document.getElementById('uploadZone').classList.add('drag'); }
+function offDrag(e) { document.getElementById('uploadZone').classList.remove('drag'); }
+function onDrop(e) {
+  e.preventDefault();
+  offDrag(e);
+  const file = e.dataTransfer.files[0];
+  if (!file || !file.type.startsWith('image/')) return showToast('Нужен файл изображения');
+  const dt = new DataTransfer();
+  dt.items.add(file);
+  document.getElementById('fileInput').files = dt.files;
+  handleFile(document.getElementById('fileInput'));
+}
+
+// Chips
+function selectChip(el, groupId) {
+  document.querySelectorAll(`#${groupId} .chip`).forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+function toggleTypeChip(el) {
+  el.classList.toggle('active-accent');
+}
+
+// Marketplace
+function selectMP(mp) {
+  document.getElementById('mp-wb').classList.toggle('active', mp === 'wb');
+  document.getElementById('mp-ozon').classList.toggle('active', mp === 'ozon');
+}
+
+// Count
+function selectCount(el) {
+  document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// Generate
+function showState(name) {
+  document.querySelectorAll('.state').forEach(s => s.classList.remove('active'));
+  document.getElementById('state-' + name).classList.add('active');
+}
+
+const loadingSteps = [
+  { el: 'step1', title: 'Удаляем фон...', sub: 'AI вырезает товар из фото', delay: 0 },
+  { el: 'step2', title: 'Генерируем карточки...', sub: 'Создаём 6 вариантов', delay: 2000 },
+  { el: 'step3', title: 'Применяем стиль...', sub: 'Настраиваем под площадку', delay: 4500 },
+  { el: 'step4', title: 'Финальная сборка...', sub: 'Почти готово!', delay: 6500 },
+];
+
+function startGenerate() {
+  showState('loading');
+  document.getElementById('resultsTitle').textContent = 'Генерация...';
+  document.getElementById('resultsActions').style.display = 'none';
+  document.getElementById('generateBtn').disabled = true;
+
+  // reset steps
+  loadingSteps.forEach(s => {
+    const el = document.getElementById(s.el);
+    el.className = 'loading-step';
+    el.querySelector('.step-dot').textContent = s.el.replace('step','');
+  });
+
+  loadingSteps.forEach((step, i) => {
+    setTimeout(() => {
+      if (i > 0) {
+        const prev = document.getElementById(loadingSteps[i-1].el);
+        prev.className = 'loading-step done';
+        prev.querySelector('.step-dot').textContent = '✓';
+      }
+      const el = document.getElementById(step.el);
+      el.className = 'loading-step active';
+      document.getElementById('loadingTitle').textContent = step.title;
+      document.getElementById('loadingSub').textContent = step.sub;
+    }, step.delay);
+  });
+
+  setTimeout(() => {
+    const last = document.getElementById('step4');
+    last.className = 'loading-step done';
+    last.querySelector('.step-dot').textContent = '✓';
+
+    setTimeout(() => {
+      showState('result');
+      document.getElementById('resultsTitle').textContent = '6 карточек готовы';
+      document.getElementById('resultsActions').style.display = 'flex';
+      document.getElementById('generateBtn').disabled = false;
+      document.getElementById('generateBtn').textContent = '⚡ Сгенерировать ещё';
+      showToast('Карточки готовы к скачиванию');
+    }, 500);
+  }, 8000);
+}
+
+function resetAll() {
+  showState('empty');
+  document.getElementById('uploadZone').classList.remove('has-file');
+  document.getElementById('fileInput').value = '';
+  document.getElementById('resultsTitle').textContent = 'Результат появится здесь';
+  document.getElementById('resultsActions').style.display = 'none';
+  document.getElementById('generateBtn').disabled = false;
+  document.getElementById('generateBtn').textContent = '⚡ Сгенерировать карточки';
+  document.getElementById('projectName').value = '';
+}
+
+let toastTimer;
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toast-text').textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Карточки-онлайн — Тарифы</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #111110;
+  --bg2: #1a1918;
+  --bg3: #222120;
+  --bg4: #282625;
+  --border: #2a2927;
+  --border2: #333230;
+  --text: #e8e4dc;
+  --text2: #888580;
+  --text3: #555350;
+  --accent: #e8440a;
+  --accent-hover: #c93a08;
+  --accent-dim: rgba(232,68,10,0.12);
+  --accent-border: rgba(232,68,10,0.25);
+  --success: #1D9E75;
+  --success-dim: rgba(29,158,117,0.1);
+  --success-border: rgba(29,158,117,0.25);
+  --font-display: 'Unbounded', sans-serif;
+  --font-body: 'Golos Text', sans-serif;
+  --sidebar-w: 220px;
+}
+
+html, body { height: 100%; font-family: var(--font-body); background: var(--bg); color: var(--text); overflow: hidden; }
+.app { display: grid; grid-template-columns: var(--sidebar-w) 1fr; height: 100vh; }
+
+/* SIDEBAR */
+.sidebar { background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; }
+.sidebar-logo { padding: 1.25rem 1.25rem 0; font-family: var(--font-display); font-size: 0.85rem; font-weight: 900; letter-spacing: -0.03em; color: var(--text); text-decoration: none; display: block; }
+.sidebar-logo span { color: var(--accent); }
+.sidebar-nav { flex: 1; padding: 1.5rem 0.75rem; display: flex; flex-direction: column; gap: 2px; overflow-y: auto; }
+.nav-section { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); padding: 0 0.5rem; margin: 1rem 0 0.4rem; }
+.nav-section:first-child { margin-top: 0; }
+.nav-item { display: flex; align-items: center; gap: 0.65rem; padding: 0.6rem 0.75rem; border-radius: 8px; font-size: 0.85rem; font-weight: 500; color: var(--text2); cursor: pointer; transition: all 0.15s; border: none; background: none; width: 100%; text-align: left; text-decoration: none; }
+.nav-item:hover { background: var(--bg3); color: var(--text); }
+.nav-item.active { background: var(--accent-dim); color: var(--accent); }
+.nav-icon { font-size: 1rem; width: 18px; text-align: center; flex-shrink: 0; }
+.sidebar-bottom { padding: 0.75rem; border-top: 1px solid var(--border); }
+.plan-card { background: var(--accent-dim); border: 1px solid var(--accent-border); border-radius: 10px; padding: 0.75rem; margin-bottom: 0.75rem; }
+.plan-label { font-size: 0.7rem; color: var(--accent); font-weight: 700; margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.plan-usage { font-size: 0.78rem; color: var(--text2); margin-bottom: 0.5rem; }
+.plan-bar { height: 4px; background: var(--border2); border-radius: 2px; overflow: hidden; }
+.plan-fill { height: 100%; width: 70%; background: var(--accent); border-radius: 2px; }
+.plan-upgrade { display: block; text-align: center; font-size: 0.75rem; font-weight: 600; color: var(--accent); text-decoration: none; margin-top: 0.6rem; }
+.user-row { display: flex; align-items: center; gap: 0.65rem; padding: 0.5rem; border-radius: 8px; cursor: pointer; transition: background 0.15s; }
+.user-row:hover { background: var(--bg3); }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #e8440a, #f5a623); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: #fff; flex-shrink: 0; }
+.user-info { flex: 1; min-width: 0; }
+.user-name { font-size: 0.82rem; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.user-plan { font-size: 0.7rem; color: var(--text3); }
+
+/* MAIN */
+.main { display: flex; flex-direction: column; overflow: hidden; }
+.header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.75rem; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.header-title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; letter-spacing: -0.03em; color: var(--text); }
+.header-sub { font-size: 0.78rem; color: var(--text3); margin-top: 1px; }
+
+.content { flex: 1; overflow-y: auto; padding: 1.75rem; }
+
+/* CURRENT PLAN BANNER */
+.current-banner {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.banner-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.banner-info { flex: 1; }
+.banner-title { font-family: var(--font-display); font-size: 0.88rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); margin-bottom: 0.3rem; }
+.banner-sub { font-size: 0.78rem; color: var(--text3); }
+
+.banner-usage { text-align: right; flex-shrink: 0; }
+.usage-nums { font-family: var(--font-display); font-size: 1.4rem; font-weight: 900; letter-spacing: -0.04em; color: var(--text); line-height: 1; }
+.usage-nums span { font-size: 0.85rem; color: var(--text3); font-weight: 400; }
+.usage-label { font-size: 0.72rem; color: var(--text3); margin-top: 0.25rem; }
+.usage-bar { width: 120px; height: 4px; background: var(--border2); border-radius: 2px; overflow: hidden; margin-top: 0.5rem; }
+.usage-fill { height: 100%; border-radius: 2px; background: var(--accent); width: 70%; }
+
+/* PERIOD TOGGLE */
+.period-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.period-label { font-size: 0.85rem; color: var(--text3); }
+.period-label.active { color: var(--text); font-weight: 600; }
+.toggle-switch {
+  width: 40px; height: 22px;
+  background: var(--border2);
+  border-radius: 100px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s;
+  border: none;
+  flex-shrink: 0;
+}
+.toggle-switch.on { background: var(--accent); }
+.toggle-knob {
+  position: absolute;
+  width: 16px; height: 16px;
+  background: #fff;
+  border-radius: 50%;
+  top: 3px; left: 3px;
+  transition: transform 0.2s;
+}
+.toggle-switch.on .toggle-knob { transform: translateX(18px); }
+.period-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: var(--success-dim);
+  color: var(--success);
+  border: 1px solid var(--success-border);
+  padding: 2px 8px;
+  border-radius: 100px;
+}
+
+/* PLANS GRID */
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.plan-card-big {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  transition: border-color 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+.plan-card-big:hover { border-color: var(--border2); }
+.plan-card-big.current { border-color: var(--border2); }
+.plan-card-big.popular { border: 2px solid var(--accent); }
+
+.popular-tag {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 14px;
+  border-radius: 0 0 8px 8px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.current-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: var(--success-dim);
+  color: var(--success);
+  border: 1px solid var(--success-border);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 100px;
+  margin-bottom: 1rem;
+}
+.current-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--success); }
+
+.plan-name-big {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text3);
+  margin-bottom: 0.75rem;
+}
+.plan-card-big.popular .plan-name-big { margin-top: 1rem; }
+
+.plan-price-big {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+.plan-price-big sub { font-size: 1rem; font-weight: 400; color: var(--text3); vertical-align: baseline; }
+.plan-price-old {
+  font-size: 0.82rem;
+  color: var(--text3);
+  text-decoration: line-through;
+  margin-bottom: 0.25rem;
+}
+.plan-period-big { font-size: 0.78rem; color: var(--text3); margin-bottom: 1.25rem; }
+
+.plan-divider { height: 1px; background: var(--border); margin-bottom: 1.25rem; }
+
+.plan-features-big { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.5rem; flex: 1; }
+.plan-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.82rem;
+  color: var(--text2);
+  line-height: 1.4;
+}
+.feat-icon { flex-shrink: 0; margin-top: 1px; font-size: 0.75rem; }
+.feat-yes { color: var(--success); }
+.feat-no { color: var(--text3); }
+.feat-no-text { color: var(--text3); }
+
+.plan-btn {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: none;
+  text-align: center;
+}
+.plan-btn-current { background: var(--bg3); color: var(--text3); cursor: default; }
+.plan-btn-accent { background: var(--accent); color: #fff; }
+.plan-btn-accent:hover { background: var(--accent-hover); }
+.plan-btn-outline { background: transparent; color: var(--text2); border: 1.5px solid var(--border2); }
+.plan-btn-outline:hover { border-color: var(--text2); color: var(--text); }
+
+/* ADDONS */
+.addons-section { margin-bottom: 2rem; }
+.section-title { font-family: var(--font-display); font-size: 0.85rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); margin-bottom: 1rem; }
+
+.addons-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+.addon-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.addon-card:hover { border-color: var(--border2); background: var(--bg3); }
+.addon-icon { font-size: 1.2rem; flex-shrink: 0; }
+.addon-info { flex: 1; }
+.addon-name { font-size: 0.82rem; font-weight: 600; color: var(--text); margin-bottom: 0.15rem; }
+.addon-desc { font-size: 0.72rem; color: var(--text3); }
+.addon-price { font-family: var(--font-display); font-size: 0.85rem; font-weight: 700; color: var(--accent); flex-shrink: 0; }
+
+/* FAQ MINI */
+.faq-section { }
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-btn {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 1rem 0;
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text2);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  transition: color 0.15s;
+}
+.faq-btn:hover { color: var(--text); }
+.faq-btn.open { color: var(--text); }
+.faq-icon { color: var(--text3); transition: transform 0.2s; flex-shrink: 0; font-size: 1rem; }
+.faq-btn.open .faq-icon { transform: rotate(45deg); color: var(--accent); }
+.faq-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s; font-size: 0.82rem; color: var(--text3); line-height: 1.75; }
+.faq-body.open { max-height: 200px; padding-bottom: 1rem; }
+
+/* MODAL */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s;
+}
+.modal-overlay.show { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 420px;
+  transform: translateY(20px);
+  transition: transform 0.25s ease;
+}
+.modal-overlay.show .modal { transform: translateY(0); }
+.modal-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 900; letter-spacing: -0.03em; margin-bottom: 0.4rem; }
+.modal-sub { font-size: 0.82rem; color: var(--text3); margin-bottom: 1.5rem; line-height: 1.6; }
+.modal-plan-row { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+.modal-plan-row:last-of-type { border-bottom: none; }
+.modal-plan-label { color: var(--text3); }
+.modal-plan-value { color: var(--text); font-weight: 600; }
+.modal-total { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0 1.5rem; border-top: 1px solid var(--border2); margin-top: 0.5rem; }
+.modal-total-label { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+.modal-total-price { font-family: var(--font-display); font-size: 1.4rem; font-weight: 900; color: var(--accent); letter-spacing: -0.03em; }
+.modal-actions { display: flex; gap: 0.75rem; }
+.modal-btn { flex: 1; padding: 0.8rem; border-radius: 10px; font-family: var(--font-body); font-size: 0.88rem; font-weight: 700; cursor: pointer; border: none; transition: all 0.15s; }
+.modal-btn-cancel { background: var(--bg3); color: var(--text2); }
+.modal-btn-cancel:hover { color: var(--text); }
+.modal-btn-pay { background: var(--accent); color: #fff; }
+.modal-btn-pay:hover { background: var(--accent-hover); }
+
+/* TOAST */
+.toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--bg2); border: 1px solid var(--border2); border-radius: 10px; padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--text); display: flex; align-items: center; gap: 0.6rem; z-index: 200; box-shadow: 0 8px 30px rgba(0,0,0,0.4); transform: translateY(100px); opacity: 0; transition: all 0.3s ease; }
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <a href="dashboard.html" class="sidebar-logo">карточки<span>.</span>онлайн</a>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Главное</div>
+      <a href="dashboard.html" class="nav-item"><span class="nav-icon">⊞</span> Дашборд</a>
+      <a href="generate.html" class="nav-item"><span class="nav-icon">⚡</span> Генерация</a>
+      <a href="dashboard.html" class="nav-item"><span class="nav-icon">◫</span> Проекты</a>
+      <div class="nav-section">Аккаунт</div>
+      <a href="billing.html" class="nav-item active"><span class="nav-icon">◈</span> Тарифы</a>
+      <a href="#" class="nav-item"><span class="nav-icon">◎</span> Настройки</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="plan-card">
+        <div class="plan-label">Бесплатный план</div>
+        <div class="plan-usage">7 из 10 карточек</div>
+        <div class="plan-bar"><div class="plan-fill"></div></div>
+        <a href="#" class="plan-upgrade">Перейти на Про →</a>
+      </div>
+      <div class="user-row">
+        <div class="avatar">ИИ</div>
+        <div class="user-info">
+          <div class="user-name">Иван Иванов</div>
+          <div class="user-plan">Бесплатный план</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <header class="header">
+      <div>
+        <div class="header-title">Тарифы и оплата</div>
+        <div class="header-sub">Управление подпиской</div>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- CURRENT PLAN -->
+      <div class="current-banner">
+        <div class="banner-icon">◈</div>
+        <div class="banner-info">
+          <div class="banner-title">Бесплатный план</div>
+          <div class="banner-sub">Обновляется 1 мая 2025 · Платёжных данных нет</div>
+        </div>
+        <div class="banner-usage">
+          <div class="usage-nums">7 <span>/ 10</span></div>
+          <div class="usage-label">карточек использовано</div>
+          <div class="usage-bar"><div class="usage-fill"></div></div>
+        </div>
+      </div>
+
+      <!-- PERIOD TOGGLE -->
+      <div class="period-toggle">
+        <span class="period-label active" id="label-month">Помесячно</span>
+        <button class="toggle-switch" id="periodToggle" onclick="togglePeriod()">
+          <div class="toggle-knob"></div>
+        </button>
+        <span class="period-label" id="label-year">Годовая подписка</span>
+        <span class="period-badge" id="discount-badge" style="display:none">−20%</span>
+      </div>
+
+      <!-- PLANS -->
+      <div class="plans-grid">
+
+        <!-- FREE -->
+        <div class="plan-card-big current">
+          <div class="current-tag"><span class="current-dot"></span> Текущий план</div>
+          <div class="plan-name-big">Старт</div>
+          <div class="plan-price-big">0 <sub>₽</sub></div>
+          <div class="plan-period-big">навсегда бесплатно</div>
+          <div class="plan-divider"></div>
+          <ul class="plan-features-big">
+            <li class="plan-feature"><span class="feat-icon feat-yes">✓</span><span>10 карточек в месяц</span></li>
+            <li class="plan-feature"><span class="feat-icon feat-yes">✓</span><span>Удаление фона</span></li>
+            <li class="plan-feature"><span class="feat-icon feat-yes">✓</span><span>3 стиля оформления</span></li>
+            <li class="plan-feature"><span class="feat-icon feat-yes">✓</span><span>WB и Ozon</span></li>
+            <li class="plan-feature"><span class="feat-icon feat-no">✗</span><span class="feat-no-text">Batch-генерация</span></li>
+            <li class="plan-feature"><span class="feat-icon feat-no">✗</span><span class="feat-no-text">AI-копирайтинг</span></li>
+            <li class="plan-feature"><span class="feat-icon feat-no">✗</span><span class="feat-no-text">Бренд-шаблоны</span></li>
+          </ul>
+          <button class="plan-btn plan-btn-current">Текущий план</button>
+        </div>
+
+        <!-- PRO -->
+        <div class="plan-card-big popular">
+          <div class="popular-tag">Популярный</div>
+          <div class="plan-name-big">Про</div>
+          <div class="plan-price-big" id="pro-price">490 <sub>₽/мес</sub></div>
+          <div class="plan-price-old" id="pro-old" style="display:none">612 ₽/мес</div>
+          <div class="plan-period-big" id="pro-period">50 карточек в месяц</div>
+          <div class="plan-divider"></div>
+          <ul class="plan-features-big">
+            <li class="plan-feature"><span class="feat-icon feat-yes">✓</span><span>50 карточек в месяц</span></li>
+            <li class="plan-feature"><span class="feat-icon feat-yes">✓</span><span>Удаление фона</span></li>
+            <li class="plan-feature"><span class="feat-icon feat-yes">✓</span><span>Все стили</span></li>
+            <li class="plan-feature"><span class="feat-icon feat-yes">✓</span><span>WB и Ozon</span></li>
+            <li class="plan-feature"><span class="feat-icon feat-yes">✓</span><span>Batch до 20 штук</span></li>
+            <li class="plan-feature"><span class="feat-icon feat-yes">✓</span><span>AI-копирайтинг</span></li>
+            <li class="plan-feature"><span class="feat-icon feat-no">✗</span><span class="feat-no-text">Бренд-шаблоны</span></li>
+          </ul>
+          <button class="plan-btn plan-btn-accent" onclick="openModal('pro')">Перейти на Про →</button>
+        </div>
+
+        <!-- BUSINESS -->
+        <div class="plan-card-big">
+          <div class="plan-name-big">Бизнес</div>
+          <div class="plan-price-big" id="biz-price">990 <sub>₽/мес</sub></div>
+          <div class="plan-price-old" id="biz-old" style="display:none">1 237 ₽/мес</div>
+          <div class="plan-period-big" id="biz-period">200 карточек в месяц</div>
+          <div class="plan-divider"></div>
+          <ul class="plan-features-big">
+            <li class="plan-feature"><span class="feat-icon feat-yes">✓</span><span>200 карточек в месяц</span></li>
+            <li class="plan-feature"><span class="feat-icon feat-yes">✓</span><span>Удаление фона</span></li>
+            <li class="plan-feature"><span class="feat-icon feat-yes">✓</span><span>Все стили</span></li>
+            <li class="plan-feature"><span class="feat-icon feat-yes">✓</span><span>WB и Ozon</span></li>
+            <li class="plan-feature"><span class="feat-icon feat-yes">✓</span><span>Batch до 50 штук</span></li>
+            <li class="plan-feature"><span class="feat-icon feat-yes">✓</span><span>AI-копирайтинг</span></li>
+            <li class="plan-feature"><span class="feat-icon feat-yes">✓</span><span>Бренд-шаблоны</span></li>
+          </ul>
+          <button class="plan-btn plan-btn-outline" onclick="openModal('biz')">Подключить →</button>
+        </div>
+
+      </div>
+
+      <!-- ADDONS -->
+      <div class="addons-section">
+        <div class="section-title">Дополнительные пакеты</div>
+        <div class="addons-grid">
+          <div class="addon-card" onclick="showToast('Добавлено в корзину')">
+            <div class="addon-icon">⚡</div>
+            <div class="addon-info">
+              <div class="addon-name">+20 карточек</div>
+              <div class="addon-desc">Разовый пакет, не сгорает</div>
+            </div>
+            <div class="addon-price">150 ₽</div>
+          </div>
+          <div class="addon-card" onclick="showToast('Добавлено в корзину')">
+            <div class="addon-icon">⚡</div>
+            <div class="addon-info">
+              <div class="addon-name">+50 карточек</div>
+              <div class="addon-desc">Разовый пакет, не сгорает</div>
+            </div>
+            <div class="addon-price">299 ₽</div>
+          </div>
+          <div class="addon-card" onclick="showToast('Добавлено в корзину')">
+            <div class="addon-icon">⚡</div>
+            <div class="addon-info">
+              <div class="addon-name">+100 карточек</div>
+              <div class="addon-desc">Разовый пакет, не сгорает</div>
+            </div>
+            <div class="addon-price">499 ₽</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="faq-section">
+        <div class="section-title">Частые вопросы</div>
+
+        <div class="faq-item">
+          <button class="faq-btn" onclick="toggleFaq(this)">
+            Можно ли отменить подписку в любой момент?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-body">Да, отменить подписку можно в любое время в настройках. Доступ к платным функциям сохраняется до конца оплаченного периода.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn" onclick="toggleFaq(this)">
+            Что происходит с карточками при отмене?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-body">Все созданные карточки остаются доступны для скачивания. После отмены лимит снижается до 10 карточек/мес на бесплатном плане.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn" onclick="toggleFaq(this)">
+            Как работают разовые пакеты карточек?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-body">Разовые пакеты суммируются с вашим тарифом и не сгорают в конце месяца. Можно купить в любой момент.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn" onclick="toggleFaq(this)">
+            Какие способы оплаты доступны?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-body">Банковские карты Visa, Mastercard, МИР. Оплата через СБП. Приём платежей через ЮKassa — безопасно и с чеком.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-title" id="modalTitle">Перейти на Про</div>
+    <div class="modal-sub" id="modalSub">Оплата через ЮKassa — безопасно, с чеком</div>
+    <div class="modal-plan-row">
+      <span class="modal-plan-label">Тариф</span>
+      <span class="modal-plan-value" id="modalPlan">Про</span>
+    </div>
+    <div class="modal-plan-row">
+      <span class="modal-plan-label">Период</span>
+      <span class="modal-plan-value" id="modalPeriodRow">1 месяц</span>
+    </div>
+    <div class="modal-plan-row">
+      <span class="modal-plan-label">Карточек в месяц</span>
+      <span class="modal-plan-value" id="modalCards">50</span>
+    </div>
+    <div class="modal-total">
+      <span class="modal-total-label">Итого</span>
+      <span class="modal-total-price" id="modalPrice">490 ₽</span>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn modal-btn-cancel" onclick="closeModalDirect()">Отмена</button>
+      <button class="modal-btn modal-btn-pay" onclick="handlePay()">Оплатить →</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-dot"></span>
+  <span id="toast-text"></span>
+</div>
+
+<script>
+let isYearly = false;
+let currentPlan = null;
+
+function togglePeriod() {
+  isYearly = !isYearly;
+  const toggle = document.getElementById('periodToggle');
+  toggle.classList.toggle('on', isYearly);
+  document.getElementById('label-month').classList.toggle('active', !isYearly);
+  document.getElementById('label-year').classList.toggle('active', isYearly);
+  document.getElementById('discount-badge').style.display = isYearly ? 'inline-flex' : 'none';
+
+  if (isYearly) {
+    document.getElementById('pro-price').innerHTML = '392 <sub>₽/мес</sub>';
+    document.getElementById('pro-old').style.display = 'block';
+    document.getElementById('pro-period').textContent = '4 704 ₽/год · экономия 20%';
+    document.getElementById('biz-price').innerHTML = '792 <sub>₽/мес</sub>';
+    document.getElementById('biz-old').style.display = 'block';
+    document.getElementById('biz-period').textContent = '9 504 ₽/год · экономия 20%';
+  } else {
+    document.getElementById('pro-price').innerHTML = '490 <sub>₽/мес</sub>';
+    document.getElementById('pro-old').style.display = 'none';
+    document.getElementById('pro-period').textContent = '50 карточек в месяц';
+    document.getElementById('biz-price').innerHTML = '990 <sub>₽/мес</sub>';
+    document.getElementById('biz-old').style.display = 'none';
+    document.getElementById('biz-period').textContent = '200 карточек в месяц';
+  }
+}
+
+function openModal(plan) {
+  currentPlan = plan;
+  const isPro = plan === 'pro';
+  document.getElementById('modalTitle').textContent = isPro ? 'Перейти на Про' : 'Подключить Бизнес';
+  document.getElementById('modalPlan').textContent = isPro ? 'Про' : 'Бизнес';
+  document.getElementById('modalCards').textContent = isPro ? '50' : '200';
+  document.getElementById('modalPeriodRow').textContent = isYearly ? '1 год' : '1 месяц';
+
+  let price;
+  if (isPro) price = isYearly ? '4 704 ₽' : '490 ₽';
+  else price = isYearly ? '9 504 ₽' : '990 ₽';
+  document.getElementById('modalPrice').textContent = price;
+
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modalOverlay').classList.remove('show');
+}
+
+function handlePay() {
+  closeModalDirect();
+  showToast('Переходим к оплате через ЮKassa...');
+}
+
+function toggleFaq(btn) {
+  const body = btn.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  document.querySelectorAll('.faq-body.open').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.faq-btn.open').forEach(b => b.classList.remove('open'));
+  if (!isOpen) { body.classList.add('open'); btn.classList.add('open'); }
+}
+
+let toastTimer;
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toast-text').textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>

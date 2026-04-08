@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Блог — Карточки-онлайн · Советы для продавцов WB и Ozon</title>
+<meta name="description" content="Советы и инструкции для продавцов Wildberries и Ozon: требования к фото, инфографика, оформление карточек товаров. Всё что нужно знать о продажах на маркетплейсах.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://kartochki-online.ru/blog">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Блог карточки-онлайн",
+  "description": "Советы для продавцов Wildberries и Ozon",
+  "url": "https://kartochki-online.ru/blog"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink: #0d0d0d;
+  --paper: #f5f2eb;
+  --paper2: #efece4;
+  --card: #ffffff;
+  --border: #d8d4cb;
+  --border2: #c8c4bb;
+  --muted: #6b6760;
+  --muted2: #9b9790;
+  --accent: #e8440a;
+  --accent-hover: #c93a08;
+  --accent-dim: rgba(232,68,10,0.08);
+  --font-display: 'Unbounded', sans-serif;
+  --font-body: 'Golos Text', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.6; overflow-x: hidden; }
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: 0.3;
+}
+
+/* NAV */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 2rem;
+  background: rgba(245,242,235,0.88);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.logo { font-family: var(--font-display); font-size: 1.1rem; font-weight: 900; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+.logo span { color: var(--accent); }
+.nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+.nav-links a { text-decoration: none; color: var(--muted); font-size: 0.88rem; font-weight: 500; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--ink); }
+.btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.6rem 1.25rem; border-radius: 100px; font-family: var(--font-body); font-weight: 600; font-size: 0.88rem; cursor: pointer; transition: all 0.2s; text-decoration: none; border: none; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+.btn-outline { background: transparent; color: var(--ink); border: 1.5px solid var(--border); }
+.btn-outline:hover { border-color: var(--ink); }
+
+/* HERO */
+.blog-hero {
+  position: relative; z-index: 1;
+  padding: 4rem 2rem 3rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 2rem;
+  border-bottom: 1px solid var(--border);
+}
+.blog-hero-label {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 1rem;
+}
+.blog-hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  margin-bottom: 1rem;
+}
+.blog-hero-sub { font-size: 1rem; color: var(--muted); max-width: 480px; line-height: 1.7; }
+.blog-hero-stats { display: flex; gap: 2rem; flex-shrink: 0; }
+.hero-stat { text-align: right; }
+.hero-stat-num { font-family: var(--font-display); font-size: 2rem; font-weight: 900; letter-spacing: -0.04em; color: var(--ink); }
+.hero-stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+
+/* MAIN LAYOUT */
+.blog-wrap {
+  position: relative; z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 3rem;
+  padding-top: 2.5rem;
+  padding-bottom: 4rem;
+}
+
+/* FEED */
+.feed { min-width: 0; }
+
+/* FILTERS */
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+.filter-chip {
+  padding: 0.4rem 1rem;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: var(--font-body);
+}
+.filter-chip:hover { border-color: var(--ink); color: var(--ink); }
+.filter-chip.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+/* FEATURED POST */
+.featured-post {
+  background: var(--ink);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 320px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  text-decoration: none;
+  color: inherit;
+}
+.featured-post:hover { transform: translateY(-3px); }
+.featured-visual {
+  background: linear-gradient(135deg, #1a1a2e 0%, #e8440a 100%);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.featured-visual::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 30% 70%, rgba(232,68,10,0.4) 0%, transparent 60%);
+}
+.featured-mock {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 1.5rem;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+.featured-thumb {
+  aspect-ratio: 3/4;
+  border-radius: 6px;
+  opacity: 0.9;
+}
+.ft1 { background: linear-gradient(135deg, #0f3460, #e94560); }
+.ft2 { background: linear-gradient(135deg, #1a472a, #52b788); }
+.ft3 { background: linear-gradient(135deg, #2d1b69, #f5a623); }
+.ft4 { background: linear-gradient(135deg, #2c3e50, #f39c12); }
+.ft5 { background: linear-gradient(135deg, #6a0572, #e040fb); }
+.ft6 { background: linear-gradient(135deg, #1b4332, #95d5b2); }
+
+.featured-content {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.featured-tag {
+  display: inline-block;
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid rgba(232,68,10,0.4);
+  padding: 3px 10px; border-radius: 100px;
+  margin-bottom: 1rem;
+  width: fit-content;
+}
+.featured-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem; font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  color: #fff;
+  margin-bottom: 0.75rem;
+}
+.featured-excerpt { font-size: 0.82rem; color: #888; line-height: 1.65; margin-bottom: 1.25rem; }
+.featured-meta { display: flex; align-items: center; gap: 1rem; }
+.meta-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: linear-gradient(135deg, #e8440a, #f5a623);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.6rem; font-weight: 700; color: #fff;
+}
+.meta-info { flex: 1; }
+.meta-author { font-size: 0.75rem; font-weight: 600; color: #ccc; }
+.meta-date { font-size: 0.7rem; color: #666; }
+.meta-read { font-size: 0.72rem; color: #666; }
+
+/* POSTS GRID */
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.post-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+}
+.post-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); border-color: var(--border2); }
+
+.post-visual {
+  height: 160px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.post-visual-inner { width: 100%; height: 100%; }
+.pv1 { background: linear-gradient(135deg, #e8f4fd 0%, #b3d9f7 100%); }
+.pv2 { background: linear-gradient(135deg, #fef3e2 0%, #fdd89a 100%); }
+.pv3 { background: linear-gradient(135deg, #e8f8f2 0%, #95d5b2 100%); }
+.pv4 { background: linear-gradient(135deg, #fce8e8 0%, #f5a3a3 100%); }
+.pv5 { background: linear-gradient(135deg, #f0e8fe 0%, #c9a8f7 100%); }
+.pv6 { background: linear-gradient(135deg, #e8f0fe 0%, #93b4f7 100%); }
+
+.post-visual-label {
+  position: absolute;
+  top: 10px; left: 10px;
+  font-size: 0.65rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  padding: 3px 9px;
+  border-radius: 100px;
+  backdrop-filter: blur(4px);
+}
+.label-wb { background: rgba(120,60,180,0.15); color: #7832b5; }
+.label-ozon { background: rgba(0,100,220,0.12); color: #0055cc; }
+.label-both { background: rgba(232,68,10,0.12); color: var(--accent); }
+.label-tips { background: rgba(29,158,117,0.12); color: #0f6e56; }
+
+.post-visual-decor {
+  position: absolute;
+  bottom: -20px; right: -20px;
+  font-size: 5rem;
+  opacity: 0.12;
+  line-height: 1;
+  transform: rotate(-15deg);
+  pointer-events: none;
+}
+
+.post-body { padding: 1.1rem; flex: 1; display: flex; flex-direction: column; }
+.post-tag {
+  font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--accent); margin-bottom: 0.5rem;
+}
+.post-title {
+  font-family: var(--font-display);
+  font-size: 0.88rem; font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.3;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+  flex: 1;
+}
+.post-excerpt { font-size: 0.78rem; color: var(--muted); line-height: 1.6; margin-bottom: 0.9rem; }
+.post-footer { display: flex; align-items: center; justify-content: space-between; }
+.post-meta { font-size: 0.7rem; color: var(--muted2); }
+.post-read {
+  font-size: 0.72rem; font-weight: 600;
+  color: var(--accent);
+  display: flex; align-items: center; gap: 0.3rem;
+  transition: gap 0.15s;
+}
+.post-card:hover .post-read { gap: 0.5rem; }
+
+/* LIST POSTS */
+.posts-list { display: flex; flex-direction: column; gap: 0; }
+.list-post {
+  display: flex; align-items: flex-start; gap: 1.1rem;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+  color: inherit;
+}
+.list-post:first-child { padding-top: 0; }
+.list-post:hover .list-post-title { color: var(--accent); }
+.list-num {
+  font-family: var(--font-display);
+  font-size: 1.4rem; font-weight: 900;
+  color: var(--border);
+  line-height: 1;
+  flex-shrink: 0;
+  width: 36px;
+  text-align: right;
+}
+.list-post-body { flex: 1; }
+.list-post-tag { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted2); margin-bottom: 0.25rem; }
+.list-post-title { font-size: 0.88rem; font-weight: 600; color: var(--ink); line-height: 1.4; margin-bottom: 0.25rem; transition: color 0.15s; }
+.list-post-meta { font-size: 0.72rem; color: var(--muted2); }
+.list-post-arrow { color: var(--border); font-size: 1rem; flex-shrink: 0; margin-top: 2px; transition: all 0.15s; }
+.list-post:hover .list-post-arrow { color: var(--accent); transform: translateX(3px); }
+
+/* LOAD MORE */
+.load-more {
+  text-align: center;
+  margin-top: 2rem;
+}
+.load-more-btn {
+  padding: 0.75rem 2rem;
+  background: transparent;
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.load-more-btn:hover { border-color: var(--ink); color: var(--ink); }
+
+/* SIDEBAR */
+.sidebar-blog { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.sidebar-widget {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.widget-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-display);
+  font-size: 0.75rem; font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.widget-body { padding: 1.1rem 1.25rem; }
+
+/* SEARCH */
+.search-wrap { position: relative; }
+.search-input {
+  width: 100%;
+  padding: 0.65rem 0.9rem 0.65rem 2.2rem;
+  background: var(--paper2);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.search-input:focus { border-color: var(--ink); }
+.search-input::placeholder { color: var(--muted2); }
+.search-icon { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--muted2); font-size: 0.85rem; pointer-events: none; }
+
+/* CATEGORIES */
+.categories { display: flex; flex-direction: column; gap: 0; }
+.category-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: color 0.15s;
+  text-decoration: none;
+  color: var(--ink);
+}
+.category-item:last-child { border-bottom: none; padding-bottom: 0; }
+.category-item:first-child { padding-top: 0; }
+.category-item:hover { color: var(--accent); }
+.category-count {
+  font-size: 0.72rem; font-weight: 600;
+  background: var(--paper2);
+  color: var(--muted);
+  padding: 2px 8px; border-radius: 100px;
+}
+
+/* POPULAR */
+.popular-list { display: flex; flex-direction: column; gap: 0.9rem; }
+.popular-item { display: flex; gap: 0.75rem; cursor: pointer; text-decoration: none; color: inherit; }
+.popular-num {
+  font-family: var(--font-display);
+  font-size: 1.1rem; font-weight: 900;
+  color: var(--border);
+  line-height: 1.2;
+  flex-shrink: 0;
+  width: 20px;
+}
+.popular-title {
+  font-size: 0.82rem; font-weight: 600;
+  line-height: 1.4; color: var(--ink);
+  transition: color 0.15s;
+}
+.popular-item:hover .popular-title { color: var(--accent); }
+.popular-meta { font-size: 0.7rem; color: var(--muted2); margin-top: 0.2rem; }
+
+/* CTA WIDGET */
+.cta-widget {
+  background: var(--ink);
+  border: none;
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-widget::before {
+  content: '';
+  position: absolute;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(232,68,10,0.25) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+.cta-widget-title {
+  font-family: var(--font-display);
+  font-size: 0.95rem; font-weight: 900;
+  letter-spacing: -0.03em;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+.cta-widget-sub { font-size: 0.78rem; color: #888; margin-bottom: 1.25rem; line-height: 1.6; position: relative; }
+.cta-widget .btn-primary { width: 100%; justify-content: center; border-radius: 10px; position: relative; }
+
+/* TAGS */
+.tags-cloud { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.tag {
+  padding: 0.3rem 0.7rem;
+  background: var(--paper2);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+}
+.tag:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+/* NEWSLETTER */
+.newsletter-form { display: flex; flex-direction: column; gap: 0.6rem; }
+.newsletter-input {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  background: var(--paper2);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.newsletter-input:focus { border-color: var(--ink); }
+.newsletter-input::placeholder { color: var(--muted2); }
+.newsletter-btn {
+  width: 100%;
+  padding: 0.65rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.newsletter-btn:hover { background: var(--accent-hover); }
+.newsletter-note { font-size: 0.7rem; color: var(--muted2); text-align: center; }
+
+/* FOOTER */
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--border);
+  padding: 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.footer-links { display: flex; gap: 1.5rem; list-style: none; }
+.footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; }
+.footer-links a:hover { color: var(--ink); }
+.footer-copy { font-size: 0.8rem; color: var(--muted2); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .blog-wrap { grid-template-columns: 1fr; }
+  .sidebar-blog { display: none; }
+  .blog-hero { grid-template-columns: 1fr; }
+  .blog-hero-stats { display: none; }
+  .featured-post { grid-template-columns: 1fr; min-height: auto; }
+  .featured-visual { height: 200px; }
+  .posts-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  nav { padding: 1rem; }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="logo">карточки<span>.</span>онлайн</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Главная</a></li>
+    <li><a href="blog.html" class="active">Блог</a></li>
+    <li><a href="index.html#pricing">Тарифы</a></li>
+  </ul>
+  <div style="display:flex;gap:0.75rem;align-items:center">
+    <a href="auth.html" class="btn btn-outline">Войти</a>
+    <a href="auth.html" class="btn btn-primary">Попробовать бесплатно</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="blog-hero reveal">
+  <div>
+    <div class="blog-hero-label">
+      <span style="width:6px;height:6px;background:var(--accent);border-radius:50%;display:inline-block"></span>
+      Блог для продавцов
+    </div>
+    <h1>Советы и инструкции<br>для WB и Ozon</h1>
+    <p class="blog-hero-sub">Как создавать карточки товаров которые продают, требования площадок, советы по инфографике и оформлению.</p>
+  </div>
+  <div class="blog-hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">24</div>
+      <div class="hero-stat-label">статьи</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">8к</div>
+      <div class="hero-stat-label">читателей</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="blog-wrap">
+
+  <!-- FEED -->
+  <main class="feed">
+
+    <!-- FILTERS -->
+    <div class="filters reveal">
+      <button class="filter-chip active" onclick="filterPosts(this)">Все</button>
+      <button class="filter-chip" onclick="filterPosts(this)">Wildberries</button>
+      <button class="filter-chip" onclick="filterPosts(this)">Ozon</button>
+      <button class="filter-chip" onclick="filterPosts(this)">Фото и дизайн</button>
+      <button class="filter-chip" onclick="filterPosts(this)">Инфографика</button>
+      <button class="filter-chip" onclick="filterPosts(this)">SEO карточки</button>
+    </div>
+
+    <!-- FEATURED -->
+    <a href="blog-post.html" class="featured-post reveal">
+      <div class="featured-visual">
+        <div class="featured-mock">
+          <div class="featured-thumb ft1"></div>
+          <div class="featured-thumb ft2"></div>
+          <div class="featured-thumb ft3"></div>
+          <div class="featured-thumb ft4"></div>
+          <div class="featured-thumb ft5"></div>
+          <div class="featured-thumb ft6"></div>
+        </div>
+      </div>
+      <div class="featured-content">
+        <div class="featured-tag">Главная статья</div>
+        <h2 class="featured-title">Требования к фото для Wildberries в 2025 году: полный гайд</h2>
+        <p class="featured-excerpt">Размеры, фон, ракурсы, количество фото — всё что нужно знать чтобы карточка прошла модерацию с первого раза и попала в топ выдачи.</p>
+        <div class="featured-meta">
+          <div class="meta-avatar">КО</div>
+          <div class="meta-info">
+            <div class="meta-author">Редакция карточки-онлайн</div>
+            <div class="meta-date">3 апреля 2025</div>
+          </div>
+          <div class="meta-read">10 мин →</div>
+        </div>
+      </div>
+    </a>
+
+    <!-- GRID POSTS -->
+    <div class="posts-grid">
+
+      <a href="blog-post.html" class="post-card reveal">
+        <div class="post-visual pv2">
+          <div class="post-visual-inner"></div>
+          <div class="post-visual-label label-ozon">Ozon</div>
+          <div class="post-visual-decor">📊</div>
+        </div>
+        <div class="post-body">
+          <div class="post-tag">Инфографика</div>
+          <h2 class="post-title">Как сделать инфографику для Ozon которая увеличивает конверсию</h2>
+          <p class="post-excerpt">Разбираем структуру, иконки, тексты и цвета. Примеры которые работают.</p>
+          <div class="post-footer">
+            <span class="post-meta">28 мар · 7 мин</span>
+            <span class="post-read">Читать →</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="blog-post.html" class="post-card reveal" style="transition-delay:0.1s">
+        <div class="post-visual pv1">
+          <div class="post-visual-inner"></div>
+          <div class="post-visual-label label-wb">Wildberries</div>
+          <div class="post-visual-decor">📐</div>
+        </div>
+        <div class="post-body">
+          <div class="post-tag">Размеры</div>
+          <h2 class="post-title">Размеры карточек Wildberries 2025: таблица для всех категорий</h2>
+          <p class="post-excerpt">Актуальная таблица с размерами и требованиями для каждой категории товаров.</p>
+          <div class="post-footer">
+            <span class="post-meta">21 мар · 5 мин</span>
+            <span class="post-read">Читать →</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="blog-post.html" class="post-card reveal">
+        <div class="post-visual pv3">
+          <div class="post-visual-inner"></div>
+          <div class="post-visual-label label-both">WB + Ozon</div>
+          <div class="post-visual-decor">🎨</div>
+        </div>
+        <div class="post-body">
+          <div class="post-tag">Дизайн</div>
+          <h2 class="post-title">Белый фон или нет: что лучше работает на маркетплейсах в 2025</h2>
+          <p class="post-excerpt">Анализ 500 карточек топ-продавцов. Данные удивили даже нас.</p>
+          <div class="post-footer">
+            <span class="post-meta">14 мар · 8 мин</span>
+            <span class="post-read">Читать →</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="blog-post.html" class="post-card reveal" style="transition-delay:0.1s">
+        <div class="post-visual pv4">
+          <div class="post-visual-inner"></div>
+          <div class="post-visual-label label-tips">Советы</div>
+          <div class="post-visual-decor">💡</div>
+        </div>
+        <div class="post-body">
+          <div class="post-tag">Конверсия</div>
+          <h2 class="post-title">Почему карточка не продаёт: 7 ошибок которые допускают 90% продавцов</h2>
+          <p class="post-excerpt">Разбираем реальные карточки и объясняем почему они теряют покупателей.</p>
+          <div class="post-footer">
+            <span class="post-meta">7 мар · 6 мин</span>
+            <span class="post-read">Читать →</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="blog-post.html" class="post-card reveal">
+        <div class="post-visual pv5">
+          <div class="post-visual-inner"></div>
+          <div class="post-visual-label label-wb">Wildberries</div>
+          <div class="post-visual-decor">🔍</div>
+        </div>
+        <div class="post-body">
+          <div class="post-tag">SEO</div>
+          <h2 class="post-title">SEO-оптимизация карточки WB: как попасть в топ без рекламы</h2>
+          <p class="post-excerpt">Ключевые слова в названии, описании и характеристиках. Пошаговый план.</p>
+          <div class="post-footer">
+            <span class="post-meta">28 фев · 9 мин</span>
+            <span class="post-read">Читать →</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="blog-post.html" class="post-card reveal" style="transition-delay:0.1s">
+        <div class="post-visual pv6">
+          <div class="post-visual-inner"></div>
+          <div class="post-visual-label label-ozon">Ozon</div>
+          <div class="post-visual-decor">📦</div>
+        </div>
+        <div class="post-body">
+          <div class="post-tag">Фото</div>
+          <h2 class="post-title">Как снять товар на телефон для Ozon: пошаговая инструкция</h2>
+          <p class="post-excerpt">Не нужен фотограф. Только телефон, хорошее освещение и эти советы.</p>
+          <div class="post-footer">
+            <span class="post-meta">20 фев · 5 мин</span>
+            <span class="post-read">Читать →</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- LIST: MORE ARTICLES -->
+    <div style="margin-bottom:1rem">
+      <h2 style="font-family:var(--font-display);font-size:0.85rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:1.1rem;color:var(--ink)">Ещё статьи</h2>
+      <div class="posts-list reveal">
+
+        <a href="blog-post.html" class="list-post">
+          <div class="list-num">07</div>
+          <div class="list-post-body">
+            <div class="list-post-tag">Wildberries · Требования</div>
+            <div class="list-post-title">Модерация карточек WB: почему отклоняют и как пройти с первого раза</div>
+            <div class="list-post-meta">12 фев 2025 · 6 мин чтения</div>
+          </div>
+          <div class="list-post-arrow">→</div>
+        </a>
+
+        <a href="blog-post.html" class="list-post">
+          <div class="list-num">08</div>
+          <div class="list-post-body">
+            <div class="list-post-tag">Оба маркетплейса · Дизайн</div>
+            <div class="list-post-title">Как создать бренд-шаблон для карточек и держать единый стиль</div>
+            <div class="list-post-meta">5 фев 2025 · 7 мин чтения</div>
+          </div>
+          <div class="list-post-arrow">→</div>
+        </a>
+
+        <a href="blog-post.html" class="list-post">
+          <div class="list-num">09</div>
+          <div class="list-post-body">
+            <div class="list-post-tag">Ozon · SEO</div>
+            <div class="list-post-title">Rich-контент на Ozon: что это и зачем нужен каждому продавцу</div>
+            <div class="list-post-meta">28 янв 2025 · 8 мин чтения</div>
+          </div>
+          <div class="list-post-arrow">→</div>
+        </a>
+
+        <a href="blog-post.html" class="list-post">
+          <div class="list-num">10</div>
+          <div class="list-post-body">
+            <div class="list-post-tag">WB · Аналитика</div>
+            <div class="list-post-title">Как читать аналитику WB и улучшать карточки на основе данных</div>
+            <div class="list-post-meta">20 янв 2025 · 10 мин чтения</div>
+          </div>
+          <div class="list-post-arrow">→</div>
+        </a>
+
+        <a href="blog-post.html" class="list-post">
+          <div class="list-num">11</div>
+          <div class="list-post-body">
+            <div class="list-post-tag">Советы · ИИ</div>
+            <div class="list-post-title">Как использовать ИИ для создания карточек: реальный опыт продавцов</div>
+            <div class="list-post-meta">14 янв 2025 · 5 мин чтения</div>
+          </div>
+          <div class="list-post-arrow">→</div>
+        </a>
+
+      </div>
+    </div>
+
+    <div class="load-more reveal">
+      <button class="load-more-btn" onclick="this.textContent='Загружаем...'">Показать ещё статьи</button>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar-blog">
+
+    <!-- SEARCH -->
+    <div class="sidebar-widget reveal">
+      <div class="widget-header">Поиск по блогу</div>
+      <div class="widget-body">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="search" class="search-input" placeholder="Инфографика, требования...">
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-widget reveal">
+      <div class="cta-widget-title">Попробуй бесплатно</div>
+      <div class="cta-widget-sub">10 карточек без карты. Загрузи фото — получи готовый сет за 30 секунд.</div>
+      <a href="auth.html" class="btn btn-primary">Начать →</a>
+    </div>
+
+    <!-- CATEGORIES -->
+    <div class="sidebar-widget reveal">
+      <div class="widget-header">Категории</div>
+      <div class="widget-body">
+        <div class="categories">
+          <a href="#" class="category-item">Wildberries <span class="category-count">9</span></a>
+          <a href="#" class="category-item">Ozon <span class="category-count">7</span></a>
+          <a href="#" class="category-item">Инфографика <span class="category-count">4</span></a>
+          <a href="#" class="category-item">Фото и дизайн <span class="category-count">6</span></a>
+          <a href="#" class="category-item">SEO карточки <span class="category-count">3</span></a>
+          <a href="#" class="category-item">Конверсия <span class="category-count">5</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- POPULAR -->
+    <div class="sidebar-widget reveal">
+      <div class="widget-header">Популярные статьи</div>
+      <div class="widget-body">
+        <div class="popular-list">
+          <a href="blog-post.html" class="popular-item">
+            <div class="popular-num">1</div>
+            <div>
+              <div class="popular-title">Требования к фото для WB 2025</div>
+              <div class="popular-meta">4.2к просмотров</div>
+            </div>
+          </a>
+          <a href="blog-post.html" class="popular-item">
+            <div class="popular-num">2</div>
+            <div>
+              <div class="popular-title">Инфографика для Ozon: полный гайд</div>
+              <div class="popular-meta">3.1к просмотров</div>
+            </div>
+          </a>
+          <a href="blog-post.html" class="popular-item">
+            <div class="popular-num">3</div>
+            <div>
+              <div class="popular-title">7 ошибок в карточках товаров</div>
+              <div class="popular-meta">2.8к просмотров</div>
+            </div>
+          </a>
+          <a href="blog-post.html" class="popular-item">
+            <div class="popular-num">4</div>
+            <div>
+              <div class="popular-title">SEO карточки WB без рекламы</div>
+              <div class="popular-meta">1.9к просмотров</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAGS -->
+    <div class="sidebar-widget reveal">
+      <div class="widget-header">Теги</div>
+      <div class="widget-body">
+        <div class="tags-cloud">
+          <a href="#" class="tag">Wildberries</a>
+          <a href="#" class="tag">Ozon</a>
+          <a href="#" class="tag">Фото товара</a>
+          <a href="#" class="tag">Инфографика</a>
+          <a href="#" class="tag">Белый фон</a>
+          <a href="#" class="tag">Размеры</a>
+          <a href="#" class="tag">Модерация</a>
+          <a href="#" class="tag">SEO</a>
+          <a href="#" class="tag">Rich-контент</a>
+          <a href="#" class="tag">Конверсия</a>
+          <a href="#" class="tag">ИИ генерация</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- NEWSLETTER -->
+    <div class="sidebar-widget reveal">
+      <div class="widget-header">Рассылка</div>
+      <div class="widget-body">
+        <p style="font-size:0.78rem;color:var(--muted);margin-bottom:0.85rem;line-height:1.6">Новые статьи и советы раз в неделю. Без спама.</p>
+        <div class="newsletter-form">
+          <input type="email" class="newsletter-input" placeholder="your@email.com">
+          <button class="newsletter-btn" onclick="this.textContent='✓ Подписались!'">Подписаться</button>
+          <div class="newsletter-note">Отписаться можно в любой момент</div>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a href="index.html" class="logo">карточки<span>.</span>онлайн</a>
+  <ul class="footer-links">
+    <li><a href="#">Политика конфиденциальности</a></li>
+    <li><a href="#">Оферта</a></li>
+    <li><a href="#">Поддержка</a></li>
+  </ul>
+  <p class="footer-copy">© 2025 карточки-онлайн.рф</p>
+</footer>
+
+<script>
+function filterPosts(el) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

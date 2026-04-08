@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Карточки-онлайн — Вход</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink: #0d0d0d;
+  --paper: #f5f2eb;
+  --accent: #e8440a;
+  --accent-hover: #c93a08;
+  --muted: #6b6760;
+  --border: #d8d4cb;
+  --card: #ffffff;
+  --input-bg: #fafaf8;
+  --error: #c0392b;
+  --success: #1D9E75;
+  --font-display: 'Unbounded', sans-serif;
+  --font-body: 'Golos Text', sans-serif;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  overflow: hidden;
+}
+
+/* noise */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+/* LEFT PANEL */
+.left {
+  background: var(--ink);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.left::before {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(232,68,10,0.18) 0%, transparent 65%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.left-logo {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: -0.03em;
+  position: relative;
+  z-index: 1;
+}
+.left-logo span { color: var(--accent); }
+
+.left-content {
+  position: relative;
+  z-index: 1;
+}
+
+.left-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  margin-bottom: 1.5rem;
+}
+.left-title em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+/* mini card previews */
+.preview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 2rem;
+}
+.preview-card {
+  aspect-ratio: 3/4;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+.preview-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 60%);
+}
+.p1 { background: linear-gradient(135deg, #0f3460, #e94560); }
+.p2 { background: linear-gradient(135deg, #1a472a, #52b788); }
+.p3 { background: linear-gradient(135deg, #2d1b69, #f5a623); }
+.p4 { background: linear-gradient(135deg, #2c3e50, #bdc3c7); }
+.p5 { background: linear-gradient(135deg, #6a0572, #e040fb); }
+.p6 { background: linear-gradient(135deg, #1b4332, #95d5b2); }
+
+.preview-label {
+  position: absolute;
+  bottom: 6px; left: 6px;
+  font-size: 9px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+  z-index: 2;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 50%, transparent 100%);
+  animation: shimmer 3s ease infinite;
+}
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+.left-footer {
+  font-size: 0.78rem;
+  color: #555;
+  position: relative;
+  z-index: 1;
+}
+
+/* RIGHT PANEL */
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.auth-box {
+  width: 100%;
+  max-width: 400px;
+  animation: fadeUp 0.5s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* SCREENS */
+.screen { display: none; }
+.screen.active { display: block; }
+
+.auth-heading {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  margin-bottom: 0.4rem;
+  color: var(--ink);
+}
+
+.auth-sub {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* GOOGLE BTN */
+.btn-google {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 1.25rem;
+}
+.btn-google:hover { border-color: var(--ink); background: var(--input-bg); }
+
+.google-icon {
+  width: 18px; height: 18px;
+  flex-shrink: 0;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* FORM */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.4rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--input-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-appearance: none;
+}
+.form-input:focus {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px rgba(13,13,13,0.06);
+}
+.form-input.error {
+  border-color: var(--error);
+  box-shadow: 0 0 0 3px rgba(192,57,43,0.08);
+}
+.form-input::placeholder { color: #bbb; }
+
+.input-wrap { position: relative; }
+.toggle-pw {
+  position: absolute;
+  right: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  padding: 0.25rem;
+  transition: color 0.15s;
+}
+.toggle-pw:hover { color: var(--ink); }
+
+.form-error {
+  font-size: 0.78rem;
+  color: var(--error);
+  margin-top: 0.35rem;
+  display: none;
+}
+.form-error.visible { display: block; }
+
+.form-hint {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.forgot-link {
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.forgot-link:hover { color: var(--ink); }
+
+/* PASSWORD STRENGTH */
+.pw-strength {
+  margin-top: 0.5rem;
+  display: none;
+}
+.pw-strength.visible { display: block; }
+.pw-bars {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 0.3rem;
+}
+.pw-bar {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--border);
+  transition: background 0.3s;
+}
+.pw-bar.weak { background: var(--error); }
+.pw-bar.medium { background: #e67e22; }
+.pw-bar.strong { background: var(--success); }
+.pw-text {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+/* SUBMIT BTN */
+.btn-submit {
+  width: 100%;
+  padding: 0.85rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.btn-submit:hover { background: var(--accent-hover); transform: translateY(-1px); }
+.btn-submit:active { transform: translateY(0); }
+.btn-submit.loading { pointer-events: none; opacity: 0.8; }
+
+.spinner {
+  width: 16px; height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  display: none;
+}
+.btn-submit.loading .spinner { display: block; }
+.btn-submit.loading .btn-text { opacity: 0.7; }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.auth-footer a {
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--ink);
+  transition: opacity 0.15s;
+}
+.auth-footer a:hover { opacity: 0.6; }
+
+/* SUCCESS STATE */
+.success-icon {
+  width: 56px; height: 56px;
+  background: #e8f8f2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  font-size: 1.5rem;
+}
+
+.terms {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 1rem;
+  line-height: 1.6;
+}
+.terms a {
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* BACK LINK */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  transition: color 0.15s;
+}
+.back-link:hover { color: var(--ink); }
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+  .left { display: none; }
+  .right { padding: 1.5rem; }
+  body { overflow: auto; }
+  html, body { height: auto; min-height: 100vh; }
+}
+
+/* TAB SWITCHER (dev helper) */
+.dev-tabs {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 100;
+  display: flex;
+  gap: 4px;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px;
+  backdrop-filter: blur(8px);
+}
+.dev-tab {
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: var(--muted);
+  font-family: var(--font-body);
+  transition: all 0.15s;
+}
+.dev-tab.active { background: var(--ink); color: #fff; }
+</style>
+</head>
+<body>
+
+<!-- DEV TABS -->
+<div class="dev-tabs">
+  <button class="dev-tab active" onclick="showScreen('login')">Вход</button>
+  <button class="dev-tab" onclick="showScreen('register')">Регистрация</button>
+  <button class="dev-tab" onclick="showScreen('forgot')">Пароль</button>
+  <button class="dev-tab" onclick="showScreen('forgot-sent')">Письмо</button>
+</div>
+
+<div class="layout">
+
+  <!-- LEFT -->
+  <div class="left">
+    <a href="/" class="left-logo">карточки<span>.</span>онлайн</a>
+
+    <div class="left-content">
+      <h2 class="left-title">Карточки товаров<br>для WB и Ozon<br><em>за 30 секунд</em></h2>
+      <div class="preview-grid">
+        <div class="preview-card p1"><div class="shimmer"></div><div class="preview-label">Главная</div></div>
+        <div class="preview-card p2"><div class="shimmer"></div><div class="preview-label">Инфографика</div></div>
+        <div class="preview-card p3"><div class="shimmer"></div><div class="preview-label">Состав</div></div>
+        <div class="preview-card p4"><div class="shimmer"></div><div class="preview-label">Размеры</div></div>
+        <div class="preview-card p5"><div class="shimmer"></div><div class="preview-label">Детали</div></div>
+        <div class="preview-card p6"><div class="shimmer"></div><div class="preview-label">Преимущества</div></div>
+      </div>
+    </div>
+
+    <div class="left-footer">© 2025 карточки-онлайн.рф</div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right">
+    <div class="auth-box">
+
+      <!-- LOGIN -->
+      <div class="screen active" id="screen-login">
+        <h1 class="auth-heading">Добро пожаловать</h1>
+        <p class="auth-sub">Войдите, чтобы продолжить генерацию карточек</p>
+
+        <button class="btn-google" onclick="handleGoogle()">
+          <svg class="google-icon" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          Войти через Google
+        </button>
+
+        <div class="divider">или по email</div>
+
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" id="login-email" placeholder="you@example.com" autocomplete="email">
+          <div class="form-error" id="login-email-err">Введите корректный email</div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-hint">
+            <label class="form-label" style="margin:0">Пароль</label>
+            <a href="#" class="forgot-link" onclick="showScreen('forgot'); return false;">Забыли пароль?</a>
+          </div>
+          <div class="input-wrap">
+            <input type="password" class="form-input" id="login-pw" placeholder="••••••••" autocomplete="current-password">
+            <button class="toggle-pw" onclick="togglePw('login-pw', this)" type="button">Показать</button>
+          </div>
+          <div class="form-error" id="login-pw-err">Неверный email или пароль</div>
+        </div>
+
+        <button class="btn-submit" onclick="handleLogin(this)">
+          <div class="spinner"></div>
+          <span class="btn-text">Войти</span>
+        </button>
+
+        <div class="auth-footer">
+          Нет аккаунта? <a href="#" onclick="showScreen('register'); return false;">Зарегистрироваться</a>
+        </div>
+      </div>
+
+      <!-- REGISTER -->
+      <div class="screen" id="screen-register">
+        <h1 class="auth-heading">Создать аккаунт</h1>
+        <p class="auth-sub">10 карточек бесплатно — без карты</p>
+
+        <button class="btn-google" onclick="handleGoogle()">
+          <svg class="google-icon" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          Зарегистрироваться через Google
+        </button>
+
+        <div class="divider">или по email</div>
+
+        <div class="form-group">
+          <label class="form-label">Имя</label>
+          <input type="text" class="form-input" id="reg-name" placeholder="Иван Иванов" autocomplete="name">
+          <div class="form-error" id="reg-name-err">Введите ваше имя</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" id="reg-email" placeholder="you@example.com" autocomplete="email">
+          <div class="form-error" id="reg-email-err">Введите корректный email</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Пароль</label>
+          <div class="input-wrap">
+            <input type="password" class="form-input" id="reg-pw" placeholder="Минимум 8 символов" autocomplete="new-password" oninput="checkStrength(this.value)">
+            <button class="toggle-pw" onclick="togglePw('reg-pw', this)" type="button">Показать</button>
+          </div>
+          <div class="pw-strength" id="pw-strength">
+            <div class="pw-bars">
+              <div class="pw-bar" id="bar1"></div>
+              <div class="pw-bar" id="bar2"></div>
+              <div class="pw-bar" id="bar3"></div>
+            </div>
+            <div class="pw-text" id="pw-text">Слабый пароль</div>
+          </div>
+          <div class="form-error" id="reg-pw-err">Пароль должен быть минимум 8 символов</div>
+        </div>
+
+        <button class="btn-submit" onclick="handleRegister(this)">
+          <div class="spinner"></div>
+          <span class="btn-text">Создать аккаунт</span>
+        </button>
+
+        <p class="terms">
+          Регистрируясь, вы соглашаетесь с <a href="#">Условиями использования</a> и <a href="#">Политикой конфиденциальности</a>
+        </p>
+
+        <div class="auth-footer">
+          Уже есть аккаунт? <a href="#" onclick="showScreen('login'); return false;">Войти</a>
+        </div>
+      </div>
+
+      <!-- FORGOT PASSWORD -->
+      <div class="screen" id="screen-forgot">
+        <a href="#" class="back-link" onclick="showScreen('login'); return false;">← Назад</a>
+        <h1 class="auth-heading">Забыли пароль?</h1>
+        <p class="auth-sub">Введите email — пришлём ссылку для сброса пароля</p>
+
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" id="forgot-email" placeholder="you@example.com" autocomplete="email">
+          <div class="form-error" id="forgot-email-err">Введите корректный email</div>
+        </div>
+
+        <button class="btn-submit" onclick="handleForgot(this)">
+          <div class="spinner"></div>
+          <span class="btn-text">Отправить ссылку</span>
+        </button>
+
+        <div class="auth-footer">
+          Вспомнили пароль? <a href="#" onclick="showScreen('login'); return false;">Войти</a>
+        </div>
+      </div>
+
+      <!-- FORGOT SENT -->
+      <div class="screen" id="screen-forgot-sent">
+        <div class="success-icon">✉️</div>
+        <h1 class="auth-heading" style="text-align:center">Письмо отправлено</h1>
+        <p class="auth-sub" style="text-align:center">Проверьте почту <strong id="sent-email"></strong> — там ссылка для сброса пароля. Письмо придёт в течение минуты.</p>
+
+        <button class="btn-submit" onclick="showScreen('login')" style="margin-top:1rem">
+          <span class="btn-text">Вернуться ко входу</span>
+        </button>
+
+        <div class="auth-footer" style="margin-top:1rem">
+          Не пришло? <a href="#" onclick="showScreen('forgot'); return false;">Отправить снова</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.dev-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  const tabs = { login: 0, register: 1, forgot: 2, 'forgot-sent': 3 };
+  document.querySelectorAll('.dev-tab')[tabs[name]]?.classList.add('active');
+}
+
+function togglePw(id, btn) {
+  const input = document.getElementById(id);
+  if (input.type === 'password') {
+    input.type = 'text';
+    btn.textContent = 'Скрыть';
+  } else {
+    input.type = 'password';
+    btn.textContent = 'Показать';
+  }
+}
+
+function checkStrength(val) {
+  const strength = document.getElementById('pw-strength');
+  const bars = [document.getElementById('bar1'), document.getElementById('bar2'), document.getElementById('bar3')];
+  const text = document.getElementById('pw-text');
+
+  if (!val) { strength.classList.remove('visible'); return; }
+  strength.classList.add('visible');
+
+  bars.forEach(b => b.className = 'pw-bar');
+
+  let score = 0;
+  if (val.length >= 8) score++;
+  if (/[A-Z]/.test(val) || /[а-яА-Я]/.test(val)) score++;
+  if (/[0-9]/.test(val) || /[^a-zA-Zа-яА-Я0-9]/.test(val)) score++;
+
+  if (score === 1) {
+    bars[0].classList.add('weak');
+    text.textContent = 'Слабый пароль';
+    text.style.color = '#c0392b';
+  } else if (score === 2) {
+    bars[0].classList.add('medium'); bars[1].classList.add('medium');
+    text.textContent = 'Средний пароль';
+    text.style.color = '#e67e22';
+  } else {
+    bars.forEach(b => b.classList.add('strong'));
+    text.textContent = 'Надёжный пароль';
+    text.style.color = '#1D9E75';
+  }
+}
+
+function simulateLoad(btn, callback) {
+  btn.classList.add('loading');
+  setTimeout(() => {
+    btn.classList.remove('loading');
+    callback();
+  }, 1200);
+}
+
+function handleLogin(btn) {
+  const email = document.getElementById('login-email');
+  const pw = document.getElementById('login-pw');
+  let valid = true;
+
+  document.querySelectorAll('#screen-login .form-error').forEach(e => e.classList.remove('visible'));
+  document.querySelectorAll('#screen-login .form-input').forEach(i => i.classList.remove('error'));
+
+  if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
+    email.classList.add('error');
+    document.getElementById('login-email-err').classList.add('visible');
+    valid = false;
+  }
+  if (!pw.value) {
+    pw.classList.add('error');
+    document.getElementById('login-pw-err').classList.add('visible');
+    valid = false;
+  }
+  if (!valid) return;
+
+  simulateLoad(btn, () => {
+    window.location.href = 'dashboard.html';
+  });
+}
+
+function handleRegister(btn) {
+  const name = document.getElementById('reg-name');
+  const email = document.getElementById('reg-email');
+  const pw = document.getElementById('reg-pw');
+  let valid = true;
+
+  document.querySelectorAll('#screen-register .form-error').forEach(e => e.classList.remove('visible'));
+  document.querySelectorAll('#screen-register .form-input').forEach(i => i.classList.remove('error'));
+
+  if (!name.value.trim()) {
+    name.classList.add('error');
+    document.getElementById('reg-name-err').classList.add('visible');
+    valid = false;
+  }
+  if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
+    email.classList.add('error');
+    document.getElementById('reg-email-err').classList.add('visible');
+    valid = false;
+  }
+  if (!pw.value || pw.value.length < 8) {
+    pw.classList.add('error');
+    document.getElementById('reg-pw-err').classList.add('visible');
+    valid = false;
+  }
+  if (!valid) return;
+
+  simulateLoad(btn, () => {
+    window.location.href = 'dashboard.html';
+  });
+}
+
+function handleForgot(btn) {
+  const email = document.getElementById('forgot-email');
+  document.querySelectorAll('#screen-forgot .form-error').forEach(e => e.classList.remove('visible'));
+  document.querySelectorAll('#screen-forgot .form-input').forEach(i => i.classList.remove('error'));
+
+  if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
+    email.classList.add('error');
+    document.getElementById('forgot-email-err').classList.add('visible');
+    return;
+  }
+
+  simulateLoad(btn, () => {
+    document.getElementById('sent-email').textContent = email.value;
+    showScreen('forgot-sent');
+  });
+}
+
+function handleGoogle() {
+  window.location.href = 'dashboard.html';
+}
+</script>
+</body>
+</html>

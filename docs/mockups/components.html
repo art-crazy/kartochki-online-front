@@ -1,0 +1,2111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UI Kit — карточки-онлайн</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* ── COLORS ── */
+  --color-ink:          #0d0d0d;
+  --color-paper:        #f5f2eb;
+  --color-paper-2:      #efece4;
+  --color-card:         #ffffff;
+  --color-border:       #d8d4cb;
+  --color-border-2:     #c8c4bb;
+  --color-muted:        #6b6760;
+  --color-muted-2:      #9b9790;
+
+  /* Dark surface (dashboard) */
+  --color-dark-bg:      #111110;
+  --color-dark-bg-2:    #1a1918;
+  --color-dark-bg-3:    #222120;
+  --color-dark-border:  #2a2927;
+  --color-dark-border-2:#333230;
+  --color-dark-text:    #e8e4dc;
+  --color-dark-text-2:  #888580;
+  --color-dark-text-3:  #555350;
+
+  /* Accent */
+  --color-accent:       #e8440a;
+  --color-accent-hover: #c93a08;
+  --color-accent-dim:   rgba(232,68,10,0.10);
+  --color-accent-border:rgba(232,68,10,0.25);
+
+  /* Semantic */
+  --color-success:      #1D9E75;
+  --color-success-dim:  rgba(29,158,117,0.10);
+  --color-danger:       #c0392b;
+  --color-danger-dim:   rgba(192,57,43,0.10);
+
+  /* Marketplace */
+  --color-wb:           #7832b5;
+  --color-wb-dim:       rgba(120,50,181,0.10);
+  --color-ozon:         #0055cc;
+  --color-ozon-dim:     rgba(0,85,204,0.10);
+  --color-ym:           #f5a623;
+  --color-ym-dim:       rgba(245,166,35,0.12);
+
+  /* ── TYPOGRAPHY ── */
+  --font-display: 'Unbounded', sans-serif;
+  --font-body:    'Golos Text', sans-serif;
+
+  /* ── SPACING ── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* ── RADIUS ── */
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  14px;
+  --radius-xl:  18px;
+  --radius-full: 100px;
+
+  /* ── SHADOWS ── */
+  --shadow-card: 0 4px 16px rgba(0,0,0,0.06);
+  --shadow-hover: 0 10px 32px rgba(0,0,0,0.10);
+  --shadow-modal: 0 24px 80px rgba(0,0,0,0.20);
+
+  /* ── BREAKPOINTS (reference only) ── */
+  /* --bp-sm: 480px  --bp-md: 768px  --bp-lg: 1024px  --bp-xl: 1280px */
+}
+
+/* ══════════════════════════════════════
+   SHOWCASE CHROME
+══════════════════════════════════════ */
+body { background: #e8e4dc; font-family: var(--font-body); color: var(--color-ink); }
+
+.showcase-nav {
+  position: sticky; top: 0; z-index: 200;
+  background: var(--color-dark-bg);
+  border-bottom: 1px solid var(--color-dark-border);
+  display: flex; align-items: center; gap: 0;
+  overflow-x: auto; scrollbar-width: none;
+  padding: 0 1.5rem;
+}
+.showcase-nav::-webkit-scrollbar { display: none; }
+.snav-logo { font-family: var(--font-display); font-size: 0.8rem; font-weight: 900; color: #fff; letter-spacing: -0.03em; padding: 1rem 1.5rem 1rem 0; border-right: 1px solid var(--color-dark-border); margin-right: 1rem; white-space: nowrap; flex-shrink: 0; }
+.snav-logo span { color: var(--color-accent); }
+.snav-link { padding: 1rem 0.85rem; font-size: 0.78rem; font-weight: 600; color: var(--color-dark-text-2); white-space: nowrap; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; text-decoration: none; }
+.snav-link:hover { color: var(--color-dark-text); }
+.snav-link.active { color: #fff; border-bottom-color: var(--color-accent); }
+
+.showcase-wrap { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem 5rem; }
+
+.showcase-section { margin-bottom: 4rem; }
+.showcase-section-header { margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1.5px solid var(--color-border); }
+.showcase-section-title { font-family: var(--font-display); font-size: 0.78rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); }
+.showcase-section-sub { font-size: 0.75rem; color: var(--color-muted-2); margin-top: 0.2rem; }
+
+.component-row { display: flex; align-items: flex-start; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.75rem; }
+.component-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-muted-2); margin-bottom: 0.4rem; }
+
+/* Light canvas */
+.canvas-light { background: var(--color-paper); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 0.75rem; }
+/* Dark canvas */
+.canvas-dark { background: var(--color-dark-bg); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 0.75rem; }
+/* Grid canvas */
+.canvas-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 0.75rem; }
+
+/* ══════════════════════════════════════
+   1. TOKENS — COLOR SWATCHES
+══════════════════════════════════════ */
+.swatches { display: flex; flex-wrap: wrap; gap: 8px; }
+.swatch { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.swatch-color { width: 48px; height: 48px; border-radius: var(--radius-md); border: 1px solid rgba(0,0,0,0.08); }
+.swatch-name { font-size: 0.6rem; color: var(--color-muted); text-align: center; font-weight: 600; }
+
+/* ══════════════════════════════════════
+   2. TYPOGRAPHY
+══════════════════════════════════════ */
+.type-scale { display: flex; flex-direction: column; gap: 1.25rem; }
+.type-row { display: flex; align-items: baseline; gap: 1.5rem; }
+.type-meta { font-size: 0.65rem; color: var(--color-muted-2); font-family: monospace; min-width: 140px; flex-shrink: 0; }
+
+/* ══════════════════════════════════════
+   3. BUTTON
+══════════════════════════════════════ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  font-family: var(--font-body); font-weight: 600; cursor: pointer;
+  border: none; outline: none; text-decoration: none;
+  transition: all 0.15s; white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+/* Sizes */
+.btn-sm  { padding: 6px 14px;  font-size: 0.78rem; border-radius: var(--radius-sm); }
+.btn-md  { padding: 10px 20px; font-size: 0.88rem; border-radius: var(--radius-md); }
+.btn-lg  { padding: 14px 28px; font-size: 0.95rem; border-radius: var(--radius-md); }
+.btn-xl  { padding: 16px 36px; font-size: 1rem;    border-radius: var(--radius-full); }
+/* Variants — light */
+.btn-primary { background: var(--color-accent); color: #fff; }
+.btn-primary:hover { background: var(--color-accent-hover); transform: translateY(-1px); }
+.btn-primary:active { transform: translateY(0); }
+.btn-secondary { background: var(--color-ink); color: #fff; }
+.btn-secondary:hover { opacity: 0.85; }
+.btn-outline { background: transparent; color: var(--color-ink); border: 1.5px solid var(--color-border); }
+.btn-outline:hover { border-color: var(--color-ink); }
+.btn-ghost { background: transparent; color: var(--color-muted); }
+.btn-ghost:hover { background: var(--color-paper-2); color: var(--color-ink); }
+.btn-danger { background: var(--color-danger-dim); color: var(--color-danger); border: 1px solid rgba(192,57,43,0.25); }
+.btn-danger:hover { background: rgba(192,57,43,0.18); }
+/* Dark variants */
+.btn-dark-primary { background: var(--color-accent); color: #fff; }
+.btn-dark-primary:hover { background: var(--color-accent-hover); }
+.btn-dark-outline { background: transparent; color: var(--color-dark-text-2); border: 1px solid var(--color-dark-border-2); }
+.btn-dark-outline:hover { background: var(--color-dark-bg-3); color: var(--color-dark-text); }
+/* States */
+.btn-loading { opacity: 0.7; pointer-events: none; }
+.btn-disabled, .btn:disabled { opacity: 0.4; pointer-events: none; }
+/* Full width (mobile) */
+.btn-block { width: 100%; }
+/* Icon only */
+.btn-icon { padding: 8px; border-radius: var(--radius-sm); aspect-ratio: 1; }
+
+/* ══════════════════════════════════════
+   4. INPUT
+══════════════════════════════════════ */
+.input-wrap { display: flex; flex-direction: column; gap: 5px; }
+.input-label { font-size: 0.75rem; font-weight: 700; color: var(--color-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.input-field {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--color-paper-2);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body); font-size: 0.9rem; color: var(--color-ink);
+  outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-appearance: none;
+}
+.input-field::placeholder { color: var(--color-muted-2); }
+.input-field:focus { border-color: var(--color-ink); box-shadow: 0 0 0 3px rgba(13,13,13,0.07); }
+.input-field.input-error { border-color: var(--color-danger); box-shadow: 0 0 0 3px rgba(192,57,43,0.08); }
+.input-field.input-success { border-color: var(--color-success); }
+.input-hint { font-size: 0.72rem; color: var(--color-muted-2); }
+.input-error-msg { font-size: 0.72rem; color: var(--color-danger); }
+/* With icon */
+.input-icon-wrap { position: relative; }
+.input-icon-wrap .input-field { padding-left: 36px; }
+.input-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--color-muted-2); font-size: 0.9rem; pointer-events: none; }
+/* Dark variant */
+.input-field-dark {
+  background: var(--color-dark-bg-3); border-color: var(--color-dark-border-2); color: var(--color-dark-text);
+}
+.input-field-dark::placeholder { color: var(--color-dark-text-3); }
+.input-field-dark:focus { border-color: var(--color-accent); box-shadow: none; }
+
+/* ══════════════════════════════════════
+   5. BADGE / CHIP / TAG
+══════════════════════════════════════ */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 3px 9px; border-radius: var(--radius-full);
+}
+.badge-accent  { background: var(--color-accent-dim);   color: var(--color-accent); }
+.badge-success { background: var(--color-success-dim);  color: var(--color-success); }
+.badge-danger  { background: var(--color-danger-dim);   color: var(--color-danger); }
+.badge-neutral { background: var(--color-paper-2);      color: var(--color-muted); border: 1px solid var(--color-border); }
+.badge-dark    { background: rgba(255,255,255,0.08);    color: var(--color-dark-text-2); }
+.badge-wb   { background: var(--color-wb-dim);  color: var(--color-wb); }
+.badge-ozon { background: var(--color-ozon-dim); color: var(--color-ozon); }
+.badge-ym   { background: var(--color-ym-dim);  color: #9a6800; }
+
+.chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 5px 12px; border-radius: var(--radius-full);
+  font-size: 0.78rem; font-weight: 600;
+  border: 1.5px solid var(--color-border);
+  background: transparent; color: var(--color-muted);
+  cursor: pointer; transition: all 0.15s; font-family: var(--font-body);
+}
+.chip:hover { border-color: var(--color-ink); color: var(--color-ink); }
+.chip.chip-active { background: var(--color-ink); color: #fff; border-color: var(--color-ink); }
+.chip.chip-accent-active { background: var(--color-accent-dim); color: var(--color-accent); border-color: var(--color-accent-border); }
+/* Dark chip */
+.chip-dark { border-color: var(--color-dark-border-2); color: var(--color-dark-text-3); }
+.chip-dark:hover { border-color: var(--color-dark-text-2); color: var(--color-dark-text-2); }
+.chip-dark.chip-active { background: var(--color-dark-text); color: var(--color-dark-bg); border-color: var(--color-dark-text); }
+
+/* ══════════════════════════════════════
+   6. CARD
+══════════════════════════════════════ */
+/* Light card */
+.card {
+  background: var(--color-card); border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg); padding: 1.25rem;
+  transition: all 0.2s;
+}
+.card-hoverable:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); border-color: var(--color-border-2); }
+/* Dark card */
+.card-dark {
+  background: var(--color-dark-bg-2); border: 1px solid var(--color-dark-border);
+  border-radius: var(--radius-lg); padding: 1.25rem;
+  transition: all 0.2s;
+}
+.card-dark-hoverable:hover { border-color: var(--color-dark-border-2); transform: translateY(-2px); }
+/* Accent card */
+.card-accent { border: 2px solid var(--color-accent); }
+/* Stat card */
+.stat-card { background: var(--color-dark-bg-2); border: 1px solid var(--color-dark-border); border-radius: var(--radius-md); padding: 1.1rem; }
+.stat-card-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--color-dark-text-3); margin-bottom: 0.4rem; }
+.stat-card-value { font-family: var(--font-display); font-size: 1.8rem; font-weight: 900; letter-spacing: -0.04em; color: var(--color-dark-text); line-height: 1; margin-bottom: 0.3rem; }
+.stat-card-sub { font-size: 0.72rem; color: var(--color-dark-text-3); }
+.stat-card-bar { height: 3px; background: var(--color-dark-border); border-radius: 2px; margin-top: 0.75rem; overflow: hidden; }
+.stat-card-fill { height: 100%; border-radius: 2px; background: var(--color-accent); }
+/* Project card */
+.project-card { background: var(--color-dark-bg-2); border: 1px solid var(--color-dark-border); border-radius: var(--radius-lg); overflow: hidden; cursor: pointer; transition: all 0.15s; }
+.project-card:hover { border-color: var(--color-dark-border-2); transform: translateY(-2px); }
+.project-card-preview { display: grid; grid-template-columns: repeat(3,1fr); gap: 3px; padding: 8px 8px 0; background: var(--color-dark-bg-3); }
+.project-card-thumb { aspect-ratio: 3/4; border-radius: 3px; }
+.project-card-body { padding: 0.75rem; }
+.project-card-name { font-size: 0.85rem; font-weight: 600; color: var(--color-dark-text); margin-bottom: 0.3rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.project-card-meta { display: flex; align-items: center; justify-content: space-between; font-size: 0.7rem; color: var(--color-dark-text-3); }
+
+/* ══════════════════════════════════════
+   7. TOGGLE / SWITCH
+══════════════════════════════════════ */
+.switch-wrap { display: flex; align-items: center; gap: 10px; }
+.switch {
+  position: relative; width: 40px; height: 22px;
+  background: var(--color-border); border-radius: var(--radius-full);
+  cursor: pointer; transition: background 0.2s;
+  border: none; flex-shrink: 0;
+}
+.switch.on { background: var(--color-success); }
+.switch.accent { background: var(--color-accent); }
+.switch-knob {
+  position: absolute; width: 16px; height: 16px;
+  background: #fff; border-radius: 50%;
+  top: 3px; left: 3px;
+  transition: transform 0.2s;
+  pointer-events: none;
+}
+.switch.on .switch-knob, .switch.accent .switch-knob { transform: translateX(18px); }
+.switch-label { font-size: 0.85rem; font-weight: 500; color: var(--color-ink); }
+.switch-desc { font-size: 0.72rem; color: var(--color-muted-2); }
+/* Dark variant */
+.switch-dark { background: var(--color-dark-border-2); }
+
+/* ══════════════════════════════════════
+   8. PROGRESS BAR
+══════════════════════════════════════ */
+.progress-wrap { display: flex; flex-direction: column; gap: 4px; }
+.progress-label-row { display: flex; justify-content: space-between; font-size: 0.75rem; }
+.progress-track { height: 6px; background: var(--color-paper-2); border-radius: var(--radius-full); overflow: hidden; border: 1px solid var(--color-border); }
+.progress-fill { height: 100%; border-radius: var(--radius-full); transition: width 0.4s ease; }
+.progress-accent  { background: var(--color-accent); }
+.progress-success { background: var(--color-success); }
+.progress-danger  { background: var(--color-danger); }
+/* Dark */
+.progress-track-dark { background: var(--color-dark-border); border: none; }
+
+/* ══════════════════════════════════════
+   9. UPLOAD ZONE
+══════════════════════════════════════ */
+.upload-zone {
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.5rem;
+  text-align: center; cursor: pointer;
+  transition: all 0.2s; background: var(--color-paper-2);
+  -webkit-tap-highlight-color: transparent;
+}
+.upload-zone:hover, .upload-zone.drag-over { border-color: var(--color-accent); background: var(--color-accent-dim); }
+.upload-zone.has-file { border-style: solid; border-color: var(--color-success); background: var(--color-success-dim); }
+.upload-icon { font-size: 2rem; margin-bottom: 0.5rem; display: block; }
+.upload-title { font-size: 0.88rem; font-weight: 600; color: var(--color-ink); margin-bottom: 0.2rem; }
+.upload-sub { font-size: 0.75rem; color: var(--color-muted-2); }
+/* Dark */
+.upload-zone-dark { border-color: var(--color-dark-border-2); background: var(--color-dark-bg-3); }
+.upload-zone-dark:hover { border-color: var(--color-accent); background: var(--color-accent-dim); }
+.upload-zone-dark .upload-title { color: var(--color-dark-text); }
+
+/* ══════════════════════════════════════
+   10. PLATFORM SELECTOR
+══════════════════════════════════════ */
+.platform-selector { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
+.platform-btn {
+  padding: 8px 6px; border-radius: var(--radius-md);
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.02em;
+  border: 1.5px solid; background: transparent;
+  cursor: pointer; text-align: center; transition: all 0.15s;
+  font-family: var(--font-body); display: flex; align-items: center; justify-content: center; gap: 4px;
+}
+.platform-btn-wb    { border-color: rgba(120,50,181,0.3); color: var(--color-wb); }
+.platform-btn-wb.selected    { background: var(--color-wb-dim);   border-color: var(--color-wb); }
+.platform-btn-ozon  { border-color: rgba(0,85,204,0.2);  color: var(--color-ozon); }
+.platform-btn-ozon.selected  { background: var(--color-ozon-dim); border-color: var(--color-ozon); }
+.platform-btn-ym    { border-color: rgba(245,166,35,0.3); color: #9a6800; }
+.platform-btn-ym.selected    { background: var(--color-ym-dim);   border-color: var(--color-ym); }
+
+/* ══════════════════════════════════════
+   11. SIDEBAR NAV ITEM
+══════════════════════════════════════ */
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; border-radius: var(--radius-md);
+  font-size: 0.85rem; font-weight: 500; color: var(--color-dark-text-2);
+  cursor: pointer; transition: all 0.15s;
+  border: none; background: none; width: 100%; text-align: left; text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-item:hover { background: var(--color-dark-bg-3); color: var(--color-dark-text); }
+.nav-item.nav-active { background: var(--color-accent-dim); color: var(--color-accent); }
+.nav-item-icon { font-size: 1rem; width: 18px; text-align: center; flex-shrink: 0; }
+.nav-item-badge { margin-left: auto; background: var(--color-accent); color: #fff; font-size: 0.6rem; font-weight: 700; padding: 1px 6px; border-radius: var(--radius-full); }
+
+/* ══════════════════════════════════════
+   12. AVATAR
+══════════════════════════════════════ */
+.avatar {
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-weight: 700; color: #fff; flex-shrink: 0; overflow: hidden;
+}
+.avatar-sm  { width: 28px; height: 28px; font-size: 0.6rem; }
+.avatar-md  { width: 36px; height: 36px; font-size: 0.75rem; }
+.avatar-lg  { width: 48px; height: 48px; font-size: 0.9rem; }
+.avatar-xl  { width: 64px; height: 64px; font-size: 1.2rem; }
+.avatar-gradient-1 { background: linear-gradient(135deg, #e8440a, #f5a623); }
+.avatar-gradient-2 { background: linear-gradient(135deg, #0055cc, #52b788); }
+.avatar-gradient-3 { background: linear-gradient(135deg, #7832b5, #e040fb); }
+
+/* ══════════════════════════════════════
+   13. TOAST / NOTIFICATION
+══════════════════════════════════════ */
+.toast {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--color-dark-bg-2); border: 1px solid var(--color-dark-border-2);
+  border-radius: var(--radius-lg); padding: 12px 16px;
+  font-size: 0.85rem; color: var(--color-dark-text);
+  box-shadow: var(--shadow-modal);
+  max-width: 360px;
+}
+.toast-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.toast-dot-success { background: var(--color-success); }
+.toast-dot-danger  { background: var(--color-danger); }
+.toast-dot-accent  { background: var(--color-accent); }
+.toast-text { flex: 1; }
+.toast-close { background: none; border: none; color: var(--color-dark-text-3); cursor: pointer; font-size: 0.85rem; padding: 0 2px; }
+
+/* ══════════════════════════════════════
+   14. MODAL / DIALOG
+══════════════════════════════════════ */
+.modal-overlay-demo { background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); border-radius: var(--radius-lg); padding: 2rem; display: flex; align-items: center; justify-content: center; }
+.modal-box { background: var(--color-dark-bg-2); border: 1px solid var(--color-dark-border-2); border-radius: var(--radius-xl); padding: 1.75rem; width: 100%; max-width: 400px; }
+.modal-title { font-family: var(--font-display); font-size: 1rem; font-weight: 900; letter-spacing: -0.03em; margin-bottom: 0.4rem; color: var(--color-dark-text); }
+.modal-sub { font-size: 0.82rem; color: var(--color-dark-text-3); margin-bottom: 1.5rem; line-height: 1.65; }
+.modal-actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+
+/* ══════════════════════════════════════
+   15. FAQ ACCORDION
+══════════════════════════════════════ */
+.accordion-item { border-bottom: 1px solid var(--color-border); }
+.accordion-trigger {
+  width: 100%; background: none; border: none;
+  padding: 1rem 0; text-align: left;
+  font-family: var(--font-body); font-size: 0.92rem; font-weight: 600;
+  color: var(--color-ink); cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+}
+.accordion-icon { width: 22px; height: 22px; border: 1.5px solid var(--color-border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: var(--color-muted); transition: all 0.2s; flex-shrink: 0; }
+.accordion-item.open .accordion-icon { background: var(--color-ink); color: #fff; border-color: var(--color-ink); transform: rotate(45deg); }
+.accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s; font-size: 0.88rem; color: var(--color-muted); line-height: 1.75; }
+.accordion-item.open .accordion-body { max-height: 200px; padding-bottom: 1rem; }
+
+/* ══════════════════════════════════════
+   16. PLAN / PRICING CARD
+══════════════════════════════════════ */
+.plan-card { background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: 1.5rem; position: relative; }
+.plan-card.plan-popular { border: 2px solid var(--color-accent); }
+.plan-popular-badge { position: absolute; top: -11px; left: 50%; transform: translateX(-50%); background: var(--color-accent); color: #fff; font-size: 0.65rem; font-weight: 700; padding: 2px 12px; border-radius: var(--radius-full); white-space: nowrap; }
+.plan-name-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-muted-2); margin-bottom: 0.85rem; }
+.plan-price-display { font-family: var(--font-display); font-size: 2rem; font-weight: 900; letter-spacing: -0.045em; line-height: 1; margin-bottom: 0.2rem; }
+.plan-price-display sub { font-size: 0.85rem; font-weight: 400; color: var(--color-muted); }
+.plan-period-label { font-size: 0.75rem; color: var(--color-muted-2); margin-bottom: 1.25rem; }
+.plan-divider { height: 1px; background: var(--color-border); margin-bottom: 1.1rem; }
+.plan-feature-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
+.plan-feature-item { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--color-ink); }
+.feat-yes { color: var(--color-success); font-size: 0.75rem; }
+.feat-no  { color: var(--color-border-2); font-size: 0.75rem; }
+.feat-no-text { color: var(--color-muted-2); }
+
+/* ══════════════════════════════════════
+   17. SIDEBAR PLAN CARD (mini)
+══════════════════════════════════════ */
+.plan-mini { background: var(--color-accent-dim); border: 1px solid var(--color-accent-border); border-radius: var(--radius-md); padding: 0.85rem; }
+.plan-mini-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-accent); margin-bottom: 0.4rem; }
+.plan-mini-usage { font-size: 0.75rem; color: var(--color-dark-text-2); margin-bottom: 0.5rem; }
+.plan-mini-bar { height: 4px; background: var(--color-dark-border-2); border-radius: 2px; overflow: hidden; }
+.plan-mini-fill { height: 100%; background: var(--color-accent); border-radius: 2px; }
+.plan-mini-link { display: block; text-align: center; font-size: 0.72rem; font-weight: 600; color: var(--color-accent); text-decoration: none; margin-top: 0.5rem; }
+
+/* ══════════════════════════════════════
+   18. RESULT CARD (generate)
+══════════════════════════════════════ */
+.result-card { background: var(--color-dark-bg-2); border: 1px solid var(--color-dark-border); border-radius: var(--radius-lg); overflow: hidden; cursor: pointer; transition: all 0.15s; }
+.result-card:hover { border-color: var(--color-dark-border-2); transform: translateY(-2px); }
+.result-card:hover .result-card-overlay { opacity: 1; }
+.result-card-visual { aspect-ratio: 3/4; position: relative; overflow: hidden; }
+.result-card-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; }
+.result-card-overlay-btn { background: #fff; color: #111; border: none; border-radius: var(--radius-sm); padding: 6px 14px; font-size: 0.78rem; font-weight: 700; cursor: pointer; font-family: var(--font-body); }
+.result-card-footer { padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; }
+.result-card-label { font-size: 0.72rem; font-weight: 600; color: var(--color-dark-text-2); }
+.result-card-dl { width: 24px; height: 24px; border-radius: 5px; border: 1px solid var(--color-dark-border-2); background: none; color: var(--color-dark-text-3); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; transition: all 0.15s; }
+.result-card-dl:hover { background: var(--color-dark-bg-3); color: var(--color-dark-text); }
+
+/* ══════════════════════════════════════
+   19. SKELETON
+══════════════════════════════════════ */
+.skeleton { background: var(--color-dark-bg-3); border-radius: var(--radius-md); overflow: hidden; position: relative; }
+.skeleton::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%); animation: skel 1.4s ease infinite; }
+@keyframes skel { 0%{transform:translateX(-100%)} 100%{transform:translateX(200%)} }
+.skeleton-text { height: 14px; border-radius: 4px; }
+.skeleton-title { height: 20px; border-radius: 4px; }
+.skeleton-card-thumb { aspect-ratio: 3/4; }
+
+/* ══════════════════════════════════════
+   20. LOADING STATES
+══════════════════════════════════════ */
+.spinner { width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.25); border-top-color: #fff; border-radius: 50%; animation: spin 0.6s linear infinite; }
+.spinner-accent { border-color: var(--color-accent-dim); border-top-color: var(--color-accent); }
+.spinner-lg { width: 48px; height: 48px; border-width: 3px; }
+@keyframes spin { to{transform:rotate(360deg)} }
+
+.loading-step { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; color: var(--color-dark-text-3); }
+.loading-step.ls-done { color: var(--color-success); }
+.loading-step.ls-active { color: var(--color-dark-text); }
+.ls-dot { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--color-dark-border-2); display: flex; align-items: center; justify-content: center; font-size: 0.6rem; flex-shrink: 0; }
+.loading-step.ls-done .ls-dot { background: var(--color-success); border-color: var(--color-success); color: #fff; }
+.loading-step.ls-active .ls-dot { border-color: var(--color-accent); background: var(--color-accent-dim); }
+
+/* ══════════════════════════════════════
+   21. MOBILE BOTTOM NAV
+══════════════════════════════════════ */
+.mobile-nav {
+  display: flex; background: var(--color-dark-bg-2);
+  border-top: 1px solid var(--color-dark-border);
+  border-radius: var(--radius-lg); overflow: hidden;
+}
+.mobile-nav-item {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px; padding: 10px 4px;
+  font-size: 0.6rem; font-weight: 600; color: var(--color-dark-text-3);
+  cursor: pointer; transition: all 0.15s; border: none; background: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.mobile-nav-item.active { color: var(--color-accent); }
+.mobile-nav-icon { font-size: 1.2rem; }
+
+/* ══════════════════════════════════════
+   22. HERO BADGE
+══════════════════════════════════════ */
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--color-card); border: 1px solid var(--color-border);
+  border-radius: var(--radius-full); padding: 5px 14px;
+  font-size: 0.75rem; font-weight: 600; color: var(--color-muted);
+}
+.hero-badge-dot { width: 7px; height: 7px; background: var(--color-accent); border-radius: 50%; animation: pulse 2s ease infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(1.3)} }
+
+/* ══════════════════════════════════════
+   23. BLOG CARD
+══════════════════════════════════════ */
+.blog-card { background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: all 0.2s; }
+.blog-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); border-color: var(--color-border-2); }
+.blog-card-visual { height: 140px; position: relative; }
+.blog-card-tag { position: absolute; top: 10px; left: 10px; font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 8px; border-radius: var(--radius-full); }
+.blog-card-body { padding: 1rem; flex: 1; display: flex; flex-direction: column; }
+.blog-card-title { font-family: var(--font-display); font-size: 0.85rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.35; margin-bottom: 0.5rem; flex: 1; }
+.blog-card-meta { font-size: 0.72rem; color: var(--color-muted-2); display: flex; justify-content: space-between; }
+.blog-card-read { color: var(--color-accent); font-weight: 600; }
+
+/* ══════════════════════════════════════
+   GRADIENTS (shared)
+══════════════════════════════════════ */
+.grad-1{background:linear-gradient(160deg,#0f3460,#e94560)}
+.grad-2{background:linear-gradient(160deg,#1a472a,#52b788)}
+.grad-3{background:linear-gradient(160deg,#2d1b69,#f5a623)}
+.grad-4{background:linear-gradient(160deg,#2c3e50,#f39c12)}
+.grad-5{background:linear-gradient(160deg,#6a0572,#e040fb)}
+.grad-6{background:linear-gradient(160deg,#1b4332,#95d5b2)}
+
+/* ══════════════════════════════════════
+   RESPONSIVE NOTES
+══════════════════════════════════════ */
+/* Reference breakpoints for React implementation:
+   Mobile:  < 480px  — single column, bottom nav, full-width buttons
+   Tablet:  480–768px — 2 columns where applicable
+   Desktop: > 768px  — sidebar + main, multi-column grids
+*/
+
+/* ══════════════════════════════════════
+   RESPONSIVE — SHOWCASE & COMPONENTS
+══════════════════════════════════════ */
+
+/* ── Showcase nav: compact on mobile ── */
+@media (max-width: 768px) {
+  .showcase-nav { padding: 0 0.75rem; }
+  .snav-logo { padding: 0.75rem 1rem 0.75rem 0; font-size: 0.72rem; margin-right: 0.5rem; }
+  .snav-link { padding: 0.75rem 0.6rem; font-size: 0.72rem; }
+  .showcase-wrap { padding: 1.25rem 1rem 4rem; }
+  .showcase-section { margin-bottom: 2.5rem; }
+  .canvas-light, .canvas-dark { padding: 1.1rem; }
+}
+@media (max-width: 480px) {
+  .snav-logo { display: none; }
+  .snav-link { padding: 0.75rem 0.5rem; font-size: 0.68rem; }
+  .showcase-wrap { padding: 1rem 0.75rem 4rem; }
+}
+
+/* ── Component rows: wrap on mobile ── */
+.component-row { flex-wrap: wrap; }
+
+/* ── Typography: hide meta on small screens ── */
+@media (max-width: 600px) {
+  .type-row { flex-direction: column; gap: 0.35rem; }
+  .type-meta { min-width: unset; font-size: 0.6rem; }
+}
+
+/* ── Button grid: wrap ── */
+@media (max-width: 480px) {
+  .component-row { gap: 0.5rem; }
+  .btn-block { width: 100%; }
+}
+
+/* ── Input grid: 1 col on mobile ── */
+.responsive-input-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+/* ── Cards: responsive grids ── */
+.responsive-plan-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+.responsive-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+}
+.responsive-project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.75rem;
+}
+.responsive-result-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  max-width: 400px;
+}
+@media (max-width: 480px) {
+  .responsive-result-grid { max-width: 100%; grid-template-columns: repeat(3, 1fr); }
+}
+.responsive-blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+/* ── Nav items: side by side on mobile ── */
+.responsive-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ── Sidebar + content grid ── */
+.responsive-sidebar-demo {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 2rem;
+}
+@media (max-width: 600px) {
+  .responsive-sidebar-demo {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+/* ── Adaptive rules cards ── */
+.responsive-rules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+
+/* ══════════════════════════════════════
+   LIVE MOBILE PREVIEW FRAME
+══════════════════════════════════════ */
+.device-frame-wrap {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.device-frame {
+  flex-shrink: 0;
+  width: 320px;
+  border-radius: 28px;
+  border: 2px solid var(--color-dark-border-2);
+  overflow: hidden;
+  background: var(--color-dark-bg);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  position: relative;
+}
+.device-notch {
+  height: 28px;
+  background: var(--color-dark-bg-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-bottom: 1px solid var(--color-dark-border);
+}
+.device-notch-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-dark-border-2); }
+.device-notch-bar { width: 60px; height: 8px; border-radius: 4px; background: var(--color-dark-border-2); }
+.device-screen {
+  min-height: 420px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.device-screen-content {
+  flex: 1;
+  overflow: hidden;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* mobile demo header */
+.demo-mobile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.85rem;
+  background: var(--color-dark-bg-2);
+  border-bottom: 1px solid var(--color-dark-border);
+}
+.demo-hamburger { font-size: 1rem; color: var(--color-dark-text-2); cursor: pointer; border: 1px solid var(--color-dark-border); border-radius: 5px; padding: 3px 6px; background: none; }
+.demo-header-title { font-family: var(--font-display); font-size: 0.72rem; font-weight: 700; color: var(--color-dark-text); letter-spacing: -0.02em; }
+.demo-header-btn { background: var(--color-accent); color: #fff; border: none; border-radius: 6px; padding: 4px 10px; font-size: 0.62rem; font-weight: 700; cursor: pointer; font-family: var(--font-body); }
+
+/* mobile demo stats */
+.demo-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.demo-stat {
+  background: var(--color-dark-bg-2);
+  border: 1px solid var(--color-dark-border);
+  border-radius: 8px;
+  padding: 0.6rem;
+}
+.demo-stat-label { font-size: 0.55rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-dark-text-3); margin-bottom: 0.25rem; }
+.demo-stat-val { font-family: var(--font-display); font-size: 1.1rem; font-weight: 900; letter-spacing: -0.04em; color: var(--color-dark-text); line-height: 1; }
+.demo-stat-sub { font-size: 0.55rem; color: var(--color-dark-text-3); margin-top: 0.2rem; }
+
+/* mobile project card small */
+.demo-project-card {
+  background: var(--color-dark-bg-2);
+  border: 1px solid var(--color-dark-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.demo-project-thumbs { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; padding: 6px 6px 0; background: var(--color-dark-bg-3); }
+.demo-project-thumb { aspect-ratio: 3/4; border-radius: 3px; }
+.demo-project-info { padding: 0.5rem 0.6rem; }
+.demo-project-name { font-size: 0.7rem; font-weight: 600; color: var(--color-dark-text); }
+.demo-project-meta { font-size: 0.55rem; color: var(--color-dark-text-3); }
+
+/* mobile bottom nav demo */
+.demo-bottom-nav {
+  background: var(--color-dark-bg-2);
+  border-top: 1px solid var(--color-dark-border);
+  display: flex;
+  padding-bottom: 4px;
+}
+.demo-bnav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 6px 2px;
+  font-size: 0.48rem;
+  font-weight: 600;
+  color: var(--color-dark-text-3);
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: var(--font-body);
+  -webkit-tap-highlight-color: transparent;
+}
+.demo-bnav-item.active { color: var(--color-accent); }
+.demo-bnav-icon { font-size: 1rem; line-height: 1; }
+
+/* mobile generate layout demo */
+.demo-generate-panel {
+  background: var(--color-dark-bg-2);
+  border: 1px solid var(--color-dark-border);
+  border-radius: 8px;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.demo-upload-zone {
+  border: 1.5px dashed var(--color-dark-border-2);
+  border-radius: 6px;
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.62rem;
+  color: var(--color-dark-text-3);
+}
+.demo-gen-btn {
+  width: 100%;
+  background: var(--color-accent);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+.demo-mini-chips { display: flex; gap: 4px; flex-wrap: wrap; }
+.demo-mini-chip {
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-size: 0.55rem;
+  font-weight: 600;
+  border: 1px solid var(--color-dark-border-2);
+  color: var(--color-dark-text-3);
+  background: none;
+}
+.demo-mini-chip.on { background: var(--color-dark-text); color: var(--color-dark-bg); border-color: var(--color-dark-text); }
+
+/* mobile settings tabs demo */
+.demo-settings-tabs {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  padding: 0.6rem;
+  background: var(--color-dark-bg-2);
+  border-bottom: 1px solid var(--color-dark-border);
+}
+.demo-settings-tab {
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 0.58rem;
+  font-weight: 600;
+  border: 1px solid var(--color-dark-border-2);
+  color: var(--color-dark-text-3);
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+.demo-settings-tab.active { background: var(--color-accent); color: #fff; border-color: var(--color-accent); }
+
+/* sidebar icon-only demo */
+.demo-sidebar-icon {
+  width: 44px;
+  background: var(--color-dark-bg-2);
+  border-right: 1px solid var(--color-dark-border);
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
+  gap: 2px;
+}
+.demo-icon-item {
+  width: 36px;
+  height: 36px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: var(--color-dark-text-3);
+  background: none;
+  border: none;
+}
+.demo-icon-item.active { background: var(--color-accent-dim); color: var(--color-accent); }
+
+/* tablet frame */
+.tablet-frame {
+  width: 480px;
+  max-width: 100%;
+}
+@media (max-width: 560px) {
+  .device-frame { width: 100%; max-width: 320px; }
+  .device-frame-wrap { justify-content: center; }
+}
+
+/* hamburger menu overlay demo */
+.demo-drawer-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 10;
+  display: flex;
+}
+.demo-drawer {
+  width: 200px;
+  background: var(--color-dark-bg-2);
+  height: 100%;
+  padding: 0.75rem;
+  border-right: 1px solid var(--color-dark-border);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.demo-drawer-logo {
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  font-weight: 900;
+  color: var(--color-dark-text);
+  padding: 0.3rem 0.4rem 0.75rem;
+  border-bottom: 1px solid var(--color-dark-border);
+  margin-bottom: 0.35rem;
+}
+.demo-drawer-logo span { color: var(--color-accent); }
+.demo-drawer-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--color-dark-text-3);
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+.demo-drawer-item.active { background: var(--color-accent-dim); color: var(--color-accent); }
+
+/* mobile auth demo */
+.demo-auth-box {
+  background: var(--color-paper);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex: 1;
+}
+.demo-auth-title { font-family: var(--font-display); font-size: 0.85rem; font-weight: 900; letter-spacing: -0.03em; color: var(--color-ink); }
+.demo-auth-sub { font-size: 0.6rem; color: var(--color-muted); }
+.demo-auth-field { border: 1.5px solid var(--color-border); border-radius: 6px; padding: 0.45rem 0.6rem; font-size: 0.6rem; color: var(--color-ink); background: var(--color-paper-2); }
+.demo-auth-btn { background: var(--color-accent); color: #fff; border: none; border-radius: 6px; padding: 0.55rem; font-size: 0.65rem; font-weight: 700; cursor: pointer; font-family: var(--font-body); }
+.demo-auth-note { font-size: 0.55rem; color: var(--color-muted-2); text-align: center; }
+
+/* public nav demo */
+.demo-pub-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.85rem;
+  background: rgba(245,242,235,0.95);
+  border-bottom: 1px solid var(--color-border);
+}
+.demo-pub-logo { font-family: var(--font-display); font-size: 0.65rem; font-weight: 900; color: var(--color-ink); }
+.demo-pub-logo span { color: var(--color-accent); }
+.demo-hamburger-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 3px;
+}
+.demo-hamburger-btn span { display: block; width: 16px; height: 1.5px; background: var(--color-ink); border-radius: 1px; }
+
+/* mobile overlay nav demo */
+.demo-nav-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(245,242,235,0.98);
+  z-index: 10;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.demo-nav-overlay-close { align-self: flex-end; background: none; border: none; font-size: 1rem; cursor: pointer; color: var(--color-muted); margin-bottom: 0.5rem; }
+.demo-nav-link { font-family: var(--font-display); font-size: 1.1rem; font-weight: 900; letter-spacing: -0.03em; color: var(--color-ink); padding: 0.4rem 0; border-bottom: 1px solid var(--color-border); }
+.demo-nav-cta { margin-top: auto; background: var(--color-accent); color: #fff; border: none; border-radius: 8px; padding: 0.65rem; font-size: 0.72rem; font-weight: 700; cursor: pointer; text-align: center; font-family: var(--font-body); }
+
+/* responsive billing cards demo */
+.demo-billing-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.demo-plan-row {
+  background: var(--color-dark-bg-2);
+  border: 1px solid var(--color-dark-border);
+  border-radius: 8px;
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.demo-plan-row.popular { border-color: var(--color-accent); }
+.demo-plan-name { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-dark-text-3); }
+.demo-plan-price { font-family: var(--font-display); font-size: 0.95rem; font-weight: 900; letter-spacing: -0.03em; color: var(--color-dark-text); }
+.demo-plan-btn { background: var(--color-accent); color: #fff; border: none; border-radius: 5px; padding: 3px 10px; font-size: 0.6rem; font-weight: 700; cursor: pointer; font-family: var(--font-body); }
+.demo-plan-btn-ghost { background: transparent; color: var(--color-dark-text-3); border: 1px solid var(--color-dark-border-2); border-radius: 5px; padding: 3px 10px; font-size: 0.6px; font-weight: 700; cursor: pointer; font-family: var(--font-body); font-size: 0.6rem; }
+
+</style>
+</head>
+<body>
+
+<!-- SHOWCASE NAV -->
+<nav class="showcase-nav">
+  <div class="snav-logo">карточки<span>.</span>онлайн <span style="color:var(--color-dark-text-3);font-size:0.6rem;font-weight:400">UI Kit</span></div>
+  <a class="snav-link active" href="#tokens">Токены</a>
+  <a class="snav-link" href="#typography">Типографика</a>
+  <a class="snav-link" href="#buttons">Кнопки</a>
+  <a class="snav-link" href="#inputs">Поля</a>
+  <a class="snav-link" href="#badges">Бейджи</a>
+  <a class="snav-link" href="#cards">Карточки</a>
+  <a class="snav-link" href="#controls">Контролы</a>
+  <a class="snav-link" href="#navigation">Навигация</a>
+  <a class="snav-link" href="#feedback">Фидбек</a>
+  <a class="snav-link" href="#domain">Доменные</a>
+  <a class="snav-link" href="#mobile">Мобилка</a>
+</nav>
+
+<div class="showcase-wrap">
+
+  <!-- ══ 1. TOKENS ══ -->
+  <div class="showcase-section" id="tokens">
+    <div class="showcase-section-header">
+      <div class="showcase-section-title">1. Дизайн-токены</div>
+      <div class="showcase-section-sub">Все переменные CSS вынесены в :root — используй их в React через CSS Variables или Tailwind custom tokens</div>
+    </div>
+
+    <div class="canvas-light">
+      <div class="component-label">Основные цвета</div>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-color" style="background:var(--color-ink)"></div><div class="swatch-name">ink</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--color-paper)"></div><div class="swatch-name">paper</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--color-card)"></div><div class="swatch-name">card</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--color-accent)"></div><div class="swatch-name">accent</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--color-success)"></div><div class="swatch-name">success</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--color-danger)"></div><div class="swatch-name">danger</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--color-muted)"></div><div class="swatch-name">muted</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--color-border)"></div><div class="swatch-name">border</div></div>
+      </div>
+    </div>
+
+    <div class="canvas-dark">
+      <div class="component-label" style="color:var(--color-dark-text-3)">Тёмная тема (дашборд)</div>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-color" style="background:var(--color-dark-bg)"></div><div class="swatch-name" style="color:var(--color-dark-text-3)">bg</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--color-dark-bg-2)"></div><div class="swatch-name" style="color:var(--color-dark-text-3)">bg-2</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--color-dark-bg-3)"></div><div class="swatch-name" style="color:var(--color-dark-text-3)">bg-3</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--color-dark-text)"></div><div class="swatch-name" style="color:var(--color-dark-text-3)">text</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--color-dark-text-2)"></div><div class="swatch-name" style="color:var(--color-dark-text-3)">text-2</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--color-dark-border)"></div><div class="swatch-name" style="color:var(--color-dark-text-3)">border</div></div>
+      </div>
+    </div>
+
+    <div class="canvas-light">
+      <div class="component-label">Маркетплейсы</div>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-color" style="background:var(--color-wb)"></div><div class="swatch-name">wb</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--color-wb-dim);border:1px solid rgba(120,50,181,0.3)"></div><div class="swatch-name">wb-dim</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--color-ozon)"></div><div class="swatch-name">ozon</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--color-ozon-dim);border:1px solid rgba(0,85,204,0.2)"></div><div class="swatch-name">ozon-dim</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--color-ym)"></div><div class="swatch-name">ym</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--color-ym-dim);border:1px solid rgba(245,166,35,0.3)"></div><div class="swatch-name">ym-dim</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 2. TYPOGRAPHY ══ -->
+  <div class="showcase-section" id="typography">
+    <div class="showcase-section-header">
+      <div class="showcase-section-title">2. Типографика</div>
+      <div class="showcase-section-sub">Unbounded — заголовки. Golos Text — всё остальное.</div>
+    </div>
+    <div class="canvas-light">
+      <div class="type-scale">
+        <div class="type-row">
+          <div class="type-meta">Unbounded 900 · clamp(2rem,5vw,4rem) · tracking -0.04em</div>
+          <div style="font-family:var(--font-display);font-size:clamp(2rem,4vw,3.5rem);font-weight:900;letter-spacing:-0.04em;line-height:1.05">Заголовок H1</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta">Unbounded 900 · clamp(1.5rem,3vw,2.4rem)</div>
+          <div style="font-family:var(--font-display);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:900;letter-spacing:-0.035em">Заголовок H2</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta">Unbounded 700 · 1.1rem</div>
+          <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;letter-spacing:-0.025em">Заголовок H3</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta">Unbounded 700 · 0.88rem</div>
+          <div style="font-family:var(--font-display);font-size:0.88rem;font-weight:700;letter-spacing:-0.02em">Заголовок H4 / карточки</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta">Golos Text 400 · 1rem · lh 1.7</div>
+          <div style="font-size:1rem;line-height:1.7;max-width:400px">Основной текст. Используется для описаний, параграфов и любого читаемого контента на сайте.</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta">Golos Text 400 · 0.88rem</div>
+          <div style="font-size:0.88rem;color:var(--color-muted)">Вторичный текст — описания, подсказки, мета-данные статей</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta">Golos Text 700 · 0.68rem · uppercase · ls 0.1em</div>
+          <div style="font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-accent)">Метка секции / label</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta">monospace · 0.8rem</div>
+          <div style="font-family:monospace;font-size:0.8rem;color:var(--color-muted)">sk-kartochki-xxxxxxxxxxxx</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 3. BUTTONS ══ -->
+  <div class="showcase-section" id="buttons">
+    <div class="showcase-section-header">
+      <div class="showcase-section-title">3. Кнопки (Button)</div>
+      <div class="showcase-section-sub">Props: variant · size · disabled · loading · block · iconOnly</div>
+    </div>
+
+    <div class="canvas-light">
+      <div class="component-label">Варианты — светлая тема</div>
+      <div class="component-row">
+        <button class="btn btn-md btn-primary">Начать бесплатно →</button>
+        <button class="btn btn-md btn-secondary">Войти</button>
+        <button class="btn btn-md btn-outline">Как работает</button>
+        <button class="btn btn-md btn-ghost">Отмена</button>
+        <button class="btn btn-md btn-danger">Удалить аккаунт</button>
+      </div>
+
+      <div class="component-label" style="margin-top:1rem">Размеры</div>
+      <div class="component-row" style="align-items:center">
+        <button class="btn btn-sm btn-primary">Маленькая</button>
+        <button class="btn btn-md btn-primary">Средняя</button>
+        <button class="btn btn-lg btn-primary">Большая</button>
+        <button class="btn btn-xl btn-primary">XL / hero</button>
+      </div>
+
+      <div class="component-label" style="margin-top:1rem">Состояния</div>
+      <div class="component-row">
+        <button class="btn btn-md btn-primary btn-loading">⏳ Загрузка...</button>
+        <button class="btn btn-md btn-primary btn-disabled">Недоступно</button>
+        <button class="btn btn-icon btn-md btn-outline">🔔</button>
+        <button class="btn btn-icon btn-md btn-outline">↓</button>
+        <button class="btn btn-icon btn-md btn-ghost">✕</button>
+      </div>
+
+      <div class="component-label" style="margin-top:1rem">Блочная (мобилка)</div>
+      <button class="btn btn-lg btn-primary btn-block">⚡ Сгенерировать карточки</button>
+    </div>
+
+    <div class="canvas-dark">
+      <div class="component-label" style="color:var(--color-dark-text-3)">Варианты — тёмная тема (дашборд)</div>
+      <div class="component-row">
+        <button class="btn btn-md btn-dark-primary">+ Создать карточки</button>
+        <button class="btn btn-md btn-dark-outline">↺ Сбросить</button>
+        <button class="btn btn-md btn-dark-outline">🔔</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 4. INPUTS ══ -->
+  <div class="showcase-section" id="inputs">
+    <div class="showcase-section-header">
+      <div class="showcase-section-title">4. Поля ввода (Input / Select / Textarea)</div>
+      <div class="showcase-section-sub">Props: label · placeholder · hint · error · icon · disabled · dark</div>
+    </div>
+
+    <div class="canvas-light">
+      <div class="responsive-input-grid">
+        <div class="input-wrap">
+          <label class="input-label">Email</label>
+          <input class="input-field" type="email" placeholder="you@example.com">
+          <span class="input-hint">Используется для входа и уведомлений</span>
+        </div>
+        <div class="input-wrap">
+          <label class="input-label">Пароль</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon">🔒</span>
+            <input class="input-field" type="password" placeholder="Минимум 8 символов">
+          </div>
+        </div>
+        <div class="input-wrap">
+          <label class="input-label">Название проекта</label>
+          <input class="input-field input-error" type="text" placeholder="Кроссовки Nike">
+          <span class="input-error-msg">Это поле обязательно</span>
+        </div>
+        <div class="input-wrap">
+          <label class="input-label">Поиск</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon">🔍</span>
+            <input class="input-field input-success" type="search" placeholder="Инфографика...">
+          </div>
+        </div>
+        <div class="input-wrap">
+          <label class="input-label">Площадка</label>
+          <select class="input-field" style="cursor:pointer">
+            <option>Wildberries</option>
+            <option>Ozon</option>
+            <option>Яндекс Маркет</option>
+          </select>
+        </div>
+        <div class="input-wrap">
+          <label class="input-label">Телефон (отключено)</label>
+          <input class="input-field" type="tel" placeholder="+7 (___) ___-__-__" disabled>
+        </div>
+      </div>
+    </div>
+
+    <div class="canvas-dark">
+      <div class="component-label" style="color:var(--color-dark-text-3)">Тёмная тема</div>
+      <div class="responsive-plan-grid">
+        <div class="input-wrap">
+          <label class="input-label" style="color:var(--color-dark-text-3)">Название проекта</label>
+          <input class="input-field input-field-dark" placeholder="Кроссовки Nike">
+        </div>
+        <div class="input-wrap">
+          <label class="input-label" style="color:var(--color-dark-text-3)">Подтверждение</label>
+          <input class="input-field input-field-dark" placeholder="Введите УДАЛИТЬ">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 5. BADGES / CHIPS ══ -->
+  <div class="showcase-section" id="badges">
+    <div class="showcase-section-header">
+      <div class="showcase-section-title">5. Бейджи, чипы, теги (Badge / Chip / Tag)</div>
+      <div class="showcase-section-sub">Badge — статус. Chip — фильтр/переключатель. Tag — категория в блоге.</div>
+    </div>
+
+    <div class="canvas-light">
+      <div class="component-label">Badge — статусы</div>
+      <div class="component-row">
+        <span class="badge badge-accent">Новое</span>
+        <span class="badge badge-success">✓ Сохранено</span>
+        <span class="badge badge-danger">Ошибка</span>
+        <span class="badge badge-neutral">Черновик</span>
+        <span class="badge badge-wb">Wildberries</span>
+        <span class="badge badge-ozon">Ozon</span>
+        <span class="badge badge-ym">Яндекс Маркет</span>
+      </div>
+
+      <div class="component-label" style="margin-top:1rem">Chip — фильтры и переключатели</div>
+      <div class="component-row">
+        <button class="chip chip-active">Все</button>
+        <button class="chip">Wildberries</button>
+        <button class="chip">Ozon</button>
+        <button class="chip">Яндекс Маркет</button>
+        <button class="chip chip-accent-active">Главная</button>
+        <button class="chip chip-accent-active">Инфографика</button>
+        <button class="chip">Состав</button>
+      </div>
+    </div>
+
+    <div class="canvas-dark">
+      <div class="component-label" style="color:var(--color-dark-text-3)">Тёмная тема</div>
+      <div class="component-row">
+        <span class="badge badge-dark">Популярный</span>
+        <button class="chip chip-dark chip-active">Минимализм</button>
+        <button class="chip chip-dark">Яркий</button>
+        <button class="chip chip-dark">Тёмный</button>
+        <button class="chip chip-dark">Белый фон</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 6. CARDS ══ -->
+  <div class="showcase-section" id="cards">
+    <div class="showcase-section-header">
+      <div class="showcase-section-title">6. Карточки (Card)</div>
+      <div class="showcase-section-sub">Card · StatCard · ProjectCard · PlanCard · BlogCard · ResultCard</div>
+    </div>
+
+    <div class="canvas-dark">
+      <div class="component-label" style="color:var(--color-dark-text-3)">StatCard × 3</div>
+      <div class="responsive-stat-grid" style="margin-bottom:1.5rem">
+        <div class="stat-card">
+          <div class="stat-card-label">Карточек создано</div>
+          <div class="stat-card-value">7 <span style="font-size:1rem;color:var(--color-dark-text-3)">/ 10</span></div>
+          <div class="stat-card-sub">осталось <span style="color:var(--color-accent)">3 карточки</span></div>
+          <div class="stat-card-bar"><div class="stat-card-fill" style="width:70%"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Проектов</div>
+          <div class="stat-card-value">3</div>
+          <div class="stat-card-sub">WB: 2 · Ozon: 1</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Тариф</div>
+          <div class="stat-card-value" style="font-size:1.1rem">Бесплатный</div>
+          <div class="stat-card-sub">Обновляется 1 мая</div>
+        </div>
+      </div>
+
+      <div class="component-label" style="color:var(--color-dark-text-3)">ProjectCard × 3</div>
+      <div class="responsive-project-grid">
+        <div class="project-card">
+          <div class="project-card-preview">
+            <div class="project-card-thumb grad-1"></div>
+            <div class="project-card-thumb grad-2"></div>
+            <div class="project-card-thumb grad-3"></div>
+          </div>
+          <div class="project-card-body">
+            <div class="project-card-name">Кроссовки Nike</div>
+            <div class="project-card-meta"><span>6 карточек</span><span class="badge badge-wb" style="font-size:0.55rem">WB</span></div>
+          </div>
+        </div>
+        <div class="project-card">
+          <div class="project-card-preview">
+            <div class="project-card-thumb grad-4"></div>
+            <div class="project-card-thumb grad-5"></div>
+            <div class="project-card-thumb grad-6"></div>
+          </div>
+          <div class="project-card-body">
+            <div class="project-card-name">Крем увлажняющий</div>
+            <div class="project-card-meta"><span>8 карточек</span><span class="badge badge-ozon" style="font-size:0.55rem">Ozon</span></div>
+          </div>
+        </div>
+        <div class="project-card" style="border-style:dashed;display:flex;align-items:center;justify-content:center;min-height:130px;color:var(--color-dark-text-3);flex-direction:column;gap:4px;cursor:pointer">
+          <span style="font-size:1.4rem">+</span>
+          <span style="font-size:0.78rem;font-weight:600">Новый проект</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="canvas-light">
+      <div class="component-label">PlanCard × 3 (тарифы)</div>
+      <div class="responsive-plan-grid">
+        <div class="plan-card">
+          <div class="plan-name-label">Старт</div>
+          <div class="plan-price-display">0 <sub>₽</sub></div>
+          <div class="plan-period-label">навсегда бесплатно</div>
+          <div class="plan-divider"></div>
+          <ul class="plan-feature-list">
+            <li class="plan-feature-item"><span class="feat-yes">✓</span> 10 карточек/мес</li>
+            <li class="plan-feature-item"><span class="feat-yes">✓</span> WB, Ozon, Яндекс Маркет</li>
+            <li class="plan-feature-item"><span class="feat-no">✗</span> <span class="feat-no-text">Batch-генерация</span></li>
+          </ul>
+          <button class="btn btn-md btn-outline btn-block">Начать бесплатно</button>
+        </div>
+        <div class="plan-card plan-popular">
+          <div class="plan-popular-badge">Популярный</div>
+          <div class="plan-name-label">Про</div>
+          <div class="plan-price-display">490 <sub>₽/мес</sub></div>
+          <div class="plan-period-label">50 карточек в месяц</div>
+          <div class="plan-divider"></div>
+          <ul class="plan-feature-list">
+            <li class="plan-feature-item"><span class="feat-yes">✓</span> 50 карточек/мес</li>
+            <li class="plan-feature-item"><span class="feat-yes">✓</span> Batch до 20 шт</li>
+            <li class="plan-feature-item"><span class="feat-yes">✓</span> ИИ-копирайтинг</li>
+          </ul>
+          <button class="btn btn-md btn-primary btn-block">Подключить →</button>
+        </div>
+        <div class="plan-card">
+          <div class="plan-name-label">Бизнес</div>
+          <div class="plan-price-display">990 <sub>₽/мес</sub></div>
+          <div class="plan-period-label">200 карточек в месяц</div>
+          <div class="plan-divider"></div>
+          <ul class="plan-feature-list">
+            <li class="plan-feature-item"><span class="feat-yes">✓</span> 200 карточек/мес</li>
+            <li class="plan-feature-item"><span class="feat-yes">✓</span> Batch до 50 шт</li>
+            <li class="plan-feature-item"><span class="feat-yes">✓</span> Бренд-шаблоны</li>
+          </ul>
+          <button class="btn btn-md btn-outline btn-block">Подключить →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="canvas-dark">
+      <div class="component-label" style="color:var(--color-dark-text-3)">ResultCard (генерация) × 3</div>
+      <div class="responsive-result-grid">
+        <div class="result-card">
+          <div class="result-card-visual grad-1">
+            <div class="result-card-overlay"><button class="result-card-overlay-btn">↓ Скачать</button></div>
+          </div>
+          <div class="result-card-footer"><span class="result-card-label">Главная</span><button class="result-card-dl">↓</button></div>
+        </div>
+        <div class="result-card">
+          <div class="result-card-visual grad-2">
+            <div class="result-card-overlay"><button class="result-card-overlay-btn">↓ Скачать</button></div>
+          </div>
+          <div class="result-card-footer"><span class="result-card-label">Инфографика</span><button class="result-card-dl">↓</button></div>
+        </div>
+        <div class="result-card">
+          <div class="result-card-visual grad-3">
+            <div class="result-card-overlay"><button class="result-card-overlay-btn">↓ Скачать</button></div>
+          </div>
+          <div class="result-card-footer"><span class="result-card-label">Состав</span><button class="result-card-dl">↓</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="canvas-light">
+      <div class="component-label">BlogCard × 3</div>
+      <div class="responsive-blog-grid">
+        <a href="#" class="blog-card">
+          <div class="blog-card-visual" style="background:linear-gradient(135deg,#e8f4fd,#b3d9f7)">
+            <span class="blog-card-tag badge-wb" style="background:var(--color-wb-dim);color:var(--color-wb)">Wildberries</span>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-card-title">Требования к фото для WB 2025: полный гайд</div>
+            <div class="blog-card-meta"><span>3 апр · 10 мин</span><span class="blog-card-read">Читать →</span></div>
+          </div>
+        </a>
+        <a href="#" class="blog-card">
+          <div class="blog-card-visual" style="background:linear-gradient(135deg,#fef3e2,#fdd89a)">
+            <span class="blog-card-tag" style="background:var(--color-ozon-dim);color:var(--color-ozon)">Ozon</span>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-card-title">Инфографика для Ozon которая увеличивает конверсию</div>
+            <div class="blog-card-meta"><span>28 мар · 7 мин</span><span class="blog-card-read">Читать →</span></div>
+          </div>
+        </a>
+        <a href="#" class="blog-card">
+          <div class="blog-card-visual" style="background:linear-gradient(135deg,#e8f8f2,#95d5b2)">
+            <span class="blog-card-tag" style="background:var(--color-accent-dim);color:var(--color-accent)">WB + Ozon + ЯМ</span>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-card-title">7 ошибок в карточках которые допускают 90% продавцов</div>
+            <div class="blog-card-meta"><span>7 мар · 6 мин</span><span class="blog-card-read">Читать →</span></div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 7. CONTROLS ══ -->
+  <div class="showcase-section" id="controls">
+    <div class="showcase-section-header">
+      <div class="showcase-section-title">7. Контролы (Switch / Progress / Upload)</div>
+      <div class="showcase-section-sub">Switch · ProgressBar · UploadZone · PlatformSelector</div>
+    </div>
+
+    <div class="canvas-dark">
+      <div class="component-label" style="color:var(--color-dark-text-3)">Switch</div>
+      <div style="display:flex;flex-direction:column;gap:1rem">
+        <div class="switch-wrap">
+          <button class="switch on" onclick="this.classList.toggle('on')"><div class="switch-knob"></div></button>
+          <div><div class="switch-label" style="color:var(--color-dark-text)">Уведомления о готовности</div><div class="switch-desc">Письмо когда карточки готовы</div></div>
+        </div>
+        <div class="switch-wrap">
+          <button class="switch accent" onclick="this.classList.toggle('accent')"><div class="switch-knob"></div></button>
+          <div><div class="switch-label" style="color:var(--color-dark-text)">Годовая подписка</div><div class="switch-desc">Скидка 20%</div></div>
+        </div>
+        <div class="switch-wrap">
+          <button class="switch switch-dark" onclick="this.classList.toggle('on')"><div class="switch-knob"></div></button>
+          <div><div class="switch-label" style="color:var(--color-dark-text)">Маркетинговые письма</div><div class="switch-desc">Акции и спецпредложения</div></div>
+        </div>
+      </div>
+
+      <div class="component-label" style="color:var(--color-dark-text-3);margin-top:1.5rem">ProgressBar</div>
+      <div style="display:flex;flex-direction:column;gap:1rem;max-width:400px">
+        <div class="progress-wrap">
+          <div class="progress-label-row"><span style="font-size:0.75rem;color:var(--color-dark-text-2)">Карточек использовано</span><span style="font-size:0.75rem;color:var(--color-dark-text-2)">7 / 10</span></div>
+          <div class="progress-track progress-track-dark"><div class="progress-fill progress-accent" style="width:70%"></div></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-label-row"><span style="font-size:0.75rem;color:var(--color-dark-text-2)">Загрузка фото</span><span style="font-size:0.75rem;color:var(--color-dark-text-2)">100%</span></div>
+          <div class="progress-track progress-track-dark"><div class="progress-fill progress-success" style="width:100%"></div></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-label-row"><span style="font-size:0.75rem;color:var(--color-dark-text-2)">Лимит исчерпан</span><span style="font-size:0.75rem;color:var(--color-danger)">10 / 10</span></div>
+          <div class="progress-track progress-track-dark"><div class="progress-fill progress-danger" style="width:100%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="canvas-dark">
+      <div class="component-label" style="color:var(--color-dark-text-3)">UploadZone — 3 состояния</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem">
+        <div class="upload-zone upload-zone-dark">
+          <span class="upload-icon">↑</span>
+          <div class="upload-title">Перетащи или нажми</div>
+          <div class="upload-sub">JPG, PNG до 10 МБ</div>
+        </div>
+        <div class="upload-zone upload-zone-dark drag-over">
+          <span class="upload-icon">↑</span>
+          <div class="upload-title">Отпусти файл</div>
+          <div class="upload-sub" style="color:var(--color-accent)">drag-over</div>
+        </div>
+        <div class="upload-zone upload-zone-dark has-file" style="border-color:var(--color-success);background:var(--color-success-dim)">
+          <span class="upload-icon">✓</span>
+          <div class="upload-title" style="color:var(--color-success)">photo.jpg</div>
+          <div class="upload-sub" style="color:var(--color-success);opacity:0.7">Нажми чтобы заменить</div>
+        </div>
+      </div>
+
+      <div class="component-label" style="color:var(--color-dark-text-3);margin-top:1.5rem">PlatformSelector</div>
+      <div style="max-width:240px">
+        <div class="platform-selector">
+          <button class="platform-btn platform-btn-wb selected">WB</button>
+          <button class="platform-btn platform-btn-ozon">Ozon</button>
+          <button class="platform-btn platform-btn-ym">Маркет</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 8. NAVIGATION ══ -->
+  <div class="showcase-section" id="navigation">
+    <div class="showcase-section-header">
+      <div class="showcase-section-title">8. Навигация (NavItem / SidebarPlanCard / Avatar)</div>
+      <div class="showcase-section-sub">NavItem · SidebarPlanCard · Avatar · Breadcrumb</div>
+    </div>
+
+    <div class="canvas-dark">
+      <div class="responsive-sidebar-demo">
+        <div>
+          <div class="component-label" style="color:var(--color-dark-text-3)">NavItem</div>
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <button class="nav-item"><span class="nav-item-icon">⊞</span> Дашборд</button>
+            <button class="nav-item nav-active"><span class="nav-item-icon">⚡</span> Генерация <span class="nav-item-badge">Новое</span></button>
+            <button class="nav-item"><span class="nav-item-icon">◫</span> Проекты</button>
+            <button class="nav-item"><span class="nav-item-icon">◈</span> Тарифы</button>
+            <button class="nav-item"><span class="nav-item-icon">◎</span> Настройки</button>
+          </div>
+        </div>
+        <div>
+          <div class="component-label" style="color:var(--color-dark-text-3)">SidebarPlanCard + Avatar</div>
+          <div class="plan-mini" style="margin-bottom:0.75rem">
+            <div class="plan-mini-label">Бесплатный план</div>
+            <div class="plan-mini-usage">7 из 10 карточек</div>
+            <div class="plan-mini-bar"><div class="plan-mini-fill" style="width:70%"></div></div>
+            <a href="#" class="plan-mini-link">Перейти на Про →</a>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:var(--radius-md);background:var(--color-dark-bg-3)">
+            <div class="avatar avatar-md avatar-gradient-1">ИИ</div>
+            <div style="flex:1"><div style="font-size:0.82rem;font-weight:600;color:var(--color-dark-text)">Иван Иванов</div><div style="font-size:0.7rem;color:var(--color-dark-text-3)">Бесплатный план</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="canvas-light">
+      <div class="component-label">Avatar — размеры</div>
+      <div class="component-row" style="align-items:center">
+        <div class="avatar avatar-sm avatar-gradient-1">ИИ</div>
+        <div class="avatar avatar-md avatar-gradient-1">ИИ</div>
+        <div class="avatar avatar-lg avatar-gradient-2">АС</div>
+        <div class="avatar avatar-xl avatar-gradient-3">МК</div>
+      </div>
+      <div class="component-label" style="margin-top:1rem">Breadcrumb</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:0.78rem;color:var(--color-muted-2)">
+        <a href="#" style="color:var(--color-muted-2);text-decoration:none">Главная</a>
+        <span>›</span>
+        <a href="#" style="color:var(--color-muted-2);text-decoration:none">Блог</a>
+        <span>›</span>
+        <span style="color:var(--color-muted)">Требования к фото 2025</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 9. FEEDBACK ══ -->
+  <div class="showcase-section" id="feedback">
+    <div class="showcase-section-header">
+      <div class="showcase-section-title">9. Фидбек (Toast / Modal / Skeleton / Spinner / Accordion)</div>
+      <div class="showcase-section-sub">Toast · Modal · Skeleton · Spinner · LoadingStep · Accordion</div>
+    </div>
+
+    <div class="canvas-dark">
+      <div class="component-label" style="color:var(--color-dark-text-3)">Toast — 3 варианта</div>
+      <div style="display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1.5rem">
+        <div class="toast"><span class="toast-dot toast-dot-success"></span><span class="toast-text">Карточки готовы к скачиванию</span><button class="toast-close">✕</button></div>
+        <div class="toast"><span class="toast-dot toast-dot-danger"></span><span class="toast-text">Ошибка генерации — попробуй ещё раз</span><button class="toast-close">✕</button></div>
+        <div class="toast"><span class="toast-dot toast-dot-accent"></span><span class="toast-text">Переходим к оплате через ЮKassa...</span><button class="toast-close">✕</button></div>
+      </div>
+
+      <div class="component-label" style="color:var(--color-dark-text-3)">LoadingSteps (генерация)</div>
+      <div style="display:flex;flex-direction:column;gap:0.6rem;max-width:260px;margin-bottom:1.5rem">
+        <div class="loading-step ls-done"><div class="ls-dot">✓</div><span>Удаление фона</span></div>
+        <div class="loading-step ls-done"><div class="ls-dot">✓</div><span>Генерация карточек</span></div>
+        <div class="loading-step ls-active"><div class="ls-dot" style="border-color:var(--color-accent)">3</div><span>Применение стиля</span></div>
+        <div class="loading-step"><div class="ls-dot">4</div><span>Финальная сборка</span></div>
+      </div>
+
+      <div class="component-label" style="color:var(--color-dark-text-3)">Spinner</div>
+      <div class="component-row" style="align-items:center">
+        <div class="spinner"></div>
+        <div class="spinner spinner-accent" style="width:32px;height:32px;border-width:3px"></div>
+        <div class="spinner spinner-lg"></div>
+      </div>
+
+      <div class="component-label" style="color:var(--color-dark-text-3);margin-top:1.5rem">Skeleton</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:360px">
+        <div class="skeleton skeleton-card-thumb"></div>
+        <div class="skeleton skeleton-card-thumb"></div>
+        <div class="skeleton skeleton-card-thumb"></div>
+      </div>
+    </div>
+
+    <div class="canvas-dark">
+      <div class="component-label" style="color:var(--color-dark-text-3)">Modal</div>
+      <div class="modal-overlay-demo">
+        <div class="modal-box">
+          <div class="modal-title">Перейти на Про</div>
+          <div class="modal-sub">Оплата через ЮKassa — безопасно, с чеком. Тариф: Про · 490 ₽/мес</div>
+          <div style="display:flex;justify-content:space-between;padding:0.6rem 0;border-bottom:1px solid var(--color-dark-border);font-size:0.85rem">
+            <span style="color:var(--color-dark-text-3)">Итого</span>
+            <span style="font-family:var(--font-display);font-size:1.2rem;font-weight:900;color:var(--color-accent)">490 ₽</span>
+          </div>
+          <div class="modal-actions">
+            <button class="btn btn-md btn-dark-outline" style="flex:1">Отмена</button>
+            <button class="btn btn-md btn-dark-primary" style="flex:1">Оплатить →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="canvas-light">
+      <div class="component-label">Accordion (FAQ)</div>
+      <div>
+        <div class="accordion-item open">
+          <button class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+            Подходит ли для любых категорий товаров?
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">Да, сервис работает с любыми категориями — одежда, электроника, косметика, продукты питания.</div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+            Карточки соответствуют требованиям всех площадок?
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">Да, требования WB, Ozon и Яндекс Маркет обновляются автоматически.</div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+            Что если лимит карточек закончится?
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">Можно купить дополнительный пакет или перейти на следующий тариф в любой момент.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 10. DOMAIN COMPONENTS ══ -->
+  <div class="showcase-section" id="domain">
+    <div class="showcase-section-header">
+      <div class="showcase-section-title">10. Доменные компоненты</div>
+      <div class="showcase-section-sub">HeroBadge · MarketplaceBadge · CardPreviewGrid · GenerateCTABanner</div>
+    </div>
+
+    <div class="canvas-light">
+      <div class="component-label">HeroBadge</div>
+      <div class="component-row">
+        <div class="hero-badge"><span class="hero-badge-dot"></span> ИИ-генератор карточек для маркетплейсов</div>
+      </div>
+
+      <div class="component-label" style="margin-top:1.25rem">MarketplaceBadge — строка с площадками</div>
+      <div class="component-row" style="align-items:center">
+        <span class="badge badge-wb" style="padding:4px 12px;font-size:0.72rem"><span style="width:6px;height:6px;background:var(--color-wb);border-radius:50%;display:inline-block;margin-right:4px"></span>Wildberries</span>
+        <span style="color:var(--color-border-2)">·</span>
+        <span class="badge badge-ozon" style="padding:4px 12px;font-size:0.72rem"><span style="width:6px;height:6px;background:var(--color-ozon);border-radius:50%;display:inline-block;margin-right:4px"></span>Ozon</span>
+        <span style="color:var(--color-border-2)">·</span>
+        <span class="badge badge-ym" style="padding:4px 12px;font-size:0.72rem"><span style="width:6px;height:6px;background:var(--color-ym);border-radius:50%;display:inline-block;margin-right:4px"></span>Яндекс Маркет</span>
+      </div>
+    </div>
+
+    <div class="canvas-dark">
+      <div class="component-label" style="color:var(--color-dark-text-3)">CardPreviewGrid (6 превью)</div>
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:5px;max-width:320px;margin-bottom:1.5rem">
+        <div style="aspect-ratio:3/4;border-radius:5px" class="grad-1"></div>
+        <div style="aspect-ratio:3/4;border-radius:5px" class="grad-2"></div>
+        <div style="aspect-ratio:3/4;border-radius:5px" class="grad-3"></div>
+        <div style="aspect-ratio:3/4;border-radius:5px" class="grad-4"></div>
+        <div style="aspect-ratio:3/4;border-radius:5px" class="grad-5"></div>
+        <div style="aspect-ratio:3/4;border-radius:5px" class="grad-6"></div>
+      </div>
+
+      <div class="component-label" style="color:var(--color-dark-text-3)">GenerateCTABanner</div>
+      <div style="background:var(--color-dark-bg-3);border:1px solid var(--color-dark-border);border-radius:var(--radius-lg);padding:1.5rem;display:flex;align-items:center;gap:1.5rem;position:relative;overflow:hidden">
+        <div style="position:absolute;width:200px;height:200px;background:radial-gradient(circle,rgba(232,68,10,0.15) 0%,transparent 70%);top:50%;left:30%;transform:translate(-50%,-50%)"></div>
+        <div style="flex:1;position:relative">
+          <div style="font-family:var(--font-display);font-size:0.95rem;font-weight:900;letter-spacing:-0.03em;color:var(--color-dark-text);margin-bottom:0.3rem">Устал делать карточки вручную?</div>
+          <div style="font-size:0.78rem;color:var(--color-dark-text-3);line-height:1.55">Загрузи фото — сервис сделает карточки для WB, Ozon и Яндекс Маркет за 30 секунд</div>
+        </div>
+        <button class="btn btn-md btn-primary" style="position:relative;flex-shrink:0">Попробовать →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 11. MOBILE ══ -->
+  <div class="showcase-section" id="mobile">
+    <div class="showcase-section-header">
+      <div class="showcase-section-title">11. Мобильные паттерны</div>
+      <div class="showcase-section-sub">MobileBottomNav · Sidebar Drawer · Hamburger Nav · touch targets · живые превью</div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <div class="canvas-dark">
+      <div class="component-label" style="color:var(--color-dark-text-3)">MobileBottomNav — компонент</div>
+      <div style="max-width:360px;margin-bottom:1.5rem">
+        <div class="mobile-nav">
+          <button class="mobile-nav-item" onclick="demoNavSwitch(this)"><span class="mobile-nav-icon">⊞</span>Главная</button>
+          <button class="mobile-nav-item active" onclick="demoNavSwitch(this)"><span class="mobile-nav-icon">⚡</span>Создать</button>
+          <button class="mobile-nav-item" onclick="demoNavSwitch(this)"><span class="mobile-nav-icon">◫</span>Проекты</button>
+          <button class="mobile-nav-item" onclick="demoNavSwitch(this)"><span class="mobile-nav-icon">◈</span>Тарифы</button>
+          <button class="mobile-nav-item" onclick="demoNavSwitch(this)"><span class="mobile-nav-icon">◎</span>Профиль</button>
+        </div>
+      </div>
+
+      <div class="component-label" style="color:var(--color-dark-text-3)">Адаптивные правила</div>
+      <div class="responsive-rules-grid">
+        <div style="background:var(--color-dark-bg-3);border:1px solid var(--color-dark-border);border-radius:var(--radius-md);padding:1rem;font-size:0.78rem;color:var(--color-dark-text-2);line-height:1.7">
+          <div style="font-weight:700;color:var(--color-dark-text);margin-bottom:0.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:-0.01em">📱 &lt; 480px — Mobile</div>
+          Sidebar → скрыт, MobileBottomNav<br>
+          Все кнопки → btn-block<br>
+          Сетка → 1 колонка<br>
+          Генерация → стэк (сверху вниз)<br>
+          Touch target min-height → 44px<br>
+          Настройки → horizontal chips
+        </div>
+        <div style="background:var(--color-dark-bg-3);border:1px solid var(--color-dark-border);border-radius:var(--radius-md);padding:1rem;font-size:0.78rem;color:var(--color-dark-text-2);line-height:1.7">
+          <div style="font-weight:700;color:var(--color-dark-text);margin-bottom:0.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:-0.01em">💻 480–768px — Tablet</div>
+          Sidebar → drawer по кнопке ☰<br>
+          Сетка → 2 колонки<br>
+          Тарифы → вертикальный стэк<br>
+          Карточки результата → 2 в ряд<br>
+          Навигация → MobileBottomNav
+        </div>
+        <div style="background:var(--color-dark-bg-3);border:1px solid var(--color-dark-border);border-radius:var(--radius-md);padding:1rem;font-size:0.78rem;color:var(--color-dark-text-2);line-height:1.7">
+          <div style="font-weight:700;color:var(--color-dark-text);margin-bottom:0.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:-0.01em">🖥 &gt; 768px — Desktop</div>
+          Sidebar → 220px с текстом<br>
+          Сетка → 2–3 колонки<br>
+          Генерация → split panel<br>
+          Дашборд → 3 стат-карточки<br>
+          Настройки → вертикальный nav
+        </div>
+      </div>
+    </div>
+
+    <!-- LIVE PHONE PREVIEWS -->
+    <div class="canvas-dark">
+      <div class="component-label" style="color:var(--color-dark-text-3);margin-bottom:1.25rem">Живые превью — как выглядит на телефоне</div>
+
+      <div class="device-frame-wrap">
+
+        <!-- PHONE 1: Dashboard -->
+        <div>
+          <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-dark-text-3);margin-bottom:0.5rem">Дашборд</div>
+          <div class="device-frame" style="width:240px">
+            <div class="device-notch">
+              <div class="device-notch-dot"></div>
+              <div class="device-notch-bar"></div>
+              <div class="device-notch-dot"></div>
+            </div>
+            <div class="demo-mobile-header" id="dashHeader">
+              <button class="demo-hamburger" onclick="toggleDashDrawer()">☰</button>
+              <div class="demo-header-title">Дашборд</div>
+              <button class="demo-header-btn">+ Создать</button>
+            </div>
+            <div class="device-screen-content" id="dashContent">
+              <div class="demo-stats-grid">
+                <div class="demo-stat">
+                  <div class="demo-stat-label">Карточек</div>
+                  <div class="demo-stat-val">7<span style="font-size:0.65rem;color:var(--color-dark-text-3)">/10</span></div>
+                </div>
+                <div class="demo-stat">
+                  <div class="demo-stat-label">Проектов</div>
+                  <div class="demo-stat-val">3</div>
+                </div>
+              </div>
+              <div style="font-size:0.62rem;font-weight:700;color:var(--color-dark-text);margin-bottom:0.35rem">Последние проекты</div>
+              <div class="demo-project-card">
+                <div class="demo-project-thumbs">
+                  <div class="demo-project-thumb grad-1"></div>
+                  <div class="demo-project-thumb grad-2"></div>
+                  <div class="demo-project-thumb grad-3"></div>
+                </div>
+                <div class="demo-project-info">
+                  <div class="demo-project-name">Кроссовки Nike Air</div>
+                  <div class="demo-project-meta">6 карточек · WB</div>
+                </div>
+              </div>
+              <div class="demo-project-card">
+                <div class="demo-project-thumbs">
+                  <div class="demo-project-thumb grad-4"></div>
+                  <div class="demo-project-thumb grad-5"></div>
+                  <div class="demo-project-thumb grad-6"></div>
+                </div>
+                <div class="demo-project-info">
+                  <div class="demo-project-name">Крем увлажняющий</div>
+                  <div class="demo-project-meta">8 карточек · Ozon</div>
+                </div>
+              </div>
+            </div>
+            <!-- Drawer overlay -->
+            <div class="demo-drawer-overlay" id="dashDrawer" style="display:none" onclick="toggleDashDrawer()">
+              <div class="demo-drawer" onclick="event.stopPropagation()">
+                <div class="demo-drawer-logo">карточки<span>.</span>онлайн</div>
+                <button class="demo-drawer-item active">⊞ Дашборд</button>
+                <button class="demo-drawer-item">⚡ Генерация</button>
+                <button class="demo-drawer-item">◫ Проекты</button>
+                <button class="demo-drawer-item">◈ Тарифы</button>
+                <button class="demo-drawer-item">◎ Настройки</button>
+              </div>
+            </div>
+            <div class="demo-bottom-nav">
+              <button class="demo-bnav-item active"><span class="demo-bnav-icon">⊞</span>Главная</button>
+              <button class="demo-bnav-item"><span class="demo-bnav-icon">⚡</span>Создать</button>
+              <button class="demo-bnav-item"><span class="demo-bnav-icon">◫</span>Проекты</button>
+              <button class="demo-bnav-item"><span class="demo-bnav-icon">◈</span>Тарифы</button>
+              <button class="demo-bnav-item"><span class="demo-bnav-icon">◎</span>Профиль</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHONE 2: Генерация -->
+        <div>
+          <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-dark-text-3);margin-bottom:0.5rem">Генерация</div>
+          <div class="device-frame" style="width:240px">
+            <div class="device-notch">
+              <div class="device-notch-dot"></div>
+              <div class="device-notch-bar"></div>
+              <div class="device-notch-dot"></div>
+            </div>
+            <div class="demo-mobile-header">
+              <button class="demo-hamburger">☰</button>
+              <div class="demo-header-title">Генерация</div>
+              <button class="demo-header-btn" style="background:transparent;color:var(--color-dark-text-3);border:1px solid var(--color-dark-border)">Сброс</button>
+            </div>
+            <div class="device-screen-content" style="padding:0.75rem;gap:0.6rem">
+              <div class="demo-generate-panel">
+                <div style="font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-dark-text-3)">Фото товара</div>
+                <div class="demo-upload-zone">↑ Перетащи или нажми<br><span style="font-size:0.55rem">JPG, PNG до 10 МБ</span></div>
+                <div style="font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-dark-text-3)">Площадка</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+                  <button style="padding:4px;border-radius:6px;border:1.5px solid rgba(120,50,181,0.5);color:var(--color-wb);background:var(--color-wb-dim);font-size:0.6rem;font-weight:700;cursor:pointer;font-family:var(--font-body)">● WB</button>
+                  <button style="padding:4px;border-radius:6px;border:1.5px solid var(--color-dark-border-2);color:var(--color-dark-text-3);background:none;font-size:0.6rem;font-weight:700;cursor:pointer;font-family:var(--font-body)">● Ozon</button>
+                </div>
+                <div style="font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-dark-text-3)">Стиль</div>
+                <div class="demo-mini-chips">
+                  <span class="demo-mini-chip on">Минимализм</span>
+                  <span class="demo-mini-chip">Яркий</span>
+                  <span class="demo-mini-chip">Тёмный</span>
+                </div>
+                <button class="demo-gen-btn">⚡ Сгенерировать карточки</button>
+              </div>
+              <div style="font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-dark-text-3);margin-top:0.25rem">Результат</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">
+                <div style="aspect-ratio:3/4;border-radius:6px;border:1px solid var(--color-dark-border)" class="grad-1"></div>
+                <div style="aspect-ratio:3/4;border-radius:6px;border:1px solid var(--color-dark-border)" class="grad-2"></div>
+                <div style="aspect-ratio:3/4;border-radius:6px;border:1px solid var(--color-dark-border)" class="grad-3"></div>
+                <div style="aspect-ratio:3/4;border-radius:6px;border:1px solid var(--color-dark-border)" class="grad-4"></div>
+              </div>
+            </div>
+            <div class="demo-bottom-nav">
+              <button class="demo-bnav-item"><span class="demo-bnav-icon">⊞</span>Главная</button>
+              <button class="demo-bnav-item active"><span class="demo-bnav-icon">⚡</span>Создать</button>
+              <button class="demo-bnav-item"><span class="demo-bnav-icon">◫</span>Проекты</button>
+              <button class="demo-bnav-item"><span class="demo-bnav-icon">◈</span>Тарифы</button>
+              <button class="demo-bnav-item"><span class="demo-bnav-icon">◎</span>Профиль</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHONE 3: Тарифы -->
+        <div>
+          <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-dark-text-3);margin-bottom:0.5rem">Тарифы</div>
+          <div class="device-frame" style="width:240px">
+            <div class="device-notch">
+              <div class="device-notch-dot"></div>
+              <div class="device-notch-bar"></div>
+              <div class="device-notch-dot"></div>
+            </div>
+            <div class="demo-mobile-header">
+              <button class="demo-hamburger">☰</button>
+              <div class="demo-header-title">Тарифы</div>
+              <div></div>
+            </div>
+            <div class="device-screen-content" style="padding:0.75rem;gap:0.65rem">
+              <div class="demo-billing-cards">
+                <div class="demo-plan-row">
+                  <div>
+                    <div class="demo-plan-name">Старт</div>
+                    <div class="demo-plan-price">0 ₽</div>
+                  </div>
+                  <button class="demo-plan-btn-ghost">Текущий</button>
+                </div>
+                <div class="demo-plan-row popular">
+                  <div>
+                    <div class="demo-plan-name" style="color:var(--color-accent)">🔥 Про</div>
+                    <div class="demo-plan-price">490 ₽/мес</div>
+                  </div>
+                  <button class="demo-plan-btn">Выбрать →</button>
+                </div>
+                <div class="demo-plan-row">
+                  <div>
+                    <div class="demo-plan-name">Бизнес</div>
+                    <div class="demo-plan-price">990 ₽/мес</div>
+                  </div>
+                  <button class="demo-plan-btn-ghost">Выбрать</button>
+                </div>
+              </div>
+              <div style="font-size:0.6rem;font-weight:700;color:var(--color-dark-text);margin-top:0.25rem">Доп. пакеты</div>
+              <div style="display:flex;flex-direction:column;gap:0.4rem">
+                <div style="background:var(--color-dark-bg-2);border:1px solid var(--color-dark-border);border-radius:6px;padding:0.5rem 0.6rem;display:flex;align-items:center;justify-content:space-between">
+                  <div>
+                    <div style="font-size:0.62rem;font-weight:600;color:var(--color-dark-text)">+20 карточек</div>
+                    <div style="font-size:0.55rem;color:var(--color-dark-text-3)">не сгорает</div>
+                  </div>
+                  <span style="font-family:var(--font-display);font-size:0.75rem;font-weight:700;color:var(--color-accent)">150 ₽</span>
+                </div>
+                <div style="background:var(--color-dark-bg-2);border:1px solid var(--color-dark-border);border-radius:6px;padding:0.5rem 0.6rem;display:flex;align-items:center;justify-content:space-between">
+                  <div>
+                    <div style="font-size:0.62rem;font-weight:600;color:var(--color-dark-text)">+50 карточек</div>
+                    <div style="font-size:0.55rem;color:var(--color-dark-text-3)">не сгорает</div>
+                  </div>
+                  <span style="font-family:var(--font-display);font-size:0.75rem;font-weight:700;color:var(--color-accent)">299 ₽</span>
+                </div>
+              </div>
+            </div>
+            <div class="demo-bottom-nav">
+              <button class="demo-bnav-item"><span class="demo-bnav-icon">⊞</span>Главная</button>
+              <button class="demo-bnav-item"><span class="demo-bnav-icon">⚡</span>Создать</button>
+              <button class="demo-bnav-item"><span class="demo-bnav-icon">◫</span>Проекты</button>
+              <button class="demo-bnav-item active"><span class="demo-bnav-icon">◈</span>Тарифы</button>
+              <button class="demo-bnav-item"><span class="demo-bnav-icon">◎</span>Профиль</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHONE 4: Настройки -->
+        <div>
+          <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-dark-text-3);margin-bottom:0.5rem">Настройки</div>
+          <div class="device-frame" style="width:240px">
+            <div class="device-notch">
+              <div class="device-notch-dot"></div>
+              <div class="device-notch-bar"></div>
+              <div class="device-notch-dot"></div>
+            </div>
+            <div class="demo-mobile-header">
+              <button class="demo-hamburger">☰</button>
+              <div class="demo-header-title">Настройки</div>
+              <div></div>
+            </div>
+            <div class="demo-settings-tabs">
+              <button class="demo-settings-tab active">◉ Профиль</button>
+              <button class="demo-settings-tab">◈ Безопас.</button>
+              <button class="demo-settings-tab">◎ Уведомл.</button>
+              <button class="demo-settings-tab">◫ Интегр.</button>
+            </div>
+            <div class="device-screen-content" style="padding:0.75rem;gap:0.75rem">
+              <div style="background:var(--color-dark-bg-2);border:1px solid var(--color-dark-border);border-radius:8px;overflow:hidden">
+                <div style="padding:0.65rem 0.75rem;border-bottom:1px solid var(--color-dark-border);font-size:0.65rem;font-weight:700;color:var(--color-dark-text)">Личные данные</div>
+                <div style="padding:0.75rem;display:flex;flex-direction:column;gap:0.5rem">
+                  <div>
+                    <div style="font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--color-dark-text-3);margin-bottom:0.25rem">Имя</div>
+                    <div style="background:var(--color-dark-bg-3);border:1px solid var(--color-dark-border-2);border-radius:5px;padding:0.35rem 0.5rem;font-size:0.65rem;color:var(--color-dark-text)">Иван Иванов</div>
+                  </div>
+                  <div>
+                    <div style="font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--color-dark-text-3);margin-bottom:0.25rem">Email</div>
+                    <div style="background:var(--color-dark-bg-3);border:1px solid var(--color-dark-border-2);border-radius:5px;padding:0.35rem 0.5rem;font-size:0.65rem;color:var(--color-dark-text)">ivan@example.com</div>
+                  </div>
+                  <button style="background:var(--color-accent);color:#fff;border:none;border-radius:5px;padding:0.4rem;font-size:0.62rem;font-weight:700;cursor:pointer;font-family:var(--font-body);width:100%">Сохранить</button>
+                </div>
+              </div>
+            </div>
+            <div class="demo-bottom-nav">
+              <button class="demo-bnav-item"><span class="demo-bnav-icon">⊞</span>Главная</button>
+              <button class="demo-bnav-item"><span class="demo-bnav-icon">⚡</span>Создать</button>
+              <button class="demo-bnav-item"><span class="demo-bnav-icon">◫</span>Проекты</button>
+              <button class="demo-bnav-item"><span class="demo-bnav-icon">◈</span>Тарифы</button>
+              <button class="demo-bnav-item active"><span class="demo-bnav-icon">◎</span>Профиль</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PUBLIC PAGES MOBILE -->
+    <div class="canvas-light">
+      <div class="component-label" style="margin-bottom:1.25rem">Публичные страницы — гамбургер-меню</div>
+      <div class="device-frame-wrap">
+
+        <!-- PHONE: Landing nav closed -->
+        <div>
+          <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-muted-2);margin-bottom:0.5rem">Лендинг — шапка</div>
+          <div class="device-frame" style="width:240px;background:var(--color-paper)">
+            <div class="device-notch" style="background:var(--color-paper-2);border-color:var(--color-border)">
+              <div class="device-notch-dot" style="background:var(--color-border)"></div>
+              <div class="device-notch-bar" style="background:var(--color-border)"></div>
+              <div class="device-notch-dot" style="background:var(--color-border)"></div>
+            </div>
+            <div class="demo-pub-nav">
+              <div class="demo-pub-logo">карточки<span>.</span>онлайн</div>
+              <button class="demo-hamburger-btn" onclick="togglePubNav()">
+                <span></span><span></span><span></span>
+              </button>
+            </div>
+            <div class="device-screen-content" style="background:var(--color-paper);padding:1rem;gap:0.75rem" id="pubScreenContent">
+              <div style="font-family:var(--font-display);font-size:1rem;font-weight:900;letter-spacing:-0.04em;line-height:1.1;color:var(--color-ink)">Карточки товаров<br>за <span style="color:var(--color-accent)">30 секунд</span></div>
+              <div style="font-size:0.62rem;color:var(--color-muted);line-height:1.6">Загрузи фото — получи готовый сет карточек для WB, Ozon и Яндекс Маркет.</div>
+              <button style="background:var(--color-accent);color:#fff;border:none;border-radius:8px;padding:0.6rem;font-size:0.7rem;font-weight:700;cursor:pointer;font-family:var(--font-body);width:100%">Начать бесплатно →</button>
+              <button style="background:transparent;color:var(--color-ink);border:1.5px solid var(--color-border);border-radius:8px;padding:0.6rem;font-size:0.7rem;font-weight:600;cursor:pointer;font-family:var(--font-body);width:100%">Как это работает</button>
+            </div>
+            <!-- overlay nav -->
+            <div class="demo-nav-overlay" id="pubNavOverlay" style="display:none">
+              <button class="demo-nav-overlay-close" onclick="togglePubNav()">✕</button>
+              <div class="demo-nav-link">Как работает</div>
+              <div class="demo-nav-link">Площадки</div>
+              <div class="demo-nav-link">Тарифы</div>
+              <div class="demo-nav-link">Блог</div>
+              <button class="demo-nav-cta">Попробовать бесплатно →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHONE: Auth -->
+        <div>
+          <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-muted-2);margin-bottom:0.5rem">Авторизация</div>
+          <div class="device-frame" style="width:240px;background:var(--color-paper)">
+            <div class="device-notch" style="background:var(--color-paper-2);border-color:var(--color-border)">
+              <div class="device-notch-dot" style="background:var(--color-border)"></div>
+              <div class="device-notch-bar" style="background:var(--color-border)"></div>
+              <div class="device-notch-dot" style="background:var(--color-border)"></div>
+            </div>
+            <div class="demo-auth-box">
+              <div class="demo-auth-title">Добро пожаловать</div>
+              <div class="demo-auth-sub">Войдите чтобы продолжить генерацию</div>
+              <button style="background:#fff;border:1.5px solid var(--color-border);border-radius:6px;padding:0.5rem;font-size:0.62rem;font-weight:600;cursor:pointer;font-family:var(--font-body);display:flex;align-items:center;justify-content:center;gap:6px;color:var(--color-ink)">
+                <svg width="12" height="12" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                Войти через Google
+              </button>
+              <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.55rem;color:var(--color-muted-2)"><div style="flex:1;height:1px;background:var(--color-border)"></div>или<div style="flex:1;height:1px;background:var(--color-border)"></div></div>
+              <div class="demo-auth-field">Email</div>
+              <div class="demo-auth-field">Пароль</div>
+              <button class="demo-auth-btn">Войти</button>
+              <div class="demo-auth-note">Нет аккаунта? <span style="color:var(--color-accent);font-weight:600">Зарегистрироваться</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TOUCH TARGETS -->
+    <div class="canvas-dark">
+      <div class="component-label" style="color:var(--color-dark-text-3);margin-bottom:0.75rem">Touch targets — минимальные размеры</div>
+      <div class="responsive-rules-grid">
+        <div style="background:var(--color-dark-bg-3);border:1px solid var(--color-dark-border);border-radius:var(--radius-md);padding:1rem">
+          <div style="font-size:0.72rem;font-weight:700;color:var(--color-dark-text);margin-bottom:0.75rem">✓ Правильно</div>
+          <div style="display:flex;flex-direction:column;gap:0.5rem">
+            <button class="btn btn-md btn-dark-primary" style="min-height:44px;justify-content:flex-start">⊞ Дашборд</button>
+            <button class="btn btn-md btn-dark-outline" style="min-height:44px;justify-content:flex-start">⚡ Генерация</button>
+            <button class="btn btn-md btn-dark-outline" style="min-height:44px;width:44px;padding:0">☰</button>
+          </div>
+          <div style="font-size:0.65rem;color:var(--color-dark-text-3);margin-top:0.75rem;line-height:1.6">min-height: 44px<br>min-width: 44px<br>padding для зоны нажатия</div>
+        </div>
+        <div style="background:var(--color-dark-bg-3);border:1px solid var(--color-danger-dim);border-radius:var(--radius-md);padding:1rem">
+          <div style="font-size:0.72rem;font-weight:700;color:var(--color-danger);margin-bottom:0.75rem">✗ Слишком мелко</div>
+          <div style="display:flex;flex-direction:column;gap:0.5rem">
+            <button class="btn btn-sm btn-dark-outline" style="font-size:0.65rem;padding:4px 8px">⊞ Дашборд</button>
+            <button class="btn btn-sm btn-dark-outline" style="font-size:0.65rem;padding:4px 8px">⚡ Генерация</button>
+            <button class="btn btn-sm btn-dark-outline" style="width:24px;height:24px;padding:0;font-size:0.75rem">☰</button>
+          </div>
+          <div style="font-size:0.65rem;color:var(--color-dark-text-3);margin-top:0.75rem;line-height:1.6">Мелкие кнопки сложно нажать<br>пальцем — пользователи промахиваются<br>→ плохой UX на мобилке</div>
+        </div>
+        <div style="background:var(--color-dark-bg-3);border:1px solid var(--color-dark-border);border-radius:var(--radius-md);padding:1rem">
+          <div style="font-size:0.72rem;font-weight:700;color:var(--color-dark-text);margin-bottom:0.75rem">CSS правило</div>
+          <div style="background:var(--color-dark-bg);border:1px solid var(--color-dark-border);border-radius:6px;padding:0.75rem;font-family:monospace;font-size:0.65rem;color:var(--color-dark-text-2);line-height:1.8">
+            .btn, .nav-item,<br>.mnav-btn {<br>&nbsp;&nbsp;min-height: 44px;<br>}<br><br>/* iOS guideline */<br>/* Google: 48dp */<br>/* Apple: 44pt */
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+// Smooth scroll + active nav highlight
+document.querySelectorAll('.snav-link').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelectorAll('.snav-link').forEach(l => l.classList.remove('active'));
+    link.classList.add('active');
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// Accordion
+document.querySelectorAll('.accordion-trigger').forEach(btn => {
+  btn.addEventListener('click', () => btn.parentElement.classList.toggle('open'));
+});
+
+// Platform selector
+document.querySelectorAll('.platform-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.closest('.platform-selector').querySelectorAll('.platform-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+  });
+});
+
+// Chips
+document.querySelectorAll('.chips-row, .chip-group').forEach(group => {
+  group.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      group.querySelectorAll('.chip').forEach(c => c.classList.remove('chip-active'));
+      chip.classList.add('chip-active');
+    });
+  });
+});
+
+// Mobile demo interactions
+function toggleDashDrawer() {
+  const d = document.getElementById('dashDrawer');
+  d.style.display = d.style.display === 'none' ? 'flex' : 'none';
+}
+
+function togglePubNav() {
+  const o = document.getElementById('pubNavOverlay');
+  const c = document.getElementById('pubScreenContent');
+  const showing = o.style.display !== 'none';
+  o.style.display = showing ? 'none' : 'flex';
+  if (c) c.style.display = showing ? 'flex' : 'none';
+}
+
+function demoNavSwitch(btn) {
+  btn.closest('.mobile-nav').querySelectorAll('.mobile-nav-item').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+</script>
+</body>
+</html>
