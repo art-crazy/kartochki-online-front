@@ -1,10 +1,10 @@
 export const siteConfig = {
   name: "карточки.онлайн",
-  applicationName: "карточки.онлайн",
+  applicationName: "kartochki.online",
   locale: "ru-RU",
   openGraphLocale: "ru_RU",
   description:
-    "SEO-first сервис для генерации карточек товаров и изображений для продавцов маркетплейсов.",
+    "Сервис для создания карточек товаров, инфографики и изображений для продавцов на маркетплейсах.",
   keywords: [
     "карточки товаров",
     "карточки для маркетплейсов",

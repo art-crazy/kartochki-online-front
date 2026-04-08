@@ -183,17 +183,21 @@
   border-bottom: 1px solid rgba(28, 26, 23, 0.12);
 }
 
+.accordionItem:last-child {
+  border-bottom: none;
+}
+
 .accordionItemOpen {
-  padding-bottom: 1.75rem;
+  padding-bottom: 0;
 }
 
 .accordionTrigger {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 24px;
   width: 100%;
-  padding: 0 0 1.5rem;
+  padding: 1.2rem 0;
   border: none;
   background: transparent;
   text-align: left;
@@ -221,6 +225,7 @@
   font-weight: 700;
   line-height: 1;
   transition:
+    transform 0.2s ease,
     color 0.2s ease,
     border-color 0.2s ease,
     background-color 0.2s ease;
@@ -230,14 +235,25 @@
   border-color: #111;
   background: #111;
   color: #fff;
+  transform: rotate(45deg);
 }
 
 .accordionBody {
   max-width: 74ch;
+  max-height: 0;
+  overflow: hidden;
   padding: 0 4.5rem 0 0;
   color: var(--muted);
   font-size: 0.88rem;
   line-height: 1.75;
+  transition:
+    max-height 0.3s ease,
+    padding 0.3s ease;
+}
+
+.accordionItemOpen .accordionBody {
+  max-height: 300px;
+  padding: 0 4.5rem 1.2rem 0;
 }
 
 .skeletonGrid {

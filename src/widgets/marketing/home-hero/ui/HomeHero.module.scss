@@ -1,0 +1,371 @@
+.heroSection {
+  position: relative;
+  z-index: 1;
+  padding: 48px 0 0;
+}
+
+.container {
+  width: min(100% - 40px, var(--container-wide-width));
+  margin: 0 auto;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.heroBadge {
+  min-height: 34px;
+  margin-bottom: 24px;
+  padding-inline: 14px;
+  font-size: 0.78rem;
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+.heroBadgeDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 6px rgba(232, 68, 10, 0.08);
+}
+
+.heroTitle {
+  max-width: 14ch;
+  margin-bottom: 20px;
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(2.6rem, 7vw, 5.4rem);
+  font-weight: 900;
+  line-height: 0.94;
+  letter-spacing: -0.06em;
+  text-wrap: balance;
+}
+
+.heroTitle span {
+  color: var(--accent);
+}
+
+.heroPlatforms {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.heroDescription {
+  max-width: 760px;
+  margin-bottom: 28px;
+  color: var(--muted);
+  font-size: clamp(1rem, 1.5vw, 1.1rem);
+  line-height: 1.8;
+  text-wrap: balance;
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
+.heroNote {
+  margin-top: 14px;
+  color: var(--muted-2);
+  font-size: 0.82rem;
+}
+
+.mockupWrap {
+  width: min(100%, 880px);
+  margin-top: 52px;
+}
+
+.mockupCard {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.09),
+    0 1px 0 rgba(255, 255, 255, 0.8) inset;
+}
+
+.mockupBar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid var(--line);
+  background: rgba(239, 236, 228, 0.95);
+}
+
+.mockupDots {
+  display: flex;
+  gap: 8px;
+}
+
+.mockupDots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.mockupDots span:nth-child(1) {
+  background: #ff5f57;
+}
+
+.mockupDots span:nth-child(2) {
+  background: #febc2e;
+}
+
+.mockupDots span:nth-child(3) {
+  background: #28c840;
+}
+
+.mockupUrl {
+  flex: 1;
+  min-width: 0;
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(245, 242, 235, 0.95);
+  color: var(--muted);
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+.mockupBody {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  min-height: 340px;
+}
+
+.mockupSidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1.1rem;
+  border-right: 1px solid var(--line);
+  background: rgba(239, 236, 228, 0.8);
+}
+
+.mockupGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mockupLabel {
+  color: var(--muted-2);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.chipRow,
+.platformRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.uploadZone {
+  display: grid;
+  place-items: center;
+  gap: 0.35rem;
+  padding: 1.5rem 1rem;
+  border: 2px dashed var(--line);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--muted-2);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.uploadZone:hover {
+  border-style: dashed;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.uploadIcon {
+  font-size: 1.6rem;
+}
+
+.uploadText {
+  font-size: 0.78rem;
+  font-weight: 400;
+}
+
+.platformRowCompact {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.platformToggleButton {
+  min-height: 0;
+  padding: 0.3rem 0.2rem;
+  border: 1.5px solid var(--line);
+  border-radius: 6px;
+  background: transparent;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-align: center;
+  transition: all 0.15s ease;
+}
+
+.platformToggleWb {
+  border-color: rgba(120, 50, 181, 0.3);
+  background: var(--marketplace-wb-dim);
+  color: var(--marketplace-wb);
+}
+
+.platformToggleOzon {
+  border-color: rgba(0, 85, 204, 0.2);
+  background: var(--marketplace-ozon-dim);
+  color: var(--marketplace-ozon);
+}
+
+.platformToggleYm {
+  border-color: rgba(245, 166, 35, 0.3);
+  background: var(--marketplace-ym-dim);
+  color: #9a6800;
+}
+
+.styleChip {
+  padding: 0.28rem 0.65rem;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-2);
+  border-color: var(--line);
+  font-size: 0.7rem;
+  font-weight: 600;
+  transition: all 0.15s ease;
+}
+
+.styleChipActive {
+  border-color: var(--foreground);
+  background: var(--foreground);
+  color: #fff;
+}
+
+.mockupButton {
+  min-height: 0;
+  margin-top: auto;
+  border-radius: 9px;
+  font-size: 0.85rem;
+}
+
+.previewGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  padding: 1.1rem;
+  align-content: start;
+}
+
+.previewCard {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 9px;
+}
+
+.previewShine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 0%, rgba(255, 255, 255, 0.18) 45%, transparent 100%);
+  transform: translateX(-120%);
+  animation: preview-shine 5s linear infinite;
+}
+
+.previewLabel {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(58, 48, 36, 0.42);
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+@keyframes preview-shine {
+  0% {
+    transform: translateX(-120%);
+  }
+
+  35%,
+  100% {
+    transform: translateX(140%);
+  }
+}
+
+@media (max-width: 1100px) {
+  .mockupBody {
+    grid-template-columns: 1fr;
+  }
+
+  .mockupSidebar {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: min(100% - 24px, var(--container-wide-width));
+  }
+
+  .heroSection {
+    padding: 56px 0 0;
+  }
+
+  .heroTitle {
+    max-width: 12ch;
+  }
+
+  .heroActions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .heroActions :global(a),
+  .heroActions :global(button) {
+    width: 100%;
+  }
+
+  .mockupWrap {
+    margin-top: 36px;
+  }
+
+  .previewGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .previewGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .mockupBar {
+    gap: 10px;
+    padding-inline: 14px;
+  }
+
+  .mockupUrl {
+    font-size: 0.72rem;
+  }
+}

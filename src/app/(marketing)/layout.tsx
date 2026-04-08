@@ -1,7 +1,8 @@
 import type { PropsWithChildren } from "react";
+import styles from "./layout.module.scss";
 
 export default function MarketingLayout({
   children,
 }: PropsWithChildren) {
-  return children;
+  return <div className={styles.surface}>{children}</div>;
 }

@@ -1,0 +1,494 @@
+.marquee,
+.section,
+.sectionMuted,
+.statsSection,
+.faqSection,
+.ctaSection {
+  position: relative;
+  z-index: 1;
+}
+
+.containerNarrow,
+.containerTight,
+.containerFaq {
+  width: min(100% - 40px, 1120px);
+  margin: 0 auto;
+}
+
+.containerTight {
+  width: min(100% - 40px, 1040px);
+}
+
+.containerFaq {
+  width: min(100% - 40px, 760px);
+}
+
+.marquee {
+  margin-top: 72px;
+  overflow: hidden;
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.marqueeTrack {
+  display: flex;
+  gap: 36px;
+  width: max-content;
+  animation: marquee-scroll 24s linear infinite;
+}
+
+.marqueeItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted-2);
+  font-family: var(--font-display), sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.marqueeDot {
+  color: var(--accent);
+}
+
+.section {
+  padding: 72px 0 0;
+}
+
+.featuresSection {
+  position: relative;
+  z-index: 1;
+  margin-top: 72px;
+  padding: 72px 0 72px;
+  background: #111110;
+}
+
+.sectionMuted {
+  padding: 80px 0 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: rgba(239, 236, 228, 0.65);
+}
+
+.sectionHeading {
+  margin-bottom: 36px;
+}
+
+.sectionHeadingCentered {
+  text-align: center;
+}
+
+.sectionLabel {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: var(--accent);
+  font-family: var(--font-display), sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.sectionTitle {
+  margin-bottom: 12px;
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(1.9rem, 3.5vw, 3.1rem);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -0.05em;
+  text-wrap: balance;
+}
+
+.sectionDescription {
+  max-width: 620px;
+  color: var(--muted);
+  line-height: 1.75;
+  text-wrap: balance;
+}
+
+.sectionHeadingCentered .sectionDescription {
+  margin-inline: auto;
+}
+
+.featuresSection .sectionLabel {
+  color: var(--accent);
+}
+
+.featuresSection .sectionTitle {
+  color: #fff;
+}
+
+.featuresSection .sectionDescription {
+  color: #8c8882;
+}
+
+.cardsThree {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.surfaceCard,
+.stepCard {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.surfaceCard {
+  padding: 24px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.surfaceCard:hover,
+.stepCard:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+}
+
+.stars {
+  margin-bottom: 12px;
+  color: var(--accent);
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+}
+
+.testimonialQuote {
+  margin-bottom: 18px;
+  line-height: 1.8;
+}
+
+.testimonialAuthor {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.testimonialName {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+
+.testimonialMeta {
+  color: var(--muted-2);
+  font-size: 0.82rem;
+}
+
+.stepCard {
+  position: relative;
+  padding: 28px;
+}
+
+.stepNumber {
+  margin-bottom: 18px;
+  color: var(--line-strong);
+  font-family: var(--font-display), sans-serif;
+  font-size: 3rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+
+.stepTitle {
+  margin-bottom: 10px;
+  font-family: var(--font-display), sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.stepDescription {
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.stepArrow {
+  position: absolute;
+  top: 50%;
+  right: -14px;
+  color: var(--line-strong);
+  font-size: 1.3rem;
+  transform: translateY(-50%);
+}
+
+.platformHeader {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.platformIcon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  font-size: 0.84rem;
+  font-weight: 900;
+}
+
+.platformIconwb {
+  background: var(--marketplace-wb-dim);
+  color: var(--marketplace-wb);
+}
+
+.platformIconozon {
+  background: var(--marketplace-ozon-dim);
+  color: var(--marketplace-ozon);
+}
+
+.platformIconym {
+  background: var(--marketplace-ym-dim);
+  color: #9a6800;
+}
+
+.platformName {
+  margin-bottom: 4px;
+  font-family: var(--font-display), sans-serif;
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+.platformNamewb {
+  color: var(--marketplace-wb);
+}
+
+.platformNameozon {
+  color: var(--marketplace-ozon);
+}
+
+.platformNameym {
+  color: #9a6800;
+}
+
+.platformMeta {
+  color: var(--muted-2);
+  font-size: 0.78rem;
+}
+
+.specList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+}
+
+.specItem {
+  display: flex;
+  gap: 10px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.specCheck {
+  color: var(--success);
+  font-weight: 800;
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid #242321;
+  border-radius: 20px;
+  background: #242321;
+}
+
+.featureCard {
+  padding: 28px;
+  background: #111110;
+}
+
+.featureIcon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 18px;
+  border: 1px solid #2d2c2a;
+  border-radius: 12px;
+  background: #1a1918;
+  color: #fff;
+  font-size: 1.05rem;
+}
+
+.featureTitle {
+  margin-bottom: 8px;
+  color: #fff;
+  font-family: var(--font-display), sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.featureDescription {
+  color: #8c8882;
+  line-height: 1.75;
+}
+
+.statsSection {
+  padding: 72px 0 0;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.statsGrid .surfaceCard {
+  text-align: center;
+}
+
+.statValue {
+  margin-bottom: 8px;
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+
+.statValue span {
+  color: var(--accent);
+}
+
+.statLabel {
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.blogCardWrap {
+  min-width: 0;
+}
+
+.centeredAction {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+}
+
+.faqSection {
+  padding: 76px 0 0;
+}
+
+.ctaSection {
+  padding: 72px 2rem 0;
+}
+
+.ctaCard {
+  position: relative;
+  overflow: hidden;
+  padding: 56px 32px;
+  border-radius: 28px;
+  background: linear-gradient(180deg, #111110 0%, #171614 100%);
+  text-align: center;
+}
+
+.ctaCard::before {
+  content: "";
+  position: absolute;
+  inset: 50%;
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, rgba(232, 68, 10, 0.22) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.ctaCard .sectionLabel,
+.ctaCard .sectionTitle,
+.ctaCard .sectionDescription,
+.ctaButton {
+  position: relative;
+}
+
+.ctaCard .sectionTitle {
+  color: #fff;
+}
+
+.ctaCard .sectionDescription {
+  color: #9e9992;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 1100px) {
+  .stepArrow {
+    display: none;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .cardsThree,
+  .featuresGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .marquee {
+    margin-top: 56px;
+  }
+
+  .containerNarrow,
+  .containerTight,
+  .containerFaq {
+    width: min(100% - 24px, 1120px);
+  }
+
+  .section,
+  .featuresSection,
+  .sectionMuted,
+  .faqSection {
+    padding: 56px 0 0;
+  }
+
+  .featuresSection {
+    margin-top: 56px;
+    padding: 56px 0;
+  }
+
+  .ctaCard {
+    padding: 44px 20px;
+  }
+
+  .ctaSection {
+    padding: 56px 1rem 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .marqueeItem {
+    font-size: 0.74rem;
+  }
+}

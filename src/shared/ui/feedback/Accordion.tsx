@@ -16,7 +16,10 @@ export function Accordion({
         const isOpen = index === openIndex;
 
         return (
-          <div key={item.title} className={[styles.accordionItem, isOpen && styles.accordionItemOpen].filter(Boolean).join(" ")}>
+          <div
+            key={item.title}
+            className={[styles.accordionItem, isOpen && styles.accordionItemOpen].filter(Boolean).join(" ")}
+          >
             <button
               type="button"
               aria-expanded={isOpen}
@@ -25,10 +28,10 @@ export function Accordion({
             >
               <span className={styles.accordionTitle}>{item.title}</span>
               <span className={[styles.accordionIcon, isOpen && styles.accordionIconOpen].filter(Boolean).join(" ")}>
-                {isOpen ? "×" : "+"}
+                +
               </span>
             </button>
-            {isOpen ? <div className={styles.accordionBody}>{item.content}</div> : null}
+            <div className={styles.accordionBody}>{item.content}</div>
           </div>
         );
       })}
