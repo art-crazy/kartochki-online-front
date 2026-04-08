@@ -202,13 +202,14 @@ export function HomeSections() {
                   meta={post.meta}
                   gradient={post.gradient}
                   tag={<Badge tone={post.tone}>{post.tag}</Badge>}
+                  href={post.href}
                 />
               </article>
             ))}
           </div>
 
           <div className={styles.centeredAction}>
-            <Button as="a" href="#blog" variant="outline" size="lg">
+            <Button as={Link} href="/blog" variant="outline" size="lg">
               Все статьи блога →
             </Button>
           </div>

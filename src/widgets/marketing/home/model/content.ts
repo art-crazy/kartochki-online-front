@@ -1,3 +1,5 @@
+import { blogPost } from "@/entities/blog/model/content";
+
 export const marketplaceBadges = [
   { label: "Wildberries", tone: "wb" as const },
   { label: "Ozon", tone: "ozon" as const },
@@ -222,10 +224,11 @@ export const pricingPlans = [
 export const blogPosts = [
   {
     title: "Требования к фото для WB, Ozon и Яндекс Маркет: полный гайд",
-    meta: "3 апр · 10 мин",
+    meta: blogPost.listMeta,
     tag: "Wildberries",
     tone: "wb" as const,
     gradient: "linear-gradient(135deg, #e8f4fd, #b3d9f7)",
+    href: blogPost.canonicalPath,
   },
   {
     title: "Как сделать инфографику для Ozon, которая увеличивает конверсию",

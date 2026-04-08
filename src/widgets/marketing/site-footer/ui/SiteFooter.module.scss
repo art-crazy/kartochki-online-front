@@ -43,6 +43,12 @@
   transition: color 0.2s ease;
 }
 
+.footerText {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
 .footerLinks a:hover {
   color: var(--foreground);
 }

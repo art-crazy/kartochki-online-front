@@ -55,21 +55,20 @@
 }
 
 .section {
-  padding: 72px 0 0;
+  padding: 72px 0;
 }
 
 .featuresSection {
   position: relative;
   z-index: 1;
-  margin-top: 72px;
+  margin-top: 32px;
   padding: 72px 0 72px;
   background: #111110;
 }
 
 .sectionMuted {
-  padding: 80px 0 0;
+  padding: 80px 0;
   border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
   background: rgba(239, 236, 228, 0.65);
 }
 
@@ -469,8 +468,16 @@
     padding: 56px 0 0;
   }
 
+  .section {
+    padding: 56px 0;
+  }
+
+  .sectionMuted {
+    padding: 56px 0;
+  }
+
   .featuresSection {
-    margin-top: 56px;
+    margin-top: 24px;
     padding: 56px 0;
   }
 

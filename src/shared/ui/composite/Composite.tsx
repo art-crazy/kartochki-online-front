@@ -1,4 +1,5 @@
 ﻿import type { ReactNode } from "react";
+import Link from "next/link";
 import { classNames } from "@/shared/lib/classNames";
 import styles from "./Composite.module.scss";
 
@@ -182,10 +183,11 @@ type BlogCardProps = {
   meta: string;
   tag: ReactNode;
   gradient: string;
+  href?: string;
 };
 
-export function BlogCard({ title, meta, tag, gradient }: BlogCardProps) {
-  return (
+export function BlogCard({ title, meta, tag, gradient, href }: BlogCardProps) {
+  const content = (
     <CardSurface className={styles.blogCard}>
       <div className={styles.blogVisual} style={{ background: gradient }}>
         {tag}
@@ -198,6 +200,14 @@ export function BlogCard({ title, meta, tag, gradient }: BlogCardProps) {
         </div>
       </div>
     </CardSurface>
+  );
+
+  return href ? (
+    <Link href={href} className={styles.blogCardLink}>
+      {content}
+    </Link>
+  ) : (
+    content
   );
 }
 

@@ -128,7 +128,7 @@ function getPasswordStrength(password: string) {
 
 export function AuthFlow({ className }: AuthFlowProps) {
   const router = useRouter();
-  const submitTimeoutRef = useRef<ReturnType<typeof window.setTimeout> | null>(null);
+  const submitTimeoutRef = useRef<number | null>(null);
   const [screen, setScreen] = useState<AuthScreen>("login");
   const [sentEmail, setSentEmail] = useState("");
   const [loadingAction, setLoadingAction] = useState<"login" | "register" | "forgot" | "google" | null>(null);
