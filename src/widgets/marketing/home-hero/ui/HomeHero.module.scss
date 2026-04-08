@@ -2,6 +2,21 @@
   position: relative;
   z-index: 1;
   padding: 48px 0 0;
+  overflow: hidden;
+}
+
+.heroSection::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(245, 242, 235, 0.94) 0%, rgba(245, 242, 235, 0.88) 72px, rgba(245, 242, 235, 0) 196px),
+    radial-gradient(circle at top left, rgba(232, 68, 10, 0.12), transparent 28%),
+    linear-gradient(180deg, #fbf7f1 0%, var(--background) 100%);
 }
 
 .container {
