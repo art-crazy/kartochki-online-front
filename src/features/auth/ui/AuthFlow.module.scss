@@ -424,6 +424,10 @@
 }
 
 @media (max-width: 400px) {
+  .flow {
+    padding-bottom: 88px;
+  }
+
   .devTabs {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
