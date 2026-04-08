@@ -30,10 +30,10 @@ export function HomeHeader() {
           </ul>
 
           <div className={styles.navActions}>
-            <Button as={Link} href="/app" variant="outline" size="md">
+            <Button as={Link} href="/auth" variant="outline" size="md">
               Войти
             </Button>
-            <Button as={Link} href="/app" variant="primary" size="md">
+            <Button as={Link} href="/auth" variant="primary" size="md">
               Попробовать бесплатно
             </Button>
           </div>

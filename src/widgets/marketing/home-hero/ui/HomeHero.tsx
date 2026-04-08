@@ -37,7 +37,7 @@ export function HomeHero() {
           </p>
 
           <div className={styles.heroActions}>
-            <Button as={Link} href="/app" size="xl">
+            <Button as={Link} href="/auth" size="xl">
               Начать бесплатно
             </Button>
             <Button as="a" href="#how" variant="outline" size="xl">
@@ -109,7 +109,7 @@ export function HomeHero() {
                     </div>
                   </div>
 
-                  <Button as={Link} href="/app" size="lg" className={styles.mockupButton}>
+                  <Button as={Link} href="/auth" size="lg" className={styles.mockupButton}>
                     Сгенерировать
                   </Button>
                 </aside>

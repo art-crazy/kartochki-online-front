@@ -180,7 +180,7 @@ export function HomeSections() {
                 features={plan.features}
                 popular={plan.popular}
                 action={
-                  <Button as={Link} href="/app" variant={plan.actionVariant} size="lg" block>
+                  <Button as={Link} href="/auth" variant={plan.actionVariant} size="lg" block>
                     {plan.actionLabel}
                   </Button>
                 }
@@ -229,7 +229,7 @@ export function HomeSections() {
             description="10 карточек бесплатно, без карты. Займёт 2 минуты."
             centered
           />
-          <Button as={Link} href="/app" size="xl" className={styles.ctaButton}>
+          <Button as={Link} href="/auth" size="xl" className={styles.ctaButton}>
             Начать бесплатно
           </Button>
         </div>
