@@ -112,7 +112,7 @@ export function UIKitPage() {
           </Canvas>
         </Section>
 
-        <Section id="typography" title="2. Типографика" sub="Unbounded для display, Golos Text для интерфейса и контента">
+        <Section id="typography" title="2. Типографика" sub="Geologica для display, Golos Text для интерфейса и контента">
           <Canvas>
             <div className={styles.typeScale}>
               {typographyScale.map((item) => (

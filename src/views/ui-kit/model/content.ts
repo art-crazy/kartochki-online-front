@@ -1,5 +1,23 @@
 import { gradientPresets } from "@/shared/config/ui-kit";
 
+type NavigationItem = {
+  icon: string;
+  label: string;
+  active?: boolean;
+  badge?: string;
+};
+
+type MobileNavItem = {
+  icon: string;
+  label: string;
+};
+
+type AvatarShowcaseItem = {
+  initials: string;
+  size: "sm" | "md" | "lg" | "xl";
+  gradient?: 1 | 2 | 3;
+};
+
 export const sectionLinks = [
   ["tokens", "Токены"],
   ["typography", "Типографика"],
@@ -35,10 +53,10 @@ export const darkTokens = [
 ] as const;
 
 export const typographyScale = [
-  { meta: "Unbounded 900 · clamp(2rem,5vw,4rem) · tracking -0.04em", sample: "Заголовок H1" },
-  { meta: "Unbounded 900 · clamp(1.5rem,3vw,2.4rem)", sample: "Заголовок H2" },
-  { meta: "Unbounded 700 · 1.1rem", sample: "Заголовок H3" },
-  { meta: "Unbounded 700 · 0.88rem", sample: "Заголовок H4 / карточки" },
+  { meta: "Geologica 900 · clamp(2rem,5vw,4rem) · tracking -0.04em", sample: "Заголовок H1" },
+  { meta: "Geologica 900 · clamp(1.5rem,3vw,2.4rem)", sample: "Заголовок H2" },
+  { meta: "Geologica 700 · 1.1rem", sample: "Заголовок H3" },
+  { meta: "Geologica 700 · 0.88rem", sample: "Заголовок H4 / карточки" },
   { meta: "Golos Text 400 · 1rem · lh 1.7", sample: "Основной текст. Используется для описаний, параграфов и любого читаемого контента на сайте." },
   { meta: "Golos Text 400 · 0.88rem", sample: "Вторичный текст — описания, подсказки, мета-данные статей" },
   { meta: "Golos Text 700 · 0.68rem · uppercase · ls 0.1em", sample: "МЕТКА СЕКЦИИ / LABEL" },
@@ -159,7 +177,7 @@ export const loadingSteps = [
   { label: "Финальная сборка", state: "idle" as const, step: "4" },
 ] as const;
 
-export const navigationItems = [
+export const navigationItems: ReadonlyArray<NavigationItem> = [
   { icon: "⊞", label: "Дашборд" },
   { icon: "⚡", label: "Генерация", active: true, badge: "Новое" },
   { icon: "◫", label: "Проекты" },
@@ -167,7 +185,7 @@ export const navigationItems = [
   { icon: "◎", label: "Настройки" },
 ] as const;
 
-export const avatarShowcase = [
+export const avatarShowcase: ReadonlyArray<AvatarShowcaseItem> = [
   { initials: "ИИ", size: "sm" as const },
   { initials: "ИИ", size: "md" as const },
   { initials: "АС", size: "lg" as const, gradient: 2 as const },
@@ -176,7 +194,7 @@ export const avatarShowcase = [
 
 export const breadcrumbItems = ["Главная", "Блог", "Требования к фото 2025"] as const;
 
-export const mobileNavItems = [
+export const mobileNavItems: ReadonlyArray<MobileNavItem> = [
   { icon: "⊞", label: "Главная" },
   { icon: "⚡", label: "Создать" },
   { icon: "◫", label: "Проекты" },

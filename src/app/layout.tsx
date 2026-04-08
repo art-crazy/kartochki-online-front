@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Golos_Text, Unbounded } from "next/font/google";
+import { Geist, Geologica, Golos_Text } from "next/font/google";
 import { AppProviders } from "@/shared/providers/AppProviders";
 import { siteConfig } from "@/shared/config/site";
 import "./globals.scss";
@@ -14,8 +14,8 @@ const golosText = Golos_Text({
   subsets: ["latin", "cyrillic"],
 });
 
-const unbounded = Unbounded({
-  variable: "--font-unbounded",
+const geologica = Geologica({
+  variable: "--font-geologica",
   subsets: ["latin", "cyrillic"],
 });
 
@@ -58,7 +58,7 @@ export default function RootLayout({
   return (
     <html
       lang={siteConfig.locale}
-      className={[geistSans.variable, golosText.variable, unbounded.variable].join(" ")}
+      className={[geistSans.variable, golosText.variable, geologica.variable].join(" ")}
     >
       <body>
         <AppProviders>{children}</AppProviders>
