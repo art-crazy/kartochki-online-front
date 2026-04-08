@@ -141,10 +141,13 @@
 }
 
 .statGrid {
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
-.planGrid,
+.planGrid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
 .blogGrid {
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
@@ -358,6 +361,11 @@
   }
 
   .inputStack {
+    grid-template-columns: 1fr;
+  }
+
+  .statGrid,
+  .planGrid {
     grid-template-columns: 1fr;
   }
 }

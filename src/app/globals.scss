@@ -54,6 +54,7 @@
   --bp-md: 768px;
   --bp-lg: 1024px;
   --bp-xl: 1280px;
+  color-scheme: light;
 }
 
 *,
@@ -62,8 +63,17 @@
   box-sizing: border-box;
 }
 
+* {
+  min-width: 0;
+}
+
 html {
   min-height: 100%;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+html:focus-within {
   scroll-behavior: smooth;
 }
 
@@ -75,11 +85,41 @@ body {
     linear-gradient(180deg, #fbf7f1 0%, var(--background) 100%);
   color: var(--foreground);
   font-family: var(--font-sans), sans-serif;
+  line-height: 1.5;
   text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:where(h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd) {
+  margin: 0;
+}
+
+:where(ul, ol) {
+  margin: 0;
+  padding: 0;
+}
+
+:where(fieldset) {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+:where(legend) {
+  padding: 0;
+}
+
+:where(table) {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
 a {
   color: inherit;
+  text-decoration-skip-ink: auto;
   text-decoration: none;
 }
 
@@ -88,13 +128,68 @@ input,
 textarea,
 select {
   font: inherit;
+  color: inherit;
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  cursor: pointer;
+}
+
+textarea {
+  resize: vertical;
+}
+
+textarea:not([rows]) {
+  min-height: 10em;
+}
+
+:where(button, input, textarea, select):disabled {
+  cursor: not-allowed;
+}
+
+::placeholder {
+  color: var(--muted-2);
+  opacity: 1;
 }
 
 img {
   display: block;
   max-width: 100%;
+  height: auto;
 }
 
 svg {
   display: block;
+}
+
+:where(canvas, iframe, video, audio) {
+  display: block;
+  max-width: 100%;
+}
+
+:where([hidden]:not([hidden="until-found"])) {
+  display: none !important;
+}
+
+:where(:target) {
+  scroll-margin-top: 96px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

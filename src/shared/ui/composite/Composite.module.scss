@@ -1,4 +1,5 @@
 .card {
+  min-width: 0;
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: var(--background-elevated);
@@ -17,6 +18,8 @@
 }
 
 .statCard {
+  display: grid;
+  align-content: start;
   padding: 20px;
 }
 
@@ -29,11 +32,16 @@
 }
 
 .statValue {
+  max-width: 100%;
   margin-bottom: 6px;
   font-family: var(--font-display), sans-serif;
-  font-size: 1.8rem;
+  font-size: clamp(1.45rem, 3vw, 1.8rem);
   font-weight: 800;
+  line-height: 1.02;
   letter-spacing: -0.04em;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  text-wrap: balance;
 }
 
 .statSub {
@@ -133,6 +141,7 @@
 
 .planCard {
   position: relative;
+  min-width: 0;
   padding: 24px;
 }
 
@@ -164,16 +173,23 @@
 }
 
 .planPrice {
+  max-width: 100%;
   margin-bottom: 6px;
   font-family: var(--font-display), sans-serif;
-  font-size: clamp(2rem, 5vw, 2.6rem);
+  font-size: clamp(1.7rem, 4vw, 2.6rem);
   font-weight: 900;
+  line-height: 1.02;
   letter-spacing: -0.04em;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  text-wrap: balance;
 }
 
 .planPeriod {
+  max-width: 100%;
   margin-bottom: 18px;
   color: var(--muted);
+  overflow-wrap: anywhere;
 }
 
 .planDivider {
