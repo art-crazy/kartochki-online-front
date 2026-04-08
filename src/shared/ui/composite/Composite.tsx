@@ -41,9 +41,11 @@ export function ProgressBar({
 
   return (
     <div className={styles.progress}>
-      <div className={styles.progressLabelRow}>
-        <span>{label}</span>
-        <span>{valueLabel ?? `${value} / ${max}`}</span>
+      <div className={classNames(styles.progressLabelRow, dark && styles.progressLabelRowDark)}>
+        <span className={classNames(styles.progressLabel, dark && styles.progressLabelDark)}>{label}</span>
+        <span className={classNames(styles.progressValue, dark && styles.progressValueDark)}>
+          {valueLabel ?? `${value} / ${max}`}
+        </span>
       </div>
       <div
         role="progressbar"

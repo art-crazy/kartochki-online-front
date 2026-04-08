@@ -63,6 +63,34 @@
   font-size: 0.75rem;
 }
 
+.progressLabelRowDark {
+  color: var(--dark-text-2);
+}
+
+.progressLabel,
+.progressValue {
+  min-width: 0;
+}
+
+.progressLabel {
+  color: var(--muted);
+}
+
+.progressValue {
+  color: var(--foreground);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.progressLabelDark {
+  color: var(--dark-text-2);
+}
+
+.progressValueDark {
+  color: color-mix(in srgb, var(--dark-text) 92%, white 8%);
+}
+
 .progressTrack {
   overflow: hidden;
   height: 8px;
