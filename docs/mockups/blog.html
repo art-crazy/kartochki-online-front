@@ -530,19 +530,57 @@ footer {
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
+/* ─── MOBILE HAMBURGER ─── */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 2px; }
+.mobile-nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(245,242,235,0.98);
+  z-index: 200;
+  flex-direction: column;
+  padding: 1.5rem 2rem;
+  gap: 1.5rem;
+}
+.mobile-nav-overlay.open { display: flex; }
+.mobile-nav-close { align-self: flex-end; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--muted); }
+.mobile-nav-links { list-style: none; display: flex; flex-direction: column; gap: 0.25rem; }
+.mobile-nav-links a { display: block; font-family: var(--font-display); font-size: 1.4rem; font-weight: 900; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+.mobile-nav-actions { display: flex; flex-direction: column; gap: 0.75rem; margin-top: auto; }
+.mobile-nav-actions .btn { width: 100%; justify-content: center; border-radius: 10px; font-size: 1rem; padding: 0.85rem; }
+
 /* RESPONSIVE */
 @media (max-width: 900px) {
   .blog-wrap { grid-template-columns: 1fr; }
   .sidebar-blog { display: none; }
-  .blog-hero { grid-template-columns: 1fr; }
+  .blog-hero { grid-template-columns: 1fr; padding: 2.5rem 1.5rem 2rem; }
   .blog-hero-stats { display: none; }
   .featured-post { grid-template-columns: 1fr; min-height: auto; }
   .featured-visual { height: 200px; }
   .posts-grid { grid-template-columns: 1fr; }
+  .blog-wrap { padding-top: 1.5rem; padding-left: 1.5rem; padding-right: 1.5rem; }
 }
 @media (max-width: 600px) {
-  nav { padding: 1rem; }
+  nav { padding: 0.85rem 1.25rem; }
   .nav-links { display: none; }
+  nav > div:last-child { display: none; }
+  .nav-hamburger { display: flex; }
+  .blog-hero h1 { font-size: clamp(1.6rem, 7vw, 2.5rem); }
+  .filters { gap: 0.35rem; }
+  .filter-chip { padding: 0.35rem 0.75rem; font-size: 0.75rem; }
+  .featured-title { font-size: 1rem; }
+  footer { flex-direction: column; text-align: center; }
+  .footer-links { flex-wrap: wrap; justify-content: center; }
 }
 </style>
 </head>
@@ -560,7 +598,23 @@ footer {
     <a href="auth.html" class="btn btn-outline">Войти</a>
     <a href="auth.html" class="btn btn-primary">Попробовать бесплатно</a>
   </div>
+  <button class="nav-hamburger" onclick="openMobileNav()" aria-label="Меню">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<!-- MOBILE NAV -->
+<div class="mobile-nav-overlay" id="mobileNavOverlay">
+  <button class="mobile-nav-close" onclick="closeMobileNav()">✕</button>
+  <ul class="mobile-nav-links">
+    <li><a href="index.html" onclick="closeMobileNav()">Главная</a></li>
+    <li><a href="blog.html" onclick="closeMobileNav()">Блог</a></li>
+    <li><a href="index.html#pricing" onclick="closeMobileNav()">Тарифы</a></li>
+  </ul>
+  <div class="mobile-nav-actions">
+    <a href="auth.html" class="btn btn-outline">Войти</a>
+    <a href="auth.html" class="btn btn-primary">Попробовать бесплатно →</a>
+  </div>
+</div>
 
 <!-- HERO -->
 <div class="blog-hero reveal">
@@ -928,6 +982,15 @@ const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+function openMobileNav() {
+  document.getElementById('mobileNavOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileNav() {
+  document.getElementById('mobileNavOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
 </script>
 </body>
 </html>

@@ -440,9 +440,16 @@ body::before {
 @media (max-width: 768px) {
   .layout { grid-template-columns: 1fr; }
   .left { display: none; }
-  .right { padding: 1.5rem; }
+  .right { padding: 1.5rem; align-items: flex-start; padding-top: 2.5rem; }
   body { overflow: auto; }
   html, body { height: auto; min-height: 100vh; }
+  .auth-box { max-width: 100%; }
+  .dev-tabs { top: auto; bottom: 1rem; right: 0.5rem; left: 0.5rem; justify-content: center; }
+  .auth-heading { font-size: 1.4rem; }
+}
+@media (max-width: 400px) {
+  .right { padding: 1.25rem; }
+  .btn-google { font-size: 0.85rem; }
 }
 
 /* TAB SWITCHER (dev helper) */

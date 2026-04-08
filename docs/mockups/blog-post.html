@@ -437,17 +437,55 @@ footer { position: relative; z-index: 1; border-top: 1px solid var(--border); pa
 .footer-links a:hover { color: var(--ink); }
 .footer-copy { font-size: 0.8rem; color: var(--muted2); }
 
+/* ─── MOBILE HAMBURGER ─── */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 2px; }
+.mobile-nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(245,242,235,0.98);
+  z-index: 200;
+  flex-direction: column;
+  padding: 1.5rem 2rem;
+  gap: 1.5rem;
+}
+.mobile-nav-overlay.open { display: flex; }
+.mobile-nav-close { align-self: flex-end; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--muted); }
+.mobile-nav-links { list-style: none; display: flex; flex-direction: column; gap: 0.25rem; }
+.mobile-nav-links a { display: block; font-family: var(--font-display); font-size: 1.4rem; font-weight: 900; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+.mobile-nav-actions { display: flex; flex-direction: column; gap: 0.75rem; margin-top: auto; }
+.mobile-nav-actions .btn { width: 100%; justify-content: center; border-radius: 10px; font-size: 1rem; padding: 0.85rem; }
+
 @media (max-width: 900px) {
-  .post-layout { grid-template-columns: 1fr; }
+  .post-layout { grid-template-columns: 1fr; padding: 0 1.5rem 4rem; gap: 2rem; }
   .post-sidebar { display: none; }
   .platform-cards { grid-template-columns: 1fr; }
   .related-grid { grid-template-columns: 1fr; }
   .cta-banner { flex-direction: column; gap: 1rem; }
+  .breadcrumb { padding: 1rem 1.5rem 0; }
 }
 @media (max-width: 600px) {
-  nav { padding: 1rem; }
+  nav { padding: 0.85rem 1.25rem; }
   .nav-links { display: none; }
-  .post-title { font-size: 1.5rem; }
+  nav > div:last-child { display: none; }
+  .nav-hamburger { display: flex; }
+  .post-title { font-size: 1.4rem; }
+  .post-meta-row { gap: 0.75rem; }
+  .post-share { margin-left: 0; }
+  .table-wrap { font-size: 0.78rem; }
+  th, td { padding: 0.6rem 0.75rem; }
+  footer { flex-direction: column; text-align: center; }
+  .footer-links { flex-wrap: wrap; justify-content: center; }
 }
 </style>
 </head>
@@ -467,7 +505,22 @@ footer { position: relative; z-index: 1; border-top: 1px solid var(--border); pa
     <a href="auth.html" class="btn btn-outline">Войти</a>
     <a href="auth.html" class="btn btn-primary">Попробовать бесплатно</a>
   </div>
+  <button class="nav-hamburger" onclick="openMobileNav()" aria-label="Меню">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="mobile-nav-overlay" id="mobileNavOverlay">
+  <button class="mobile-nav-close" onclick="closeMobileNav()">✕</button>
+  <ul class="mobile-nav-links">
+    <li><a href="index.html" onclick="closeMobileNav()">Главная</a></li>
+    <li><a href="blog.html" onclick="closeMobileNav()">Блог</a></li>
+    <li><a href="index.html#pricing" onclick="closeMobileNav()">Тарифы</a></li>
+  </ul>
+  <div class="mobile-nav-actions">
+    <a href="auth.html" class="btn btn-outline">Войти</a>
+    <a href="auth.html" class="btn btn-primary">Попробовать бесплатно →</a>
+  </div>
+</div>
 
 <!-- BREADCRUMB -->
 <div class="breadcrumb">
@@ -917,6 +970,15 @@ function copyLink() {
   const btn = event.target;
   btn.textContent = '✓';
   setTimeout(() => btn.textContent = '🔗', 2000);
+}
+
+function openMobileNav() {
+  document.getElementById('mobileNavOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileNav() {
+  document.getElementById('mobileNavOverlay').classList.remove('open');
+  document.body.style.overflow = '';
 }
 </script>
 </body>

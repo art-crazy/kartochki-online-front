@@ -255,6 +255,148 @@ html, body { height: 100%; font-family: var(--font-body); background: var(--bg);
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+/* ══════════════════════════════════════
+   MOBILE RESPONSIVE — APP PAGES
+══════════════════════════════════════ */
+
+/* Mobile bottom navigation */
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  z-index: 50;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.mobile-bottom-nav-inner {
+  display: flex;
+}
+.mnav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 10px 4px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--text3);
+  font-family: var(--font-body);
+  font-size: 0.58rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 56px;
+}
+.mnav-btn.active { color: var(--accent); }
+.mnav-btn:hover { color: var(--text2); }
+.mnav-icon { font-size: 1.25rem; line-height: 1; }
+
+/* Mobile header toggle */
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--text2);
+  cursor: pointer;
+  padding: 0.4rem 0.6rem;
+  font-size: 1.1rem;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Sidebar drawer on mobile */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 55;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.sidebar-overlay.open { opacity: 1; pointer-events: all; }
+
+@media (max-width: 768px) {
+  /* ── Layout ── */
+  html, body { overflow: auto !important; height: auto !important; }
+
+  /* ── App grid → single column ── */
+  .app { grid-template-columns: 1fr !important; }
+
+  /* ── Sidebar becomes slide-in drawer ── */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: 260px;
+    z-index: 60;
+    transform: translateX(-100%);
+    transition: transform 0.28s ease;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.5);
+  }
+  .sidebar.drawer-open { transform: translateX(0); }
+  .sidebar-overlay { display: block; pointer-events: none; }
+
+  /* ── Main takes full width ── */
+  .main { height: auto; min-height: 100vh; overflow: visible; }
+
+  /* ── Header ── */
+  .header { padding: 0.85rem 1rem; }
+  .mobile-menu-toggle { display: flex; align-items: center; }
+  .header-actions { gap: 0.5rem; }
+  .header-actions .btn span { display: none; }
+
+  /* ── Content scroll ── */
+  .content { overflow: visible; padding: 1.25rem; padding-bottom: 80px; }
+
+  /* ── Bottom nav ── */
+  .mobile-bottom-nav { display: block; }
+}
+
+@media (max-width: 480px) {
+  .content { padding: 1rem; padding-bottom: 80px; }
+  .header-title { font-size: 0.88rem !important; }
+}
+
+@media (max-width: 768px) {
+  .settings-wrap { grid-template-columns: 1fr !important; overflow: visible; }
+  .settings-nav {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    overflow: visible;
+    display: flex;
+  }
+  .settings-nav::-webkit-scrollbar { display: none; }
+  .settings-nav-item {
+    white-space: nowrap;
+    padding: 0.4rem 0.75rem;
+    border-radius: 100px;
+    font-size: 0.78rem;
+    border: 1.5px solid var(--border);
+    flex-shrink: 0;
+  }
+  .settings-nav-item.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .settings-content { padding: 1.25rem; }
+  .form-row-2 { grid-template-columns: 1fr; }
+  .modal { max-width: 100%; margin: 1rem; }
+  .modal-overlay { align-items: flex-end; }
+  .modal { border-radius: 20px 20px 0 0; }
+  .api-key-row { flex-direction: column; }
+  .avatar-row { flex-direction: column; align-items: center; text-align: center; }
+  .avatar-actions { justify-content: center; }
+}
+
 </style>
 </head>
 <body>
@@ -292,6 +434,7 @@ html, body { height: 100%; font-family: var(--font-body); background: var(--bg);
   <!-- MAIN -->
   <div class="main">
     <header class="header">
+      <button class="mobile-menu-toggle" onclick="openSidebar()" aria-label="Меню">☰</button>
       <div>
         <div class="header-title">Настройки</div>
         <div class="header-sub">Профиль и параметры аккаунта</div>
@@ -339,7 +482,7 @@ html, body { height: 100%; font-family: var(--font-body); background: var(--bg);
                 </div>
                 <div class="avatar-info">
                   <div class="avatar-name">Иван Иванов</div>
-                  <div class="avatar-email">ivan@example.com</div>
+                  <div class="avatar-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="741d02151a34110c15190418115a171b19">[email&#160;protected]</a></div>
                   <div class="avatar-actions">
                     <button class="btn btn-ghost" onclick="showToast('Выберите файл...')">Загрузить фото</button>
                     <button class="btn btn-ghost" onclick="showToast('Фото удалено')">Удалить</button>
@@ -497,7 +640,7 @@ html, body { height: 100%; font-family: var(--font-body); background: var(--bg);
           <div class="settings-card">
             <div class="settings-card-header">
               <div class="settings-card-title">Email-уведомления</div>
-              <div class="settings-card-sub">На адрес ivan@example.com</div>
+              <div class="settings-card-sub">На адрес <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b1d8c7d0dff1d4c9d0dcc1ddd49fd2dedc">[email&#160;protected]</a></div>
             </div>
             <div class="settings-card-body">
               <div class="toggle-row-setting">
@@ -571,7 +714,7 @@ html, body { height: 100%; font-family: var(--font-body); background: var(--bg);
                 </div>
                 <div class="connected-info">
                   <div class="connected-name">Google</div>
-                  <div class="connected-status status-on">● Подключён · ivan@gmail.com</div>
+                  <div class="connected-status status-on">● Подключён · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="127b64737c52757f737b7e3c717d7f">[email&#160;protected]</a></div>
                 </div>
                 <button class="btn btn-ghost" style="font-size:0.75rem;padding:0.3rem 0.7rem" onclick="showToast('Аккаунт отключён')">Отключить</button>
               </div>
@@ -658,7 +801,7 @@ html, body { height: 100%; font-family: var(--font-body); background: var(--bg);
   <span id="toast-text"></span>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 function switchTab(name, el) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.settings-nav-item').forEach(n => n.classList.remove('active'));
@@ -721,19 +864,4 @@ function closeModalDirect() {
 }
 
 function handleDelete() {
-  closeModalDirect();
-  showToast('Аккаунт удалён. Перенаправляем...');
-  setTimeout(() => { window.location.href = 'auth.html'; }, 2000);
-}
-
-let toastTimer;
-function showToast(msg) {
-  const toast = document.getElementById('toast');
-  document.getElementById('toast-text').textContent = msg;
-  toast.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
-}
-</script>
-</body>
-</html>
+  closeModalDir

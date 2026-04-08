@@ -392,6 +392,76 @@ footer { position: relative; z-index: 1; border-top: 1px solid var(--border); pa
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
 /* RESPONSIVE */
+/* ─── MOBILE HAMBURGER ─── */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: all 0.25s;
+}
+.mobile-nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(245,242,235,0.98);
+  z-index: 200;
+  flex-direction: column;
+  padding: 1.5rem 2rem;
+  gap: 1.5rem;
+}
+.mobile-nav-overlay.open { display: flex; }
+.mobile-nav-close {
+  align-self: flex-end;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--muted);
+  -webkit-tap-highlight-color: transparent;
+}
+.mobile-nav-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.mobile-nav-links a {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  text-decoration: none;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.mobile-nav-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+.mobile-nav-actions .btn {
+  width: 100%;
+  justify-content: center;
+  border-radius: 10px;
+  font-size: 1rem;
+  padding: 0.85rem;
+}
+
 @media (max-width: 900px) {
   .steps { grid-template-columns: 1fr; }
   .step-arrow { display: none; }
@@ -406,10 +476,31 @@ footer { position: relative; z-index: 1; border-top: 1px solid var(--border); pa
   .mockup-canvas { grid-template-columns: repeat(3, 1fr); }
   .cta-final { margin: 0 1rem 2rem; padding: 3rem 1.5rem; }
 }
+@media (max-width: 768px) {
+  .hero { padding: 3.5rem 1.25rem 3rem; min-height: auto; }
+  .hero h1 { font-size: clamp(1.8rem, 8vw, 2.8rem); }
+  .hero-sub { font-size: 0.95rem; }
+  .hero-cta { flex-direction: column; align-items: stretch; }
+  .hero-cta .btn { width: 100%; justify-content: center; }
+  .mockup-wrap { margin-top: 2.5rem; }
+  .proof { padding: 2.5rem 1.25rem; }
+  .how { padding: 3rem 1.25rem; }
+  .platforms { padding: 3rem 1.25rem; }
+  .features { padding: 3rem 1.25rem; }
+  .stats { padding: 2.5rem 1.25rem; }
+  .pricing { padding: 3rem 1.25rem; }
+  .faq { padding: 3rem 1.25rem; }
+  .blog-preview { padding: 3rem 1.25rem; }
+  .pricing-grid { grid-template-columns: 1fr; }
+}
 @media (max-width: 600px) {
-  nav { padding: 1rem; }
+  nav { padding: 0.85rem 1.25rem; }
   .nav-links { display: none; }
+  nav > div:last-child { display: none; }
+  .nav-hamburger { display: flex; }
   footer { flex-direction: column; text-align: center; }
+  .footer-links { flex-wrap: wrap; justify-content: center; gap: 1rem; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
 }
 </style>
 </head>
@@ -429,7 +520,26 @@ footer { position: relative; z-index: 1; border-top: 1px solid var(--border); pa
     <a href="auth.html" class="btn btn-outline">Войти</a>
     <a href="auth.html" class="btn btn-primary">Попробовать бесплатно</a>
   </div>
+  <button class="nav-hamburger" onclick="openMobileNav()" aria-label="Меню">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE NAV OVERLAY -->
+<div class="mobile-nav-overlay" id="mobileNavOverlay">
+  <button class="mobile-nav-close" onclick="closeMobileNav()">✕</button>
+  <ul class="mobile-nav-links">
+    <li><a href="#how" onclick="closeMobileNav()">Как работает</a></li>
+    <li><a href="#platforms" onclick="closeMobileNav()">Площадки</a></li>
+    <li><a href="#features" onclick="closeMobileNav()">Возможности</a></li>
+    <li><a href="#pricing" onclick="closeMobileNav()">Тарифы</a></li>
+    <li><a href="blog.html" onclick="closeMobileNav()">Блог</a></li>
+  </ul>
+  <div class="mobile-nav-actions">
+    <a href="auth.html" class="btn btn-outline">Войти</a>
+    <a href="auth.html" class="btn btn-primary">Попробовать бесплатно →</a>
+  </div>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -828,6 +938,15 @@ document.querySelectorAll('.chips-row .mchip').forEach(chip => {
     chip.classList.add('active');
   });
 });
+
+function openMobileNav() {
+  document.getElementById('mobileNavOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileNav() {
+  document.getElementById('mobileNavOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
 </script>
 </body>
 </html>

@@ -459,6 +459,137 @@ html, body { height: 100%; font-family: var(--font-body); background: var(--bg);
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+/* ══════════════════════════════════════
+   MOBILE RESPONSIVE — APP PAGES
+══════════════════════════════════════ */
+
+/* Mobile bottom navigation */
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  z-index: 50;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.mobile-bottom-nav-inner {
+  display: flex;
+}
+.mnav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 10px 4px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--text3);
+  font-family: var(--font-body);
+  font-size: 0.58rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 56px;
+}
+.mnav-btn.active { color: var(--accent); }
+.mnav-btn:hover { color: var(--text2); }
+.mnav-icon { font-size: 1.25rem; line-height: 1; }
+
+/* Mobile header toggle */
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--text2);
+  cursor: pointer;
+  padding: 0.4rem 0.6rem;
+  font-size: 1.1rem;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Sidebar drawer on mobile */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 55;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.sidebar-overlay.open { opacity: 1; pointer-events: all; }
+
+@media (max-width: 768px) {
+  /* ── Layout ── */
+  html, body { overflow: auto !important; height: auto !important; }
+
+  /* ── App grid → single column ── */
+  .app { grid-template-columns: 1fr !important; }
+
+  /* ── Sidebar becomes slide-in drawer ── */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: 260px;
+    z-index: 60;
+    transform: translateX(-100%);
+    transition: transform 0.28s ease;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.5);
+  }
+  .sidebar.drawer-open { transform: translateX(0); }
+  .sidebar-overlay { display: block; pointer-events: none; }
+
+  /* ── Main takes full width ── */
+  .main { height: auto; min-height: 100vh; overflow: visible; }
+
+  /* ── Header ── */
+  .header { padding: 0.85rem 1rem; }
+  .mobile-menu-toggle { display: flex; align-items: center; }
+  .header-actions { gap: 0.5rem; }
+  .header-actions .btn span { display: none; }
+
+  /* ── Content scroll ── */
+  .content { overflow: visible; padding: 1.25rem; padding-bottom: 80px; }
+
+  /* ── Bottom nav ── */
+  .mobile-bottom-nav { display: block; }
+}
+
+@media (max-width: 480px) {
+  .content { padding: 1rem; padding-bottom: 80px; }
+  .header-title { font-size: 0.88rem !important; }
+}
+
+@media (max-width: 768px) {
+  /* Generate: stacked layout */
+  .generate-wrap { grid-template-columns: 1fr !important; overflow: visible; }
+  .left-panel {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    overflow: visible;
+    padding: 1.25rem;
+    gap: 1rem;
+  }
+  .right-panel { overflow: visible; min-height: 400px; }
+  .results-header { padding: 0.85rem 1.25rem; }
+  .results-body { overflow: visible; padding: 1.25rem; }
+  .cards-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  .skeleton-grid { grid-template-columns: repeat(2, 1fr); }
+  .generate-btn { position: sticky; bottom: 72px; z-index: 10; }
+  .toggle-row { grid-template-columns: 1fr 1fr; }
+  .count-selector { gap: 4px; }
+}
+@media (max-width: 400px) {
+  .cards-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
 </style>
 </head>
 <body>
@@ -496,7 +627,7 @@ html, body { height: 100%; font-family: var(--font-body); background: var(--bg);
 
   <!-- MAIN -->
   <div class="main">
-    <header class="header">
+    <header class="header"><button class="mobile-menu-toggle" onclick="openSidebar()" aria-label="Меню">☰</button>
       <div>
         <div class="header-title">Генерация карточек</div>
         <div class="header-sub">Загрузи фото — получи готовый сет</div>
@@ -818,5 +949,28 @@ function showToast(msg) {
   toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
 }
 </script>
+
+<!-- MOBILE BOTTOM NAV -->
+<div class="mobile-bottom-nav">
+  <div class="mobile-bottom-nav-inner">
+    <a href="dashboard.html" class="mnav-btn">
+      <span class="mnav-icon">⊞</span>Главная
+    </a>
+    <a href="generate.html" class="mnav-btn active">
+      <span class="mnav-icon">⚡</span>Создать
+    </a>
+    <a href="dashboard.html" class="mnav-btn">
+      <span class="mnav-icon">◫</span>Проекты
+    </a>
+    <a href="billing.html" class="mnav-btn">
+      <span class="mnav-icon">◈</span>Тарифы
+    </a>
+    <a href="settings.html" class="mnav-btn">
+      <span class="mnav-icon">◎</span>Профиль
+    </a>
+  </div>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
 </body>
 </html>
