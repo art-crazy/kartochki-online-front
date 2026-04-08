@@ -32,6 +32,33 @@ export type BlogCardEntry = {
   href?: string;
 };
 
+export type BlogFeedPost = {
+  categoryLabel: string;
+  title: string;
+  excerpt: string;
+  meta: string;
+  readLabel: string;
+  visualClass: "pv1" | "pv2" | "pv3" | "pv4" | "pv5" | "pv6";
+  visualLabel: string;
+  visualTone: "wb" | "ozon" | "both" | "tips";
+  decor: string;
+  href?: string;
+};
+
+export type BlogListPost = {
+  number: string;
+  tag: string;
+  title: string;
+  meta: string;
+  href?: string;
+};
+
+export type BlogSidebarPost = {
+  title: string;
+  meta: string;
+  href?: string;
+};
+
 export type BlogTableCellTone = "success" | "muted";
 
 export type BlogTableContent = {
@@ -87,6 +114,145 @@ export const blogPost: BlogPostEntry = {
 export const allBlogPosts = [blogPost] as const;
 
 export const blogPostSlugs = allBlogPosts.map((post) => post.slug);
+
+export const blogHeroStats = [
+  { value: "24", label: "статьи" },
+  { value: "8к", label: "читателей" },
+] as const;
+
+export const blogFilterChips = ["Все", "Wildberries", "Ozon", "Инфографика", "SEO"] as const;
+
+export const blogFeedPosts: readonly BlogFeedPost[] = [
+  {
+    categoryLabel: "Инфографика",
+    title: "Как сделать инфографику для Ozon, которая увеличивает конверсию",
+    excerpt: "Разбираем структуру, иконки, тексты и цвета. Примеры, которые работают на карточке товара.",
+    meta: "28 мар · 7 мин",
+    readLabel: "Читать",
+    visualClass: "pv2",
+    visualLabel: "Ozon",
+    visualTone: "ozon",
+    decor: "📊",
+  },
+  {
+    categoryLabel: "Размеры",
+    title: "Размеры карточек Wildberries 2025: таблица для всех категорий",
+    excerpt: "Актуальные размеры и требования к изображениям для разных типов товаров на Wildberries.",
+    meta: "21 мар · 5 мин",
+    readLabel: "Читать",
+    visualClass: "pv1",
+    visualLabel: "Wildberries",
+    visualTone: "wb",
+    decor: "📐",
+  },
+  {
+    categoryLabel: "Дизайн",
+    title: "Белый фон или нет: что лучше работает на маркетплейсах в 2025",
+    excerpt: "Сравниваем карточки с белым фоном и lifestyle-съёмкой на WB, Ozon и Маркете.",
+    meta: "14 мар · 8 мин",
+    readLabel: "Читать",
+    visualClass: "pv3",
+    visualLabel: "WB + Ozon",
+    visualTone: "both",
+    decor: "🎨",
+  },
+  {
+    categoryLabel: "Конверсия",
+    title: "Почему карточка не продаёт: 7 ошибок, которые допускают 90% продавцов",
+    excerpt: "Показываем типовые просчёты в фото, инфографике и тексте, которые снижают продажи.",
+    meta: "7 мар · 6 мин",
+    readLabel: "Читать",
+    visualClass: "pv4",
+    visualLabel: "Советы",
+    visualTone: "tips",
+    decor: "💡",
+  },
+  {
+    categoryLabel: "SEO",
+    title: "SEO-оптимизация карточки WB: как попасть в топ без рекламы",
+    excerpt: "Ключевые слова, структура контента и описание карточки, которые помогают получать трафик.",
+    meta: "28 фев · 9 мин",
+    readLabel: "Читать",
+    visualClass: "pv5",
+    visualLabel: "Wildberries",
+    visualTone: "wb",
+    decor: "🔍",
+  },
+  {
+    categoryLabel: "Фото",
+    title: "Как снять товар на телефон для Ozon: пошаговая инструкция",
+    excerpt: "Практичный чеклист по свету, ракурсам и подготовке фото без отдельного фотографа.",
+    meta: "20 фев · 5 мин",
+    readLabel: "Читать",
+    visualClass: "pv6",
+    visualLabel: "Ozon",
+    visualTone: "ozon",
+    decor: "📦",
+  },
+] as const;
+
+export const moreBlogPosts: readonly BlogListPost[] = [
+  {
+    number: "07",
+    tag: "Wildberries · Требования",
+    title: "Модерация карточек WB: почему отклоняют и как пройти с первого раза",
+    meta: "12 фев 2025 · 6 мин чтения",
+  },
+  {
+    number: "08",
+    tag: "Оба маркетплейса · Дизайн",
+    title: "Как создать бренд-шаблон для карточек и держать единый стиль",
+    meta: "5 фев 2025 · 7 мин чтения",
+  },
+  {
+    number: "09",
+    tag: "Ozon · SEO",
+    title: "Rich-контент на Ozon: что это и зачем он нужен каждому продавцу",
+    meta: "28 янв 2025 · 8 мин чтения",
+  },
+  {
+    number: "10",
+    tag: "WB · Аналитика",
+    title: "Как читать аналитику WB и улучшать карточки на основе данных",
+    meta: "20 янв 2025 · 10 мин чтения",
+  },
+  {
+    number: "11",
+    tag: "Советы · ИИ",
+    title: "Как использовать ИИ для создания карточек: реальный опыт продавцов",
+    meta: "14 янв 2025 · 5 мин чтения",
+  },
+] as const;
+
+export const blogCategories = [
+  { label: "Wildberries", count: "9" },
+  { label: "Ozon", count: "7" },
+  { label: "Инфографика", count: "4" },
+  { label: "Фото и дизайн", count: "6" },
+  { label: "SEO карточки", count: "3" },
+  { label: "Конверсия", count: "5" },
+] as const;
+
+export const blogPopularPosts: readonly BlogSidebarPost[] = [
+  { title: "Требования к фото для WB 2025", meta: "4.2к просмотров", href: blogPost.canonicalPath },
+  { title: "Инфографика для Ozon: полный гайд", meta: "3.1к просмотров" },
+  { title: "7 ошибок в карточках товаров", meta: "2.8к просмотров" },
+  { title: "SEO карточки WB без рекламы", meta: "1.9к просмотров" },
+] as const;
+
+export const blogTags = [
+  "Wildberries",
+  "Ozon",
+  "Фото товара",
+  "Инфографика",
+  "Белый фон",
+  "Размеры",
+  "Модерация",
+  "SEO",
+  "Rich-контент",
+  "Конверсия",
+  "ИИ генерация",
+] as const;
 
 export const relatedPosts: readonly BlogCardEntry[] = [
   {
@@ -363,6 +529,14 @@ export const faqSchema = {
       text: item.answer,
     },
   })),
+} as const;
+
+export const blogListingSchema = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  name: "Блог kartochki.online",
+  description: "Советы для продавцов на маркетплейсах: требования к фото, инфографика и оформление карточек.",
+  url: `${siteConfig.defaultUrl}/blog`,
 } as const;
 
 export function getBlogPostBySlug(slug: string) {
