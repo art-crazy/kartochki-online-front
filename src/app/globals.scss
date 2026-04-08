@@ -1,13 +1,59 @@
 :root {
-  --background: #f5f1ea;
-  --background-elevated: #fffdf9;
-  --foreground: #1f1a17;
-  --muted: #6e625b;
-  --line: rgba(31, 26, 23, 0.12);
-  --accent: #de6f3d;
-  --accent-strong: #bb4f20;
+  --background: #f5f2eb;
+  --background-elevated: #ffffff;
+  --foreground: #0d0d0d;
+  --muted: #6b6760;
+  --muted-2: #9b9790;
+  --line: #d8d4cb;
+  --line-strong: #c8c4bb;
+  --accent: #e8440a;
+  --accent-strong: #c93a08;
+  --accent-dim: rgba(232, 68, 10, 0.1);
+  --accent-border: rgba(232, 68, 10, 0.25);
+  --success: #1d9e75;
+  --success-dim: rgba(29, 158, 117, 0.1);
+  --danger: #c0392b;
+  --danger-dim: rgba(192, 57, 43, 0.1);
+  --dark-bg: #111110;
+  --dark-bg-2: #1a1918;
+  --dark-bg-3: #222120;
+  --dark-border: #2a2927;
+  --dark-border-2: #333230;
+  --dark-text: #e8e4dc;
+  --dark-text-2: #888580;
+  --dark-text-3: #555350;
+  --marketplace-wb: #7832b5;
+  --marketplace-wb-dim: rgba(120, 50, 181, 0.1);
+  --marketplace-ozon: #0055cc;
+  --marketplace-ozon-dim: rgba(0, 85, 204, 0.1);
+  --marketplace-ym: #f5a623;
+  --marketplace-ym-dim: rgba(245, 166, 35, 0.12);
   --container-width: 1200px;
-  --font-sans: var(--font-geist-sans);
+  --container-wide-width: 1320px;
+  --font-sans: var(--font-golos-text), var(--font-geist-sans);
+  --font-display: var(--font-unbounded);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-2xl: 24px;
+  --radius-full: 999px;
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 10px 32px rgba(0, 0, 0, 0.1);
+  --shadow-modal: 0 24px 80px rgba(0, 0, 0, 0.2);
+  --bp-sm: 480px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
 }
 
 *,
@@ -25,7 +71,7 @@ body {
   min-height: 100vh;
   margin: 0;
   background:
-    radial-gradient(circle at top left, rgba(222, 111, 61, 0.12), transparent 28%),
+    radial-gradient(circle at top left, rgba(232, 68, 10, 0.12), transparent 28%),
     linear-gradient(180deg, #fbf7f1 0%, var(--background) 100%);
   color: var(--foreground);
   font-family: var(--font-sans), sans-serif;
@@ -47,4 +93,8 @@ select {
 img {
   display: block;
   max-width: 100%;
+}
+
+svg {
+  display: block;
 }

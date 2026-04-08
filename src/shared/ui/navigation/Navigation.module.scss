@@ -1,0 +1,144 @@
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--dark-text-2);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.navItem:hover {
+  background: var(--dark-bg-3);
+  color: var(--dark-text);
+}
+
+.navActive {
+  background: rgba(232, 68, 10, 0.12);
+  color: var(--dark-text);
+}
+
+.navBadge {
+  margin-left: auto;
+}
+
+.sidebarPlan {
+  padding: 18px;
+  border: 1px solid var(--dark-border);
+  border-radius: var(--radius-lg);
+  background: var(--dark-bg-3);
+}
+
+.sidebarPlanLabel {
+  margin-bottom: 6px;
+  color: var(--dark-text);
+  font-weight: 700;
+}
+
+.sidebarPlanUsage {
+  margin-bottom: 12px;
+  color: var(--dark-text-2);
+  font-size: 0.78rem;
+}
+
+.sidebarPlanLink {
+  display: inline-flex;
+  margin-top: 12px;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 700;
+}
+
+.avatarSm {
+  width: 36px;
+  height: 36px;
+  font-size: 0.75rem;
+}
+
+.avatarMd {
+  width: 48px;
+  height: 48px;
+  font-size: 0.88rem;
+}
+
+.avatarLg {
+  width: 64px;
+  height: 64px;
+  font-size: 1rem;
+}
+
+.avatarXl {
+  width: 80px;
+  height: 80px;
+  font-size: 1.2rem;
+}
+
+.avatarGradient1 {
+  background: linear-gradient(135deg, #ff8855 0%, #d66efd 100%);
+}
+
+.avatarGradient2 {
+  background: linear-gradient(135deg, #6dd5ed 0%, #2193b0 100%);
+}
+
+.avatarGradient3 {
+  background: linear-gradient(135deg, #80ff72 0%, #7ee8fa 100%);
+}
+
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted-2);
+  font-size: 0.78rem;
+}
+
+.breadcrumbCurrent {
+  color: var(--muted);
+}
+
+.mobileNav {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--dark-border);
+  border-radius: 20px;
+  background: rgba(17, 17, 16, 0.95);
+}
+
+.mobileNavItem {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  min-height: 56px;
+  padding: 8px 6px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  background: transparent;
+  color: var(--dark-text-2);
+  font-size: 0.68rem;
+  cursor: pointer;
+}
+
+.mobileNavItemActive {
+  background: rgba(232, 68, 10, 0.16);
+  color: #fff;
+}

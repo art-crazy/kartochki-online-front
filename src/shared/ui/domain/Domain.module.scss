@@ -1,0 +1,79 @@
+.heroBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border: 1px solid rgba(232, 68, 10, 0.18);
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.heroBadgeDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.marketplaceRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.separator {
+  color: var(--line-strong);
+}
+
+.generateBanner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  overflow: hidden;
+  padding: 24px;
+  border: 1px solid var(--dark-border);
+  border-radius: var(--radius-lg);
+  background: var(--dark-bg-3);
+}
+
+.generateGlow {
+  position: absolute;
+  top: 50%;
+  left: 34%;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232, 68, 10, 0.15) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+}
+
+.generateBody {
+  position: relative;
+  flex: 1;
+}
+
+.generateTitle {
+  margin-bottom: 8px;
+  color: var(--dark-text);
+  font-family: var(--font-display), sans-serif;
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+.generateText {
+  color: var(--dark-text-2);
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .generateBanner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

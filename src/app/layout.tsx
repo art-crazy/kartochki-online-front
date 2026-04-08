@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Geist, Golos_Text, Unbounded } from "next/font/google";
 import { AppProviders } from "@/shared/providers/AppProviders";
 import { siteConfig } from "@/shared/config/site";
 import "./globals.scss";
@@ -7,6 +7,16 @@ import "./globals.scss";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+});
+
+const golosText = Golos_Text({
+  variable: "--font-golos-text",
+  subsets: ["latin", "cyrillic"],
+});
+
+const unbounded = Unbounded({
+  variable: "--font-unbounded",
+  subsets: ["latin", "cyrillic"],
 });
 
 export const metadata: Metadata = {
@@ -46,7 +56,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang={siteConfig.locale} className={geistSans.variable}>
+    <html
+      lang={siteConfig.locale}
+      className={[geistSans.variable, golosText.variable, unbounded.variable].join(" ")}
+    >
       <body>
         <AppProviders>{children}</AppProviders>
       </body>
