@@ -1,8 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { classNames } from "@/shared/lib/classNames";
-import { ProgressBar } from "@/shared/ui/composite/Composite";
-import { Badge } from "@/shared/ui/primitives/Primitives";
 import styles from "./Navigation.module.scss";
 
 export function NavItem({
@@ -18,26 +16,60 @@ export function NavItem({
 }) {
   return (
     <button type="button" aria-pressed={active} className={classNames(styles.navItem, active && styles.navActive)}>
-      <span>{icon}</span>
+      <span className={styles.navItemIcon}>{icon}</span>
       <span>{label}</span>
-      {badge ? (
-        <span className={styles.navBadge}>
-          <Badge tone="accent">{badge}</Badge>
-        </span>
-      ) : null}
+      {badge ? <span className={styles.navItemBadge}>{badge}</span> : null}
     </button>
   );
 }
 
-export function SidebarPlanCard({ href = "/app" }: { href?: string }) {
+export function SidebarPlanCard({
+  href = "/app",
+  label = "Бесплатный план",
+  usage = "7 из 10 карточек",
+  progress = 70,
+  actionLabel = "Перейти на Pro →",
+}: {
+  href?: string;
+  label?: string;
+  usage?: string;
+  progress?: number;
+  actionLabel?: string;
+}) {
+  const safeProgress = Math.max(0, Math.min(100, progress));
+
   return (
     <div className={styles.sidebarPlan}>
-      <div className={styles.sidebarPlanLabel}>Бесплатный план</div>
-      <div className={styles.sidebarPlanUsage}>7 из 10 карточек</div>
-      <ProgressBar dark label="Лимит" value={7} max={10} />
+      <div className={styles.sidebarPlanLabel}>{label}</div>
+      <div className={styles.sidebarPlanUsage}>{usage}</div>
+      <div className={styles.sidebarPlanBar} aria-hidden="true">
+        <div className={styles.sidebarPlanFill} style={{ width: `${safeProgress}%` }} />
+      </div>
       <Link href={href} className={styles.sidebarPlanLink}>
-        Перейти на Pro →
+        {actionLabel}
       </Link>
+    </div>
+  );
+}
+
+export function SidebarProfileCard({
+  initials,
+  name,
+  plan,
+  gradient = 1,
+}: {
+  initials: string;
+  name: string;
+  plan: string;
+  gradient?: 1 | 2 | 3;
+}) {
+  return (
+    <div className={styles.sidebarProfile}>
+      <Avatar initials={initials} size="md" gradient={gradient} />
+      <div className={styles.sidebarProfileBody}>
+        <div className={styles.sidebarProfileName}>{name}</div>
+        <div className={styles.sidebarProfilePlan}>{plan}</div>
+      </div>
     </div>
   );
 }

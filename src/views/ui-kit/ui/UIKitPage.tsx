@@ -27,6 +27,7 @@ import {
   ResultCard,
   Select,
   SidebarPlanCard,
+  SidebarProfileCard,
   SkeletonCard,
   Spinner,
   StatCard,
@@ -350,21 +351,21 @@ export function UIKitPage() {
         <Section id="navigation" title="8. Навигация" sub="NavItem, SidebarPlanCard, Avatar, Breadcrumbs и MobileBottomNav">
           <Canvas dark>
             <div className={styles.sidebarGrid}>
-              <div className={styles.navList}>
-                <NavItem icon="⊞" label="Дашборд" />
-                <NavItem icon="⚡" label="Генерация" active badge="Новое" />
-                <NavItem icon="◫" label="Проекты" />
-                <NavItem icon="◈" label="Тарифы" />
-                <NavItem icon="◎" label="Настройки" />
+              <div className={styles.sidebarColumn}>
+                <div className={classNames(styles.label, styles.darkLabel)}>NavItem</div>
+                <div className={styles.navList}>
+                  <NavItem icon="⊞" label="Дашборд" />
+                  <NavItem icon="⚡" label="Генерация" active badge="Новое" />
+                  <NavItem icon="◫" label="Проекты" />
+                  <NavItem icon="◈" label="Тарифы" />
+                  <NavItem icon="◎" label="Настройки" />
+                </div>
               </div>
-              <div className={styles.gridAuto}>
+              <div className={styles.sidebarColumn}>
+                <div className={classNames(styles.label, styles.darkLabel)}>SidebarPlanCard + Avatar</div>
+                <div className={styles.sidebarStack}>
                 <SidebarPlanCard />
-                <div className={styles.profileCard}>
-                  <Avatar initials="ИИ" />
-                  <div>
-                    <div className={styles.surfaceText}>Иван Иванов</div>
-                    <div className={styles.profileMeta}>Бесплатный план</div>
-                  </div>
+                  <SidebarProfileCard initials="ИИ" name="Иван Иванов" plan="Бесплатный план" />
                 </div>
               </div>
             </div>
