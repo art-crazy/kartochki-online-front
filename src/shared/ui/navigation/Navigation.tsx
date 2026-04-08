@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Fragment } from "react";
 import type { ReactNode } from "react";
 import { classNames } from "@/shared/lib/classNames";
 import styles from "./Navigation.module.scss";
@@ -104,17 +105,18 @@ export function Avatar({
 export function Breadcrumbs({ items }: { items: ReadonlyArray<string> }) {
   return (
     <div className={styles.breadcrumbs}>
-      {items.map((item, index) =>
-        index === items.length - 1 ? (
-          <span key={item} className={styles.breadcrumbCurrent}>
-            {item}
-          </span>
-        ) : (
-          <Link key={item} href="#" className={styles.breadcrumbLink}>
-            {item}
-          </Link>
-        ),
-      )}
+      {items.map((item, index) => (
+        <Fragment key={item}>
+          {index === items.length - 1 ? (
+            <span className={styles.breadcrumbCurrent}>{item}</span>
+          ) : (
+            <Link href="#" className={styles.breadcrumbLink}>
+              {item}
+            </Link>
+          )}
+          {index < items.length - 1 ? <span className={styles.breadcrumbSeparator}>›</span> : null}
+        </Fragment>
+      ))}
     </div>
   );
 }
@@ -135,8 +137,8 @@ export function MobileBottomNav({
           aria-pressed={item.label === activeLabel}
           className={classNames(styles.mobileNavItem, item.label === activeLabel && styles.mobileNavItemActive)}
         >
-          <span>{item.icon}</span>
-          <span>{item.label}</span>
+          <span className={styles.mobileNavIcon}>{item.icon}</span>
+          <span className={styles.mobileNavLabel}>{item.label}</span>
         </button>
       ))}
     </div>

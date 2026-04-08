@@ -121,50 +121,79 @@
 
 .projectCard {
   overflow: hidden;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.projectCard:hover {
+  border-color: var(--dark-border-2);
+  transform: translateY(-2px);
+}
+
+.projectCardAddSurface {
+  border-width: 1.5px;
+  border-style: dashed;
+  border-color: var(--dark-border-2);
 }
 
 .projectCardPreview {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  padding: 12px 12px 0;
+  gap: 3px;
+  padding: 8px 8px 0;
+  background: var(--dark-bg-3);
 }
 
 .projectCardThumb {
   aspect-ratio: 3 / 4;
-  border-radius: 8px;
+  border-radius: 3px;
 }
 
 .projectCardBody {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 16px 18px 18px;
+  padding: 12px;
 }
 
 .projectCardName {
-  margin-bottom: 6px;
-  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--dark-text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .projectCardMeta {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
-  color: var(--dark-text-2);
-  font-size: 0.78rem;
+  color: var(--dark-text-3);
+  font-size: 0.7rem;
 }
 
 .projectCardAdd {
-  display: grid;
-  place-items: center;
-  min-height: 180px;
+  display: flex;
+  min-height: 130px;
   padding: 20px;
-  border-style: dashed;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
   color: var(--dark-text-3);
   text-align: center;
-  gap: 4px;
+}
+
+.projectCardAdd > :first-child {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.projectCardAdd > :last-child {
+  font-size: 0.78rem;
+  font-weight: 600;
 }
 
 .planCard {
@@ -250,19 +279,30 @@
 
 .resultCard {
   overflow: hidden;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.resultCard:hover {
+  border-color: var(--dark-border-2);
+  transform: translateY(-2px);
 }
 
 .resultVisual {
   position: relative;
   aspect-ratio: 3 / 4;
+  overflow: hidden;
 }
 
 .resultOverlay {
   position: absolute;
   inset: 0;
-  display: grid;
-  place-items: center;
-  background: rgba(17, 17, 16, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
   opacity: 0;
   transition: opacity 0.2s ease;
 }
@@ -271,27 +311,52 @@
   opacity: 1;
 }
 
+.resultOverlayButton {
+  padding: 6px 14px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: #111;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 .resultFooter {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 14px 16px;
+  padding: 8px 12px;
 }
 
 .resultLabel {
-  font-size: 0.85rem;
+  color: var(--dark-text-2);
+  font-size: 0.72rem;
   font-weight: 600;
 }
 
 .iconCircleButton {
-  width: 36px;
-  height: 36px;
+  display: flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
   border: 1px solid var(--dark-border-2);
-  border-radius: 50%;
+  border-radius: 5px;
   background: transparent;
-  color: var(--dark-text);
+  color: var(--dark-text-3);
+  font-size: 0.75rem;
   cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.iconCircleButton:hover {
+  background: var(--dark-bg-3);
+  color: var(--dark-text);
 }
 
 .blogCard {
@@ -343,39 +408,48 @@
 }
 
 .switchControl {
+  --switch-knob-size: 28px;
+  --switch-knob-offset: 4px;
   position: relative;
-  width: 52px;
-  height: 30px;
+  flex-shrink: 0;
+  width: 68px;
+  height: 36px;
   padding: 0;
-  border: 1px solid var(--dark-border-2);
+  border: 1px solid var(--dark-border);
   border-radius: var(--radius-full);
   background: var(--dark-bg-3);
   cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .switchOn {
-  background: rgba(255, 255, 255, 0.14);
+  background: var(--success);
+  border-color: transparent;
 }
 
 .switchAccent {
   background: var(--accent);
-  border-color: var(--accent);
+  border-color: transparent;
 }
 
 .switchKnob {
   position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 22px;
-  height: 22px;
+  top: 50%;
+  left: var(--switch-knob-offset);
+  width: var(--switch-knob-size);
+  height: var(--switch-knob-size);
   border-radius: 50%;
-  background: #fff;
-  transition: transform 0.15s ease;
+  background: #f5f5f5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(-50%);
+  transition: transform 0.2s ease;
 }
 
 .switchOn .switchKnob,
 .switchAccent .switchKnob {
-  transform: translateX(22px);
+  transform: translate(calc(68px - var(--switch-knob-size) - (var(--switch-knob-offset) * 2)), -50%);
 }
 
 .switchLabel {
@@ -393,8 +467,8 @@
   display: grid;
   place-items: center;
   gap: 8px;
-  min-height: 180px;
-  padding: 20px;
+  min-height: 260px;
+  padding: 32px 24px;
   border: 1.5px dashed var(--dark-border-2);
   border-radius: var(--radius-lg);
   background: var(--dark-bg-2);
@@ -403,60 +477,84 @@
 
 .uploadDragOver {
   border-color: var(--accent);
-  background: rgba(232, 68, 10, 0.08);
+  background: rgba(232, 68, 10, 0.12);
 }
 
 .uploadHasFile {
   border-color: var(--success);
-  background: var(--success-dim);
+  background: rgba(29, 158, 117, 0.12);
 }
 
 .uploadIcon {
   color: var(--dark-text-2);
-  font-size: 1.2rem;
+  font-size: 2rem;
 }
 
 .uploadTitle {
   color: var(--dark-text);
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: 0.88rem;
+  font-weight: 600;
 }
 
 .uploadSub {
   color: var(--dark-text-2);
-  font-size: 0.78rem;
+  font-size: 0.75rem;
 }
 
 .platformSelector {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  gap: 12px;
 }
 
 .platformButton {
-  min-height: 44px;
-  border: 1px solid transparent;
+  min-height: 56px;
+  border: 1.5px solid transparent;
   border-radius: var(--radius-md);
-  background: var(--dark-bg-3);
+  background: transparent;
   color: var(--dark-text-2);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
   font-weight: 700;
   cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .platformSelected {
-  color: #fff;
+  color: inherit;
+}
+
+.platformWb {
+  border-color: rgba(120, 50, 181, 0.3);
+  color: var(--marketplace-wb);
 }
 
 .platformWb.platformSelected {
-  background: var(--marketplace-wb);
+  background: var(--marketplace-wb-dim);
+  border-color: var(--marketplace-wb);
+}
+
+.platformOzon {
+  border-color: rgba(0, 85, 204, 0.2);
+  color: var(--marketplace-ozon);
 }
 
 .platformOzon.platformSelected {
-  background: var(--marketplace-ozon);
+  background: var(--marketplace-ozon-dim);
+  border-color: var(--marketplace-ozon);
+}
+
+.platformYm {
+  border-color: rgba(245, 166, 35, 0.3);
+  color: #9a6800;
 }
 
 .platformYm.platformSelected {
-  background: #c58100;
+  background: var(--marketplace-ym-dim);
+  border-color: var(--marketplace-ym);
 }
 
 .gradientSwatch {

@@ -167,7 +167,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   color: var(--muted-2);
   font-size: 0.78rem;
 }
@@ -177,35 +177,51 @@
   text-decoration: none;
 }
 
+.breadcrumbSeparator {
+  color: var(--muted-2);
+}
+
 .breadcrumbCurrent {
   color: var(--muted);
 }
 
 .mobileNav {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
-  padding: 10px;
-  border: 1px solid var(--dark-border);
-  border-radius: 20px;
-  background: rgba(17, 17, 16, 0.95);
+  display: flex;
+  width: min(100%, 360px);
+  border-top: 1px solid var(--dark-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--dark-bg-2);
 }
 
 .mobileNavItem {
-  display: grid;
-  justify-items: center;
-  gap: 4px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
   min-height: 56px;
-  padding: 8px 6px;
-  border: 1px solid transparent;
-  border-radius: 14px;
+  padding: 10px 4px;
+  border: none;
   background: transparent;
   color: var(--dark-text-2);
-  font-size: 0.68rem;
+  font-size: 0.6rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: color 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .mobileNavItemActive {
-  background: rgba(232, 68, 10, 0.16);
-  color: #fff;
+  color: var(--accent);
+}
+
+.mobileNavIcon {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.mobileNavLabel {
+  line-height: 1.1;
 }

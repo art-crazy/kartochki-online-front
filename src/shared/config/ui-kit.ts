@@ -22,33 +22,40 @@ export const gradientPresets = [
 
 export const mobileRules = [
   {
+    icon: "📱",
     title: "< 480px",
     label: "Mobile",
     items: [
-      "Sidebar скрыт, используется MobileBottomNav",
-      "Сетка в одну колонку",
-      "Генерация разворачивается аккордеоном",
-      "Минимальная высота touch targets: 44px",
+      "Sidebar → скрыт, MobileBottomNav",
+      "Все кнопки → btn-block",
+      "Сетка → 1 колонка",
+      "Генерация → стэк (сверху вниз)",
+      "Touch target min-height → 44px",
+      "Настройки → horizontal chips",
     ],
   },
   {
+    icon: "💻",
     title: "480–768px",
     label: "Tablet",
     items: [
-      "Sidebar сворачивается в иконки",
-      "Сетка в две колонки",
-      "Тарифы скроллятся по горизонтали",
-      "Навигация превращается в табы",
+      "Sidebar → drawer по кнопке ☰",
+      "Сетка → 2 колонки",
+      "Тарифы → вертикальный стэк",
+      "Карточки результата → 2 в ряд",
+      "Навигация → MobileBottomNav",
     ],
   },
   {
+    icon: "🖥",
     title: "> 768px",
     label: "Desktop",
     items: [
-      "Sidebar на 220px с текстом",
-      "Сетка на 2–3 колонки",
-      "Экран генерации работает split panel layout",
-      "Дашборд показывает 3 stat-карточки в ряд",
+      "Sidebar → 220px с текстом",
+      "Сетка → 2–3 колонки",
+      "Генерация → split panel",
+      "Дашборд → 3 стат-карточки",
+      "Настройки → вертикальный nav",
     ],
   },
 ] as const;

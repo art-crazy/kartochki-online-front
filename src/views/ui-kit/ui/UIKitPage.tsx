@@ -1,8 +1,8 @@
-"use client";
+﻿"use client";
 
 import type { ReactNode } from "react";
 import { useState } from "react";
-import { breakpoints, gradientPresets, marketplaceOptions, mobileRules } from "@/shared/config/ui-kit";
+import { gradientPresets, marketplaceOptions, mobileRules } from "@/shared/config/ui-kit";
 import {
   Accordion,
   Avatar,
@@ -38,7 +38,11 @@ import {
 } from "@/shared/ui";
 import { classNames } from "@/shared/lib/classNames";
 import {
+  avatarShowcase,
+  breadcrumbItems,
   blogCards,
+  mobileNavItems,
+  navigationItems,
   darkTokens,
   faqItems,
   lightTokens,
@@ -234,7 +238,7 @@ export function UIKitPage() {
         </Section>
 
         <Section id="cards" title="6. Карточки" sub="StatCard, ProjectCard, PlanCard, ResultCard и BlogCard">
-          <Canvas dark title="StatCard × 3">
+          <Canvas dark title="StatCard Г— 3">
             <div className={styles.statGrid}>
                 {statCards.map((card) => (
                   <StatCard
@@ -354,11 +358,9 @@ export function UIKitPage() {
               <div className={styles.sidebarColumn}>
                 <div className={classNames(styles.label, styles.darkLabel)}>NavItem</div>
                 <div className={styles.navList}>
-                  <NavItem icon="⊞" label="Дашборд" />
-                  <NavItem icon="⚡" label="Генерация" active badge="Новое" />
-                  <NavItem icon="◫" label="Проекты" />
-                  <NavItem icon="◈" label="Тарифы" />
-                  <NavItem icon="◎" label="Настройки" />
+                  {navigationItems.map((item) => (
+                    <NavItem key={item.label} icon={item.icon} label={item.label} active={item.active} badge={item.badge} />
+                  ))}
                 </div>
               </div>
               <div className={styles.sidebarColumn}>
@@ -372,79 +374,91 @@ export function UIKitPage() {
           </Canvas>
           <Canvas title="Avatar и Breadcrumbs">
             <div className={styles.row}>
-              <Avatar initials="ИИ" size="sm" />
-              <Avatar initials="ИИ" size="md" />
-              <Avatar initials="АС" size="lg" gradient={2} />
-              <Avatar initials="МК" size="xl" gradient={3} />
+              {avatarShowcase.map((item) => (
+                <Avatar key={`${item.initials}-${item.size}`} initials={item.initials} size={item.size} gradient={item.gradient} />
+              ))}
             </div>
             <div className={styles.label}>Breadcrumbs</div>
-            <Breadcrumbs items={["Главная", "Блог", "Требования к фото 2025"]} />
+            <Breadcrumbs items={[...breadcrumbItems]} />
           </Canvas>
         </Section>
 
         <Section id="feedback" title="9. Фидбек" sub="Toast, Modal, Spinner, Skeleton, LoadingSteps и Accordion">
-          <Canvas dark title="Toast">
-            <div className={styles.gridAuto}>
-              <Toast tone="success" text="Карточки готовы к скачиванию" />
-              <Toast tone="danger" text="Ошибка генерации, попробуй ещё раз" />
-              <Toast tone="accent" text="Переходим к оплате через ЮKassa..." />
-            </div>
-            <div className={classNames(styles.label, styles.darkLabel)}>LoadingSteps</div>
-            <LoadingSteps items={[...loadingSteps]} />
-            <div className={classNames(styles.label, styles.darkLabel)}>Spinner</div>
-            <div className={styles.spinnerRow}>
-              <Spinner />
-              <Spinner accent />
-              <Spinner large />
-            </div>
-            <div className={classNames(styles.label, styles.darkLabel)}>Skeleton</div>
-            <div className={styles.skeletonRow}>
-              <SkeletonCard />
-              <SkeletonCard />
-              <SkeletonCard />
+          <Canvas dark>
+            <div className={styles.feedbackStack}>
+              <div>
+                <div className={classNames(styles.label, styles.darkLabel)}>Toast — 3 варианта</div>
+                <div className={styles.feedbackToastStack}>
+                  <Toast tone="success" text="Карточки готовы к скачиванию" />
+                  <Toast tone="danger" text="Ошибка генерации — попробуй ещё раз" />
+                  <Toast tone="accent" text="Переходим к оплате через ЮKassa..." />
+                </div>
+              </div>
+              <div>
+                <div className={classNames(styles.label, styles.darkLabel)}>LoadingSteps (генерация)</div>
+                <LoadingSteps items={[...loadingSteps]} />
+              </div>
+              <div>
+                <div className={classNames(styles.label, styles.darkLabel)}>Spinner</div>
+                <div className={styles.spinnerRow}>
+                  <Spinner />
+                  <Spinner accent medium />
+                  <Spinner large />
+                </div>
+              </div>
+              <div>
+                <div className={classNames(styles.label, styles.darkLabel)}>Skeleton</div>
+                <div className={styles.feedbackSkeletonGrid}>
+                  <SkeletonCard />
+                  <SkeletonCard />
+                  <SkeletonCard />
+                </div>
+              </div>
             </div>
           </Canvas>
           <Canvas dark title="Modal">
             <ModalCard />
           </Canvas>
-          <Canvas title="Accordion">
+          <Canvas title="Accordion (FAQ)">
             <Accordion items={[...faqItems]} />
           </Canvas>
         </Section>
 
         <Section id="domain" title="10. Доменные компоненты" sub="HeroBadge, MarketplaceBadgeRow, CardPreviewGrid и GenerateCTABanner">
-          <Canvas title="HeroBadge и MarketplaceBadgeRow">
-            <div className={styles.gridAuto}>
+          <Canvas>
+            <div className={styles.domainLightStack}>
+              <div className={styles.label}>HeroBadge</div>
               <HeroBadge text="ИИ-генератор карточек для маркетплейсов" />
+              <div className={styles.label}>MarketplaceBadge — строка с площадками</div>
               <MarketplaceBadgeRow />
             </div>
           </Canvas>
-          <Canvas dark title="CardPreviewGrid и GenerateCTABanner">
-            <div className={styles.grid2}>
-              <CardPreviewGrid previews={[...gradientPresets]} />
+          <Canvas dark>
+            <div className={styles.domainDarkStack}>
+              <div className={styles.domainPreviewWrap}>
+                <div className={classNames(styles.label, styles.darkLabel)}>CardPreviewGrid (6 превью)</div>
+                <CardPreviewGrid previews={[...gradientPresets]} />
+              </div>
+              <div className={classNames(styles.label, styles.darkLabel)}>GenerateCTABanner</div>
               <GenerateCtaBanner />
             </div>
           </Canvas>
         </Section>
 
-        <Section id="mobile" title="11. Мобильные паттерны" sub="MobileBottomNav и адаптивные правила для ключевых сценариев">
-          <Canvas dark title={`MobileBottomNav (< ${breakpoints.tablet}px)`}>
-            <MobileBottomNav
-              activeLabel="Создать"
-              items={[
-                { icon: "⊞", label: "Главная" },
-                { icon: "⚡", label: "Создать" },
-                { icon: "◫", label: "Проекты" },
-                { icon: "◈", label: "Тарифы" },
-                { icon: "◎", label: "Профиль" },
-              ]}
-            />
+        <Section id="mobile" title="11. Мобильные паттерны" sub="MobileBottomNav · Sidebar Drawer · Hamburger Nav · touch targets · живые превью">
+          <Canvas dark title="MobileBottomNav — компонент">
+            <div className={styles.mobileNavPreview}>
+              <MobileBottomNav
+                activeLabel="Создать"
+                items={[...mobileNavItems]}
+              />
+            </div>
             <div className={classNames(styles.label, styles.darkLabel)}>Адаптивные правила</div>
-            <div className={styles.rulesGrid}>
+            <div className={classNames(styles.rulesGrid, styles.mobileRulesGrid)}>
               {mobileRules.map((rule) => (
                 <div key={rule.title} className={styles.ruleCard}>
                   <div className={styles.ruleTitle}>
-                    {rule.title} — {rule.label}
+                    {rule.icon} {rule.title} — {rule.label}
                   </div>
                   {rule.items.map((item) => (
                     <div key={item}>{item}</div>

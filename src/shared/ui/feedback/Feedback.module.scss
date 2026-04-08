@@ -7,17 +7,20 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 14px 16px;
+  max-width: 360px;
+  padding: 12px 16px;
   border: 1px solid var(--dark-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   background: var(--dark-bg-2);
   color: var(--dark-text);
+  box-shadow: var(--shadow-modal);
 }
 
 .toastDot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .toastSuccess {
@@ -37,10 +40,12 @@
 }
 
 .toastClose {
+  padding: 0 2px;
   border: none;
   background: transparent;
-  color: var(--dark-text-2);
+  color: var(--dark-text-3);
   cursor: pointer;
+  font-size: 0.85rem;
 }
 
 .modal {
@@ -94,11 +99,17 @@
   border: 2px solid rgba(255, 255, 255, 0.16);
   border-top-color: var(--dark-text);
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  animation: spin 0.9s linear infinite;
 }
 
 .spinnerAccent {
   border-top-color: var(--accent);
+}
+
+.spinnerMd {
+  width: 32px;
+  height: 32px;
+  border-width: 3px;
 }
 
 .spinnerLg {
@@ -117,12 +128,14 @@
 }
 
 .skeletonCard {
+  width: 100%;
   aspect-ratio: 3 / 4;
 }
 
 .loadingSteps {
   display: grid;
-  gap: 10px;
+  gap: 9px;
+  max-width: 260px;
 }
 
 .loadingStep {
@@ -139,15 +152,21 @@
   height: 28px;
   border: 1px solid var(--dark-border-2);
   border-radius: 50%;
+  font-weight: 700;
 }
 
 .loadingDone {
-  color: var(--dark-text);
+  color: var(--success);
 }
 
 .loadingDone .loadingDot {
   border-color: var(--success);
-  color: var(--success);
+  background: var(--success);
+  color: #fff;
+}
+
+.loadingActive {
+  color: var(--dark-text);
 }
 
 .loadingActive .loadingDot {
@@ -157,33 +176,75 @@
 
 .accordion {
   display: grid;
-  gap: 12px;
+  gap: 0;
 }
 
 .accordionItem {
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: var(--background-elevated);
+  border-bottom: 1px solid rgba(28, 26, 23, 0.12);
+}
+
+.accordionItemOpen {
+  padding-bottom: 1.75rem;
 }
 
 .accordionTrigger {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
+  gap: 24px;
   width: 100%;
-  padding: 18px 20px;
+  padding: 0 0 1.5rem;
   border: none;
   background: transparent;
   text-align: left;
-  font-weight: 700;
+  font: inherit;
   cursor: pointer;
 }
 
-.accordionBody {
-  padding: 0 20px 18px;
+.accordionTitle {
+  color: var(--foreground);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.accordionIcon {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  border: 1.5px solid rgba(28, 26, 23, 0.14);
+  border-radius: 50%;
   color: var(--muted);
-  line-height: 1.65;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.accordionIconOpen {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+
+.accordionBody {
+  max-width: 74ch;
+  padding: 0 4.5rem 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.75;
+}
+
+.skeletonGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  max-width: 360px;
 }
 
 @keyframes spin {

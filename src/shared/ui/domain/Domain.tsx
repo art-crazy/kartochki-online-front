@@ -13,11 +13,20 @@ export function HeroBadge({ text }: { text: string }) {
 export function MarketplaceBadgeRow() {
   return (
     <div className={styles.marketplaceRow}>
-      <Badge tone="wb">● Wildberries</Badge>
+      <Badge tone="wb" className={styles.marketplaceBadge}>
+        <span className={[styles.badgeDot, styles.badgeDotWb].join(" ")} />
+        Wildberries
+      </Badge>
       <span className={styles.separator}>·</span>
-      <Badge tone="ozon">● Ozon</Badge>
+      <Badge tone="ozon" className={styles.marketplaceBadge}>
+        <span className={[styles.badgeDot, styles.badgeDotOzon].join(" ")} />
+        Ozon
+      </Badge>
       <span className={styles.separator}>·</span>
-      <Badge tone="ym">● Яндекс Маркет</Badge>
+      <Badge tone="ym" className={styles.marketplaceBadge}>
+        <span className={[styles.badgeDot, styles.badgeDotYm].join(" ")} />
+        Яндекс Маркет
+      </Badge>
     </div>
   );
 }
@@ -28,11 +37,11 @@ export function GenerateCtaBanner() {
       <div className={styles.generateGlow} />
       <div className={styles.generateBody}>
         <div className={styles.generateTitle}>Устал делать карточки вручную?</div>
-        <div className={styles.generateText}>
-          Загрузи фото, а сервис соберёт карточки для Wildberries, Ozon и Яндекс Маркета за 30 секунд.
-        </div>
+        <div className={styles.generateText}>Загрузи фото — сервис сделает карточки для WB, Ozon и Яндекс Маркет за 30 секунд</div>
       </div>
-      <Button variant="primary">Попробовать →</Button>
+      <Button variant="primary" className={styles.generateButton}>
+        Попробовать →
+      </Button>
     </div>
   );
 }

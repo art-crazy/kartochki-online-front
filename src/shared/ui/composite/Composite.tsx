@@ -1,6 +1,5 @@
-import type { ReactNode } from "react";
+﻿import type { ReactNode } from "react";
 import { classNames } from "@/shared/lib/classNames";
-import { Button } from "@/shared/ui/primitives/Primitives";
 import styles from "./Composite.module.scss";
 
 type CardSurfaceProps = {
@@ -95,11 +94,11 @@ type ProjectCardProps = ProjectCardContentProps | ProjectCardAddProps;
 
 export function ProjectCard(props: ProjectCardProps) {
   return (
-    <CardSurface theme="dark" className={styles.projectCard}>
+    <CardSurface theme="dark" className={classNames(styles.projectCard, props.addCard && styles.projectCardAddSurface)}>
       {props.addCard ? (
         <div className={styles.projectCardAdd}>
           <div>+</div>
-          <div>Создать проект</div>
+          <div>Новый проект</div>
         </div>
       ) : (
         <>
@@ -163,9 +162,9 @@ export function ResultCard({ title, gradient }: ResultCardProps) {
     <CardSurface theme="dark" className={styles.resultCard}>
       <div className={styles.resultVisual} style={{ background: gradient }}>
         <div className={styles.resultOverlay}>
-          <Button size="md" variant="primary">
+          <button type="button" className={styles.resultOverlayButton}>
             ↓ Скачать
-          </Button>
+          </button>
         </div>
       </div>
       <div className={styles.resultFooter}>
@@ -301,3 +300,4 @@ export function CardPreviewGrid({ previews }: CardPreviewGridProps) {
     </div>
   );
 }
+

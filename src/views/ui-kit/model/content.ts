@@ -35,14 +35,14 @@ export const darkTokens = [
 ] as const;
 
 export const typographyScale = [
-  { meta: "Unbounded 900 · clamp(2rem, 5vw, 4rem)", sample: "AI-генератор карточек для маркетплейсов" },
-  { meta: "Unbounded 900 · clamp(1.5rem, 3vw, 2.4rem)", sample: "Продающие карточки для Wildberries и Ozon" },
-  { meta: "Unbounded 700 · 1.1rem", sample: "Заголовок карточки, баннера или формы" },
-  { meta: "Unbounded 700 · 0.88rem", sample: "Kicker для блоков и микро-заголовков" },
-  { meta: "Golos Text 400 · 1rem · lh 1.7", sample: "Основной наборный текст, описания, SEO-контент и пояснения." },
-  { meta: "Golos Text 400 · 0.88rem", sample: "Текст интерфейса для карточек, sidebar и списка настроек." },
-  { meta: "Golos Text 700 · 0.68rem · uppercase", sample: "Label / Eyebrow / Status" },
-  { meta: "monospace · 0.8rem", sample: "token.color.accent" },
+  { meta: "Unbounded 900 · clamp(2rem,5vw,4rem) · tracking -0.04em", sample: "Заголовок H1" },
+  { meta: "Unbounded 900 · clamp(1.5rem,3vw,2.4rem)", sample: "Заголовок H2" },
+  { meta: "Unbounded 700 · 1.1rem", sample: "Заголовок H3" },
+  { meta: "Unbounded 700 · 0.88rem", sample: "Заголовок H4 / карточки" },
+  { meta: "Golos Text 400 · 1rem · lh 1.7", sample: "Основной текст. Используется для описаний, параграфов и любого читаемого контента на сайте." },
+  { meta: "Golos Text 400 · 0.88rem", sample: "Вторичный текст — описания, подсказки, мета-данные статей" },
+  { meta: "Golos Text 700 · 0.68rem · uppercase · ls 0.1em", sample: "МЕТКА СЕКЦИИ / LABEL" },
+  { meta: "monospace · 0.8rem", sample: "sk-kartochki-xxxxxxxxxxxx" },
 ] as const;
 
 export const statCards = [
@@ -157,4 +157,29 @@ export const loadingSteps = [
   { label: "Генерация карточек", state: "done" as const, step: "2" },
   { label: "Применение стиля", state: "active" as const, step: "3" },
   { label: "Финальная сборка", state: "idle" as const, step: "4" },
+] as const;
+
+export const navigationItems = [
+  { icon: "⊞", label: "Дашборд" },
+  { icon: "⚡", label: "Генерация", active: true, badge: "Новое" },
+  { icon: "◫", label: "Проекты" },
+  { icon: "◈", label: "Тарифы" },
+  { icon: "◎", label: "Настройки" },
+] as const;
+
+export const avatarShowcase = [
+  { initials: "ИИ", size: "sm" as const },
+  { initials: "ИИ", size: "md" as const },
+  { initials: "АС", size: "lg" as const, gradient: 2 as const },
+  { initials: "МК", size: "xl" as const, gradient: 3 as const },
+] as const;
+
+export const breadcrumbItems = ["Главная", "Блог", "Требования к фото 2025"] as const;
+
+export const mobileNavItems = [
+  { icon: "⊞", label: "Главная" },
+  { icon: "⚡", label: "Создать" },
+  { icon: "◫", label: "Проекты" },
+  { icon: "◈", label: "Тарифы" },
+  { icon: "◎", label: "Профиль" },
 ] as const;

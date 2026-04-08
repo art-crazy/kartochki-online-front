@@ -1,4 +1,4 @@
-import { Button } from "@/shared/ui/primitives/Primitives";
+﻿import { Button } from "@/shared/ui/primitives/Primitives";
 import styles from "./Feedback.module.scss";
 
 export function Toast({
@@ -17,9 +17,7 @@ export function Toast({
         ].join(" ")}
       />
       <span className={styles.toastText}>{text}</span>
-      <button type="button" className={styles.toastClose}>
-        ✕
-      </button>
+      <button type="button" className={styles.toastClose}>{"\u00D7"}</button>
     </div>
   );
 }
@@ -45,8 +43,22 @@ export function ModalCard() {
   );
 }
 
-export function Spinner({ accent = false, large = false }: { accent?: boolean; large?: boolean }) {
-  return <div className={[styles.spinner, accent && styles.spinnerAccent, large && styles.spinnerLg].filter(Boolean).join(" ")} />;
+export function Spinner({
+  accent = false,
+  large = false,
+  medium = false,
+}: {
+  accent?: boolean;
+  large?: boolean;
+  medium?: boolean;
+}) {
+  return (
+    <div
+      className={[styles.spinner, accent && styles.spinnerAccent, medium && styles.spinnerMd, large && styles.spinnerLg]
+        .filter(Boolean)
+        .join(" ")}
+    />
+  );
 }
 
 export function SkeletonCard() {
@@ -71,10 +83,11 @@ export function LoadingSteps({
             .filter(Boolean)
             .join(" ")}
         >
-          <div className={styles.loadingDot}>{item.state === "done" ? "✓" : item.step}</div>
+          <div className={styles.loadingDot}>{item.state === "done" ? "\u2713" : item.step}</div>
           <span>{item.label}</span>
         </div>
       ))}
     </div>
   );
 }
+
