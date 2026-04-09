@@ -1,5 +1,23 @@
 .page {
   min-height: calc(100vh - 73px);
+  --settings-tab-font-size: 0.82rem;
+  --settings-tab-icon-size: 0.85rem;
+  --settings-tab-mobile-font-size: 0.78rem;
+  --settings-card-title-size: 0.88rem;
+  --settings-card-subtitle-size: 0.75rem;
+  --settings-subtitle-line-height: 1.5;
+  --settings-avatar-name-size: 0.95rem;
+  --settings-meta-size: 0.78rem;
+  --settings-field-label-size: 0.75rem;
+  --settings-field-label-tracking: 0.06em;
+  --settings-control-font-size: 0.85rem;
+  --settings-action-font-size: 0.82rem;
+  --settings-list-title-size: 0.86rem;
+  --settings-copy-line-height: 1.6;
+  --settings-danger-title-size: 0.92rem;
+  --settings-danger-text-size: 0.8rem;
+  --settings-modal-title-size: 1rem;
+  --settings-modal-text-size: 0.82rem;
 }
 
 .layout {
@@ -26,7 +44,7 @@
   background: transparent;
   color: var(--dark-text-3);
   padding: 8.8px 12px;
-  font-size: 0.82rem;
+  font-size: var(--settings-tab-font-size);
   font-weight: 500;
   text-align: left;
   transition:
@@ -48,7 +66,7 @@
   width: 16px;
   flex-shrink: 0;
   text-align: center;
-  font-size: 0.85rem;
+  font-size: var(--settings-tab-icon-size);
 }
 
 .panels {
@@ -77,16 +95,16 @@
 }
 
 .cardTitle {
-  margin-bottom: 4px;
+  margin-bottom: 3px;
   color: var(--dark-text);
-  font-size: 0.92rem;
+  font-size: var(--settings-card-title-size);
   font-weight: 700;
 }
 
 .cardSubtitle {
   color: var(--dark-text-3);
-  font-size: 0.76rem;
-  line-height: 1.5;
+  font-size: var(--settings-card-subtitle-size);
+  line-height: var(--settings-subtitle-line-height);
 }
 
 .cardBody {
@@ -131,19 +149,16 @@
 
 .avatarName {
   color: var(--dark-text);
-  font-size: 0.98rem;
+  font-size: var(--settings-avatar-name-size);
   font-weight: 600;
 }
 
 .avatarEmail {
   color: var(--dark-text-3);
-  font-size: 0.8rem;
+  font-size: var(--settings-meta-size);
 }
 
-.avatarActions,
-.rowActions,
-.modalActions,
-.apiActions {
+:is(.avatarActions, .rowActions, .modalActions, .apiActions) {
   display: flex;
   gap: 10px;
 }
@@ -152,6 +167,24 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
+}
+
+:is(.formGrid, .stack, .apiRow) > label > :first-child {
+  color: var(--dark-text-3);
+  font-size: var(--settings-field-label-size);
+  font-weight: 700;
+  letter-spacing: var(--settings-field-label-tracking);
+}
+
+:is(.formGrid, .stack, .apiRow) :global(input),
+:is(.formGrid, .stack, .apiRow) :global(select) {
+  font-size: var(--settings-control-font-size);
+}
+
+:is(.avatarActions, .rowActions, .apiActions, .modalActions) :global(button),
+.formGrid + :global(button),
+.stack > :global(button) {
+  font-size: var(--settings-action-font-size);
 }
 
 .stack {
@@ -248,7 +281,7 @@
 .listTitle {
   margin-bottom: 4px;
   color: var(--dark-text);
-  font-size: 0.86rem;
+  font-size: var(--settings-list-title-size);
   font-weight: 600;
 }
 
@@ -256,14 +289,14 @@
 .copy,
 .note {
   color: var(--dark-text-3);
-  font-size: 0.78rem;
-  line-height: 1.6;
+  font-size: var(--settings-meta-size);
+  line-height: var(--settings-copy-line-height);
 }
 
 .listMetaSuccess {
   color: var(--success);
-  font-size: 0.78rem;
-  line-height: 1.6;
+  font-size: var(--settings-meta-size);
+  line-height: var(--settings-copy-line-height);
 }
 
 .apiRow {
@@ -289,14 +322,14 @@
 .dangerTitle {
   margin-bottom: 4px;
   color: var(--danger);
-  font-size: 0.92rem;
+  font-size: var(--settings-danger-title-size);
   font-weight: 700;
 }
 
 .dangerText {
   color: var(--dark-text-2);
-  font-size: 0.8rem;
-  line-height: 1.6;
+  font-size: var(--settings-danger-text-size);
+  line-height: var(--settings-copy-line-height);
 }
 
 .note a {
@@ -331,15 +364,15 @@
   margin-bottom: 8px;
   color: var(--dark-text);
   font-family: var(--font-display), sans-serif;
-  font-size: 1rem;
+  font-size: var(--settings-modal-title-size);
   font-weight: 800;
 }
 
 .modalText {
   margin-bottom: 16px;
   color: var(--dark-text-3);
-  font-size: 0.82rem;
-  line-height: 1.6;
+  font-size: var(--settings-modal-text-size);
+  line-height: var(--settings-copy-line-height);
 }
 
 .toast {
@@ -396,7 +429,7 @@
     border: 1px solid var(--dark-border-2);
     border-radius: var(--radius-full);
     padding: 8px 12px;
-    font-size: 0.78rem;
+    font-size: var(--settings-tab-mobile-font-size);
   }
 
   .tabButtonActive {
