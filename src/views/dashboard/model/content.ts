@@ -1,12 +1,18 @@
+export type DashboardStatVariant = "usage" | "default" | "tariff";
+
 export type DashboardStat = {
   label: string;
   value: string;
+  valueParts?: {
+    primary: string;
+    secondary: string;
+  };
   description: string;
   accentText?: string;
+  variant?: DashboardStatVariant;
   progress?: {
     value: number;
     max: number;
-    valueLabel: string;
   };
 };
 
@@ -23,24 +29,30 @@ export type DashboardProject = {
 export const dashboardStats: ReadonlyArray<DashboardStat> = [
   {
     label: "Карточек создано",
-    value: "7 / 10",
-    description: "Осталось",
+    value: "7/10",
+    valueParts: {
+      primary: "7",
+      secondary: "/ 10",
+    },
+    description: "осталось",
     accentText: "3 карточки",
+    variant: "usage",
     progress: {
       value: 7,
       max: 10,
-      valueLabel: "7 из 10",
     },
   },
   {
     label: "Проектов",
     value: "3",
-    description: "Wildberries: 2 · Ozon: 1",
+    description: "WB: 2 · Ozon: 1",
+    variant: "default",
   },
   {
     label: "Тариф",
     value: "Бесплатный",
-    description: "Обновление лимита 1 мая",
+    description: "Обновляется 1 мая",
+    variant: "tariff",
   },
 ];
 
@@ -91,7 +103,7 @@ export const allProjects: ReadonlyArray<DashboardProject> = [
 ];
 
 export const quickStartContent = {
-  title: "Создайте карточки прямо сейчас",
-  description: "Загрузите фото товара и получите готовый набор карточек для Wildberries или Ozon за 30 секунд.",
+  title: "Создай карточки прямо сейчас",
+  description: "Загрузи фото товара — получи 6 готовых карточек для WB или Ozon за 30 секунд",
   href: "/app/generate",
 };

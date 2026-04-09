@@ -1,7 +1,8 @@
 .surface {
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr);
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   background: var(--dark-bg);
   color: var(--dark-text);
 }
@@ -9,6 +10,8 @@
 .sidebar {
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
   border-right: 1px solid var(--dark-border);
   background: var(--dark-bg-2);
 }
@@ -69,6 +72,11 @@
   color: var(--accent);
 }
 
+.navItemActive:hover {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
 .navIcon {
   width: 18px;
   flex-shrink: 0;
@@ -89,8 +97,8 @@
 .sidebarBottom {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 12px;
+  gap: 14px;
+  padding: 0.75rem;
   border-top: 1px solid var(--dark-border);
 }
 
@@ -100,7 +108,7 @@
 
 .main {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
   flex-direction: column;
   overflow: hidden;
 }
@@ -110,7 +118,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 16px 28px;
+  padding: 1rem 1.75rem;
   border-bottom: 1px solid var(--dark-border);
 }
 
@@ -134,6 +142,7 @@
 
 .headerActions {
   display: flex;
+  align-items: center;
   gap: 12px;
 }
 
@@ -144,6 +153,7 @@
 .content {
   flex: 1;
   min-height: 0;
+  overflow-y: auto;
 }
 
 .mobileNav {
@@ -153,6 +163,9 @@
 @media (max-width: 768px) {
   .surface {
     grid-template-columns: minmax(0, 1fr);
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
   }
 
   .sidebar {
@@ -189,12 +202,14 @@
   }
 
   .main {
-    min-height: auto;
+    height: auto;
+    min-height: 100vh;
     padding-bottom: 72px;
+    overflow: visible;
   }
 
   .header {
-    padding: 14px 16px;
+    padding: 0.85rem 1rem;
   }
 
   .headerActions {
@@ -203,6 +218,10 @@
 
   .menuToggle {
     display: inline-flex;
+  }
+
+  .content {
+    overflow: visible;
   }
 
   .mobileNav {

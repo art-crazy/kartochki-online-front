@@ -65,13 +65,14 @@ export function SidebarProfileCard({
   gradient?: 1 | 2 | 3;
 }) {
   return (
-    <div className={styles.sidebarProfile}>
+    <button type="button" className={styles.sidebarProfile}>
       <Avatar initials={initials} size="md" gradient={gradient} />
       <div className={styles.sidebarProfileBody}>
         <div className={styles.sidebarProfileName}>{name}</div>
         <div className={styles.sidebarProfilePlan}>{plan}</div>
       </div>
-    </div>
+      <span className={styles.sidebarProfileChevron}>▾</span>
+    </button>
   );
 }
 

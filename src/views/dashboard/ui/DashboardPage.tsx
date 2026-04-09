@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { allProjects, dashboardStats, quickStartContent, recentProjects } from "@/views/dashboard/model/content";
-import { Badge, Button, CardSurface, ProjectCard, StatCard } from "@/shared/ui";
+import { allProjects, dashboardStats, quickStartContent, recentProjects, type DashboardStat } from "@/views/dashboard/model/content";
+import { Badge, Button, CardSurface } from "@/shared/ui";
 import { AppShell } from "@/widgets/app/app-shell/ui/AppShell";
 import styles from "./DashboardPage.module.scss";
 
@@ -8,12 +8,12 @@ export function DashboardPage() {
   return (
     <AppShell
       title="Дашборд"
-      subtitle="Обзор проектов, лимитов и быстрых действий"
+      subtitle="Среда, 8 апреля 2025"
       activeKey="dashboard"
       action={
         <>
-          <Button variant="darkOutline" size="md" aria-label="Уведомления">
-            Уведомления
+          <Button variant="darkOutline" size="md" iconOnly className={styles.notificationButton} aria-label="Уведомления">
+            🔔
           </Button>
           <Button as={Link} href="/app/generate" variant="darkPrimary" size="md">
             + Создать карточки
@@ -24,39 +24,30 @@ export function DashboardPage() {
       <main className={styles.page}>
         <section className={styles.statsGrid} aria-label="Обзор аккаунта">
           {dashboardStats.map((stat) => (
-            <StatCard
-              key={stat.label}
-              label={stat.label}
-              value={stat.value}
-              description={
-                stat.accentText ? (
+            <CardSurface key={stat.label} theme="dark" className={styles.statCard}>
+              <div className={styles.statLabel}>{stat.label}</div>
+              <div className={getStatValueClassName(stat.variant)}>{renderStatValue(stat)}</div>
+              <div className={styles.statSub}>
+                {stat.accentText ? (
                   <>
                     {stat.description} <span className={styles.statAccent}>{stat.accentText}</span>
                   </>
                 ) : (
                   stat.description
-                )
-              }
-              progress={
-                stat.progress
-                  ? {
-                      label: "Лимит текущего тарифа",
-                      value: stat.progress.value,
-                      max: stat.progress.max,
-                      valueLabel: stat.progress.valueLabel,
-                    }
-                  : undefined
-              }
-            />
+                )}
+              </div>
+              {stat.progress ? (
+                <div className={styles.statProgress} aria-hidden="true">
+                  <div className={styles.statProgressFill} style={{ width: `${(stat.progress.value / stat.progress.max) * 100}%` }} />
+                </div>
+              ) : null}
+            </CardSurface>
           ))}
         </section>
 
         <section className={styles.section}>
           <div className={styles.sectionHeader}>
-            <div>
-              <h2 className={styles.sectionTitle}>Последние проекты</h2>
-              <p className={styles.sectionSub}>Недавние генерации и быстрый вход в работу.</p>
-            </div>
+            <h2 className={styles.sectionTitle}>Последние проекты</h2>
             <Link href="#projects" className={styles.sectionLink}>
               Все проекты →
             </Link>
@@ -65,12 +56,22 @@ export function DashboardPage() {
           <div className={styles.projectsGrid}>
             {recentProjects.map((project) => (
               <Link key={project.id} href={project.href} className={styles.cardLink}>
-                <ProjectCard
-                  title={project.title}
-                  meta={`${project.cardCount} карточек · ${project.updatedAt}`}
-                  badge={<MarketplaceBadge marketplace={project.marketplace} />}
-                  previews={project.previews}
-                />
+                <CardSurface theme="dark" className={styles.projectCard}>
+                  <div className={styles.projectPreview}>
+                    {project.previews.map((preview) => (
+                      <span key={preview} className={styles.projectThumbPreview} style={{ background: preview }} />
+                    ))}
+                  </div>
+                  <div className={styles.projectBody}>
+                    <div className={styles.projectName}>{project.title}</div>
+                    <div className={styles.projectMeta}>
+                      <span>
+                        {project.cardCount} карточек · {project.updatedAt}
+                      </span>
+                      <MarketplaceBadge marketplace={project.marketplace} />
+                    </div>
+                  </div>
+                </CardSurface>
               </Link>
             ))}
 
@@ -82,6 +83,7 @@ export function DashboardPage() {
         </section>
 
         <section className={styles.quickStartSection}>
+          <h2 className={styles.sectionTitle}>Быстрый старт</h2>
           <CardSurface theme="dark" className={styles.quickStartCard}>
             <div className={styles.quickStartIcon} aria-hidden="true">
               ⚡
@@ -140,10 +142,32 @@ const marketplaceLabelMap = {
   ozon: "Ozon",
 } as const;
 
+const statValueClassMap = {
+  usage: styles.statValueUsage,
+  tariff: styles.statValueTariff,
+  default: styles.statValueDefault,
+} as const;
+
 function MarketplaceBadge({ marketplace }: { marketplace: keyof typeof marketplaceLabelMap }) {
   if (marketplace === "wildberries") {
     return <Badge tone="wb">WB</Badge>;
   }
 
   return <Badge tone="ozon">Ozon</Badge>;
+}
+
+function getStatValueClassName(variant: DashboardStat["variant"]) {
+  return statValueClassMap[variant ?? "default"];
+}
+
+function renderStatValue(stat: DashboardStat) {
+  if (stat.variant === "usage" && stat.valueParts) {
+    return (
+      <>
+        {stat.valueParts.primary} <span className={styles.statValueUsageMuted}>{stat.valueParts.secondary}</span>
+      </>
+    );
+  }
+
+  return stat.value;
 }

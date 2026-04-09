@@ -10,8 +10,84 @@
   gap: 16px;
 }
 
+.notificationButton {
+  width: 44px;
+  min-width: 44px;
+  padding: 0;
+  font-size: 1rem;
+}
+
+.statCard {
+  display: grid;
+  padding: 20px;
+  align-content: start;
+}
+
+.statLabel {
+  margin-bottom: 0.5rem;
+  color: var(--dark-text-3);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.statValueDefault {
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--dark-text);
+  margin-bottom: 0.4rem;
+}
+
+.statValueUsage {
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--dark-text);
+  margin-bottom: 0.4rem;
+}
+
+.statValueUsageMuted {
+  font-size: 1rem;
+  color: var(--dark-text-3);
+}
+
+.statValueTariff {
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.2rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--dark-text);
+  margin-bottom: 0.4rem;
+}
+
 .statAccent {
   color: var(--accent);
+}
+
+.statSub {
+  color: var(--dark-text-3);
+  font-size: 0.78rem;
+}
+
+.statProgress {
+  overflow: hidden;
+  height: 3px;
+  margin-top: 0.75rem;
+  border-radius: 2px;
+  background: var(--dark-border);
+}
+
+.statProgressFill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
 }
 
 .section {
@@ -22,7 +98,7 @@
 
 .sectionHeader {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
 }
@@ -30,7 +106,7 @@
 .sectionTitle {
   margin: 0;
   font-family: var(--font-display), sans-serif;
-  font-size: 0.94rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: -0.02em;
 }
@@ -42,8 +118,8 @@
 }
 
 .sectionLink {
-  color: var(--dark-text-2);
-  font-size: 0.8rem;
+  color: var(--dark-text-3);
+  font-size: 0.78rem;
   font-weight: 600;
   text-decoration: none;
   transition: color 0.15s ease;
@@ -65,51 +141,101 @@
   text-decoration: none;
 }
 
-.newProjectCard {
+.projectCard {
+  overflow: hidden;
+  transition:
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.projectCard:hover {
+  border-color: var(--dark-border-2);
+  transform: translateY(-2px);
+}
+
+.projectPreview {
   display: grid;
-  min-height: 190px;
-  place-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  padding: 10px 10px 0;
+  background: var(--dark-bg-3);
+}
+
+.projectThumbPreview {
+  aspect-ratio: 3 / 4;
+  border-radius: 4px;
+}
+
+.projectBody {
+  padding: 0.85rem;
+}
+
+.projectName {
+  margin-bottom: 0.3rem;
+  color: var(--dark-text);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.projectMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--dark-text-3);
+  font-size: 0.72rem;
+}
+
+.newProjectCard {
+  display: flex;
+  min-height: 170px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   gap: 6px;
+  padding: 2rem;
   border-style: dashed;
-  border-width: 1.5px;
+  border-width: 1px;
   color: var(--dark-text-3);
 }
 
 .newProjectCard:hover {
+  background: var(--accent-dim);
+  border-color: var(--accent);
   color: var(--accent);
+  box-shadow: none;
 }
 
 .newProjectPlus {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   line-height: 1;
 }
 
 .newProjectLabel {
   font-size: 0.82rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .quickStartSection {
-  display: block;
+  display: grid;
+  gap: 16px;
 }
 
 .quickStartCard {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 24px;
-  background:
-    radial-gradient(circle at top right, rgba(232, 68, 10, 0.12), transparent 34%),
-    linear-gradient(135deg, var(--dark-bg-2), var(--dark-bg-3));
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, var(--dark-bg-2) 0%, var(--dark-bg-3) 100%);
 }
 
 .quickStartIcon {
   display: grid;
-  width: 52px;
-  height: 52px;
+  width: 48px;
+  height: 48px;
   place-items: center;
-  border: 1px solid rgba(232, 68, 10, 0.3);
-  border-radius: 16px;
+  border: 1px solid rgba(232, 68, 10, 0.2);
+  border-radius: 12px;
   background: rgba(232, 68, 10, 0.12);
   font-size: 1.4rem;
   flex-shrink: 0;
@@ -122,14 +248,14 @@
 
 .quickStartTitle {
   margin: 0 0 6px;
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: 0.92rem;
+  font-weight: 600;
 }
 
 .quickStartText {
   margin: 0;
-  color: var(--dark-text-2);
-  font-size: 0.82rem;
+  color: var(--dark-text-3);
+  font-size: 0.8rem;
   line-height: 1.5;
 }
 
@@ -142,9 +268,9 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 16px 20px;
+  padding: 1rem 1.25rem;
   border: 1px solid var(--dark-border);
-  border-radius: var(--radius-lg);
+  border-radius: 10px;
   background: var(--dark-bg-2);
   color: inherit;
   text-decoration: none;
@@ -160,14 +286,14 @@
 
 .projectThumbs {
   display: flex;
-  gap: 4px;
+  gap: 3px;
   flex-shrink: 0;
 }
 
 .projectThumb {
-  width: 30px;
+  width: 28px;
   aspect-ratio: 3 / 4;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 .projectInfo {
@@ -176,15 +302,14 @@
 }
 
 .projectTitle {
-  margin-bottom: 4px;
+  margin-bottom: 0.2rem;
   color: var(--dark-text);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 600;
 }
 
-.projectMeta {
-  color: var(--dark-text-3);
-  font-size: 0.76rem;
+.projectInfo .projectMeta {
+  font-size: 0.75rem;
 }
 
 .projectActions {
@@ -199,9 +324,9 @@
   height: 30px;
   place-items: center;
   border: 1px solid var(--dark-border);
-  border-radius: 8px;
+  border-radius: 6px;
   color: var(--dark-text-3);
-  font-size: 0.82rem;
+  font-size: 0.85rem;
 }
 
 @media (max-width: 960px) {
@@ -223,21 +348,26 @@
 @media (max-width: 768px) {
   .page {
     gap: 24px;
-    padding: 20px 16px 88px;
+    padding: 20px 20px 88px;
   }
 
   .statsGrid,
   .projectsGrid {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
   }
 
-  .projectsGrid > :last-child {
-    grid-column: auto;
+  .projectsGrid {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .sectionHeader {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .statCard {
+    padding: 20px;
   }
 
   .projectRow {
@@ -254,7 +384,11 @@
 
 @media (max-width: 480px) {
   .page {
-    padding-top: 16px;
+    padding: 16px 16px 88px;
+  }
+
+  .statsGrid {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .projectRow {
