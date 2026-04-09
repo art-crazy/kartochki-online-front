@@ -1,0 +1,262 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { Accordion, Badge, Button, CardSurface } from "@/shared/ui";
+import { classNames } from "@/shared/lib/classNames";
+import { billingAddons, billingFaqItems, billingPlans, type BillingPlan } from "@/views/billing/model/content";
+import styles from "./BillingPage.module.scss";
+
+type ToastState = {
+  message: string;
+};
+
+export function BillingPricing() {
+  const [isYearly, setIsYearly] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<BillingPlan | null>(null);
+  const [toast, setToast] = useState<ToastState | null>(null);
+
+  const closeModal = () => setSelectedPlan(null);
+
+  useEffect(() => {
+    if (!toast) {
+      return undefined;
+    }
+
+    const timer = window.setTimeout(() => setToast(null), 2500);
+    return () => window.clearTimeout(timer);
+  }, [toast]);
+
+  useEffect(() => {
+    if (!selectedPlan) {
+      return undefined;
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        closeModal();
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedPlan]);
+
+  function openPlanModal(planId: BillingPlan["id"]) {
+    const plan = billingPlans.find((item) => item.id === planId);
+
+    if (!plan || plan.current) {
+      return;
+    }
+
+    setSelectedPlan(plan);
+  }
+
+  function handlePurchase() {
+    if (!selectedPlan) {
+      return;
+    }
+
+    setSelectedPlan(null);
+    setToast({
+      message: `Переходим к оплате тарифа «${selectedPlan.name}». Интеграция платежей подключится позже.`,
+    });
+  }
+
+  function handleAddonClick(title: string) {
+    setToast({
+      message: `Пакет «${title}» добавлен в демо-корзину.`,
+    });
+  }
+
+  return (
+    <>
+      <section className={styles.periodToggle} aria-label="Период оплаты">
+        <span className={classNames(styles.periodLabel, !isYearly && styles.periodLabelActive)}>Помесячно</span>
+        <button
+          type="button"
+          aria-pressed={isYearly}
+          aria-label="Переключить на годовую оплату"
+          className={classNames(styles.toggleSwitch, isYearly && styles.toggleSwitchOn)}
+          onClick={() => setIsYearly((current) => !current)}
+        >
+          <span className={styles.toggleKnob} />
+        </button>
+        <span className={classNames(styles.periodLabel, isYearly && styles.periodLabelActive)}>Годовая подписка</span>
+        {isYearly ? <Badge tone="success">−20%</Badge> : null}
+      </section>
+
+      <section className={styles.plansGrid} aria-label="Тарифные планы">
+        {billingPlans.map((plan) => {
+          const price = getPlanPrice(plan, isYearly);
+          const period = getPlanPeriod(plan, isYearly);
+          const checkoutLabel = getCheckoutLabel(plan, isYearly);
+
+          return (
+            <CardSurface
+              key={plan.id}
+              theme="dark"
+              className={classNames(
+                styles.planCard,
+                plan.current && styles.planCardCurrent,
+                plan.popular && styles.planCardPopular,
+              )}
+            >
+              {plan.popular ? <div className={styles.popularTag}>Популярный</div> : null}
+              {plan.current ? (
+                <div className={styles.currentTag}>
+                  <span className={styles.currentDot} />
+                  Текущий план
+                </div>
+              ) : null}
+
+              <div className={styles.planName}>{plan.name}</div>
+              <div className={styles.planPriceRow}>
+                <div className={styles.planPrice}>{price.current}</div>
+                {price.old ? <div className={styles.planPriceOld}>{price.old}</div> : null}
+              </div>
+              <div className={styles.planPeriod}>{period}</div>
+              <div className={styles.planDivider} />
+
+              <ul className={styles.planFeatures}>
+                {plan.features.map((feature) => (
+                  <li key={feature.label} className={styles.planFeature}>
+                    <span className={feature.enabled ? styles.featureYes : styles.featureNo}>{feature.enabled ? "✓" : "✗"}</span>
+                    <span className={!feature.enabled ? styles.featureMuted : undefined}>{feature.label}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <Button
+                variant={plan.ctaVariant === "accent" ? "darkPrimary" : "darkOutline"}
+                className={classNames(
+                  styles.planButton,
+                  plan.ctaVariant === "current" && styles.planButtonCurrent,
+                  plan.ctaVariant === "outline" && styles.planButtonOutline,
+                )}
+                aria-haspopup={plan.current ? undefined : "dialog"}
+                disabled={plan.current}
+                onClick={() => openPlanModal(plan.id)}
+              >
+                {plan.current ? plan.ctaLabel : `${plan.ctaLabel} →`}
+              </Button>
+
+              <span className={styles.planCheckoutHint}>Оплата: {checkoutLabel}</span>
+            </CardSurface>
+          );
+        })}
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>Дополнительные пакеты</h2>
+          <p className={styles.sectionSubtitle}>Подойдут, если нужно быстро расширить месячный объём без смены тарифа.</p>
+        </div>
+
+        <div className={styles.addonsGrid}>
+          {billingAddons.map((addon) => (
+            <button key={addon.id} type="button" className={styles.addonCard} onClick={() => handleAddonClick(addon.title)}>
+              <span className={styles.addonIcon} aria-hidden="true">
+                +
+              </span>
+              <span className={styles.addonBody}>
+                <span className={styles.addonTitle}>{addon.title}</span>
+                <span className={styles.addonDescription}>{addon.description}</span>
+              </span>
+              <span className={styles.addonPrice}>{addon.priceLabel}</span>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>Частые вопросы</h2>
+        </div>
+        <Accordion items={billingFaqItems} />
+      </section>
+
+      {selectedPlan ? (
+        <div className={styles.modalOverlay} role="presentation" onClick={closeModal}>
+          <div
+            className={styles.modal}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="billing-checkout-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <h2 id="billing-checkout-title" className={styles.modalTitle}>
+              {selectedPlan.id === "pro" ? "Перейти на Про" : "Подключить Бизнес"}
+            </h2>
+            <p className={styles.modalText}>Сценарий оплаты пока демонстрационный. Подтверждение ниже показывает итоговые условия.</p>
+
+            <div className={styles.modalRows}>
+              <ModalRow label="Тариф" value={selectedPlan.name} />
+              <ModalRow label="Период" value={isYearly ? "1 год" : "1 месяц"} />
+              <ModalRow label="Карточек в месяц" value={String(selectedPlan.cardsPerMonth)} />
+            </div>
+
+            <div className={styles.modalTotal}>
+              <span className={styles.modalTotalLabel}>Итого</span>
+              <span className={styles.modalTotalPrice}>{getCheckoutLabel(selectedPlan, isYearly)}</span>
+            </div>
+
+            <div className={styles.modalActions}>
+              <Button variant="darkOutline" block onClick={closeModal}>
+                Отмена
+              </Button>
+              <Button variant="darkPrimary" block onClick={handlePurchase}>
+                Оплатить →
+              </Button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {toast ? (
+        <div className={styles.toast} role="status" aria-live="polite">
+          <span className={styles.toastDot} />
+          <span>{toast.message}</span>
+        </div>
+      ) : null}
+    </>
+  );
+}
+
+function ModalRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className={styles.modalRow}>
+      <span className={styles.modalRowLabel}>{label}</span>
+      <span className={styles.modalRowValue}>{value}</span>
+    </div>
+  );
+}
+
+function getPlanPrice(plan: BillingPlan, isYearly: boolean) {
+  if (!isYearly || !plan.yearlyMonthlyPrice) {
+    return {
+      current: plan.monthlyPriceLabel,
+      old: undefined,
+    };
+  }
+
+  return {
+    current: `${plan.yearlyMonthlyPrice} ₽/мес`,
+    old: `${plan.monthlyPrice} ₽/мес`,
+  };
+}
+
+function getPlanPeriod(plan: BillingPlan, isYearly: boolean) {
+  if (!isYearly || !plan.yearlyPeriodLabel) {
+    return plan.monthlyPeriodLabel;
+  }
+
+  return `${plan.yearlyPeriodLabel} · ${plan.yearlySavingsLabel}`;
+}
+
+function getCheckoutLabel(plan: BillingPlan, isYearly: boolean) {
+  if (!isYearly || !plan.yearlyCheckoutLabel) {
+    return plan.monthlyCheckoutLabel;
+  }
+
+  return plan.yearlyCheckoutLabel;
+}
