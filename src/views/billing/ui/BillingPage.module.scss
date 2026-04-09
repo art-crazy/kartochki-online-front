@@ -206,16 +206,21 @@
 }
 
 .currentTag {
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   gap: 6px;
   width: fit-content;
-  margin-bottom: 16px;
-  border: 1px solid rgba(29, 158, 117, 0.25);
-  border-radius: var(--radius-full);
-  background: var(--success-dim);
+  transform: translateX(-50%);
+  border: 1px solid rgba(29, 158, 117, 0.35);
+  border-top: 0;
+  border-radius: 0 0 10px 10px;
+  background: #113328;
   color: var(--success);
-  padding: 4px 10px;
+  padding: 5px 14px;
   font-size: var(--billing-tag-size);
   font-weight: 700;
 }
