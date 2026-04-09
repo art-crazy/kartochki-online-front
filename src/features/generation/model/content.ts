@@ -1,4 +1,4 @@
-export type MarketplaceId = "wildberries" | "ozon";
+export type MarketplaceId = "wildberries" | "ozon" | "yandex-market";
 export type StyleId = "minimal" | "bright" | "dark" | "light";
 export type CardTypeId = "main" | "infographic" | "composition" | "sizes" | "advantages" | "details";
 export type ResultState = "empty" | "loading" | "result";
@@ -37,6 +37,7 @@ export type ResultCard = {
 export const marketplaceOptions: ReadonlyArray<MarketplaceOption> = [
   { id: "wildberries", label: "Wildberries", dot: "#b886f5" },
   { id: "ozon", label: "Ozon", dot: "#5ba3f5" },
+  { id: "yandex-market", label: "Яндекс Маркет", dot: "#f5a623" },
 ];
 
 export const styleOptions: ReadonlyArray<StyleOption> = [

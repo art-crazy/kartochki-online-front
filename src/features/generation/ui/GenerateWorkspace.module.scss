@@ -112,6 +112,10 @@
   gap: 6px;
 }
 
+.marketplaceGrid > :last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
 .marketplaceButton {
   display: flex;
   align-items: center;
