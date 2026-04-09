@@ -157,9 +157,9 @@
 
 .countButton {
   flex: 1;
-  min-height: 44px;
+  padding: 0.5rem;
   border: 1.5px solid var(--dark-border-2);
-  border-radius: var(--radius-md);
+  border-radius: 8px;
   background: transparent;
   color: var(--dark-text-3);
   font-family: var(--font-display), sans-serif;
