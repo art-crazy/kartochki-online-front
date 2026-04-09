@@ -82,7 +82,12 @@ export function BillingPricing() {
           <span className={styles.toggleKnob} />
         </button>
         <span className={classNames(styles.periodLabel, isYearly && styles.periodLabelActive)}>Годовая подписка</span>
-        {isYearly ? <Badge tone="success">−20%</Badge> : null}
+        <span
+          aria-hidden={!isYearly}
+          className={classNames(styles.periodBadgeSlot, isYearly && styles.periodBadgeSlotVisible)}
+        >
+          <Badge tone="success">−20%</Badge>
+        </span>
       </section>
 
       <section className={styles.plansGrid} aria-label="Тарифные планы">

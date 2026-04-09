@@ -19,10 +19,7 @@ export function Accordion({
         const isOpen = index === openIndex;
 
         return (
-          <div
-            key={item.title}
-            className={[styles.accordionItem, isOpen && styles.accordionItemOpen].filter(Boolean).join(" ")}
-          >
+          <div key={item.title} className={classNames(styles.accordionItem, isOpen && styles.accordionItemOpen)}>
             <button
               type="button"
               aria-expanded={isOpen}
@@ -30,7 +27,7 @@ export function Accordion({
               onClick={() => setOpenIndex(isOpen ? -1 : index)}
             >
               <span className={styles.accordionTitle}>{item.title}</span>
-              <span className={[styles.accordionIcon, isOpen && styles.accordionIconOpen].filter(Boolean).join(" ")}>
+              <span className={classNames(styles.accordionIcon, isOpen && styles.accordionIconOpen)}>
                 +
               </span>
             </button>

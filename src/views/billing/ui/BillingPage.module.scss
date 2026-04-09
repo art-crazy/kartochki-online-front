@@ -106,7 +106,9 @@
 }
 
 .periodToggle {
-  display: flex;
+  display: grid;
+  width: 100%;
+  grid-template-columns: max-content auto max-content max-content;
   align-items: center;
   justify-content: center;
   gap: 12px;
@@ -116,11 +118,23 @@
 .periodLabel {
   color: var(--dark-text-3);
   font-size: 0.85rem;
+  font-weight: 600;
+  transition: color 0.2s ease;
 }
 
 .periodLabelActive {
   color: var(--dark-text);
-  font-weight: 600;
+}
+
+.periodBadgeSlot {
+  display: inline-flex;
+  min-width: 56px;
+  justify-content: flex-start;
+  visibility: hidden;
+}
+
+.periodBadgeSlotVisible {
+  visibility: visible;
 }
 
 .toggleSwitch {
@@ -540,7 +554,14 @@
   }
 
   .periodToggle {
-    flex-wrap: wrap;
+    grid-template-columns: max-content auto max-content;
+    justify-content: center;
+  }
+
+  .periodBadgeSlot {
+    grid-column: 1 / -1;
+    min-width: 0;
+    justify-content: center;
   }
 
   .modalActions {
