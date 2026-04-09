@@ -331,7 +331,7 @@
   color: var(--dark-text-3);
 }
 
-.chipDark:hover {
+.chipDark:not(.chipDarkSelected):not(.chipAccentSelected):hover {
   border-color: var(--dark-text-2);
   color: var(--dark-text-2);
 }

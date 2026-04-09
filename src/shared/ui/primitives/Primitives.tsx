@@ -87,6 +87,7 @@ type FieldProps = {
   dark?: boolean;
   success?: boolean;
   className?: string;
+  controlClassName?: string;
 };
 
 type InputProps = FieldProps & ComponentPropsWithoutRef<"input">;
@@ -99,6 +100,7 @@ export function Input({
   dark = false,
   success = false,
   className,
+  controlClassName,
   ...props
 }: InputProps) {
   const isInvalid = Boolean(error);
@@ -116,6 +118,7 @@ export function Input({
             error && styles.isError,
             success && styles.isSuccess,
             dark && styles.isDark,
+            controlClassName,
           )}
           {...props}
         />
@@ -134,6 +137,7 @@ export function Select({
   error,
   dark = false,
   className,
+  controlClassName,
   children,
   ...props
 }: SelectProps) {
@@ -144,7 +148,7 @@ export function Select({
       {label ? <span className={styles.label}>{label}</span> : null}
       <select
         aria-invalid={isInvalid}
-        className={classNames(styles.control, error && styles.isError, dark && styles.isDark)}
+        className={classNames(styles.control, error && styles.isError, dark && styles.isDark, controlClassName)}
         {...props}
       >
         {children}
@@ -163,6 +167,7 @@ export function Textarea({
   error,
   dark = false,
   className,
+  controlClassName,
   ...props
 }: TextareaProps) {
   const isInvalid = Boolean(error);
@@ -172,7 +177,7 @@ export function Textarea({
       {label ? <span className={styles.label}>{label}</span> : null}
       <textarea
         aria-invalid={isInvalid}
-        className={classNames(styles.control, error && styles.isError, dark && styles.isDark)}
+        className={classNames(styles.control, error && styles.isError, dark && styles.isDark, controlClassName)}
         rows={4}
         {...props}
       />

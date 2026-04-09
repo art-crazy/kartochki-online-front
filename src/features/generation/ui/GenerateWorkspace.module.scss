@@ -130,11 +130,6 @@
     color 0.15s ease;
 }
 
-.marketplaceButton:hover {
-  border-color: var(--dark-text-2);
-  color: var(--dark-text-2);
-}
-
 .marketplaceButtonActive {
   border-color: var(--dark-text);
   background: var(--dark-text);
@@ -172,15 +167,35 @@
     background-color 0.15s ease;
 }
 
-.countButton:hover {
-  border-color: var(--dark-text-2);
-  color: var(--dark-text);
-}
-
 .countButtonActive {
   border-color: var(--dark-text);
   background: var(--dark-text);
   color: var(--dark-bg);
+}
+
+.projectNameInput {
+  min-height: auto;
+  padding: 0.6rem 0.85rem;
+  border-radius: 8px;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.85rem;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.projectNameInput::placeholder {
+  color: var(--dark-text-3);
+  opacity: 1;
+}
+
+.marketplaceButton:not(.marketplaceButtonActive):hover {
+  border-color: var(--dark-text-2);
+  color: var(--dark-text-2);
+}
+
+.countButton:not(.countButtonActive):hover {
+  border-color: var(--dark-text-2);
+  color: var(--dark-text);
 }
 
 .generateButton {
@@ -190,6 +205,23 @@
   font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: -0.01em;
+}
+
+.generateButton:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.generateButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.generateButton:disabled:hover {
+  transform: none;
+  box-shadow: none;
 }
 
 .rightPanel {

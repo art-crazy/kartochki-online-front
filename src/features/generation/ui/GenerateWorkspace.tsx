@@ -254,7 +254,6 @@ export function GenerateWorkspace({
                 <Chip
                   key={option.id}
                   dark
-                  accentSelected
                   selected={selectedTypes.includes(option.id)}
                   onClick={() => toggleCardType(option.id)}
                 >
@@ -283,6 +282,7 @@ export function GenerateWorkspace({
           <Input
             dark
             label="Название проекта"
+            controlClassName={styles.projectNameInput}
             placeholder="Например: Кроссовки Nike"
             value={projectName}
             onChange={(event) => setProjectName(event.target.value)}
