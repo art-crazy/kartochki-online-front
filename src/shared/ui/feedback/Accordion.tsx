@@ -1,17 +1,20 @@
 "use client";
 
 import { useState } from "react";
+import { classNames } from "@/shared/lib/classNames";
 import styles from "./Feedback.module.scss";
 
 export function Accordion({
   items,
+  theme = "light",
 }: {
   items: ReadonlyArray<{ title: string; content: string }>;
+  theme?: "light" | "dark";
 }) {
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
-    <div className={styles.accordion}>
+    <div className={classNames(styles.accordion, theme === "dark" && styles.accordionDark)}>
       {items.map((item, index) => {
         const isOpen = index === openIndex;
 

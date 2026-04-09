@@ -23,23 +23,24 @@
   gap: 24px;
   margin-bottom: 32px;
   border: 1px solid var(--dark-border);
-  border-radius: var(--radius-xl);
+  border-radius: 14px;
   background: var(--dark-bg-2);
-  padding: 24px;
+  padding: 20px 28px;
 }
 
 .bannerIcon {
-  display: grid;
-  width: 48px;
-  height: 48px;
+  display: flex;
+  width: 58px;
+  height: 58px;
   flex-shrink: 0;
-  place-items: center;
+  align-items: center;
+  justify-content: center;
   border: 1px solid var(--dark-border-2);
   border-radius: 12px;
   background: var(--dark-bg-3);
-  color: var(--accent);
-  font-size: 1.35rem;
-  font-weight: 800;
+  color: var(--dark-text);
+  font-size: 1.15rem;
+  font-weight: 700;
 }
 
 .bannerInfo {
@@ -47,28 +48,30 @@
 }
 
 .bannerTitle {
-  margin-bottom: 4px;
+  margin-bottom: 5px;
   color: var(--dark-text);
   font-family: var(--font-display), sans-serif;
-  font-size: var(--billing-heading-size);
+  font-size: 0.88rem;
   font-weight: 700;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
 }
 
 .bannerSubtitle {
   color: var(--dark-text-3);
-  font-size: var(--billing-copy-size);
-  line-height: var(--billing-copy-line-height);
+  font-size: var(--billing-meta-size);
+  line-height: 1.4;
 }
 
 .bannerUsage {
-  width: min(100%, 260px);
+  width: 220px;
+  flex-shrink: 0;
+  text-align: right;
 }
 
 .bannerUsageValue {
   color: var(--dark-text);
   font-family: var(--font-display), sans-serif;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 900;
   letter-spacing: -0.04em;
   line-height: 1;
@@ -76,14 +79,30 @@
 
 .bannerUsageValue span {
   color: var(--dark-text-3);
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 400;
 }
 
 .bannerUsageLabel {
-  margin: 4px 0 12px;
+  margin-top: 4px;
   color: var(--dark-text-3);
   font-size: var(--billing-kicker-size);
+}
+
+.bannerUsageBar {
+  width: 120px;
+  height: 4px;
+  margin-top: 8px;
+  margin-left: auto;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--dark-border-2);
+}
+
+.bannerUsageFill {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--accent);
 }
 
 .periodToggle {
@@ -512,6 +531,12 @@
 
   .bannerUsage {
     width: 100%;
+    text-align: left;
+  }
+
+  .bannerUsageBar {
+    width: 100%;
+    margin-left: 0;
   }
 
   .periodToggle {

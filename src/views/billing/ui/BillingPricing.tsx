@@ -172,7 +172,7 @@ export function BillingPricing() {
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>Частые вопросы</h2>
         </div>
-        <Accordion items={billingFaqItems} />
+        <Accordion items={billingFaqItems} theme="dark" />
       </section>
 
       {selectedPlan ? (
