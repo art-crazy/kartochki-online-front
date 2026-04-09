@@ -24,16 +24,16 @@ export function AppShellClient({ title, subtitle, activeKey, action, children }:
     <div className={styles.surface}>
       <aside className={classNames(styles.sidebar, isSidebarOpen && styles.sidebarOpen)}>
         <Link href="/" className={styles.logo} onClick={closeSidebar}>
-          РєР°СЂС‚РѕС‡РєРё<span>.</span>РѕРЅР»Р°Р№РЅ
+          карточки<span>.</span>онлайн
         </Link>
 
         <nav className={styles.nav}>
-          <div className={styles.navSection}>Р“Р»Р°РІРЅРѕРµ</div>
+          <div className={styles.navSection}>Главное</div>
           {primaryNavItems.map((item) => (
             <ShellLink key={item.key} item={item} active={item.key === activeKey} onNavigate={closeSidebar} />
           ))}
 
-          <div className={styles.navSection}>РђРєРєР°СѓРЅС‚</div>
+          <div className={styles.navSection}>Аккаунт</div>
           {accountNavItems.map((item) => (
             <ShellLink key={item.key} item={item} active={item.key === activeKey} onNavigate={closeSidebar} />
           ))}
@@ -41,13 +41,13 @@ export function AppShellClient({ title, subtitle, activeKey, action, children }:
 
         <div className={styles.sidebarBottom}>
           <SidebarPlanCard />
-          <SidebarProfileCard initials="РР" name="РРІР°РЅ РРІР°РЅРѕРІ" plan="Р‘РµСЃРїР»Р°С‚РЅС‹Р№ РїР»Р°РЅ" />
+          <SidebarProfileCard initials="ИИ" name="Иван Иванов" plan="Бесплатный план" />
         </div>
       </aside>
 
       <button
         type="button"
-        aria-label="Р—Р°РєСЂС‹С‚СЊ РјРµРЅСЋ"
+        aria-label="Закрыть меню"
         className={classNames(styles.overlay, isSidebarOpen && styles.overlayVisible)}
         onClick={closeSidebar}
       />
@@ -59,10 +59,10 @@ export function AppShellClient({ title, subtitle, activeKey, action, children }:
               variant="darkOutline"
               size="sm"
               className={styles.menuToggle}
-              aria-label="РћС‚РєСЂС‹С‚СЊ РјРµРЅСЋ"
+              aria-label="Открыть меню"
               onClick={() => setIsSidebarOpen(true)}
             >
-              в°
+              ☰
             </Button>
             <div>
               <div className={styles.headerTitle}>{title}</div>
@@ -75,7 +75,7 @@ export function AppShellClient({ title, subtitle, activeKey, action, children }:
         <div className={styles.content}>{children}</div>
       </div>
 
-      <nav className={styles.mobileNav} aria-label="РњРѕР±РёР»СЊРЅР°СЏ РЅР°РІРёРіР°С†РёСЏ">
+      <nav className={styles.mobileNav} aria-label="Мобильная навигация">
         {mobileNavItems.map((item) => (
           <Link
             key={item.key}
