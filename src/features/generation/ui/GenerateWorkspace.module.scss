@@ -60,7 +60,7 @@
 }
 
 .uploadDefault {
-  gap: 4px;
+  gap: 0;
 }
 
 .uploadPreview {
@@ -68,7 +68,8 @@
 }
 
 .uploadIcon {
-  margin-bottom: 4px;
+  display: block;
+  margin-bottom: 8px;
   font-size: 1.8rem;
 }
 
@@ -76,12 +77,18 @@
   color: var(--dark-text);
   font-size: 0.85rem;
   font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 4px;
 }
 
 .uploadSub,
 .previewFileName {
   color: var(--dark-text-3);
   font-size: 0.75rem;
+}
+
+.uploadSub {
+  line-height: 1.2;
 }
 
 .previewImageWrap {
