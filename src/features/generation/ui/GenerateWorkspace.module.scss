@@ -121,13 +121,14 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  min-height: 44px;
+  padding: 0.6rem;
   border: 1.5px solid var(--dark-border-2);
-  border-radius: var(--radius-md);
+  border-radius: 8px;
   background: transparent;
   color: var(--dark-text-3);
   font-size: 0.82rem;
   font-weight: 600;
+  line-height: 1.2;
   transition:
     border-color 0.15s ease,
     background-color 0.15s ease,
@@ -148,6 +149,13 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+}
+
+.styleChips :global(button),
+.cardTypeChips :global(button) {
+  min-height: auto;
+  padding: 0.35rem 0.75rem;
+  line-height: 1.2;
 }
 
 .countSelector {

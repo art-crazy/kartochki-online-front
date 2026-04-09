@@ -238,7 +238,7 @@ export function GenerateWorkspace({
 
           <section className={styles.section}>
             <h2 className={styles.label}>Стиль</h2>
-            <div className={styles.chips}>
+            <div className={[styles.chips, styles.styleChips].join(" ")}>
               {styleOptions.map((option) => (
                 <Chip key={option.id} dark selected={style === option.id} onClick={() => setStyle(option.id)}>
                   {option.label}
@@ -249,7 +249,7 @@ export function GenerateWorkspace({
 
           <section className={styles.section}>
             <h2 className={styles.label}>Типы карточек</h2>
-            <div className={styles.chips}>
+            <div className={[styles.chips, styles.cardTypeChips].join(" ")}>
               {cardTypeOptions.map((option) => (
                 <Chip
                   key={option.id}
