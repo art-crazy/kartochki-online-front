@@ -153,6 +153,8 @@ This area can be more interactive, but route composition should still live in `s
 
 Authenticated routes should be `noindex` by default unless there is a specific reason to expose them to search engines.
 
+Shared authenticated chrome such as sidebar navigation, mobile navigation, and the top app header should live in reusable widgets instead of being duplicated per route.
+
 ## SEO Rules
 
 - Public pages should be indexable by default.

@@ -1,0 +1,246 @@
+.surface {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  min-height: 100vh;
+  background: var(--dark-bg);
+  color: var(--dark-text);
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--dark-border);
+  background: var(--dark-bg-2);
+}
+
+.logo {
+  display: block;
+  padding: 20px 20px 0;
+  font-family: var(--font-display), sans-serif;
+  font-size: 0.85rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+.logo span {
+  color: var(--accent);
+}
+
+.nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 12px;
+}
+
+.navSection {
+  margin: 16px 8px 6px;
+  color: var(--dark-text-3);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.navSection:first-child {
+  margin-top: 0;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  color: var(--dark-text-2);
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.navItem:hover {
+  background: var(--dark-bg-3);
+  color: var(--dark-text);
+}
+
+.navItemActive {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+.navIcon {
+  width: 18px;
+  flex-shrink: 0;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.navBadge {
+  margin-left: auto;
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 700;
+}
+
+.sidebarBottom {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  border-top: 1px solid var(--dark-border);
+}
+
+.overlay {
+  display: none;
+}
+
+.main {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 28px;
+  border-bottom: 1px solid var(--dark-border);
+}
+
+.headerLead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.headerTitle {
+  font-family: var(--font-display), sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.headerSubtitle {
+  color: var(--dark-text-3);
+  font-size: 0.78rem;
+}
+
+.headerActions {
+  display: flex;
+  gap: 12px;
+}
+
+.menuToggle {
+  display: none;
+}
+
+.content {
+  flex: 1;
+  min-height: 0;
+}
+
+.mobileNav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .surface {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 60;
+    width: 260px;
+    transform: translateX(-100%);
+    transition: transform 0.28s ease;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.45);
+  }
+
+  .sidebarOpen {
+    transform: translateX(0);
+  }
+
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 55;
+    display: block;
+    border: 0;
+    background: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+
+  .overlayVisible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .main {
+    min-height: auto;
+    padding-bottom: 72px;
+  }
+
+  .header {
+    padding: 14px 16px;
+  }
+
+  .headerActions {
+    gap: 8px;
+  }
+
+  .menuToggle {
+    display: inline-flex;
+  }
+
+  .mobileNav {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 50;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    border-top: 1px solid var(--dark-border);
+    background: var(--dark-bg-2);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  .mobileNavItem {
+    display: flex;
+    min-height: 56px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 10px 4px;
+    color: var(--dark-text-3);
+    font-size: 0.58rem;
+    font-weight: 600;
+  }
+
+  .mobileNavItemActive {
+    color: var(--accent);
+  }
+
+  .mobileNavIcon {
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+
+  .mobileNavLabel {
+    line-height: 1.1;
+  }
+}
