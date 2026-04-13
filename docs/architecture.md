@@ -116,6 +116,42 @@ Examples:
 - Helpers
 - API transport
 
+## API Layer
+
+The API client is auto-generated from the backend OpenAPI spec via `@hey-api/openapi-ts`.
+
+- **Config:** `openapi-ts.config.ts` — reads `NEXT_PUBLIC_API_URL` from `.env.local`
+- **Generated code:** `src/shared/api/generated/` — do not edit manually
+- **Client config:** `src/shared/api/client.ts` — sets `baseUrl` from env
+- **Public surface:** `src/shared/api/index.ts` — re-exports SDK functions, TanStack Query options factories, and domain types
+
+### Regenerating
+
+```bash
+npm run generate:api
+```
+
+Backend must be running at `NEXT_PUBLIC_API_URL` when generating.
+
+### Usage patterns
+
+```ts
+// Server Component
+import { getProjects } from '@/shared/api';
+const { data } = await getProjects({ throwOnError: true });
+
+// Client Component
+import { useQuery } from '@tanstack/react-query';
+import { listProjectsOptions } from '@/shared/api';
+const { data } = useQuery(listProjectsOptions());
+```
+
+### Rules
+
+- Import from `@/shared/api`, never from `@/shared/api/generated` directly.
+- TanStack Query is for client components only. Server components call SDK functions directly.
+- Do not use Jotai as a cache for server data.
+
 ## Product Surfaces
 
 ### Marketing Surface
