@@ -1,25 +1,29 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import type { ErrorResponse } from "@/shared/api";
 import { classNames } from "@/shared/lib/classNames";
 import styles from "./AuthFlow.module.scss";
 
 type AuthScreen = "login" | "register" | "forgot" | "forgot-sent";
 
 type LoginErrors = {
+  form?: string;
   email?: string;
   password?: string;
 };
 
 type RegisterErrors = {
+  form?: string;
   name?: string;
   email?: string;
   password?: string;
 };
 
 type ForgotErrors = {
+  form?: string;
   email?: string;
 };
 
@@ -34,29 +38,6 @@ const screenTabs: ReadonlyArray<{ screen: AuthScreen; label: string }> = [
   { screen: "forgot", label: "Пароль" },
   { screen: "forgot-sent", label: "Письмо" },
 ];
-
-function GoogleIcon() {
-  return (
-    <svg className={styles.googleIcon} viewBox="0 0 24 24" aria-hidden="true">
-      <path
-        fill="#4285F4"
-        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-      />
-      <path
-        fill="#34A853"
-        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-      />
-      <path
-        fill="#FBBC05"
-        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"
-      />
-      <path
-        fill="#EA4335"
-        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-      />
-    </svg>
-  );
-}
 
 function ArrowLeftIcon() {
   return (
@@ -107,11 +88,11 @@ function getPasswordStrength(password: string) {
     score += 1;
   }
 
-  if (/[A-ZА-ЯЁ]/.test(password) || /[a-zа-яё]/.test(password)) {
+  if (/\p{L}/u.test(password)) {
     score += 1;
   }
 
-  if (/\d/.test(password) || /[^a-zA-Zа-яА-ЯёЁ0-9]/.test(password)) {
+  if (/\d/.test(password) || /[^\p{L}\d]/u.test(password)) {
     score += 1;
   }
 
@@ -123,15 +104,16 @@ function getPasswordStrength(password: string) {
     return { score: 2, label: "Средний пароль", tone: "medium" as const };
   }
 
-  return { score: 3, label: "Надежный пароль", tone: "strong" as const };
+  return { score: 3, label: "Надёжный пароль", tone: "strong" as const };
 }
 
 export function AuthFlow({ className }: AuthFlowProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const submitTimeoutRef = useRef<number | null>(null);
   const [screen, setScreen] = useState<AuthScreen>("login");
   const [sentEmail, setSentEmail] = useState("");
-  const [loadingAction, setLoadingAction] = useState<"login" | "register" | "forgot" | "google" | null>(null);
+  const [loadingAction, setLoadingAction] = useState<"login" | "register" | "forgot" | null>(null);
 
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
@@ -148,6 +130,7 @@ export function AuthFlow({ className }: AuthFlowProps) {
   const [forgotErrors, setForgotErrors] = useState<ForgotErrors>({});
 
   const passwordStrength = useMemo(() => getPasswordStrength(registerPassword), [registerPassword]);
+  const nextPath = getSafeNextPath(searchParams.get("next"));
 
   useEffect(() => {
     return () => {
@@ -170,74 +153,55 @@ export function AuthFlow({ className }: AuthFlowProps) {
     setScreen(nextScreen);
   };
 
-  const simulateAction = (action: NonNullable<typeof loadingAction>, callback: () => void) => {
-    if (submitTimeoutRef.current !== null) {
-      window.clearTimeout(submitTimeoutRef.current);
-    }
-
-    setLoadingAction(action);
-    submitTimeoutRef.current = window.setTimeout(() => {
-      setLoadingAction(null);
-      submitTimeoutRef.current = null;
-      callback();
-    }, 1200);
-  };
-
-  const handleGoogle = () => {
-    simulateAction("google", () => {
-      router.push("/app");
-    });
-  };
-
   const handleLoginEmailChange = (value: string) => {
     setLoginEmail(value);
 
-    if (loginErrors.email) {
-      setLoginErrors((current) => ({ ...current, email: undefined }));
+    if (loginErrors.email || loginErrors.form) {
+      setLoginErrors((current) => ({ ...current, email: undefined, form: undefined }));
     }
   };
 
   const handleLoginPasswordChange = (value: string) => {
     setLoginPassword(value);
 
-    if (loginErrors.password) {
-      setLoginErrors((current) => ({ ...current, password: undefined }));
+    if (loginErrors.password || loginErrors.form) {
+      setLoginErrors((current) => ({ ...current, password: undefined, form: undefined }));
     }
   };
 
   const handleRegisterNameChange = (value: string) => {
     setRegisterName(value);
 
-    if (registerErrors.name) {
-      setRegisterErrors((current) => ({ ...current, name: undefined }));
+    if (registerErrors.name || registerErrors.form) {
+      setRegisterErrors((current) => ({ ...current, name: undefined, form: undefined }));
     }
   };
 
   const handleRegisterEmailChange = (value: string) => {
     setRegisterEmail(value);
 
-    if (registerErrors.email) {
-      setRegisterErrors((current) => ({ ...current, email: undefined }));
+    if (registerErrors.email || registerErrors.form) {
+      setRegisterErrors((current) => ({ ...current, email: undefined, form: undefined }));
     }
   };
 
   const handleRegisterPasswordChange = (value: string) => {
     setRegisterPassword(value);
 
-    if (registerErrors.password) {
-      setRegisterErrors((current) => ({ ...current, password: undefined }));
+    if (registerErrors.password || registerErrors.form) {
+      setRegisterErrors((current) => ({ ...current, password: undefined, form: undefined }));
     }
   };
 
   const handleForgotEmailChange = (value: string) => {
     setForgotEmail(value);
 
-    if (forgotErrors.email) {
-      setForgotErrors((current) => ({ ...current, email: undefined }));
+    if (forgotErrors.email || forgotErrors.form) {
+      setForgotErrors((current) => ({ ...current, email: undefined, form: undefined }));
     }
   };
 
-  const handleLoginSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleLoginSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const nextErrors: LoginErrors = {};
@@ -256,12 +220,27 @@ export function AuthFlow({ className }: AuthFlowProps) {
       return;
     }
 
-    simulateAction("login", () => {
-      router.push("/app");
-    });
+    setLoadingAction("login");
+
+    try {
+      const result = await postAuthRequest("/api/auth/login", {
+        email: loginEmail.trim(),
+        password: loginPassword,
+      });
+
+      if (!result.ok) {
+        setLoginErrors(mapLoginApiErrors(result.error));
+        return;
+      }
+
+      router.push(nextPath);
+      router.refresh();
+    } finally {
+      setLoadingAction(null);
+    }
   };
 
-  const handleRegisterSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleRegisterSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const nextErrors: RegisterErrors = {};
@@ -284,12 +263,28 @@ export function AuthFlow({ className }: AuthFlowProps) {
       return;
     }
 
-    simulateAction("register", () => {
-      router.push("/app");
-    });
+    setLoadingAction("register");
+
+    try {
+      const result = await postAuthRequest("/api/auth/register", {
+        name: registerName.trim(),
+        email: registerEmail.trim(),
+        password: registerPassword,
+      });
+
+      if (!result.ok) {
+        setRegisterErrors(mapRegisterApiErrors(result.error));
+        return;
+      }
+
+      router.push(nextPath);
+      router.refresh();
+    } finally {
+      setLoadingAction(null);
+    }
   };
 
-  const handleForgotSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleForgotSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const nextErrors: ForgotErrors = {};
@@ -304,10 +299,23 @@ export function AuthFlow({ className }: AuthFlowProps) {
       return;
     }
 
-    simulateAction("forgot", () => {
+    setLoadingAction("forgot");
+
+    try {
+      const result = await postAuthRequest("/api/auth/forgot-password", {
+        email: forgotEmail.trim(),
+      });
+
+      if (!result.ok) {
+        setForgotErrors(mapForgotApiErrors(result.error));
+        return;
+      }
+
       setSentEmail(forgotEmail.trim());
       changeScreen("forgot-sent");
-    });
+    } finally {
+      setLoadingAction(null);
+    }
   };
 
   return (
@@ -332,14 +340,9 @@ export function AuthFlow({ className }: AuthFlowProps) {
           </h1>
           <p className={styles.subheading}>Войдите, чтобы продолжить генерацию карточек</p>
 
-          <button type="button" className={styles.googleButton} onClick={handleGoogle} disabled={loadingAction !== null}>
-            {loadingAction === "google" ? <Spinner /> : <GoogleIcon />}
-            <span>Войти через Google</span>
-          </button>
-
-          <div className={styles.divider}>или по email</div>
-
           <form className={styles.form} onSubmit={handleLoginSubmit} noValidate>
+            {loginErrors.form ? <div className={styles.formError}>{loginErrors.form}</div> : null}
+
             <label className={styles.field}>
               <span className={styles.label}>Email</span>
               <input
@@ -402,14 +405,9 @@ export function AuthFlow({ className }: AuthFlowProps) {
           </h1>
           <p className={styles.subheading}>10 карточек бесплатно, без карты</p>
 
-          <button type="button" className={styles.googleButton} onClick={handleGoogle} disabled={loadingAction !== null}>
-            {loadingAction === "google" ? <Spinner /> : <GoogleIcon />}
-            <span>Зарегистрироваться через Google</span>
-          </button>
-
-          <div className={styles.divider}>или по email</div>
-
           <form className={styles.form} onSubmit={handleRegisterSubmit} noValidate>
+            {registerErrors.form ? <div className={styles.formError}>{registerErrors.form}</div> : null}
+
             <label className={styles.field}>
               <span className={styles.label}>Имя</span>
               <input
@@ -530,9 +528,11 @@ export function AuthFlow({ className }: AuthFlowProps) {
           <h1 id="auth-forgot-title" className={styles.heading}>
             Забыли пароль?
           </h1>
-          <p className={styles.subheading}>Введите email, и мы пришлем ссылку для сброса пароля</p>
+          <p className={styles.subheading}>Введите email, и мы пришлём ссылку для сброса пароля</p>
 
           <form className={styles.form} onSubmit={handleForgotSubmit} noValidate>
+            {forgotErrors.form ? <div className={styles.formError}>{forgotErrors.form}</div> : null}
+
             <label className={styles.field}>
               <span className={styles.label}>Email</span>
               <input
@@ -589,4 +589,104 @@ export function AuthFlow({ className }: AuthFlowProps) {
       ) : null}
     </div>
   );
+}
+
+type AuthRequestResult =
+  | { ok: true }
+  | { ok: false; error: ErrorResponse };
+
+async function postAuthRequest(path: string, body: Record<string, unknown>): Promise<AuthRequestResult> {
+  const response = await fetch(path, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  const payload = await parseResponseJson(response);
+
+  if (response.ok) {
+    return { ok: true };
+  }
+
+  return {
+    ok: false,
+    error: normalizeErrorResponse(payload, response.status),
+  };
+}
+
+async function parseResponseJson(response: Response) {
+  const rawText = await response.text();
+
+  if (!rawText) {
+    return {};
+  }
+
+  try {
+    return JSON.parse(rawText);
+  } catch {
+    return { message: rawText };
+  }
+}
+
+function normalizeErrorResponse(payload: unknown, status: number): ErrorResponse {
+  if (payload && typeof payload === "object" && "message" in payload && "code" in payload) {
+    return payload as ErrorResponse;
+  }
+
+  return {
+    code: `http_${status}`,
+    message: "Не удалось выполнить запрос",
+  };
+}
+
+function mapLoginApiErrors(error: ErrorResponse): LoginErrors {
+  const nextErrors: LoginErrors = {
+    form: error.message,
+  };
+
+  for (const detail of error.details ?? []) {
+    if (detail.field === "email" || detail.field === "password") {
+      nextErrors[detail.field] = detail.message;
+    }
+  }
+
+  return nextErrors;
+}
+
+function mapRegisterApiErrors(error: ErrorResponse): RegisterErrors {
+  const nextErrors: RegisterErrors = {
+    form: error.message,
+  };
+
+  for (const detail of error.details ?? []) {
+    if (detail.field === "name" || detail.field === "email" || detail.field === "password") {
+      nextErrors[detail.field] = detail.message;
+    }
+  }
+
+  return nextErrors;
+}
+
+function mapForgotApiErrors(error: ErrorResponse): ForgotErrors {
+  const nextErrors: ForgotErrors = {
+    form: error.message,
+  };
+
+  for (const detail of error.details ?? []) {
+    if (detail.field === "email") {
+      nextErrors.email = detail.message;
+    }
+  }
+
+  return nextErrors;
+}
+
+function getSafeNextPath(value: string | null) {
+  if (!value || !value.startsWith("/") || value.startsWith("//")) {
+    return "/app";
+  }
+
+  return value;
 }

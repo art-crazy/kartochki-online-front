@@ -152,6 +152,19 @@ const { data } = useQuery(listProjectsOptions());
 - TanStack Query is for client components only. Server components call SDK functions directly.
 - Do not use Jotai as a cache for server data.
 
+## Authentication
+
+Authentication is implemented through a thin BFF layer inside Next.js.
+
+- The backend returns a bearer access token in the auth response.
+- The frontend must not persist that token in `localStorage` or readable client state.
+- Next route handlers under `src/app/api/auth/*` exchange credentials with the backend and store the access token in an `httpOnly` cookie.
+- Server-side code reads that cookie and forwards it to the backend as `Authorization: Bearer ...`.
+- Protected route groups such as `src/app/(app)` should verify the current session on the server and redirect anonymous users before rendering app UI.
+- Recovery flows such as `forgot-password` and `reset-password` should use the same BFF pattern instead of calling the backend directly from the browser.
+
+This keeps the browser from directly handling the raw bearer token while remaining compatible with the current backend contract.
+
 ## Product Surfaces
 
 ### Marketing Surface

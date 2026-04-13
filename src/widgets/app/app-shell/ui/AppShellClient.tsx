@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { useState, type ReactNode } from "react";
-import { Button, SidebarPlanCard, SidebarProfileCard } from "@/shared/ui";
+import { LogoutButton } from "@/features/auth/ui/LogoutButton";
+import { useAuthSession } from "@/shared/auth/ui/AuthSessionProvider";
 import { classNames } from "@/shared/lib/classNames";
+import { Button, SidebarPlanCard, SidebarProfileCard } from "@/shared/ui";
 import { accountNavItems, mobileNavItems, primaryNavItems, type AppShellNavItem } from "../model/navigation";
 import styles from "./AppShell.module.scss";
 
@@ -17,8 +19,11 @@ type AppShellClientProps = {
 
 export function AppShellClient({ title, subtitle, activeKey, action, children }: AppShellClientProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { user } = useAuthSession();
 
   const closeSidebar = () => setIsSidebarOpen(false);
+  const userName = user?.name?.trim() || user?.email || "Пользователь";
+  const userInitials = getUserInitials(user?.name, user?.email);
 
   return (
     <div className={styles.surface}>
@@ -41,7 +46,8 @@ export function AppShellClient({ title, subtitle, activeKey, action, children }:
 
         <div className={styles.sidebarBottom}>
           <SidebarPlanCard />
-          <SidebarProfileCard initials="ИИ" name="Иван Иванов" plan="Бесплатный план" />
+          <SidebarProfileCard initials={userInitials} name={userName} plan="Активная сессия" />
+          <LogoutButton />
         </div>
       </aside>
 
@@ -89,6 +95,19 @@ export function AppShellClient({ title, subtitle, activeKey, action, children }:
       </nav>
     </div>
   );
+}
+
+function getUserInitials(name?: string, email?: string | null) {
+  if (name?.trim()) {
+    const parts = name.trim().split(/\s+/).filter(Boolean).slice(0, 2);
+    const initials = parts.map((part) => part[0]?.toUpperCase() ?? "").join("");
+
+    if (initials) {
+      return initials;
+    }
+  }
+
+  return (email?.trim()?.[0] ?? "U").toUpperCase();
 }
 
 function ShellLink({

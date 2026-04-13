@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { getCurrentUserFromSession } from "@/shared/auth/server";
 import { siteConfig } from "@/shared/config/site";
 import { AuthPage } from "@/views/auth/ui/AuthPage";
 
@@ -19,6 +21,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AuthRoute() {
+export default async function AuthRoute() {
+  const user = await getCurrentUserFromSession();
+
+  if (user) {
+    redirect("/app");
+  }
+
   return <AuthPage />;
 }
