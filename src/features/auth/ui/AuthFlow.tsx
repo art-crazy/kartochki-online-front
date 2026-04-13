@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Script from "next/script";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { ErrorResponse } from "@/shared/api";
@@ -31,7 +32,28 @@ type AuthFlowProps = {
   className?: string;
 };
 
+type YaAuthSuggestInitResult = {
+  handler: () => Promise<void>;
+};
+
+type YaAuthSuggest = {
+  init: (
+    oauthQueryParams: Record<string, string>,
+    tokenPageOrigin: string,
+    suggestParams?: Record<string, string | number>,
+  ) => Promise<YaAuthSuggestInitResult>;
+};
+
+declare global {
+  interface Window {
+    YaAuthSuggest?: YaAuthSuggest;
+  }
+}
+
 const emailPattern = /\S+@\S+\.\S+/;
+const yandexClientId =
+  process.env.NEXT_PUBLIC_YANDEX_CLIENT_ID ?? "e3069e26deea46b2b0da0a416a446100";
+
 const screenTabs: ReadonlyArray<{ screen: AuthScreen; label: string }> = [
   { screen: "login", label: "Вход" },
   { screen: "register", label: "Регистрация" },
@@ -111,9 +133,12 @@ export function AuthFlow({ className }: AuthFlowProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const submitTimeoutRef = useRef<number | null>(null);
+  const yandexInitRef = useRef(false);
   const [screen, setScreen] = useState<AuthScreen>("login");
   const [sentEmail, setSentEmail] = useState("");
   const [loadingAction, setLoadingAction] = useState<"login" | "register" | "forgot" | null>(null);
+  const [yandexSdkReady, setYandexSdkReady] = useState(false);
+  const [yandexError, setYandexError] = useState("");
 
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
@@ -139,6 +164,58 @@ export function AuthFlow({ className }: AuthFlowProps) {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (!yandexSdkReady || !yandexClientId) {
+      return;
+    }
+
+    if (screen !== "login" && screen !== "register") {
+      return;
+    }
+
+    if (yandexInitRef.current) {
+      return;
+    }
+
+    const container = document.getElementById("yandex-auth-container");
+    if (!container || !window.YaAuthSuggest) {
+      return;
+    }
+
+    yandexInitRef.current = true;
+    container.innerHTML = "";
+
+    const origin = window.location.origin;
+    const redirectUri = `${origin}/auth/yandex/token`;
+
+    setYandexError("");
+
+    window.YaAuthSuggest.init(
+      {
+        client_id: yandexClientId,
+        response_type: "token",
+        redirect_uri: redirectUri,
+      },
+      origin,
+      {
+        view: "button",
+        parentId: "yandex-auth-container",
+        buttonView: "main",
+        buttonTheme: "light",
+        buttonSize: "m",
+        buttonBorderRadius: 10,
+      },
+    )
+      .then(({ handler }) => handler())
+      .catch((error) => {
+        yandexInitRef.current = false;
+        setYandexError("Не удалось загрузить кнопку Яндекс ID. Проверьте доступность сервиса.");
+        if (process.env.NODE_ENV !== "production") {
+          console.warn("Yandex ID widget init failed", error);
+        }
+      });
+  }, [screen, yandexSdkReady]);
 
   const changeScreen = (nextScreen: AuthScreen) => {
     if (submitTimeoutRef.current !== null) {
@@ -320,6 +397,12 @@ export function AuthFlow({ className }: AuthFlowProps) {
 
   return (
     <div className={classNames(styles.flow, className)}>
+      <Script
+        src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js"
+        strategy="afterInteractive"
+        onLoad={() => setYandexSdkReady(true)}
+      />
+
       <div className={styles.devTabs} aria-label="Переключение состояний формы">
         {screenTabs.map((tab) => (
           <button
@@ -339,6 +422,17 @@ export function AuthFlow({ className }: AuthFlowProps) {
             Добро пожаловать
           </h1>
           <p className={styles.subheading}>Войдите, чтобы продолжить генерацию карточек</p>
+
+          <div className={styles.socialGrid}>
+            <div className={styles.yandexWidget}>
+              <div id="yandex-auth-container" />
+              {yandexError ? <div className={styles.oauthError}>{yandexError}</div> : null}
+            </div>
+            <Link href="/api/auth/vk/start" className={styles.socialButton}>
+              <span className={classNames(styles.socialIcon, styles.vkIcon)}>VK</span>
+              Войти через VK
+            </Link>
+          </div>
 
           <form className={styles.form} onSubmit={handleLoginSubmit} noValidate>
             {loginErrors.form ? <div className={styles.formError}>{loginErrors.form}</div> : null}
@@ -404,6 +498,17 @@ export function AuthFlow({ className }: AuthFlowProps) {
             Создать аккаунт
           </h1>
           <p className={styles.subheading}>10 карточек бесплатно, без карты</p>
+
+          <div className={styles.socialGrid}>
+            <div className={styles.yandexWidget}>
+              <div id="yandex-auth-container" />
+              {yandexError ? <div className={styles.oauthError}>{yandexError}</div> : null}
+            </div>
+            <Link href="/api/auth/vk/start" className={styles.socialButton}>
+              <span className={classNames(styles.socialIcon, styles.vkIcon)}>VK</span>
+              Войти через VK
+            </Link>
+          </div>
 
           <form className={styles.form} onSubmit={handleRegisterSubmit} noValidate>
             {registerErrors.form ? <div className={styles.formError}>{registerErrors.form}</div> : null}

@@ -16,16 +16,16 @@ export function AuthLayout({ children }: AuthLayoutProps) {
       <div className={styles.layout}>
         <section className={styles.heroPanel} aria-label="Преимущества сервиса">
           <Link href="/" className={styles.logo}>
-            РєР°СЂС‚РѕС‡РєРё<span>.</span>РѕРЅР»Р°Р№РЅ
+            карточки<span>.</span>онлайн
           </Link>
 
           <div className={styles.heroContent}>
             <h2 className={styles.title}>
-              РљР°СЂС‚РѕС‡РєРё С‚РѕРІР°СЂРѕРІ
+              Карточки товаров
               <br />
-              РґР»СЏ WB Рё Ozon
+              для WB и Ozon
               <br />
-              <em>Р·Р° 30 СЃРµРєСѓРЅРґ</em>
+              <em>за 30 секунд</em>
             </h2>
 
             <div className={styles.previewGrid}>

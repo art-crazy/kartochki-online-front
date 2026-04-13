@@ -86,6 +86,82 @@
   text-align: center;
 }
 
+.socialGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin: 0 0 20px;
+}
+
+.yandexWidget {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 6px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--background-elevated);
+}
+
+.oauthError {
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: rgba(192, 57, 43, 0.1);
+  color: var(--danger);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.socialButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 10px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--background-elevated);
+  color: var(--foreground);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.socialButton:hover {
+  border-color: var(--foreground);
+  background: #fafaf8;
+  transform: translateY(-1px);
+}
+
+.socialIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.vkIcon {
+  background: rgba(74, 118, 168, 0.18);
+  color: #3f6ba1;
+}
+
+.yandexIcon {
+  background: rgba(213, 38, 38, 0.12);
+  color: #d52626;
+}
+
 .form {
   display: grid;
   gap: 16px;
