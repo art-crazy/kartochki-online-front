@@ -48,6 +48,7 @@ This repository contains the frontend for `kartochki.online`, a SEO-first SaaS p
 - Prefer explicit slice boundaries over generic utility folders.
 - Put new code in the narrowest layer that owns it.
 - Use `views` as the FSD page-equivalent because `src/pages` is reserved by Next.js.
+- Keep files at 300 lines or fewer. If a file needs to grow past that limit, decompose it into smaller components, helpers, model files, or style modules owned by the same FSD slice.
 
 ## Styling Rules
 
@@ -88,5 +89,6 @@ This repository contains the frontend for `kartochki.online`, a SEO-first SaaS p
 
 1. Identify the correct FSD layer before creating files.
 2. Keep route files minimal.
-3. Update `docs/architecture.md` when architecture decisions change.
-4. Prefer small, reviewable changes over broad speculative abstractions.
+3. Check file size while editing; files over 300 lines must be decomposed instead of extended further.
+4. Update `docs/architecture.md` when architecture decisions change.
+5. Prefer small, reviewable changes over broad speculative abstractions.

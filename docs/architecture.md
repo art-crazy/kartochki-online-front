@@ -38,6 +38,17 @@ Tailwind may be considered later for isolated internal tooling, but it should no
 
 Use Jotai for client state. Do not turn it into a server-cache layer.
 
+## File Size Rule
+
+Source files should stay at 300 lines or fewer. Files that need to grow beyond this limit should be decomposed before more behavior or styles are added.
+
+Use the FSD owner of the current code to choose the decomposition target:
+
+- Split large page compositions into smaller `views` fragments or `widgets`.
+- Split large widgets and features into local `ui`, `model`, and helper files.
+- Split large SCSS Modules into narrower modules or colocated partials for the same slice.
+- Keep generated files and binary assets outside this rule; they are controlled by tooling rather than manual decomposition.
+
 ## FSD-Oriented Structure
 
 ### `src/app`
