@@ -1,3 +1,5 @@
+import { siteConfig } from "./site";
+
 export type MarketingLink = {
   label: string;
   href?: string;
@@ -21,17 +23,18 @@ export const marketingFooterLinks = [
   { label: "FAQ", href: "/#faq" },
   { label: "Тарифы", href: "/#pricing" },
   { label: "Блог", href: "/blog" },
-  { label: "Поддержка", href: "mailto:support@kartochki-online.ru" },
+  { label: "Поддержка", href: `mailto:${siteConfig.supportEmail}` },
 ] as const satisfies readonly MarketingLink[];
 
 export const blogFooterLinks = [
   { label: "Главная", href: "/" },
   { label: "Тарифы", href: "/#pricing" },
-  { label: "Поддержка", href: "mailto:support@kartochki-online.ru" },
+  { label: "Поддержка", href: `mailto:${siteConfig.supportEmail}` },
 ] as const satisfies readonly MarketingLink[];
 
 export const legalFooterLinks = [
   { label: "Политика конфиденциальности" },
   { label: "Оферта" },
-  { label: "Поддержка", href: "mailto:support@kartochki-online.ru" },
+  { label: "Реквизиты", href: "/rekvizity" },
+  { label: "Поддержка", href: `mailto:${siteConfig.supportEmail}` },
 ] as const satisfies readonly MarketingLink[];
