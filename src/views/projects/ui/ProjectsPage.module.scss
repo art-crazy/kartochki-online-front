@@ -1,0 +1,232 @@
+.page {
+  display: grid;
+  gap: 24px;
+  padding: 28px;
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.heroTitle,
+.cardTitle,
+.projectTitle {
+  margin: 0;
+  color: var(--dark-text);
+  font-family: var(--font-display), sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.heroTitle {
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.heroText,
+.statusText,
+.projectMeta,
+.projectCopy {
+  color: var(--dark-text-3);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.heroText {
+  margin: 8px 0 0;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.statCard,
+.statusCard,
+.formCard {
+  padding: 20px;
+}
+
+.statLabel {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--dark-text-3);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.statValue {
+  color: var(--dark-text);
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.cardTitle {
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.statusText {
+  margin: 8px 0 0;
+}
+
+.statusAction {
+  margin-top: 18px;
+}
+
+.formHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.formGrid label:last-child {
+  grid-column: 1 / -1;
+}
+
+.projectList {
+  display: grid;
+  gap: 12px;
+}
+
+.projectRow {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 18px;
+}
+
+.projectBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.projectTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.projectTitle {
+  overflow-wrap: anywhere;
+  font-size: 0.98rem;
+  font-weight: 700;
+}
+
+.projectMeta,
+.projectCopy {
+  margin: 0;
+}
+
+.projectCopy {
+  margin-top: 6px;
+  color: var(--dark-text-2);
+}
+
+.projectActions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.toast {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(340px, calc(100vw - 32px));
+  padding: 12px 14px;
+  border: 1px solid var(--dark-border);
+  border-radius: 8px;
+  background: var(--dark-bg-2);
+  color: var(--dark-text);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.24);
+  font-size: 0.82rem;
+}
+
+.toastDotSuccess,
+.toastDotDanger {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.toastDotSuccess {
+  background: #3fbf7f;
+}
+
+.toastDotDanger {
+  background: #e94949;
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.56);
+}
+
+.modal {
+  width: min(420px, 100%);
+  padding: 22px;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+@media (max-width: 760px) {
+  .page {
+    padding: 20px 20px 88px;
+  }
+
+  .hero,
+  .projectRow {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .statsGrid,
+  .formGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .projectActions {
+    width: 100%;
+  }
+
+  .projectActions button {
+    flex: 1;
+  }
+
+  .modalActions {
+    flex-direction: column;
+  }
+}
