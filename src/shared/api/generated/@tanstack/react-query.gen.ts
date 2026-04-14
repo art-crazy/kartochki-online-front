@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { billingWebhook, cancelBillingSubscription, changeSettingsPassword, createBillingAddonCheckout, createBillingCheckout, createGeneration, createProject, deleteProject, deleteSettingsAccount, deleteSettingsSession, finishVkOAuth, finishYandexOAuth, forgotPassword, getBilling, getCurrentUser, getDashboard, getGenerateConfig, getGenerationById, getLiveHealth, getProjectById, getPublicBlogPostBySlug, getReadyHealth, getSettings, listProjects, listPublicBlogPosts, loginAuthUser, loginWithTelegram, logoutAuthUser, type Options, patchProject, patchSettingsDefaults, patchSettingsNotifications, patchSettingsProfile, postSettingsExport, registerAuthUser, resetPassword, rotateSettingsApiKey, startVkOAuth, startYandexOAuth, uploadGenerationImage } from '../sdk.gen';
-import type { BillingWebhookData, BillingWebhookError, BillingWebhookResponse, CancelBillingSubscriptionData, CancelBillingSubscriptionError, CancelBillingSubscriptionResponse, ChangeSettingsPasswordData, ChangeSettingsPasswordError, ChangeSettingsPasswordResponse, CreateBillingAddonCheckoutData, CreateBillingAddonCheckoutError, CreateBillingAddonCheckoutResponse, CreateBillingCheckoutData, CreateBillingCheckoutError, CreateBillingCheckoutResponse, CreateGenerationData, CreateGenerationError, CreateGenerationResponse2, CreateProjectData, CreateProjectError, CreateProjectResponse, DeleteProjectData, DeleteProjectError, DeleteProjectResponse, DeleteSettingsAccountData, DeleteSettingsAccountError, DeleteSettingsAccountResponse, DeleteSettingsSessionData, DeleteSettingsSessionError, DeleteSettingsSessionResponse, FinishVkOAuthData, FinishVkOAuthError, FinishVkOAuthResponse, FinishYandexOAuthData, FinishYandexOAuthError, FinishYandexOAuthResponse, ForgotPasswordData, ForgotPasswordError, ForgotPasswordResponse, GetBillingData, GetBillingError, GetBillingResponse, GetCurrentUserData, GetCurrentUserError, GetCurrentUserResponse, GetDashboardData, GetDashboardError, GetDashboardResponse, GetGenerateConfigData, GetGenerateConfigError, GetGenerateConfigResponse, GetGenerationByIdData, GetGenerationByIdError, GetGenerationByIdResponse, GetLiveHealthData, GetLiveHealthResponse, GetProjectByIdData, GetProjectByIdError, GetProjectByIdResponse, GetPublicBlogPostBySlugData, GetPublicBlogPostBySlugError, GetPublicBlogPostBySlugResponse, GetReadyHealthData, GetReadyHealthError, GetReadyHealthResponse, GetSettingsData, GetSettingsError, GetSettingsResponse, ListProjectsData, ListProjectsError, ListProjectsResponse, ListPublicBlogPostsData, ListPublicBlogPostsError, ListPublicBlogPostsResponse, LoginAuthUserData, LoginAuthUserError, LoginAuthUserResponse, LoginWithTelegramData, LoginWithTelegramError, LoginWithTelegramResponse, LogoutAuthUserData, LogoutAuthUserError, LogoutAuthUserResponse, PatchProjectData, PatchProjectError, PatchProjectResponse, PatchSettingsDefaultsData, PatchSettingsDefaultsError, PatchSettingsDefaultsResponse, PatchSettingsNotificationsData, PatchSettingsNotificationsError, PatchSettingsNotificationsResponse, PatchSettingsProfileData, PatchSettingsProfileError, PatchSettingsProfileResponse, PostSettingsExportData, PostSettingsExportError, PostSettingsExportResponse, RegisterAuthUserData, RegisterAuthUserError, RegisterAuthUserResponse, ResetPasswordData, ResetPasswordError, ResetPasswordResponse, RotateSettingsApiKeyData, RotateSettingsApiKeyError, RotateSettingsApiKeyResponse, StartVkOAuthData, StartVkOAuthError, StartYandexOAuthData, StartYandexOAuthError, UploadGenerationImageData, UploadGenerationImageError, UploadGenerationImageResponse } from '../types.gen';
+import { billingWebhook, cancelBillingSubscription, changeSettingsPassword, createBillingAddonCheckout, createBillingCheckout, createGeneration, createProject, deleteProject, deleteSettingsAccount, deleteSettingsSession, forgotPassword, getBilling, getCurrentUser, getDashboard, getGenerateConfig, getGenerationById, getLiveHealth, getProjectById, getPublicBlogPostBySlug, getReadyHealth, getSettings, listProjects, listPublicBlogPosts, loginAuthUser, loginWithTelegram, loginWithVkWidget, loginWithYandexWidget, logoutAuthUser, type Options, patchProject, patchSettingsDefaults, patchSettingsNotifications, patchSettingsProfile, postSettingsExport, registerAuthUser, resetPassword, rotateSettingsApiKey, uploadGenerationImage } from '../sdk.gen';
+import type { BillingWebhookData, BillingWebhookError, BillingWebhookResponse, CancelBillingSubscriptionData, CancelBillingSubscriptionError, CancelBillingSubscriptionResponse, ChangeSettingsPasswordData, ChangeSettingsPasswordError, ChangeSettingsPasswordResponse, CreateBillingAddonCheckoutData, CreateBillingAddonCheckoutError, CreateBillingAddonCheckoutResponse, CreateBillingCheckoutData, CreateBillingCheckoutError, CreateBillingCheckoutResponse, CreateGenerationData, CreateGenerationError, CreateGenerationResponse2, CreateProjectData, CreateProjectError, CreateProjectResponse, DeleteProjectData, DeleteProjectError, DeleteProjectResponse, DeleteSettingsAccountData, DeleteSettingsAccountError, DeleteSettingsAccountResponse, DeleteSettingsSessionData, DeleteSettingsSessionError, DeleteSettingsSessionResponse, ForgotPasswordData, ForgotPasswordError, ForgotPasswordResponse, GetBillingData, GetBillingError, GetBillingResponse, GetCurrentUserData, GetCurrentUserError, GetCurrentUserResponse, GetDashboardData, GetDashboardError, GetDashboardResponse, GetGenerateConfigData, GetGenerateConfigError, GetGenerateConfigResponse, GetGenerationByIdData, GetGenerationByIdError, GetGenerationByIdResponse, GetLiveHealthData, GetLiveHealthResponse, GetProjectByIdData, GetProjectByIdError, GetProjectByIdResponse, GetPublicBlogPostBySlugData, GetPublicBlogPostBySlugError, GetPublicBlogPostBySlugResponse, GetReadyHealthData, GetReadyHealthError, GetReadyHealthResponse, GetSettingsData, GetSettingsError, GetSettingsResponse, ListProjectsData, ListProjectsError, ListProjectsResponse, ListPublicBlogPostsData, ListPublicBlogPostsError, ListPublicBlogPostsResponse, LoginAuthUserData, LoginAuthUserError, LoginAuthUserResponse, LoginWithTelegramData, LoginWithTelegramError, LoginWithTelegramResponse, LoginWithVkWidgetData, LoginWithVkWidgetError, LoginWithVkWidgetResponse, LoginWithYandexWidgetData, LoginWithYandexWidgetError, LoginWithYandexWidgetResponse, LogoutAuthUserData, LogoutAuthUserError, LogoutAuthUserResponse, PatchProjectData, PatchProjectError, PatchProjectResponse, PatchSettingsDefaultsData, PatchSettingsDefaultsError, PatchSettingsDefaultsResponse, PatchSettingsNotificationsData, PatchSettingsNotificationsError, PatchSettingsNotificationsResponse, PatchSettingsProfileData, PatchSettingsProfileError, PatchSettingsProfileResponse, PostSettingsExportData, PostSettingsExportError, PostSettingsExportResponse, RegisterAuthUserData, RegisterAuthUserError, RegisterAuthUserResponse, ResetPasswordData, ResetPasswordError, ResetPasswordResponse, RotateSettingsApiKeyData, RotateSettingsApiKeyError, RotateSettingsApiKeyResponse, UploadGenerationImageData, UploadGenerationImageError, UploadGenerationImageResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -231,110 +231,49 @@ export const resetPasswordMutation = (options?: Partial<Options<ResetPasswordDat
     return mutationOptions;
 };
 
-export const startVkOAuthQueryKey = (options?: Options<StartVkOAuthData>) => createQueryKey('startVkOAuth', options);
-
 /**
- * Начать вход через VK
+ * Войти через VK ID One Tap
  *
- * Первый шаг входа через VK ID.
- *
- * Frontend открывает этот endpoint, когда пользователь нажимает кнопку
- * "Войти через VK". Backend подготавливает OAuth-запрос, сохраняет
- * одноразовый `state` и перенаправляет пользователя на страницу VK ID.
- *
- * Этот endpoint не логинит пользователя сам по себе.
- * Его задача только начать внешний OAuth-flow и отправить пользователя к провайдеру.
+ * Frontend показывает виджет VK ID One Tap и после LOGIN_SUCCESS отправляет `code` и `device_id` на backend.
+ * Backend проверяет payload у VK ID, находит или создаёт пользователя, привязывает OAuth-аккаунт и открывает локальную сессию.
  *
  */
-export const startVkOAuthOptions = (options?: Options<StartVkOAuthData>) => queryOptions<unknown, StartVkOAuthError, unknown, ReturnType<typeof startVkOAuthQueryKey>>({
-    queryFn: async ({ queryKey, signal }) => {
-        const { data } = await startVkOAuth({
-            ...options,
-            ...queryKey[0],
-            signal,
-            throwOnError: true
-        });
-        return data;
-    },
-    queryKey: startVkOAuthQueryKey(options)
-});
-
-export const finishVkOAuthQueryKey = (options: Options<FinishVkOAuthData>) => createQueryKey('finishVkOAuth', options);
-
-/**
- * Завершить вход через VK
- *
- * Второй шаг входа через VK ID.
- *
- * Сюда VK ID вернёт пользователя после подтверждения входа.
- * Обычно frontend не вызывает этот endpoint вручную.
- *
- * Backend проверяет `state`, получает профиль VK ID, находит или создаёт
- * локального пользователя и затем открывает обычную локальную сессию backend.
- *
- */
-export const finishVkOAuthOptions = (options: Options<FinishVkOAuthData>) => queryOptions<FinishVkOAuthResponse, FinishVkOAuthError, FinishVkOAuthResponse, ReturnType<typeof finishVkOAuthQueryKey>>({
-    queryFn: async ({ queryKey, signal }) => {
-        const { data } = await finishVkOAuth({
-            ...options,
-            ...queryKey[0],
-            signal,
-            throwOnError: true
-        });
-        return data;
-    },
-    queryKey: finishVkOAuthQueryKey(options)
-});
-
-export const startYandexOAuthQueryKey = (options?: Options<StartYandexOAuthData>) => createQueryKey('startYandexOAuth', options);
+export const loginWithVkWidgetMutation = (options?: Partial<Options<LoginWithVkWidgetData>>): UseMutationOptions<LoginWithVkWidgetResponse, LoginWithVkWidgetError, Options<LoginWithVkWidgetData>> => {
+    const mutationOptions: UseMutationOptions<LoginWithVkWidgetResponse, LoginWithVkWidgetError, Options<LoginWithVkWidgetData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await loginWithVkWidget({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
 
 /**
- * Начать вход через Яндекс
+ * Войти через Яндекс по access token
  *
- * Первый шаг входа через Яндекс ID.
+ * Альтернативный вход через Яндекс ID, когда frontend использует официальный виджет.
  *
- * Frontend открывает этот endpoint, когда пользователь нажимает кнопку
- * "Войти через Яндекс". Backend подготавливает OAuth-запрос, сохраняет
- * одноразовый `state` и перенаправляет пользователя на страницу Яндекса.
- *
- */
-export const startYandexOAuthOptions = (options?: Options<StartYandexOAuthData>) => queryOptions<unknown, StartYandexOAuthError, unknown, ReturnType<typeof startYandexOAuthQueryKey>>({
-    queryFn: async ({ queryKey, signal }) => {
-        const { data } = await startYandexOAuth({
-            ...options,
-            ...queryKey[0],
-            signal,
-            throwOnError: true
-        });
-        return data;
-    },
-    queryKey: startYandexOAuthQueryKey(options)
-});
-
-export const finishYandexOAuthQueryKey = (options: Options<FinishYandexOAuthData>) => createQueryKey('finishYandexOAuth', options);
-
-/**
- * Завершить вход через Яндекс
- *
- * Второй шаг входа через Яндекс ID.
- *
- * Сюда Яндекс вернёт пользователя после подтверждения входа.
- * Backend проверяет `state`, получает профиль Яндекс ID, находит или создаёт
- * локального пользователя и затем открывает обычную локальную сессию backend.
+ * Frontend получает `access_token` через postMessage и отправляет его на backend.
+ * Backend проверяет токен через userinfo, находит или создаёт пользователя и открывает локальную сессию.
  *
  */
-export const finishYandexOAuthOptions = (options: Options<FinishYandexOAuthData>) => queryOptions<FinishYandexOAuthResponse, FinishYandexOAuthError, FinishYandexOAuthResponse, ReturnType<typeof finishYandexOAuthQueryKey>>({
-    queryFn: async ({ queryKey, signal }) => {
-        const { data } = await finishYandexOAuth({
-            ...options,
-            ...queryKey[0],
-            signal,
-            throwOnError: true
-        });
-        return data;
-    },
-    queryKey: finishYandexOAuthQueryKey(options)
-});
+export const loginWithYandexWidgetMutation = (options?: Partial<Options<LoginWithYandexWidgetData>>): UseMutationOptions<LoginWithYandexWidgetResponse, LoginWithYandexWidgetError, Options<LoginWithYandexWidgetData>> => {
+    const mutationOptions: UseMutationOptions<LoginWithYandexWidgetResponse, LoginWithYandexWidgetError, Options<LoginWithYandexWidgetData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await loginWithYandexWidget({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
 
 export const listProjectsQueryKey = (options?: Options<ListProjectsData>) => createQueryKey('listProjects', options);
 

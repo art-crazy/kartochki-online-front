@@ -7,7 +7,7 @@ import { forgotPassword, loginAuthUser, registerAuthUser } from "@/shared/api";
 import { mapForgotErrors, mapLoginErrors, mapRegisterErrors } from "./mappers";
 import type { AuthScreen, ForgotErrors, LoadingAction, LoginErrors, RegisterErrors } from "./types";
 import { getPasswordStrength, getSafeNextPath, validateEmail } from "./validation";
-import { useYandexAuth } from "./useYandexAuth";
+import { useSocialAuthWidgets } from "./useSocialAuthWidgets";
 
 export function useAuthFlow() {
   const router = useRouter();
@@ -32,7 +32,7 @@ export function useAuthFlow() {
 
   const passwordStrength = useMemo(() => getPasswordStrength(registerPassword), [registerPassword]);
   const nextPath = getSafeNextPath(searchParams.get("next"));
-  const { onYandexSdkLoad, yandexError } = useYandexAuth(screen);
+  const { onVkSdkLoad, onYandexSdkLoad, socialAuthError, socialAuthPending } = useSocialAuthWidgets(screen);
 
   const changeScreen = (nextScreen: AuthScreen) => {
     setLoadingAction(null);
@@ -184,6 +184,7 @@ export function useAuthFlow() {
     loginPassword,
     loginPasswordVisible,
     onYandexSdkLoad,
+    onVkSdkLoad,
     passwordStrength,
     registerEmail,
     registerErrors,
@@ -194,6 +195,7 @@ export function useAuthFlow() {
     sentEmail,
     setLoginPasswordVisible,
     setRegisterPasswordVisible,
-    yandexError,
+    socialAuthError,
+    socialAuthPending,
   };
 }

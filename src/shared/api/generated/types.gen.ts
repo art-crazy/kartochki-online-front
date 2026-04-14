@@ -48,6 +48,24 @@ export type TelegramLoginRequest = {
     hash: string;
 };
 
+export type VkWidgetLoginRequest = {
+    /**
+     * Code, полученный frontend из события LOGIN_SUCCESS виджета VK ID One Tap.
+     */
+    code: string;
+    /**
+     * Device ID, полученный frontend из события LOGIN_SUCCESS виджета VK ID One Tap.
+     */
+    device_id: string;
+};
+
+export type YandexWidgetLoginRequest = {
+    /**
+     * Access token, полученный от виджета Яндекс ID.
+     */
+    access_token: string;
+};
+
 export type ForgotPasswordRequest = {
     email: string;
 };
@@ -752,111 +770,69 @@ export type ResetPasswordResponses = {
 
 export type ResetPasswordResponse = ResetPasswordResponses[keyof ResetPasswordResponses];
 
-export type StartVkOAuthData = {
-    body?: never;
+export type LoginWithVkWidgetData = {
+    body: VkWidgetLoginRequest;
     path?: never;
     query?: never;
-    url: '/api/v1/auth/vk/start';
+    url: '/api/v1/auth/vk/widget';
 };
 
-export type StartVkOAuthErrors = {
+export type LoginWithVkWidgetErrors = {
     /**
-     * Не удалось начать OAuth-flow из-за внутренней ошибки backend
-     */
-    500: ErrorResponse;
-    /**
-     * Вход через VK пока не настроен
-     */
-    501: ErrorResponse;
-};
-
-export type StartVkOAuthError = StartVkOAuthErrors[keyof StartVkOAuthErrors];
-
-export type FinishVkOAuthData = {
-    body?: never;
-    path?: never;
-    query: {
-        /**
-         * Временный код авторизации, который VK ID выдаёт backend после успешного подтверждения входа.
-         */
-        code: string;
-        /**
-         * Защитный параметр, который помогает убедиться, что callback относится к нашему OAuth-запросу.
-         */
-        state: string;
-    };
-    url: '/api/v1/auth/vk/callback';
-};
-
-export type FinishVkOAuthErrors = {
-    /**
-     * Параметры `code` или `state` отсутствуют, истекли или не прошли проверку
+     * Payload виджета отсутствует или некорректен
      */
     400: ErrorResponse;
     /**
-     * Не удалось завершить OAuth-flow из-за внутренней ошибки backend
+     * VK ID отклонил code или device_id
+     */
+    401: ErrorResponse;
+    /**
+     * Email уже связан с другим способом входа
+     */
+    409: ErrorResponse;
+    /**
+     * VK ID недоступен или вернул неожиданный ответ
      */
     500: ErrorResponse;
     /**
-     * Вход через VK пока не настроен
+     * Вход через VK ID пока не настроен
      */
     501: ErrorResponse;
 };
 
-export type FinishVkOAuthError = FinishVkOAuthErrors[keyof FinishVkOAuthErrors];
+export type LoginWithVkWidgetError = LoginWithVkWidgetErrors[keyof LoginWithVkWidgetErrors];
 
-export type FinishVkOAuthResponses = {
+export type LoginWithVkWidgetResponses = {
     /**
-     * Вход через VK завершён, локальная сессия создана
+     * Вход через VK ID завершён, локальная сессия создана
      */
     200: AuthResponse;
 };
 
-export type FinishVkOAuthResponse = FinishVkOAuthResponses[keyof FinishVkOAuthResponses];
+export type LoginWithVkWidgetResponse = LoginWithVkWidgetResponses[keyof LoginWithVkWidgetResponses];
 
-export type StartYandexOAuthData = {
-    body?: never;
+export type LoginWithYandexWidgetData = {
+    body: YandexWidgetLoginRequest;
     path?: never;
     query?: never;
-    url: '/api/v1/auth/yandex/start';
+    url: '/api/v1/auth/yandex/widget';
 };
 
-export type StartYandexOAuthErrors = {
+export type LoginWithYandexWidgetErrors = {
     /**
-     * Не удалось начать OAuth-flow из-за внутренней ошибки backend
-     */
-    500: ErrorResponse;
-    /**
-     * Вход через Яндекс пока не настроен
-     */
-    501: ErrorResponse;
-};
-
-export type StartYandexOAuthError = StartYandexOAuthErrors[keyof StartYandexOAuthErrors];
-
-export type FinishYandexOAuthData = {
-    body?: never;
-    path?: never;
-    query: {
-        /**
-         * Временный код авторизации, который Яндекс выдаёт backend после успешного подтверждения входа.
-         */
-        code: string;
-        /**
-         * Защитный параметр, который помогает убедиться, что callback относится к нашему OAuth-запросу.
-         */
-        state: string;
-    };
-    url: '/api/v1/auth/yandex/callback';
-};
-
-export type FinishYandexOAuthErrors = {
-    /**
-     * Параметры `code` или `state` отсутствуют, истекли или не прошли проверку
+     * Payload виджета отсутствует или некорректен
      */
     400: ErrorResponse;
     /**
-     * Не удалось завершить OAuth-flow из-за внутренней ошибки backend
+     * Яндекс отклонил access token
+     */
+    401: ErrorResponse;
+    /**
+     * Email уже связан с другим способом входа
+     */
+    409: ErrorResponse;
+    /**
+     * Яндекс ID недоступен или вернул неожиданный ответ
      */
     500: ErrorResponse;
     /**
@@ -865,16 +841,16 @@ export type FinishYandexOAuthErrors = {
     501: ErrorResponse;
 };
 
-export type FinishYandexOAuthError = FinishYandexOAuthErrors[keyof FinishYandexOAuthErrors];
+export type LoginWithYandexWidgetError = LoginWithYandexWidgetErrors[keyof LoginWithYandexWidgetErrors];
 
-export type FinishYandexOAuthResponses = {
+export type LoginWithYandexWidgetResponses = {
     /**
      * Вход через Яндекс завершён, локальная сессия создана
      */
     200: AuthResponse;
 };
 
-export type FinishYandexOAuthResponse = FinishYandexOAuthResponses[keyof FinishYandexOAuthResponses];
+export type LoginWithYandexWidgetResponse = LoginWithYandexWidgetResponses[keyof LoginWithYandexWidgetResponses];
 
 export type ListProjectsData = {
     body?: never;

@@ -24,6 +24,11 @@ export function AuthFlow({ className }: AuthFlowProps) {
         strategy="afterInteractive"
         onLoad={authFlow.onYandexSdkLoad}
       />
+      <Script
+        src="https://unpkg.com/@vkid/sdk@2.6.5/dist-sdk/umd/index.js"
+        strategy="afterInteractive"
+        onLoad={authFlow.onVkSdkLoad}
+      />
 
       <AuthDevTabs activeScreen={authFlow.screen} onChange={authFlow.changeScreen} />
 
@@ -40,7 +45,8 @@ export function AuthFlow({ className }: AuthFlowProps) {
           password={authFlow.loginPassword}
           passwordVisible={authFlow.loginPasswordVisible}
           setPasswordVisible={authFlow.setLoginPasswordVisible}
-          yandexError={authFlow.yandexError}
+          socialAuthError={authFlow.socialAuthError}
+          socialAuthPending={authFlow.socialAuthPending}
         />
       ) : null}
 
@@ -59,7 +65,8 @@ export function AuthFlow({ className }: AuthFlowProps) {
           passwordStrength={authFlow.passwordStrength}
           passwordVisible={authFlow.registerPasswordVisible}
           setPasswordVisible={authFlow.setRegisterPasswordVisible}
-          yandexError={authFlow.yandexError}
+          socialAuthError={authFlow.socialAuthError}
+          socialAuthPending={authFlow.socialAuthPending}
         />
       ) : null}
 

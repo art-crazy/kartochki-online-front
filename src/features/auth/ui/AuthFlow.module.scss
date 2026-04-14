@@ -86,14 +86,19 @@
   text-align: center;
 }
 
+.socialBlock {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 20px;
+}
+
 .socialGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 10px;
-  margin: 0 0 20px;
 }
 
-.yandexWidget {
+.socialWidget {
   display: grid;
   align-items: center;
   justify-items: center;
@@ -103,6 +108,11 @@
   border: 1.5px solid var(--line);
   border-radius: var(--radius-md);
   background: var(--background-elevated);
+}
+
+.socialBlock[aria-busy="true"] {
+  opacity: 0.78;
+  pointer-events: none;
 }
 
 .oauthError {

@@ -17,14 +17,8 @@ export {
   getReadyHealthOptions,
   // auth
   // oauth
-  startVkOAuthQueryKey,
-  startVkOAuthOptions,
-  finishVkOAuthQueryKey,
-  finishVkOAuthOptions,
-  startYandexOAuthQueryKey,
-  startYandexOAuthOptions,
-  finishYandexOAuthQueryKey,
-  finishYandexOAuthOptions,
+  loginWithVkWidgetMutation,
+  loginWithYandexWidgetMutation,
   // user
   getCurrentUserQueryKey,
   getCurrentUserOptions,

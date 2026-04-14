@@ -22,7 +22,8 @@ type RegisterScreenProps = {
   passwordStrength: ReturnType<typeof getPasswordStrength>;
   passwordVisible: boolean;
   setPasswordVisible: (updater: (value: boolean) => boolean) => void;
-  yandexError: string;
+  socialAuthError: string;
+  socialAuthPending: boolean;
 };
 
 export function RegisterScreen({
@@ -39,7 +40,8 @@ export function RegisterScreen({
   passwordStrength,
   passwordVisible,
   setPasswordVisible,
-  yandexError,
+  socialAuthError,
+  socialAuthPending,
 }: RegisterScreenProps) {
   return (
     <section className={styles.screen} aria-labelledby="auth-register-title">
@@ -48,7 +50,7 @@ export function RegisterScreen({
       </h1>
       <p className={styles.subheading}>10 карточек бесплатно, без карты</p>
 
-      <SocialAuthButtons yandexError={yandexError} />
+      <SocialAuthButtons error={socialAuthError} isPending={socialAuthPending} />
 
       <form className={styles.form} onSubmit={onSubmit} noValidate>
         {errors.form ? <div className={styles.formError}>{errors.form}</div> : null}
