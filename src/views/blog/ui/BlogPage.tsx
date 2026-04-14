@@ -1,23 +1,24 @@
 import Link from "next/link";
 import {
-  blogCategories,
-  blogFeedPosts,
-  blogFilterChips,
   blogHeroStats,
   blogListingSchema,
-  blogPopularPosts,
-  blogPost,
-  blogTags,
   heroGradients,
-  moreBlogPosts,
 } from "@/entities/blog/model/content";
 import { blogHeaderLinks, legalFooterLinks } from "@/shared/config/marketing";
 import { Button } from "@/shared/ui/primitives/Primitives";
 import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
 import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
+import { fallbackBlogPageContent, type BlogPageContent } from "@/views/blog/model/content";
 import styles from "./BlogPage.module.scss";
 
-export function BlogPage() {
+type BlogPageProps = {
+  content?: BlogPageContent;
+};
+
+export function BlogPage({ content = fallbackBlogPageContent }: BlogPageProps) {
+  const hasNextPage = content.pagination.page < content.pagination.totalPages;
+  const nextPageHref = `/blog?page=${content.pagination.page + 1}`;
+
   return (
     <main className={styles.page}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogListingSchema) }} />
@@ -46,7 +47,7 @@ export function BlogPage() {
       <div className={styles.layout}>
         <main className={styles.feed}>
           <div className={[styles.filters, styles.reveal, styles.delay1].join(" ")} aria-label="Фильтры блога">
-            {blogFilterChips.map((chip, index) => (
+            {content.filterChips.map((chip, index) => (
               <button
                 key={chip}
                 type="button"
@@ -57,7 +58,7 @@ export function BlogPage() {
             ))}
           </div>
 
-          <Link href={blogPost.canonicalPath} className={[styles.featuredPost, styles.reveal, styles.delay2].join(" ")}>
+          <Link href={content.featuredPost.href} className={[styles.featuredPost, styles.reveal, styles.delay2].join(" ")}>
             <div className={styles.featuredVisual} aria-hidden="true">
               <div className={styles.featuredMock}>
                 {heroGradients.map((gradient, index) => (
@@ -72,24 +73,24 @@ export function BlogPage() {
 
             <div className={styles.featuredContent}>
               <div className={styles.featuredTag}>Главная статья</div>
-              <h2 className={styles.featuredTitle}>{blogPost.title}</h2>
-              <p className={styles.featuredExcerpt}>{blogPost.excerpt}</p>
+              <h2 className={styles.featuredTitle}>{content.featuredPost.title}</h2>
+              <p className={styles.featuredExcerpt}>{content.featuredPost.excerpt}</p>
 
               <div className={styles.featuredMeta}>
-                <div className={styles.metaAvatar}>{blogPost.authorInitials}</div>
+                <div className={styles.metaAvatar}>{content.featuredPost.authorInitials}</div>
                 <div className={styles.metaInfo}>
-                  <div className={styles.metaAuthor}>{blogPost.author}</div>
-                  <div className={styles.metaDate}>{blogPost.publishedLabel}</div>
+                  <div className={styles.metaAuthor}>{content.featuredPost.author}</div>
+                  <div className={styles.metaDate}>{content.featuredPost.publishedLabel}</div>
                 </div>
-                <div className={styles.metaRead}>{blogPost.readingTime} →</div>
+                <div className={styles.metaRead}>{content.featuredPost.readingTime} →</div>
               </div>
             </div>
           </Link>
 
           <div className={styles.postsGrid}>
-            {blogFeedPosts.map((post) => (
+            {content.feedPosts.map((post) => (
               <article key={post.title} className={[styles.reveal, styles.delay3].join(" ")}>
-                <Link href={post.href ?? blogPost.canonicalPath} className={styles.postCard}>
+                <Link href={post.href ?? content.featuredPost.href} className={styles.postCard}>
                   <div className={[styles.postVisual, styles[post.visualClass]].join(" ")}>
                     <div className={styles.postVisualInner} />
                     <div className={[styles.postVisualLabel, styles[`label${post.visualTone}`]].join(" ")}>
@@ -117,8 +118,8 @@ export function BlogPage() {
           <section className={[styles.moreSection, styles.reveal, styles.delay4].join(" ")}>
             <h2 className={styles.moreTitle}>Ещё статьи</h2>
             <div className={styles.postsList}>
-              {moreBlogPosts.map((post) => (
-                <Link key={post.number} href={post.href ?? blogPost.canonicalPath} className={styles.listPost}>
+              {content.morePosts.map((post) => (
+                <Link key={`${post.number}-${post.title}`} href={post.href ?? content.featuredPost.href} className={styles.listPost}>
                   <div className={styles.listNumber}>{post.number}</div>
                   <div className={styles.listBody}>
                     <div className={styles.listTag}>{post.tag}</div>
@@ -131,11 +132,13 @@ export function BlogPage() {
             </div>
           </section>
 
-          <div className={[styles.loadMore, styles.reveal, styles.delay5].join(" ")}>
-            <Button as="button" type="button" variant="outline" size="lg">
-              Показать ещё статьи
-            </Button>
-          </div>
+          {hasNextPage ? (
+            <div className={[styles.loadMore, styles.reveal, styles.delay5].join(" ")}>
+              <Button as={Link} href={nextPageHref} variant="outline" size="lg">
+                Показать ещё статьи
+              </Button>
+            </div>
+          ) : null}
         </main>
 
         <aside className={styles.sidebar}>
@@ -161,8 +164,8 @@ export function BlogPage() {
             <div className={styles.widgetHeader}>Категории</div>
             <div className={styles.widgetBody}>
               <div className={styles.categories}>
-                {blogCategories.map((category) => (
-                  <Link key={category.label} href={blogPost.canonicalPath} className={styles.categoryItem}>
+                {content.categories.map((category) => (
+                  <Link key={category.label} href={category.href} className={styles.categoryItem}>
                     <span>{category.label}</span>
                     <span className={styles.categoryCount}>{category.count}</span>
                   </Link>
@@ -175,8 +178,8 @@ export function BlogPage() {
             <div className={styles.widgetHeader}>Популярные статьи</div>
             <div className={styles.widgetBody}>
               <div className={styles.popularList}>
-                {blogPopularPosts.map((post, index) => (
-                  <Link key={post.title} href={post.href ?? blogPost.canonicalPath} className={styles.popularItem}>
+                {content.popularPosts.map((post, index) => (
+                  <Link key={post.title} href={post.href} className={styles.popularItem}>
                     <div className={styles.popularNumber}>{index + 1}</div>
                     <div>
                       <div className={styles.popularTitle}>{post.title}</div>
@@ -192,9 +195,9 @@ export function BlogPage() {
             <div className={styles.widgetHeader}>Теги</div>
             <div className={styles.widgetBody}>
               <div className={styles.tagsCloud}>
-                {blogTags.map((tag) => (
-                  <Link key={tag} href={blogPost.canonicalPath} className={styles.tag}>
-                    {tag}
+                {content.tags.map((tag) => (
+                  <Link key={tag.label} href={tag.href} className={styles.tag}>
+                    {tag.label}
                   </Link>
                 ))}
               </div>

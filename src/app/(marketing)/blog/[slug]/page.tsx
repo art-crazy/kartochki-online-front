@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { blogPostSlugs, getBlogPostBySlug } from "@/entities/blog/model/content";
-import { siteConfig } from "@/shared/config/site";
+import { getApiBlogPost, getBlogPostMetadata, getStaticBlogPostParams, hasFallbackBlogPost } from "@/views/blog-post/model/server";
+import { ApiBlogPostPage } from "@/views/blog-post/ui/ApiBlogPostPage";
 import { BlogPostPage } from "@/views/blog-post/ui/BlogPostPage";
 
 type BlogPostRouteProps = {
@@ -10,49 +10,27 @@ type BlogPostRouteProps = {
   }>;
 };
 
-export const dynamicParams = false;
+export const dynamicParams = true;
+export const revalidate = 86_400;
 
 export function generateStaticParams() {
-  return blogPostSlugs.map((slug) => ({ slug }));
+  return getStaticBlogPostParams();
 }
 
 export async function generateMetadata({ params }: BlogPostRouteProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = getBlogPostBySlug(slug);
-
-  if (!post) {
-    return {};
-  }
-
-  const canonical = `${siteConfig.defaultUrl}${post.canonicalPath}`;
-
-  return {
-    title: post.title,
-    description: post.description,
-    keywords: [...post.keywords],
-    alternates: {
-      canonical,
-    },
-    openGraph: {
-      type: "article",
-      title: post.title,
-      description: post.description,
-      url: canonical,
-      publishedTime: post.publishedAt,
-      modifiedTime: post.updatedAt,
-    },
-    robots: {
-      index: true,
-      follow: true,
-    },
-  };
+  return getBlogPostMetadata(slug);
 }
 
 export default async function BlogPostRoute({ params }: BlogPostRouteProps) {
   const { slug } = await params;
-  const post = getBlogPostBySlug(slug);
+  const apiPost = await getApiBlogPost(slug);
 
-  if (!post) {
+  if (apiPost) {
+    return <ApiBlogPostPage content={apiPost} />;
+  }
+
+  if (!hasFallbackBlogPost(slug)) {
     notFound();
   }
 
