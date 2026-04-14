@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/shared/ui";
+import { useGenerationFlow } from "../model/useGenerationFlow";
 import {
-  buildResultCards,
   cardCountOptions,
   cardTypeOptions,
   defaultSelectedCardTypes,
@@ -15,14 +15,11 @@ import {
   type GenerateConfigContent,
   type MarketplaceId,
   type ResultCard,
-  type ResultState,
   type StyleId,
 } from "../model/content";
 import { GenerateControls } from "./GenerateControls";
-import { EmptyState, LoadingState, ResultStateView } from "./GenerateResultStates";
+import { EmptyState, ErrorState, LoadingState, ResultStateView } from "./GenerateResultStates";
 import styles from "./GenerateWorkspace.module.scss";
-
-const loadingStepDurationMs = 1600;
 
 type GenerateWorkspaceProps = {
   config?: GenerateConfigContent;
@@ -51,7 +48,6 @@ export function GenerateWorkspace({
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const objectUrlRef = useRef<string | null>(null);
-  const loadingTimerRef = useRef<number[]>([]);
   const toastTimerRef = useRef<number | null>(null);
 
   const [marketplace, setMarketplace] = useState<MarketplaceId>(
@@ -61,43 +57,12 @@ export function GenerateWorkspace({
   const [selectedTypes, setSelectedTypes] = useState<CardTypeId[]>(getDefaultCardTypeIds(availableCardTypes));
   const [cardCount, setCardCount] = useState(initialCount ?? availableCardCounts[0] ?? 6);
   const [projectName, setProjectName] = useState(initialProjectName);
-  const [resultState, setResultState] = useState<ResultState>("empty");
-  const [activeStepIndex, setActiveStepIndex] = useState(0);
-  const [generatedCards, setGeneratedCards] = useState<ResultCard[]>([]);
   const [uploadedFileName, setUploadedFileName] = useState("");
   const [uploadedFileUrl, setUploadedFileUrl] = useState("");
   const [isDraggingFile, setIsDraggingFile] = useState(false);
   const [toast, setToast] = useState<ToastState>({ visible: false, message: "" });
 
-  const nextResultCards = useMemo<ResultCard[]>(
-    () => buildResultCards(selectedTypes, cardCount, availableCardTypes),
-    [availableCardTypes, cardCount, selectedTypes],
-  );
-
-  const activeLoadingStep = loadingSteps[Math.min(activeStepIndex, loadingSteps.length - 1)];
-  const canGenerate = Boolean(uploadedFileUrl) && resultState !== "loading";
-  const resultsTitle =
-    resultState === "result"
-      ? `${generatedCards.length} карточек готовы`
-      : resultState === "loading"
-        ? "Генерация..."
-        : "Результат появится здесь";
-
-  useEffect(() => {
-    return () => {
-      loadingTimerRef.current.forEach((timer) => window.clearTimeout(timer));
-
-      if (objectUrlRef.current) {
-        URL.revokeObjectURL(objectUrlRef.current);
-      }
-
-      if (toastTimerRef.current) {
-        window.clearTimeout(toastTimerRef.current);
-      }
-    };
-  }, []);
-
-  function showToast(message: string) {
+  const showToast = useCallback((message: string) => {
     if (toastTimerRef.current) {
       window.clearTimeout(toastTimerRef.current);
     }
@@ -107,7 +72,41 @@ export function GenerateWorkspace({
       setToast((current) => ({ ...current, visible: false }));
       toastTimerRef.current = null;
     }, 2500);
-  }
+  }, []);
+
+  const generationFlow = useGenerationFlow({
+    availableCardTypes,
+    cardCount,
+    marketplace,
+    projectName,
+    selectedTypes,
+    showToast,
+    style,
+    uploadedFileUrl,
+  });
+
+  const { activeStepIndex, canGenerate, effectiveResultState, generatedCards, generationStatus } = generationFlow;
+  const activeLoadingStep = loadingSteps[Math.min(activeStepIndex, loadingSteps.length - 1)];
+  const resultsTitle =
+    effectiveResultState === "result"
+      ? `${generatedCards.length} карточек готовы`
+      : effectiveResultState === "loading"
+        ? "Генерация..."
+        : effectiveResultState === "error"
+          ? "Генерация не удалась"
+          : "Результат появится здесь";
+
+  useEffect(() => {
+    return () => {
+      if (objectUrlRef.current) {
+        URL.revokeObjectURL(objectUrlRef.current);
+      }
+
+      if (toastTimerRef.current) {
+        window.clearTimeout(toastTimerRef.current);
+      }
+    };
+  }, []);
 
   function updatePreview(file: File) {
     if (objectUrlRef.current) {
@@ -131,6 +130,7 @@ export function GenerateWorkspace({
     }
 
     updatePreview(file);
+    generationFlow.uploadImage(file);
   }
 
   function toggleCardType(typeId: CardTypeId) {
@@ -144,31 +144,7 @@ export function GenerateWorkspace({
   }
 
   function startGenerate() {
-    if (!uploadedFileUrl) {
-      showToast("Сначала загрузите фото товара");
-      return;
-    }
-
-    const cardsSnapshot = nextResultCards;
-
-    setResultState("loading");
-    setActiveStepIndex(0);
-    loadingTimerRef.current.forEach((timer) => window.clearTimeout(timer));
-    loadingTimerRef.current = [];
-
-    loadingSteps.forEach((_, index) => {
-      const timer = window.setTimeout(() => setActiveStepIndex(index), index * loadingStepDurationMs);
-      loadingTimerRef.current.push(timer);
-    });
-
-    const finishTimer = window.setTimeout(() => {
-      setActiveStepIndex(loadingSteps.length - 1);
-      setGeneratedCards(cardsSnapshot);
-      setResultState("result");
-      showToast("Карточки готовы к скачиванию");
-    }, loadingSteps.length * loadingStepDurationMs + 300);
-
-    loadingTimerRef.current.push(finishTimer);
+    generationFlow.startGeneration(getDefaultCardTypeIds(availableCardTypes));
   }
 
   return (
@@ -189,7 +165,7 @@ export function GenerateWorkspace({
           uploadedFileUrl={uploadedFileUrl}
           isDraggingFile={isDraggingFile}
           canGenerate={canGenerate}
-          resultState={resultState}
+          resultState={effectiveResultState}
           onMarketplaceChange={setMarketplace}
           onStyleChange={setStyle}
           onToggleCardType={toggleCardType}
@@ -205,12 +181,9 @@ export function GenerateWorkspace({
             <div className={styles.resultsTitle} aria-live="polite">
               {resultsTitle}
             </div>
-            {resultState === "result" ? (
+            {effectiveResultState === "result" ? (
               <div className={styles.resultsActions}>
-                <Button variant="darkOutline" size="sm" onClick={() => showToast("Сохранено в проекты")}>
-                  ◫ Сохранить
-                </Button>
-                <Button variant="primary" size="sm" onClick={() => showToast("Скачиваем ZIP...")}>
+                <Button variant="primary" size="sm" onClick={() => downloadArchive(generationStatus?.archive_download_url, showToast)}>
                   ↓ Скачать все
                 </Button>
               </div>
@@ -218,9 +191,10 @@ export function GenerateWorkspace({
           </div>
 
           <div className={styles.resultsBody}>
-            {resultState === "empty" ? <EmptyState /> : null}
-            {resultState === "loading" ? <LoadingState activeStep={activeLoadingStep} activeStepIndex={activeStepIndex} /> : null}
-            {resultState === "result" ? <ResultStateView cards={generatedCards} onDownload={showToast} /> : null}
+            {effectiveResultState === "empty" ? <EmptyState /> : null}
+            {effectiveResultState === "error" ? <ErrorState message={generationStatus?.error_message} /> : null}
+            {effectiveResultState === "loading" ? <LoadingState activeStep={activeLoadingStep} activeStepIndex={activeStepIndex} /> : null}
+            {effectiveResultState === "result" ? <ResultStateView cards={generatedCards} onDownload={(card) => downloadCard(card, showToast)} /> : null}
           </div>
         </section>
       </section>
@@ -231,6 +205,24 @@ export function GenerateWorkspace({
       </div>
     </>
   );
+}
+
+function downloadArchive(url: string | undefined, showToast: (message: string) => void) {
+  if (!url) {
+    showToast("Архив еще не готов");
+    return;
+  }
+
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+
+function downloadCard(card: ResultCard, showToast: (message: string) => void) {
+  if (!card.previewUrl) {
+    showToast("Файл карточки еще не готов");
+    return;
+  }
+
+  window.open(card.previewUrl, "_blank", "noopener,noreferrer");
 }
 
 function getDefaultCardTypeIds(cardTypes: ReadonlyArray<{ id: CardTypeId; defaultSelected?: boolean }>) {

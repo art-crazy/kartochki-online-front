@@ -1,0 +1,148 @@
+"use client";
+
+import { useMemo, useRef, useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  createGenerationMutation,
+  getGenerationByIdOptions,
+  type GenerationStatusResponse,
+  uploadGenerationImageMutation,
+} from "@/shared/api";
+import {
+  getApiErrorMessage,
+  getGenerationStepIndex,
+  mapGenerationCards,
+} from "./apiMappers";
+import { type CardTypeId, type CardTypeOption, type MarketplaceId, type ResultState, type StyleId } from "./content";
+
+type GenerationFlowParams = {
+  availableCardTypes: ReadonlyArray<CardTypeOption>;
+  cardCount: number;
+  marketplace: MarketplaceId;
+  projectName: string;
+  selectedTypes: ReadonlyArray<CardTypeId>;
+  showToast: (message: string) => void;
+  style: StyleId;
+  uploadedFileUrl: string;
+};
+
+export function useGenerationFlow({
+  availableCardTypes,
+  cardCount,
+  marketplace,
+  projectName,
+  selectedTypes,
+  showToast,
+  style,
+  uploadedFileUrl,
+}: GenerationFlowParams) {
+  const [sourceAssetId, setSourceAssetId] = useState("");
+  const [generationId, setGenerationId] = useState("");
+  const [resultState, setResultState] = useState<ResultState>("empty");
+  const uploadRequestIdRef = useRef(0);
+
+  const uploadMutation = useMutation(uploadGenerationImageMutation());
+
+  const createMutation = useMutation({
+    ...createGenerationMutation(),
+    onSuccess: (response) => {
+      setGenerationId(response.generation_id);
+      setResultState("loading");
+      showToast("Генерация запущена");
+    },
+    onError: (error) => {
+      setResultState("empty");
+      showToast(getApiErrorMessage(error, "Не удалось запустить генерацию"));
+    },
+  });
+
+  const generationQuery = useQuery({
+    ...getGenerationByIdOptions({ path: { id: generationId } }),
+    enabled: Boolean(generationId),
+    refetchInterval: (query) => {
+      const status = query.state.data?.status;
+      return status === "completed" || status === "failed" ? false : 2000;
+    },
+  });
+
+  const generationStatus = generationQuery.data;
+  const activeStepIndex = getGenerationStepIndex(generationStatus);
+  const generatedCards = useMemo(
+    () => (generationStatus?.status === "completed" ? mapGenerationCards(generationStatus.result_cards, availableCardTypes) : []),
+    [availableCardTypes, generationStatus],
+  );
+  const effectiveResultState = getEffectiveResultState(resultState, generationStatus?.status);
+  const isBusy = effectiveResultState === "loading" || uploadMutation.isPending || createMutation.isPending;
+  const canGenerate = Boolean(uploadedFileUrl && sourceAssetId) && !isBusy;
+
+  function uploadImage(file: File) {
+    const requestId = uploadRequestIdRef.current + 1;
+    uploadRequestIdRef.current = requestId;
+
+    setSourceAssetId("");
+    setGenerationId("");
+    setResultState("empty");
+    uploadMutation.mutate(
+      { body: { file } },
+      {
+        onSuccess: (response) => {
+          if (uploadRequestIdRef.current !== requestId) {
+            return;
+          }
+
+          setSourceAssetId(response.asset_id);
+          showToast("Фото загружено");
+        },
+        onError: (error) => {
+          if (uploadRequestIdRef.current !== requestId) {
+            return;
+          }
+
+          setSourceAssetId("");
+          showToast(getApiErrorMessage(error, "Не удалось загрузить фото"));
+        },
+      },
+    );
+  }
+
+  function startGeneration(fallbackCardTypes: ReadonlyArray<CardTypeId>) {
+    if (!uploadedFileUrl) {
+      showToast("Сначала загрузите фото товара");
+      return;
+    }
+
+    if (!sourceAssetId) {
+      showToast(uploadMutation.isPending ? "Дождитесь завершения загрузки фото" : "Загрузите фото еще раз");
+      return;
+    }
+
+    setResultState("loading");
+    setGenerationId("");
+    createMutation.mutate({
+      body: {
+        project_name: projectName.trim() || undefined,
+        marketplace_id: marketplace,
+        style_id: style,
+        card_type_ids: selectedTypes.length ? [...selectedTypes] : [...fallbackCardTypes],
+        card_count: cardCount,
+        source_asset_id: sourceAssetId,
+      },
+    });
+  }
+
+  return {
+    activeStepIndex,
+    canGenerate,
+    effectiveResultState,
+    generatedCards,
+    generationStatus,
+    startGeneration,
+    uploadImage,
+  };
+}
+
+function getEffectiveResultState(resultState: ResultState, status: GenerationStatusResponse["status"] | undefined): ResultState {
+  if (status === "completed") return "result";
+  if (status === "failed") return "error";
+  return resultState;
+}

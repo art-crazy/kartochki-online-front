@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Button } from "@/shared/ui";
 import { loadingSteps, type LoadingStep, type ResultCard } from "../model/content";
 import styles from "./GenerateWorkspace.module.scss";
@@ -12,8 +13,22 @@ export function EmptyState() {
           <div key={index} className={styles.emptyThumb} />
         ))}
       </div>
-      <div className={styles.emptyTitle}>Карточки ещё не созданы</div>
-      <div className={styles.emptyText}>Загрузи фото товара и нажми «Сгенерировать» - готовый сет появится здесь</div>
+      <div className={styles.emptyTitle}>Карточки еще не созданы</div>
+      <div className={styles.emptyText}>Загрузите фото товара и нажмите «Сгенерировать» - готовый сет появится здесь</div>
+    </div>
+  );
+}
+
+export function ErrorState({ message }: { message?: string }) {
+  return (
+    <div className={styles.emptyState} role="alert">
+      <div className={styles.emptyVisual} aria-hidden="true">
+        {Array.from({ length: 6 }).map((_, index) => (
+          <div key={index} className={styles.emptyThumb} />
+        ))}
+      </div>
+      <div className={styles.emptyTitle}>Не удалось сгенерировать карточки</div>
+      <div className={styles.emptyText}>{message || "Попробуйте запустить генерацию еще раз"}</div>
     </div>
   );
 }
@@ -65,7 +80,7 @@ export function ResultStateView({
   onDownload,
 }: {
   cards: ReadonlyArray<ResultCard>;
-  onDownload: (message: string) => void;
+  onDownload: (card: ResultCard) => void;
 }) {
   return (
     <div className={styles.resultState}>
@@ -74,19 +89,22 @@ export function ResultStateView({
           <article key={card.id} className={styles.resultCard}>
             <div className={styles.cardVisual}>
               <div className={styles.cardVisualInner} style={{ background: card.background }}>
+                {card.previewUrl ? (
+                  <Image src={card.previewUrl} alt="" fill sizes="180px" unoptimized className={styles.cardImage} />
+                ) : null}
                 <div className={styles.cardBadge} style={{ color: card.accent }}>
                   {card.label}
                 </div>
               </div>
               <div className={styles.cardOverlay}>
-                <Button variant="secondary" size="sm" onClick={() => onDownload("Скачиваем...")}>
+                <Button variant="secondary" size="sm" onClick={() => onDownload(card)}>
                   ↓ Скачать
                 </Button>
               </div>
             </div>
             <div className={styles.cardFooter}>
               <span className={styles.cardLabel}>{card.label}</span>
-              <button type="button" className={styles.cardDownload} onClick={() => onDownload("Скачиваем...")}>
+              <button type="button" className={styles.cardDownload} onClick={() => onDownload(card)}>
                 ↓
               </button>
             </div>

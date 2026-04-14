@@ -1,7 +1,7 @@
 export type MarketplaceId = string;
 export type StyleId = string;
 export type CardTypeId = string;
-export type ResultState = "empty" | "loading" | "result";
+export type ResultState = "empty" | "loading" | "result" | "error";
 
 export type MarketplaceOption = {
   id: MarketplaceId;
@@ -39,6 +39,7 @@ export type ResultCard = {
   label: string;
   accent: string;
   background: string;
+  previewUrl?: string;
 };
 
 export const marketplaceOptions: ReadonlyArray<MarketplaceOption> = [
