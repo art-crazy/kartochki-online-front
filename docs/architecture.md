@@ -165,16 +165,16 @@ const { data } = useQuery(listProjectsOptions());
 
 ## Authentication
 
-Authentication is implemented through a thin BFF layer inside Next.js.
+Authentication is implemented by calling the backend API directly through the generated client.
 
-- The backend returns a bearer access token in the auth response.
-- The frontend must not persist that token in `localStorage` or readable client state.
-- Next route handlers under `src/app/api/auth/*` exchange credentials with the backend and store the access token in an `httpOnly` cookie.
-- Server-side code reads that cookie and forwards it to the backend as `Authorization: Bearer ...`.
-- Protected route groups such as `src/app/(app)` should verify the current session on the server and redirect anonymous users before rendering app UI.
-- Recovery flows such as `forgot-password` and `reset-password` should use the same BFF pattern instead of calling the backend directly from the browser.
+- Auth forms call generated SDK functions from `@/shared/api`.
+- The API client is configured with `credentials: 'include'`, so browser-managed cookies from the backend are sent with API requests.
+- Session state is checked through `GET /api/v1/me` via `getCurrentUserOptions`.
+- Logout calls `POST /api/v1/auth/logout` via the generated SDK.
+- Recovery flows such as `forgot-password` and `reset-password` call the backend auth endpoints directly through the generated client.
+- OAuth entry points should use backend endpoints directly, preserving provider redirects and backend-owned session handling.
 
-This keeps the browser from directly handling the raw bearer token while remaining compatible with the current backend contract.
+Do not add a Next.js BFF auth layer unless the backend contract changes and the team explicitly decides to move session exchange into route handlers.
 
 ## Product Surfaces
 
