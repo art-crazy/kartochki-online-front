@@ -146,7 +146,7 @@ export const loginWithTelegramMutation = (options?: Partial<Options<LoginWithTel
 /**
  * Выход из текущей сессии
  *
- * Отзывает текущий Bearer-токен и завершает активную сессию.
+ * Отзывает активную сессию и сбрасывает куку auth_token.
  */
 export const logoutAuthUserMutation = (options?: Partial<Options<LogoutAuthUserData>>): UseMutationOptions<LogoutAuthUserResponse, LogoutAuthUserError, Options<LogoutAuthUserData>> => {
     const mutationOptions: UseMutationOptions<LogoutAuthUserResponse, LogoutAuthUserError, Options<LogoutAuthUserData>> = {

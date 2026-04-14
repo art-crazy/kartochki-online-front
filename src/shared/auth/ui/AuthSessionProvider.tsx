@@ -1,22 +1,35 @@
 "use client";
 
-import { createContext, useContext, type PropsWithChildren } from "react";
-import type { AuthUser } from "@/shared/api";
+import { useRouter } from "next/navigation";
+import { createContext, useContext, useEffect, type PropsWithChildren } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getCurrentUserOptions, type AuthUser } from "@/shared/api";
 
 type AuthSessionContextValue = {
   user: AuthUser | null;
+  isLoading: boolean;
 };
 
 const AuthSessionContext = createContext<AuthSessionContextValue>({
   user: null,
+  isLoading: true,
 });
 
-type AuthSessionProviderProps = PropsWithChildren<{
-  initialUser: AuthUser | null;
-}>;
+export function AuthSessionProvider({ children }: PropsWithChildren) {
+  const router = useRouter();
+  const { data, isLoading, isError } = useQuery(getCurrentUserOptions());
 
-export function AuthSessionProvider({ initialUser, children }: AuthSessionProviderProps) {
-  return <AuthSessionContext.Provider value={{ user: initialUser }}>{children}</AuthSessionContext.Provider>;
+  useEffect(() => {
+    if (!isLoading && isError) {
+      router.replace("/auth");
+    }
+  }, [isLoading, isError, router]);
+
+  return (
+    <AuthSessionContext.Provider value={{ user: data?.user ?? null, isLoading }}>
+      {children}
+    </AuthSessionContext.Provider>
+  );
 }
 
 export function useAuthSession() {

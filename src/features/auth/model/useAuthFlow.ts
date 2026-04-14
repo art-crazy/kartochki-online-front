@@ -3,12 +3,8 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import type { FormEvent } from "react";
 import { useMemo, useState } from "react";
-import {
-  mapForgotApiErrors,
-  mapLoginApiErrors,
-  mapRegisterApiErrors,
-  postAuthRequest,
-} from "./api";
+import { forgotPassword, loginAuthUser, registerAuthUser } from "@/shared/api";
+import { mapForgotErrors, mapLoginErrors, mapRegisterErrors } from "./mappers";
 import type { AuthScreen, ForgotErrors, LoadingAction, LoginErrors, RegisterErrors } from "./types";
 import { getPasswordStrength, getSafeNextPath, validateEmail } from "./validation";
 import { useYandexAuth } from "./useYandexAuth";
@@ -48,7 +44,6 @@ export function useAuthFlow() {
 
   const handleLoginEmailChange = (value: string) => {
     setLoginEmail(value);
-
     if (loginErrors.email || loginErrors.form) {
       setLoginErrors((current) => ({ ...current, email: undefined, form: undefined }));
     }
@@ -56,7 +51,6 @@ export function useAuthFlow() {
 
   const handleLoginPasswordChange = (value: string) => {
     setLoginPassword(value);
-
     if (loginErrors.password || loginErrors.form) {
       setLoginErrors((current) => ({ ...current, password: undefined, form: undefined }));
     }
@@ -64,7 +58,6 @@ export function useAuthFlow() {
 
   const handleRegisterNameChange = (value: string) => {
     setRegisterName(value);
-
     if (registerErrors.name || registerErrors.form) {
       setRegisterErrors((current) => ({ ...current, name: undefined, form: undefined }));
     }
@@ -72,7 +65,6 @@ export function useAuthFlow() {
 
   const handleRegisterEmailChange = (value: string) => {
     setRegisterEmail(value);
-
     if (registerErrors.email || registerErrors.form) {
       setRegisterErrors((current) => ({ ...current, email: undefined, form: undefined }));
     }
@@ -80,7 +72,6 @@ export function useAuthFlow() {
 
   const handleRegisterPasswordChange = (value: string) => {
     setRegisterPassword(value);
-
     if (registerErrors.password || registerErrors.form) {
       setRegisterErrors((current) => ({ ...current, password: undefined, form: undefined }));
     }
@@ -88,7 +79,6 @@ export function useAuthFlow() {
 
   const handleForgotEmailChange = (value: string) => {
     setForgotEmail(value);
-
     if (forgotErrors.email || forgotErrors.form) {
       setForgotErrors((current) => ({ ...current, email: undefined, form: undefined }));
     }
@@ -98,31 +88,19 @@ export function useAuthFlow() {
     event.preventDefault();
 
     const nextErrors: LoginErrors = {};
-
-    if (!validateEmail(loginEmail)) {
-      nextErrors.email = "Введите корректный email";
-    }
-
-    if (!loginPassword) {
-      nextErrors.password = "Введите пароль";
-    }
-
+    if (!validateEmail(loginEmail)) nextErrors.email = "Введите корректный email";
+    if (!loginPassword) nextErrors.password = "Введите пароль";
     setLoginErrors(nextErrors);
-
-    if (Object.keys(nextErrors).length > 0) {
-      return;
-    }
+    if (Object.keys(nextErrors).length > 0) return;
 
     setLoadingAction("login");
-
     try {
-      const result = await postAuthRequest("/api/auth/login", {
-        email: loginEmail.trim(),
-        password: loginPassword,
+      const result = await loginAuthUser({
+        body: { email: loginEmail.trim(), password: loginPassword },
       });
 
-      if (!result.ok) {
-        setLoginErrors(mapLoginApiErrors(result.error));
+      if (result.error) {
+        setLoginErrors(mapLoginErrors(result.error));
         return;
       }
 
@@ -137,36 +115,20 @@ export function useAuthFlow() {
     event.preventDefault();
 
     const nextErrors: RegisterErrors = {};
-
-    if (!registerName.trim()) {
-      nextErrors.name = "Введите ваше имя";
-    }
-
-    if (!validateEmail(registerEmail)) {
-      nextErrors.email = "Введите корректный email";
-    }
-
-    if (registerPassword.length < 8) {
-      nextErrors.password = "Пароль должен быть минимум 8 символов";
-    }
-
+    if (!registerName.trim()) nextErrors.name = "Введите ваше имя";
+    if (!validateEmail(registerEmail)) nextErrors.email = "Введите корректный email";
+    if (registerPassword.length < 8) nextErrors.password = "Пароль должен быть минимум 8 символов";
     setRegisterErrors(nextErrors);
-
-    if (Object.keys(nextErrors).length > 0) {
-      return;
-    }
+    if (Object.keys(nextErrors).length > 0) return;
 
     setLoadingAction("register");
-
     try {
-      const result = await postAuthRequest("/api/auth/register", {
-        name: registerName.trim(),
-        email: registerEmail.trim(),
-        password: registerPassword,
+      const result = await registerAuthUser({
+        body: { name: registerName.trim(), email: registerEmail.trim(), password: registerPassword },
       });
 
-      if (!result.ok) {
-        setRegisterErrors(mapRegisterApiErrors(result.error));
+      if (result.error) {
+        setRegisterErrors(mapRegisterErrors(result.error));
         return;
       }
 
@@ -181,26 +143,18 @@ export function useAuthFlow() {
     event.preventDefault();
 
     const nextErrors: ForgotErrors = {};
-
-    if (!validateEmail(forgotEmail)) {
-      nextErrors.email = "Введите корректный email";
-    }
-
+    if (!validateEmail(forgotEmail)) nextErrors.email = "Введите корректный email";
     setForgotErrors(nextErrors);
-
-    if (Object.keys(nextErrors).length > 0) {
-      return;
-    }
+    if (Object.keys(nextErrors).length > 0) return;
 
     setLoadingAction("forgot");
-
     try {
-      const result = await postAuthRequest("/api/auth/forgot-password", {
-        email: forgotEmail.trim(),
+      const result = await forgotPassword({
+        body: { email: forgotEmail.trim() },
       });
 
-      if (!result.ok) {
-        setForgotErrors(mapForgotApiErrors(result.error));
+      if (result.error) {
+        setForgotErrors(mapForgotErrors(result.error));
         return;
       }
 

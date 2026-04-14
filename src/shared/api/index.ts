@@ -16,12 +16,6 @@ export {
   getReadyHealthQueryKey,
   getReadyHealthOptions,
   // auth
-  registerAuthUserMutation,
-  loginAuthUserMutation,
-  loginWithTelegramMutation,
-  logoutAuthUserMutation,
-  forgotPasswordMutation,
-  resetPasswordMutation,
   // oauth
   startVkOAuthQueryKey,
   startVkOAuthOptions,

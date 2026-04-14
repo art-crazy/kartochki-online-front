@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import type { ErrorResponse } from "@/shared/api";
+import { resetPassword } from "@/shared/api";
 import { classNames } from "@/shared/lib/classNames";
 import styles from "./AuthFlow.module.scss";
 
@@ -54,32 +54,19 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
     setIsPending(true);
 
     try {
-      const response = await fetch("/api/auth/reset-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          token,
-          password,
-        }),
-      });
+      const result = await resetPassword({ body: { token, password } });
 
-      const payload = await parseResponseJson(response);
-
-      if (!response.ok) {
-        const error = normalizeErrorResponse(payload, response.status);
+      if (result.error) {
+        const err = result.error;
         setErrors({
-          form: error.message,
-          password: error.details?.find((detail) => detail.field === "password")?.message,
+          form: err.message,
+          password: err.details?.find((d) => d.field === "password")?.message,
         });
         return;
       }
 
       setIsSuccess(true);
-      window.setTimeout(() => {
-        router.push("/auth");
-      }, 1200);
+      window.setTimeout(() => router.push("/auth"), 1200);
     } finally {
       setIsPending(false);
     }
@@ -167,27 +154,3 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
   );
 }
 
-async function parseResponseJson(response: Response) {
-  const rawText = await response.text();
-
-  if (!rawText) {
-    return {};
-  }
-
-  try {
-    return JSON.parse(rawText);
-  } catch {
-    return { message: rawText };
-  }
-}
-
-function normalizeErrorResponse(payload: unknown, status: number): ErrorResponse {
-  if (payload && typeof payload === "object" && "message" in payload && "code" in payload) {
-    return payload as ErrorResponse;
-  }
-
-  return {
-    code: `http_${status}`,
-    message: "Не удалось выполнить запрос",
-  };
-}

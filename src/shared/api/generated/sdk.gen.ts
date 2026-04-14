@@ -84,10 +84,14 @@ export const loginWithTelegram = <ThrowOnError extends boolean = false>(options:
 /**
  * Выход из текущей сессии
  *
- * Отзывает текущий Bearer-токен и завершает активную сессию.
+ * Отзывает активную сессию и сбрасывает куку auth_token.
  */
 export const logoutAuthUser = <ThrowOnError extends boolean = false>(options?: Options<LogoutAuthUserData, ThrowOnError>) => (options?.client ?? client).post<LogoutAuthUserResponses, LogoutAuthUserErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/auth/logout',
     ...options
 });
@@ -98,7 +102,11 @@ export const logoutAuthUser = <ThrowOnError extends boolean = false>(options?: O
  * Возвращает данные пользователя из текущей авторизованной сессии.
  */
 export const getCurrentUser = <ThrowOnError extends boolean = false>(options?: Options<GetCurrentUserData, ThrowOnError>) => (options?.client ?? client).get<GetCurrentUserResponses, GetCurrentUserErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/me',
     ...options
 });
@@ -201,7 +209,11 @@ export const finishYandexOAuth = <ThrowOnError extends boolean = false>(options:
  * Возвращает только активные проекты текущего пользователя, отсортированные по дате обновления.
  */
 export const listProjects = <ThrowOnError extends boolean = false>(options?: Options<ListProjectsData, ThrowOnError>) => (options?.client ?? client).get<ListProjectsResponses, ListProjectsErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/projects',
     ...options
 });
@@ -212,7 +224,11 @@ export const listProjects = <ThrowOnError extends boolean = false>(options?: Opt
  * Создаёт новый проект текущего пользователя со статусом `draft`.
  */
 export const createProject = <ThrowOnError extends boolean = false>(options: Options<CreateProjectData, ThrowOnError>) => (options.client ?? client).post<CreateProjectResponses, CreateProjectErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/projects',
     ...options,
     headers: {
@@ -227,7 +243,11 @@ export const createProject = <ThrowOnError extends boolean = false>(options: Opt
  * Мягко удаляет проект текущего пользователя. После этого проект исчезает из списков и больше не доступен по API, но запись остаётся в системе для истории и будущих связей.
  */
 export const deleteProject = <ThrowOnError extends boolean = false>(options: Options<DeleteProjectData, ThrowOnError>) => (options.client ?? client).delete<DeleteProjectResponses, DeleteProjectErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/projects/{id}',
     ...options
 });
@@ -238,7 +258,11 @@ export const deleteProject = <ThrowOnError extends boolean = false>(options: Opt
  * Возвращает активный проект текущего пользователя по его идентификатору.
  */
 export const getProjectById = <ThrowOnError extends boolean = false>(options: Options<GetProjectByIdData, ThrowOnError>) => (options.client ?? client).get<GetProjectByIdResponses, GetProjectByIdErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/projects/{id}',
     ...options
 });
@@ -249,7 +273,11 @@ export const getProjectById = <ThrowOnError extends boolean = false>(options: Op
  * Обновляет только те поля проекта, которые были переданы в запросе.
  */
 export const patchProject = <ThrowOnError extends boolean = false>(options: Options<PatchProjectData, ThrowOnError>) => (options.client ?? client).patch<PatchProjectResponses, PatchProjectErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/projects/{id}',
     ...options,
     headers: {
@@ -264,7 +292,11 @@ export const patchProject = <ThrowOnError extends boolean = false>(options: Opti
  * Возвращает статистику, последние и все проекты пользователя, а также CTA-блок быстрого старта.
  */
 export const getDashboard = <ThrowOnError extends boolean = false>(options?: Options<GetDashboardData, ThrowOnError>) => (options?.client ?? client).get<GetDashboardResponses, GetDashboardErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/dashboard',
     ...options
 });
@@ -275,7 +307,11 @@ export const getDashboard = <ThrowOnError extends boolean = false>(options?: Opt
  * Возвращает каталог маркетплейсов, визуальных стилей, типов карточек и допустимых количеств.
  */
 export const getGenerateConfig = <ThrowOnError extends boolean = false>(options?: Options<GetGenerateConfigData, ThrowOnError>) => (options?.client ?? client).get<GetGenerateConfigResponses, GetGenerateConfigErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/generate/config',
     ...options
 });
@@ -287,7 +323,11 @@ export const getGenerateConfig = <ThrowOnError extends boolean = false>(options?
  */
 export const uploadGenerationImage = <ThrowOnError extends boolean = false>(options: Options<UploadGenerationImageData, ThrowOnError>) => (options.client ?? client).post<UploadGenerationImageResponses, UploadGenerationImageErrors, ThrowOnError>({
     ...formDataBodySerializer,
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/uploads/images',
     ...options,
     headers: {
@@ -302,7 +342,11 @@ export const uploadGenerationImage = <ThrowOnError extends boolean = false>(opti
  * Создаёт проект, записывает параметры запуска и ставит фоновую задачу генерации в очередь.
  */
 export const createGeneration = <ThrowOnError extends boolean = false>(options: Options<CreateGenerationData, ThrowOnError>) => (options.client ?? client).post<CreateGenerationResponses, CreateGenerationErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/generations',
     ...options,
     headers: {
@@ -317,7 +361,11 @@ export const createGeneration = <ThrowOnError extends boolean = false>(options: 
  * Возвращает текущий progress generation job, а после завершения — список готовых карточек и ссылку на архив.
  */
 export const getGenerationById = <ThrowOnError extends boolean = false>(options: Options<GetGenerationByIdData, ThrowOnError>) => (options.client ?? client).get<GetGenerationByIdResponses, GetGenerationByIdErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/generations/{id}',
     ...options
 });
@@ -328,7 +376,11 @@ export const getGenerationById = <ThrowOnError extends boolean = false>(options:
  * Возвращает профиль, дефолтные настройки, уведомления, активные сессии, интеграции и API-ключ.
  */
 export const getSettings = <ThrowOnError extends boolean = false>(options?: Options<GetSettingsData, ThrowOnError>) => (options?.client ?? client).get<GetSettingsResponses, GetSettingsErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/settings',
     ...options
 });
@@ -337,7 +389,11 @@ export const getSettings = <ThrowOnError extends boolean = false>(options?: Opti
  * Обновить профиль пользователя
  */
 export const patchSettingsProfile = <ThrowOnError extends boolean = false>(options: Options<PatchSettingsProfileData, ThrowOnError>) => (options.client ?? client).patch<PatchSettingsProfileResponses, PatchSettingsProfileErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/settings/profile',
     ...options,
     headers: {
@@ -350,7 +406,11 @@ export const patchSettingsProfile = <ThrowOnError extends boolean = false>(optio
  * Обновить дефолтные настройки генерации
  */
 export const patchSettingsDefaults = <ThrowOnError extends boolean = false>(options: Options<PatchSettingsDefaultsData, ThrowOnError>) => (options.client ?? client).patch<PatchSettingsDefaultsResponses, PatchSettingsDefaultsErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/settings/defaults',
     ...options,
     headers: {
@@ -363,7 +423,11 @@ export const patchSettingsDefaults = <ThrowOnError extends boolean = false>(opti
  * Сменить пароль
  */
 export const changeSettingsPassword = <ThrowOnError extends boolean = false>(options: Options<ChangeSettingsPasswordData, ThrowOnError>) => (options.client ?? client).post<ChangeSettingsPasswordResponses, ChangeSettingsPasswordErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/settings/change-password',
     ...options,
     headers: {
@@ -376,7 +440,11 @@ export const changeSettingsPassword = <ThrowOnError extends boolean = false>(opt
  * Обновить настройки уведомлений
  */
 export const patchSettingsNotifications = <ThrowOnError extends boolean = false>(options: Options<PatchSettingsNotificationsData, ThrowOnError>) => (options.client ?? client).patch<PatchSettingsNotificationsResponses, PatchSettingsNotificationsErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/settings/notifications',
     ...options,
     headers: {
@@ -389,7 +457,11 @@ export const patchSettingsNotifications = <ThrowOnError extends boolean = false>
  * Отозвать одну сессию
  */
 export const deleteSettingsSession = <ThrowOnError extends boolean = false>(options: Options<DeleteSettingsSessionData, ThrowOnError>) => (options.client ?? client).delete<DeleteSettingsSessionResponses, DeleteSettingsSessionErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/settings/sessions/{id}',
     ...options
 });
@@ -398,7 +470,11 @@ export const deleteSettingsSession = <ThrowOnError extends boolean = false>(opti
  * Перевыпустить API-ключ
  */
 export const rotateSettingsApiKey = <ThrowOnError extends boolean = false>(options?: Options<RotateSettingsApiKeyData, ThrowOnError>) => (options?.client ?? client).post<RotateSettingsApiKeyResponses, RotateSettingsApiKeyErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/settings/api-key/rotate',
     ...options
 });
@@ -407,7 +483,11 @@ export const rotateSettingsApiKey = <ThrowOnError extends boolean = false>(optio
  * Поставить экспорт данных аккаунта в очередь
  */
 export const postSettingsExport = <ThrowOnError extends boolean = false>(options?: Options<PostSettingsExportData, ThrowOnError>) => (options?.client ?? client).post<PostSettingsExportResponses, PostSettingsExportErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/settings/export',
     ...options
 });
@@ -416,7 +496,11 @@ export const postSettingsExport = <ThrowOnError extends boolean = false>(options
  * Удалить аккаунт
  */
 export const deleteSettingsAccount = <ThrowOnError extends boolean = false>(options: Options<DeleteSettingsAccountData, ThrowOnError>) => (options.client ?? client).delete<DeleteSettingsAccountResponses, DeleteSettingsAccountErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/settings/account',
     ...options,
     headers: {
@@ -429,7 +513,11 @@ export const deleteSettingsAccount = <ThrowOnError extends boolean = false>(opti
  * Получить данные billing-страницы
  */
 export const getBilling = <ThrowOnError extends boolean = false>(options?: Options<GetBillingData, ThrowOnError>) => (options?.client ?? client).get<GetBillingResponses, GetBillingErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/billing',
     ...options
 });
@@ -438,7 +526,11 @@ export const getBilling = <ThrowOnError extends boolean = false>(options?: Optio
  * Создать checkout для тарифа
  */
 export const createBillingCheckout = <ThrowOnError extends boolean = false>(options: Options<CreateBillingCheckoutData, ThrowOnError>) => (options.client ?? client).post<CreateBillingCheckoutResponses, CreateBillingCheckoutErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/billing/checkout',
     ...options,
     headers: {
@@ -451,7 +543,11 @@ export const createBillingCheckout = <ThrowOnError extends boolean = false>(opti
  * Создать checkout для разового пакета
  */
 export const createBillingAddonCheckout = <ThrowOnError extends boolean = false>(options: Options<CreateBillingAddonCheckoutData, ThrowOnError>) => (options.client ?? client).post<CreateBillingAddonCheckoutResponses, CreateBillingAddonCheckoutErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/billing/addons',
     ...options,
     headers: {
@@ -464,7 +560,11 @@ export const createBillingAddonCheckout = <ThrowOnError extends boolean = false>
  * Отключить автопродление подписки
  */
 export const cancelBillingSubscription = <ThrowOnError extends boolean = false>(options?: Options<CancelBillingSubscriptionData, ThrowOnError>) => (options?.client ?? client).post<CancelBillingSubscriptionResponses, CancelBillingSubscriptionErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, {
+            in: 'cookie',
+            name: 'auth_token',
+            type: 'apiKey'
+        }],
     url: '/api/v1/billing/cancel',
     ...options
 });

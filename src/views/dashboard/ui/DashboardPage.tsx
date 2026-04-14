@@ -1,24 +1,27 @@
+"use client";
+
 import Link from "next/link";
-import { loadDashboardContent } from "@/views/dashboard/model/api";
-import {
-  type DashboardPageContent,
-  type DashboardStat,
-} from "@/views/dashboard/model/content";
+import { useQuery } from "@tanstack/react-query";
+import { getDashboardOptions } from "@/shared/api";
 import { Badge, Button, CardSurface } from "@/shared/ui";
 import { AppShell } from "@/widgets/app/app-shell/ui/AppShell";
+import { mapDashboardResponse } from "@/views/dashboard/model/mappers";
+import {
+  fallbackDashboardContent,
+  type DashboardStat,
+} from "@/views/dashboard/model/content";
 import styles from "./DashboardPage.module.scss";
 
-type DashboardPageProps = {
-  content?: DashboardPageContent;
-};
-
-export async function DashboardPage({ content }: DashboardPageProps) {
-  const pageContent = content ?? (await loadDashboardContent());
+export function DashboardPage() {
+  const { data: pageContent = fallbackDashboardContent } = useQuery({
+    ...getDashboardOptions(),
+    select: mapDashboardResponse,
+  });
 
   return (
     <AppShell
       title="Дашборд"
-      subtitle="Среда, 8 апреля 2025"
+      subtitle={new Intl.DateTimeFormat("ru-RU", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(new Date())}
       activeKey="dashboard"
       action={
         <>
@@ -58,9 +61,7 @@ export async function DashboardPage({ content }: DashboardPageProps) {
         <section className={styles.section}>
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>Последние проекты</h2>
-            <Link href="#projects" className={styles.sectionLink}>
-              Все проекты →
-            </Link>
+            <Link href="#projects" className={styles.sectionLink}>Все проекты →</Link>
           </div>
 
           <div className={styles.projectsGrid}>
@@ -75,9 +76,7 @@ export async function DashboardPage({ content }: DashboardPageProps) {
                   <div className={styles.projectBody}>
                     <div className={styles.projectName}>{project.title}</div>
                     <div className={styles.projectMeta}>
-                      <span>
-                        {project.cardCount} карточек · {project.updatedAt}
-                      </span>
+                      <span>{project.cardCount} карточек · {project.updatedAt}</span>
                       <MarketplaceBadge marketplace={project.marketplace} />
                     </div>
                   </div>
@@ -95,9 +94,7 @@ export async function DashboardPage({ content }: DashboardPageProps) {
         <section className={styles.quickStartSection}>
           <h2 className={styles.sectionTitle}>Быстрый старт</h2>
           <CardSurface theme="dark" className={styles.quickStartCard}>
-            <div className={styles.quickStartIcon} aria-hidden="true">
-              ⚡
-            </div>
+            <div className={styles.quickStartIcon} aria-hidden="true">⚡</div>
             <div className={styles.quickStartBody}>
               <h2 className={styles.quickStartTitle}>{pageContent.quickStart.title}</h2>
               <p className={styles.quickStartText}>{pageContent.quickStart.description}</p>
@@ -124,16 +121,13 @@ export async function DashboardPage({ content }: DashboardPageProps) {
                     <span key={preview} className={styles.projectThumb} style={{ background: preview }} />
                   ))}
                 </div>
-
                 <div className={styles.projectInfo}>
                   <div className={styles.projectTitle}>{project.title}</div>
                   <div className={styles.projectMeta}>
                     {project.cardCount} карточек · {getMarketplaceLabel(project.marketplace)} · {project.updatedAt}
                   </div>
                 </div>
-
                 <MarketplaceBadge marketplace={project.marketplace} />
-
                 <div className={styles.projectActions} aria-hidden="true">
                   <span className={styles.iconButton}>↓</span>
                   <span className={styles.iconButton}>→</span>
@@ -163,35 +157,16 @@ const statValueClassMap = {
 } as const;
 
 function MarketplaceBadge({ marketplace }: { marketplace: string }) {
-  const normalizedMarketplace = normalizeMarketplace(marketplace);
-
-  if (normalizedMarketplace === "wildberries" || normalizedMarketplace === "wb") {
-    return <Badge tone="wb">WB</Badge>;
-  }
-
-  if (normalizedMarketplace === "ozon") {
-    return <Badge tone="ozon">Ozon</Badge>;
-  }
-
-  if (isYandexMarket(normalizedMarketplace)) {
-    return <Badge tone="ym">Яндекс Маркет</Badge>;
-  }
-
+  const n = marketplace.trim().toLowerCase().replaceAll("-", "_");
+  if (n === "wildberries" || n === "wb") return <Badge tone="wb">WB</Badge>;
+  if (n === "ozon") return <Badge tone="ozon">Ozon</Badge>;
+  if (n === "ym" || n === "yandex" || n === "yandex_market") return <Badge tone="ym">Яндекс Маркет</Badge>;
   return <Badge>{getMarketplaceLabel(marketplace)}</Badge>;
 }
 
 function getMarketplaceLabel(marketplace: string) {
-  const normalizedMarketplace = normalizeMarketplace(marketplace);
-
-  return marketplaceLabelMap[normalizedMarketplace as keyof typeof marketplaceLabelMap] ?? marketplace;
-}
-
-function normalizeMarketplace(marketplace: string) {
-  return marketplace.trim().toLowerCase().replaceAll("-", "_");
-}
-
-function isYandexMarket(marketplace: string) {
-  return marketplace === "ym" || marketplace === "yandex" || marketplace === "yandex_market";
+  const n = marketplace.trim().toLowerCase().replaceAll("-", "_");
+  return marketplaceLabelMap[n as keyof typeof marketplaceLabelMap] ?? marketplace;
 }
 
 function getStatValueClassName(variant: DashboardStat["variant"]) {
@@ -202,10 +177,10 @@ function renderStatValue(stat: DashboardStat) {
   if (stat.variant === "usage" && stat.valueParts) {
     return (
       <>
-        {stat.valueParts.primary} <span className={styles.statValueUsageMuted}>{stat.valueParts.secondary}</span>
+        {stat.valueParts.primary}{" "}
+        <span className={styles.statValueUsageMuted}>{stat.valueParts.secondary}</span>
       </>
     );
   }
-
   return stat.value;
 }

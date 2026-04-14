@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { logoutAuthUser } from "@/shared/api";
 import { Button } from "@/shared/ui";
 
 type LogoutButtonProps = {
@@ -14,11 +15,8 @@ export function LogoutButton({ className }: LogoutButtonProps) {
 
   async function handleLogout() {
     setIsPending(true);
-
     try {
-      await fetch("/api/auth/logout", {
-        method: "POST",
-      });
+      await logoutAuthUser();
     } finally {
       router.push("/auth");
       router.refresh();

@@ -1,6 +1,7 @@
-import Link from "next/link";
 import { classNames } from "@/shared/lib/classNames";
 import styles from "./AuthFlow.module.scss";
+
+const VK_AUTH_URL = `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080"}/api/v1/auth/vk/start`;
 
 type SocialAuthButtonsProps = {
   yandexError: string;
@@ -13,10 +14,10 @@ export function SocialAuthButtons({ yandexError }: SocialAuthButtonsProps) {
         <div id="yandex-auth-container" />
         {yandexError ? <div className={styles.oauthError}>{yandexError}</div> : null}
       </div>
-      <Link href="/api/auth/vk/start" className={styles.socialButton}>
+      <a href={VK_AUTH_URL} className={styles.socialButton}>
         <span className={classNames(styles.socialIcon, styles.vkIcon)}>VK</span>
         Войти через VK
-      </Link>
+      </a>
     </div>
   );
 }

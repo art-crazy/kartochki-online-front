@@ -5,6 +5,7 @@ import { useState, type ReactNode } from "react";
 import { LogoutButton } from "@/features/auth/ui/LogoutButton";
 import { useAuthSession } from "@/shared/auth/ui/AuthSessionProvider";
 import { classNames } from "@/shared/lib/classNames";
+import { getUserInitials } from "@/shared/lib/user";
 import { Button, SidebarPlanCard, SidebarProfileCard } from "@/shared/ui";
 import { accountNavItems, mobileNavItems, primaryNavItems, type AppShellNavItem } from "../model/navigation";
 import styles from "./AppShell.module.scss";
@@ -97,18 +98,6 @@ export function AppShellClient({ title, subtitle, activeKey, action, children }:
   );
 }
 
-function getUserInitials(name?: string, email?: string | null) {
-  if (name?.trim()) {
-    const parts = name.trim().split(/\s+/).filter(Boolean).slice(0, 2);
-    const initials = parts.map((part) => part[0]?.toUpperCase() ?? "").join("");
-
-    if (initials) {
-      return initials;
-    }
-  }
-
-  return (email?.trim()?.[0] ?? "U").toUpperCase();
-}
 
 function ShellLink({
   item,
