@@ -10,16 +10,16 @@ type ApiBlogPostProps = {
   content: BlogPostResponse;
 };
 
-const HOME_LABEL = "\u0413\u043B\u0430\u0432\u043D\u0430\u044F";
-const BLOG_LABEL = "\u0411\u043B\u043E\u0433";
-const UPDATED_LABEL = "\u041E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u043E";
-const READ_TIME_LABEL = "\u043C\u0438\u043D \u0447\u0442\u0435\u043D\u0438\u044F";
-const VIEWS_LABEL = "\u043F\u0440\u043E\u0441\u043C\u043E\u0442\u0440\u043E\u0432";
-const TOC_LABEL = "\u0421\u043E\u0434\u0435\u0440\u0436\u0430\u043D\u0438\u0435";
-const TRY_LABEL = "\u041F\u043E\u043F\u0440\u043E\u0431\u043E\u0432\u0430\u0442\u044C \u0431\u0435\u0441\u043F\u043B\u0430\u0442\u043D\u043E";
-const CTA_TITLE = "\u0421\u0434\u0435\u043B\u0430\u0439\u0442\u0435 \u043A\u0430\u0440\u0442\u043E\u0447\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u0435\u0441\u043A\u0438";
-const CTA_TEXT = "\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u0435 \u0444\u043E\u0442\u043E \u0438 \u043F\u043E\u043B\u0443\u0447\u0438\u0442\u0435 \u0433\u043E\u0442\u043E\u0432\u044B\u0435 \u043A\u0430\u0440\u0442\u043E\u0447\u043A\u0438 \u0434\u043B\u044F \u043C\u0430\u0440\u043A\u0435\u0442\u043F\u043B\u0435\u0439\u0441\u043E\u0432.";
-const RELATED_LABEL = "\u0427\u0438\u0442\u0430\u0439\u0442\u0435 \u0442\u0430\u043A\u0436\u0435";
+const HOME_LABEL = "Главная";
+const BLOG_LABEL = "Блог";
+const UPDATED_LABEL = "Обновлено";
+const READ_TIME_LABEL = "мин чтения";
+const VIEWS_LABEL = "просмотров";
+const TOC_LABEL = "Содержание";
+const TRY_LABEL = "Попробовать бесплатно";
+const CTA_TITLE = "Сделайте карточки автоматически";
+const CTA_TEXT = "Загрузите фото и получите готовые карточки для маркетплейсов.";
+const RELATED_LABEL = "Читайте также";
 
 export function ApiBlogPost({ content }: ApiBlogPostProps) {
   const { post, article_sections: sections, related_posts: relatedPosts } = content;

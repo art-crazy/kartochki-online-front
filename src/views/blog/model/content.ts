@@ -56,10 +56,10 @@ export type BlogPageContent = {
   };
 };
 
-const READ_LABEL = "\u0427\u0438\u0442\u0430\u0442\u044c";
-const MIN_LABEL = "\u043c\u0438\u043d";
-const ALL_LABEL = "\u0412\u0441\u0435";
-const POPULAR_META = "\u041F\u043E\u043F\u0443\u043B\u044F\u0440\u043D\u043E\u0435";
+const READ_LABEL = "Читать";
+const MIN_LABEL = "мин";
+const ALL_LABEL = "Все";
+const POPULAR_META = "Популярное";
 const AUTHOR = "kartochki.online";
 const AUTHOR_INITIALS = "KO";
 
