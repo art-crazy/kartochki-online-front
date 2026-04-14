@@ -1,6 +1,6 @@
-export type MarketplaceId = "wildberries" | "ozon" | "yandex-market";
-export type StyleId = "minimal" | "bright" | "dark" | "light";
-export type CardTypeId = "main" | "infographic" | "composition" | "sizes" | "advantages" | "details";
+export type MarketplaceId = string;
+export type StyleId = string;
+export type CardTypeId = string;
 export type ResultState = "empty" | "loading" | "result";
 
 export type MarketplaceOption = {
@@ -25,6 +25,13 @@ export type LoadingStep = {
   label: string;
   title: string;
   description: string;
+};
+
+export type GenerateConfigContent = {
+  marketplaces: ReadonlyArray<MarketplaceOption>;
+  styles: ReadonlyArray<StyleOption>;
+  cardTypes: ReadonlyArray<CardTypeOption>;
+  cardCountOptions: ReadonlyArray<number>;
 };
 
 export type ResultCard = {
@@ -60,7 +67,14 @@ export const defaultSelectedCardTypes = cardTypeOptions
   .filter((item) => item.defaultSelected)
   .map((item) => item.id);
 
-export const cardCountOptions = [3, 6, 8] as const;
+export const cardCountOptions: ReadonlyArray<number> = [3, 6, 8];
+
+export const fallbackGenerateConfigContent: GenerateConfigContent = {
+  marketplaces: marketplaceOptions,
+  styles: styleOptions,
+  cardTypes: cardTypeOptions,
+  cardCountOptions,
+};
 
 export const loadingSteps: ReadonlyArray<LoadingStep> = [
   {
@@ -100,11 +114,16 @@ const resultCardPalette: ReadonlyArray<Omit<ResultCard, "id" | "label">> = [
   { accent: "#005f73", background: "linear-gradient(160deg, #005f73 0%, #ee9b00 100%)" },
 ];
 
-export function buildResultCards(selectedTypes: ReadonlyArray<CardTypeId>, count: number): ResultCard[] {
-  const chosenTypes = selectedTypes.length > 0 ? selectedTypes : [cardTypeOptions[0].id];
+export function buildResultCards(
+  selectedTypes: ReadonlyArray<CardTypeId>,
+  count: number,
+  availableCardTypes: ReadonlyArray<CardTypeOption> = cardTypeOptions,
+): ResultCard[] {
+  const fallbackType = availableCardTypes[0] ?? cardTypeOptions[0];
+  const chosenTypes = selectedTypes.length > 0 ? selectedTypes : [fallbackType.id];
 
   return Array.from({ length: count }, (_, index) => {
-    const type = cardTypeOptions.find((item) => item.id === chosenTypes[index % chosenTypes.length]) ?? cardTypeOptions[0];
+    const type = availableCardTypes.find((item) => item.id === chosenTypes[index % chosenTypes.length]) ?? fallbackType;
     const palette = resultCardPalette[index % resultCardPalette.length];
 
     return {

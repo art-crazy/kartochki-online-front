@@ -20,10 +20,23 @@ export type DashboardProject = {
   id: string;
   title: string;
   cardCount: number;
-  marketplace: "wildberries" | "ozon";
+  marketplace: string;
   updatedAt: string;
-  previews: readonly [string, string, string];
+  previews: readonly string[];
   href: string;
+};
+
+export type DashboardQuickStart = {
+  title: string;
+  description: string;
+  href: string;
+};
+
+export type DashboardPageContent = {
+  stats: ReadonlyArray<DashboardStat>;
+  recentProjects: ReadonlyArray<DashboardProject>;
+  allProjects: ReadonlyArray<DashboardProject>;
+  quickStart: DashboardQuickStart;
 };
 
 export const dashboardStats: ReadonlyArray<DashboardStat> = [
@@ -106,4 +119,11 @@ export const quickStartContent = {
   title: "Создай карточки прямо сейчас",
   description: "Загрузи фото товара — получи 6 готовых карточек для WB или Ozon за 30 секунд",
   href: "/app/generate",
+};
+
+export const fallbackDashboardContent: DashboardPageContent = {
+  stats: dashboardStats,
+  recentProjects,
+  allProjects,
+  quickStart: quickStartContent,
 };

@@ -2,10 +2,15 @@
 
 import { useState } from "react";
 import { GenerateWorkspace } from "@/features/generation/ui/GenerateWorkspace";
+import type { GenerateConfigContent } from "@/features/generation/model/content";
 import { Button } from "@/shared/ui";
 import { AppShell } from "@/widgets/app/app-shell/ui/AppShell";
 
-export function GenerateScreen() {
+type GenerateScreenProps = {
+  config: GenerateConfigContent;
+};
+
+export function GenerateScreen({ config }: GenerateScreenProps) {
   const [resetVersion, setResetVersion] = useState(0);
 
   return (
@@ -19,7 +24,7 @@ export function GenerateScreen() {
         </Button>
       }
     >
-      <GenerateWorkspace key={resetVersion} />
+      <GenerateWorkspace key={resetVersion} config={config} />
     </AppShell>
   );
 }

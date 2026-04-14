@@ -6,6 +6,6 @@ export const metadata: Metadata = {
   description: "Личный кабинет kartochki.online с проектами, лимитами и быстрым доступом к генерации карточек.",
 };
 
-export default function AppDashboardRoute() {
+export default async function AppDashboardRoute() {
   return <DashboardPage />;
 }

@@ -1,10 +1,20 @@
 import Link from "next/link";
-import { allProjects, dashboardStats, quickStartContent, recentProjects, type DashboardStat } from "@/views/dashboard/model/content";
+import { loadDashboardContent } from "@/views/dashboard/model/api";
+import {
+  type DashboardPageContent,
+  type DashboardStat,
+} from "@/views/dashboard/model/content";
 import { Badge, Button, CardSurface } from "@/shared/ui";
 import { AppShell } from "@/widgets/app/app-shell/ui/AppShell";
 import styles from "./DashboardPage.module.scss";
 
-export function DashboardPage() {
+type DashboardPageProps = {
+  content?: DashboardPageContent;
+};
+
+export async function DashboardPage({ content }: DashboardPageProps) {
+  const pageContent = content ?? (await loadDashboardContent());
+
   return (
     <AppShell
       title="Дашборд"
@@ -23,7 +33,7 @@ export function DashboardPage() {
     >
       <main className={styles.page}>
         <section className={styles.statsGrid} aria-label="Обзор аккаунта">
-          {dashboardStats.map((stat) => (
+          {pageContent.stats.map((stat) => (
             <CardSurface key={stat.label} theme="dark" className={styles.statCard}>
               <div className={styles.statLabel}>{stat.label}</div>
               <div className={getStatValueClassName(stat.variant)}>{renderStatValue(stat)}</div>
@@ -54,7 +64,7 @@ export function DashboardPage() {
           </div>
 
           <div className={styles.projectsGrid}>
-            {recentProjects.map((project) => (
+            {pageContent.recentProjects.map((project) => (
               <Link key={project.id} href={project.href} className={styles.cardLink}>
                 <CardSurface theme="dark" className={styles.projectCard}>
                   <div className={styles.projectPreview}>
@@ -89,10 +99,10 @@ export function DashboardPage() {
               ⚡
             </div>
             <div className={styles.quickStartBody}>
-              <h2 className={styles.quickStartTitle}>{quickStartContent.title}</h2>
-              <p className={styles.quickStartText}>{quickStartContent.description}</p>
+              <h2 className={styles.quickStartTitle}>{pageContent.quickStart.title}</h2>
+              <p className={styles.quickStartText}>{pageContent.quickStart.description}</p>
             </div>
-            <Button as={Link} href={quickStartContent.href} variant="darkPrimary" size="lg">
+            <Button as={Link} href={pageContent.quickStart.href} variant="darkPrimary" size="lg">
               Начать →
             </Button>
           </CardSurface>
@@ -107,7 +117,7 @@ export function DashboardPage() {
           </div>
 
           <div className={styles.projectList}>
-            {allProjects.map((project) => (
+            {pageContent.allProjects.map((project) => (
               <Link key={project.id} href={project.href} className={styles.projectRow}>
                 <div className={styles.projectThumbs} aria-hidden="true">
                   {project.previews.map((preview) => (
@@ -118,7 +128,7 @@ export function DashboardPage() {
                 <div className={styles.projectInfo}>
                   <div className={styles.projectTitle}>{project.title}</div>
                   <div className={styles.projectMeta}>
-                    {project.cardCount} карточек · {marketplaceLabelMap[project.marketplace]} · {project.updatedAt}
+                    {project.cardCount} карточек · {getMarketplaceLabel(project.marketplace)} · {project.updatedAt}
                   </div>
                 </div>
 
@@ -139,7 +149,11 @@ export function DashboardPage() {
 
 const marketplaceLabelMap = {
   wildberries: "Wildberries",
+  wb: "Wildberries",
   ozon: "Ozon",
+  ym: "Яндекс Маркет",
+  yandex: "Яндекс Маркет",
+  yandex_market: "Яндекс Маркет",
 } as const;
 
 const statValueClassMap = {
@@ -148,12 +162,36 @@ const statValueClassMap = {
   default: styles.statValueDefault,
 } as const;
 
-function MarketplaceBadge({ marketplace }: { marketplace: keyof typeof marketplaceLabelMap }) {
-  if (marketplace === "wildberries") {
+function MarketplaceBadge({ marketplace }: { marketplace: string }) {
+  const normalizedMarketplace = normalizeMarketplace(marketplace);
+
+  if (normalizedMarketplace === "wildberries" || normalizedMarketplace === "wb") {
     return <Badge tone="wb">WB</Badge>;
   }
 
-  return <Badge tone="ozon">Ozon</Badge>;
+  if (normalizedMarketplace === "ozon") {
+    return <Badge tone="ozon">Ozon</Badge>;
+  }
+
+  if (isYandexMarket(normalizedMarketplace)) {
+    return <Badge tone="ym">Яндекс Маркет</Badge>;
+  }
+
+  return <Badge>{getMarketplaceLabel(marketplace)}</Badge>;
+}
+
+function getMarketplaceLabel(marketplace: string) {
+  const normalizedMarketplace = normalizeMarketplace(marketplace);
+
+  return marketplaceLabelMap[normalizedMarketplace as keyof typeof marketplaceLabelMap] ?? marketplace;
+}
+
+function normalizeMarketplace(marketplace: string) {
+  return marketplace.trim().toLowerCase().replaceAll("-", "_");
+}
+
+function isYandexMarket(marketplace: string) {
+  return marketplace === "ym" || marketplace === "yandex" || marketplace === "yandex_market";
 }
 
 function getStatValueClassName(variant: DashboardStat["variant"]) {

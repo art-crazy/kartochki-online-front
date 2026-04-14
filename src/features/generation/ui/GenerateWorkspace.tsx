@@ -1,31 +1,34 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Button, Chip, Input } from "@/shared/ui";
+import { Button } from "@/shared/ui";
 import {
   buildResultCards,
   cardCountOptions,
   cardTypeOptions,
   defaultSelectedCardTypes,
+  fallbackGenerateConfigContent,
   loadingSteps,
   marketplaceOptions,
   styleOptions,
   type CardTypeId,
-  type LoadingStep,
+  type GenerateConfigContent,
   type MarketplaceId,
   type ResultCard,
   type ResultState,
   type StyleId,
 } from "../model/content";
+import { GenerateControls } from "./GenerateControls";
+import { EmptyState, LoadingState, ResultStateView } from "./GenerateResultStates";
 import styles from "./GenerateWorkspace.module.scss";
 
 const loadingStepDurationMs = 1600;
 
 type GenerateWorkspaceProps = {
+  config?: GenerateConfigContent;
   initialMarketplace?: MarketplaceId;
   initialStyle?: StyleId;
-  initialCount?: (typeof cardCountOptions)[number];
+  initialCount?: number;
   initialProjectName?: string;
 };
 
@@ -35,20 +38,28 @@ type ToastState = {
 };
 
 export function GenerateWorkspace({
-  initialMarketplace = "wildberries",
-  initialStyle = "minimal",
-  initialCount = 6,
+  config = fallbackGenerateConfigContent,
+  initialMarketplace,
+  initialStyle,
+  initialCount,
   initialProjectName = "",
 }: GenerateWorkspaceProps) {
+  const availableMarketplaces = config.marketplaces.length ? config.marketplaces : marketplaceOptions;
+  const availableStyles = config.styles.length ? config.styles : styleOptions;
+  const availableCardTypes = config.cardTypes.length ? config.cardTypes : cardTypeOptions;
+  const availableCardCounts = config.cardCountOptions.length ? config.cardCountOptions : cardCountOptions;
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const objectUrlRef = useRef<string | null>(null);
   const loadingTimerRef = useRef<number[]>([]);
   const toastTimerRef = useRef<number | null>(null);
 
-  const [marketplace, setMarketplace] = useState<MarketplaceId>(initialMarketplace);
-  const [style, setStyle] = useState<StyleId>(initialStyle);
-  const [selectedTypes, setSelectedTypes] = useState<CardTypeId[]>(defaultSelectedCardTypes);
-  const [cardCount, setCardCount] = useState<(typeof cardCountOptions)[number]>(initialCount);
+  const [marketplace, setMarketplace] = useState<MarketplaceId>(
+    initialMarketplace ?? availableMarketplaces[0]?.id ?? "wildberries",
+  );
+  const [style, setStyle] = useState<StyleId>(initialStyle ?? availableStyles[0]?.id ?? "minimal");
+  const [selectedTypes, setSelectedTypes] = useState<CardTypeId[]>(getDefaultCardTypeIds(availableCardTypes));
+  const [cardCount, setCardCount] = useState(initialCount ?? availableCardCounts[0] ?? 6);
   const [projectName, setProjectName] = useState(initialProjectName);
   const [resultState, setResultState] = useState<ResultState>("empty");
   const [activeStepIndex, setActiveStepIndex] = useState(0);
@@ -58,7 +69,10 @@ export function GenerateWorkspace({
   const [isDraggingFile, setIsDraggingFile] = useState(false);
   const [toast, setToast] = useState<ToastState>({ visible: false, message: "" });
 
-  const nextResultCards = useMemo<ResultCard[]>(() => buildResultCards(selectedTypes, cardCount), [cardCount, selectedTypes]);
+  const nextResultCards = useMemo<ResultCard[]>(
+    () => buildResultCards(selectedTypes, cardCount, availableCardTypes),
+    [availableCardTypes, cardCount, selectedTypes],
+  );
 
   const activeLoadingStep = loadingSteps[Math.min(activeStepIndex, loadingSteps.length - 1)];
   const canGenerate = Boolean(uploadedFileUrl) && resultState !== "loading";
@@ -121,15 +135,11 @@ export function GenerateWorkspace({
 
   function toggleCardType(typeId: CardTypeId) {
     setSelectedTypes((current) => {
-      if (current.includes(typeId)) {
-        if (current.length === 1) {
-          return current;
-        }
-
-        return current.filter((item) => item !== typeId);
+      if (!current.includes(typeId)) {
+        return [...current, typeId];
       }
 
-      return [...current, typeId];
+      return current.length === 1 ? current : current.filter((item) => item !== typeId);
     });
   }
 
@@ -143,15 +153,11 @@ export function GenerateWorkspace({
 
     setResultState("loading");
     setActiveStepIndex(0);
-
     loadingTimerRef.current.forEach((timer) => window.clearTimeout(timer));
     loadingTimerRef.current = [];
 
     loadingSteps.forEach((_, index) => {
-      const timer = window.setTimeout(() => {
-        setActiveStepIndex(index);
-      }, index * loadingStepDurationMs);
-
+      const timer = window.setTimeout(() => setActiveStepIndex(index), index * loadingStepDurationMs);
       loadingTimerRef.current.push(timer);
     });
 
@@ -168,137 +174,31 @@ export function GenerateWorkspace({
   return (
     <>
       <section className={styles.workspace}>
-        <form className={styles.leftPanel} onSubmit={(event) => event.preventDefault()}>
-          <section className={styles.section}>
-            <h2 className={styles.label}>Фото товара</h2>
-            <button
-              type="button"
-              className={[
-                styles.uploadZone,
-                isDraggingFile ? styles.uploadZoneDragging : "",
-                uploadedFileUrl ? styles.uploadZoneReady : "",
-              ].join(" ")}
-              onClick={() => fileInputRef.current?.click()}
-              onDragOver={(event) => {
-                event.preventDefault();
-                setIsDraggingFile(true);
-              }}
-              onDragLeave={() => setIsDraggingFile(false)}
-              onDrop={(event) => {
-                event.preventDefault();
-                setIsDraggingFile(false);
-                handleFileSelection(event.dataTransfer.files[0] ?? null);
-              }}
-            >
-              {uploadedFileUrl ? (
-                <div className={styles.uploadPreview}>
-                  <div className={styles.previewImageWrap}>
-                    <Image src={uploadedFileUrl} alt="" width={80} height={80} unoptimized className={styles.previewImage} />
-                  </div>
-                  <div className={styles.previewFileName}>{shortenName(uploadedFileName)}</div>
-                  <div className={styles.previewAction}>Заменить фото</div>
-                </div>
-              ) : (
-                <div className={styles.uploadDefault}>
-                  <span className={styles.uploadIcon}>↑</span>
-                  <div className={styles.uploadTitle}>Перетащи или нажми</div>
-                  <div className={styles.uploadSub}>JPG, PNG до 10 МБ</div>
-                </div>
-              )}
-            </button>
-            <input
-              ref={fileInputRef}
-              hidden
-              type="file"
-              accept="image/*"
-              onChange={(event) => handleFileSelection(event.target.files?.[0] ?? null)}
-            />
-          </section>
-
-          <section className={styles.section}>
-            <h2 className={styles.label}>Площадка</h2>
-            <div className={styles.marketplaceGrid}>
-              {marketplaceOptions.map((option) => (
-                <button
-                  key={option.id}
-                  type="button"
-                  className={[styles.marketplaceButton, marketplace === option.id ? styles.marketplaceButtonActive : ""].join(
-                    " ",
-                  )}
-                  onClick={() => setMarketplace(option.id)}
-                >
-                  <span className={styles.marketplaceDot} style={{ color: option.dot }}>
-                    ●
-                  </span>
-                  {option.label}
-                </button>
-              ))}
-            </div>
-          </section>
-
-          <section className={styles.section}>
-            <h2 className={styles.label}>Стиль</h2>
-            <div className={[styles.chips, styles.styleChips].join(" ")}>
-              {styleOptions.map((option) => (
-                <Chip key={option.id} dark selected={style === option.id} onClick={() => setStyle(option.id)}>
-                  {option.label}
-                </Chip>
-              ))}
-            </div>
-          </section>
-
-          <section className={styles.section}>
-            <h2 className={styles.label}>Типы карточек</h2>
-            <div className={[styles.chips, styles.cardTypeChips].join(" ")}>
-              {cardTypeOptions.map((option) => (
-                <Chip
-                  key={option.id}
-                  dark
-                  selected={selectedTypes.includes(option.id)}
-                  onClick={() => toggleCardType(option.id)}
-                >
-                  {option.label}
-                </Chip>
-              ))}
-            </div>
-          </section>
-
-          <section className={styles.section}>
-            <h2 className={styles.label}>Количество карточек</h2>
-            <div className={styles.countSelector}>
-              {cardCountOptions.map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  className={[styles.countButton, cardCount === option ? styles.countButtonActive : ""].join(" ")}
-                  onClick={() => setCardCount(option)}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-          </section>
-
-          <Input
-            dark
-            label="Название проекта"
-            controlClassName={styles.projectNameInput}
-            placeholder="Например: Кроссовки Nike"
-            value={projectName}
-            onChange={(event) => setProjectName(event.target.value)}
-          />
-
-          <Button
-            variant="darkPrimary"
-            size="lg"
-            block
-            className={styles.generateButton}
-            disabled={!canGenerate}
-            onClick={startGenerate}
-          >
-            {resultState === "result" ? "⚡ Сгенерировать ещё" : "⚡ Сгенерировать карточки"}
-          </Button>
-        </form>
+        <GenerateControls
+          fileInputRef={fileInputRef}
+          marketplaces={availableMarketplaces}
+          styles={availableStyles}
+          cardTypes={availableCardTypes}
+          cardCounts={availableCardCounts}
+          marketplace={marketplace}
+          style={style}
+          selectedTypes={selectedTypes}
+          cardCount={cardCount}
+          projectName={projectName}
+          uploadedFileName={uploadedFileName}
+          uploadedFileUrl={uploadedFileUrl}
+          isDraggingFile={isDraggingFile}
+          canGenerate={canGenerate}
+          resultState={resultState}
+          onMarketplaceChange={setMarketplace}
+          onStyleChange={setStyle}
+          onToggleCardType={toggleCardType}
+          onCardCountChange={setCardCount}
+          onProjectNameChange={setProjectName}
+          onDraggingFileChange={setIsDraggingFile}
+          onFileSelection={handleFileSelection}
+          onGenerate={startGenerate}
+        />
 
         <section className={styles.rightPanel}>
           <div className={styles.resultsHeader}>
@@ -333,99 +233,12 @@ export function GenerateWorkspace({
   );
 }
 
-function EmptyState() {
-  return (
-    <div className={styles.emptyState}>
-      <div className={styles.emptyVisual} aria-hidden="true">
-        {Array.from({ length: 6 }).map((_, index) => (
-          <div key={index} className={styles.emptyThumb} />
-        ))}
-      </div>
-      <div className={styles.emptyTitle}>Карточки ещё не созданы</div>
-      <div className={styles.emptyText}>Загрузи фото товара и нажми «Сгенерировать» — готовый сет появится здесь</div>
-    </div>
-  );
-}
+function getDefaultCardTypeIds(cardTypes: ReadonlyArray<{ id: CardTypeId; defaultSelected?: boolean }>) {
+  const selected = cardTypes.filter((item) => item.defaultSelected).map((item) => item.id);
 
-function LoadingState({
-  activeStep,
-  activeStepIndex,
-}: {
-  activeStep: LoadingStep;
-  activeStepIndex: number;
-}) {
-  return (
-    <div className={styles.loadingState} aria-live="polite" aria-busy="true">
-      <div className={styles.loadingRing} aria-hidden="true" />
-      <div className={styles.loadingText}>
-        <div className={styles.loadingTitle}>{activeStep.title}</div>
-        <div className={styles.loadingSub}>{activeStep.description}</div>
-      </div>
-      <div className={styles.loadingSteps}>
-        {loadingSteps.map((step, index) => {
-          const status = index < activeStepIndex ? "done" : index === activeStepIndex ? "active" : "idle";
+  if (selected.length) {
+    return selected;
+  }
 
-          return (
-            <div
-              key={step.id}
-              className={[
-                styles.loadingStep,
-                status === "done" ? styles.loadingStepDone : "",
-                status === "active" ? styles.loadingStepActive : "",
-              ].join(" ")}
-            >
-              <div className={styles.stepDot}>{status === "done" ? "✓" : index + 1}</div>
-              <span>{step.label}</span>
-            </div>
-          );
-        })}
-      </div>
-      <div className={styles.skeletonGrid} aria-hidden="true">
-        {Array.from({ length: 6 }).map((_, index) => (
-          <div key={index} className={styles.skeletonCard} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function ResultStateView({
-  cards,
-  onDownload,
-}: {
-  cards: ReadonlyArray<ResultCard>;
-  onDownload: (message: string) => void;
-}) {
-  return (
-    <div className={styles.resultState}>
-      <div className={styles.cardsGrid}>
-        {cards.map((card) => (
-          <article key={card.id} className={styles.resultCard}>
-            <div className={styles.cardVisual}>
-              <div className={styles.cardVisualInner} style={{ background: card.background }}>
-                <div className={styles.cardBadge} style={{ color: card.accent }}>
-                  {card.label}
-                </div>
-              </div>
-              <div className={styles.cardOverlay}>
-                <Button variant="secondary" size="sm" onClick={() => onDownload("Скачиваем...")}>
-                  ↓ Скачать
-                </Button>
-              </div>
-            </div>
-            <div className={styles.cardFooter}>
-              <span className={styles.cardLabel}>{card.label}</span>
-              <button type="button" className={styles.cardDownload} onClick={() => onDownload("Скачиваем...")}>
-                ↓
-              </button>
-            </div>
-          </article>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function shortenName(fileName: string) {
-  return fileName.length > 20 ? `${fileName.slice(0, 18)}...` : fileName;
+  return cardTypes[0]?.id ? [cardTypes[0].id] : defaultSelectedCardTypes;
 }
