@@ -105,6 +105,29 @@
   background: var(--accent);
 }
 
+.stateCard {
+  max-width: 520px;
+  padding: 24px;
+}
+
+.stateTitle {
+  margin-bottom: 8px;
+  color: var(--dark-text);
+  font-family: var(--font-display), sans-serif;
+  font-size: var(--billing-heading-size);
+  font-weight: 800;
+}
+
+.stateText {
+  color: var(--dark-text-3);
+  font-size: var(--billing-copy-size);
+  line-height: var(--billing-copy-line-height);
+}
+
+.stateAction {
+  margin-top: 18px;
+}
+
 .periodToggle {
   display: grid;
   width: 100%;

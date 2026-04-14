@@ -20,6 +20,30 @@
   --settings-modal-text-size: 0.82rem;
 }
 
+.statusCard {
+  max-width: 520px;
+  margin: 28px;
+  padding: 24px;
+}
+
+.statusTitle {
+  margin-bottom: 8px;
+  color: var(--dark-text);
+  font-family: var(--font-display), sans-serif;
+  font-size: var(--settings-modal-title-size);
+  font-weight: 800;
+}
+
+.statusText {
+  color: var(--dark-text-3);
+  font-size: var(--settings-meta-size);
+  line-height: var(--settings-copy-line-height);
+}
+
+.statusAction {
+  margin-top: 18px;
+}
+
 .layout {
   display: grid;
   grid-template-columns: 180px minmax(0, 1fr);
