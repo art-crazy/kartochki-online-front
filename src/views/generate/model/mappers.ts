@@ -1,6 +1,5 @@
 import type { GenerateCardType, GenerateConfigResponse, GenerateMarketplace, GenerateStyle } from "@/shared/api";
 import {
-  fallbackGenerateConfigContent,
   type CardTypeOption,
   type GenerateConfigContent,
   type MarketplaceOption,
@@ -17,11 +16,15 @@ const marketplaceDotMap: Record<string, string> = {
 
 export function mapGenerateConfigResponse(response: GenerateConfigResponse): GenerateConfigContent {
   const validCounts = response.card_count_options.filter((v) => Number.isInteger(v) && v > 0);
+  if (!response.marketplaces.length || !response.styles.length || !response.card_types.length || !validCounts.length) {
+    throw new Error("Generate config response is incomplete");
+  }
+
   return {
-    marketplaces: response.marketplaces.length ? response.marketplaces.map(mapMarketplace) : fallbackGenerateConfigContent.marketplaces,
-    styles: response.styles.length ? response.styles.map(mapStyle) : fallbackGenerateConfigContent.styles,
-    cardTypes: response.card_types.length ? response.card_types.map(mapCardType) : fallbackGenerateConfigContent.cardTypes,
-    cardCountOptions: validCounts.length ? validCounts : fallbackGenerateConfigContent.cardCountOptions,
+    marketplaces: response.marketplaces.map(mapMarketplace),
+    styles: response.styles.map(mapStyle),
+    cardTypes: response.card_types.map(mapCardType),
+    cardCountOptions: validCounts,
   };
 }
 

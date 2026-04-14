@@ -30,6 +30,7 @@ export type BillingAddon = {
 };
 
 export type BillingSubscriptionSummary = {
+  canCancel: boolean;
   planName: string;
   renewalLabel: string;
   paymentLabel: string;

@@ -31,6 +31,29 @@
   font-size: 1rem;
 }
 
+.stateCard {
+  max-width: 520px;
+  padding: 24px;
+}
+
+.stateTitle {
+  margin-bottom: 8px;
+  color: var(--dark-text);
+  font-family: var(--font-display), sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.stateText {
+  color: var(--dark-text-3);
+  font-size: var(--dashboard-copy-size);
+  line-height: var(--dashboard-copy-line-height);
+}
+
+.stateAction {
+  margin-top: 18px;
+}
+
 .statCard {
   display: grid;
   padding: 20px;

@@ -1,0 +1,33 @@
+.page {
+  min-height: calc(100vh - 73px);
+  padding: 28px;
+}
+
+.stateCard {
+  max-width: 520px;
+  padding: 24px;
+}
+
+.stateTitle {
+  margin-bottom: 8px;
+  color: var(--dark-text);
+  font-family: var(--font-display), sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.stateText {
+  color: var(--dark-text-3);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.stateAction {
+  margin-top: 18px;
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 20px 20px 88px;
+  }
+}

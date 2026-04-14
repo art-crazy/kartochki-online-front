@@ -1,22 +1,45 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { getDashboardOptions } from "@/shared/api";
 import { Badge, Button, CardSurface } from "@/shared/ui";
 import { AppShell } from "@/widgets/app/app-shell/ui/AppShell";
 import { mapDashboardResponse } from "@/views/dashboard/model/mappers";
-import {
-  fallbackDashboardContent,
-  type DashboardStat,
-} from "@/views/dashboard/model/content";
+import type { DashboardStat } from "@/views/dashboard/model/content";
 import styles from "./DashboardPage.module.scss";
 
 export function DashboardPage() {
-  const { data: pageContent = fallbackDashboardContent } = useQuery({
+  const {
+    data: pageContent,
+    isError,
+    isPending,
+    refetch,
+  } = useQuery({
     ...getDashboardOptions(),
     select: mapDashboardResponse,
   });
+
+  if (isPending) {
+    return (
+      <DashboardShell subtitle="Загружаем данные аккаунта">
+        <DashboardStateCard title="Загружаем дашборд" description="Получаем лимиты, проекты и быстрый старт." />
+      </DashboardShell>
+    );
+  }
+
+  if (isError || !pageContent) {
+    return (
+      <DashboardShell subtitle="Не удалось получить данные аккаунта">
+        <DashboardStateCard
+          title="Дашборд не загрузился"
+          description="Проверьте API и повторите запрос."
+          action={<Button variant="darkPrimary" onClick={() => void refetch()}>Повторить</Button>}
+        />
+      </DashboardShell>
+    );
+  }
 
   return (
     <AppShell
@@ -138,6 +161,32 @@ export function DashboardPage() {
         </section>
       </main>
     </AppShell>
+  );
+}
+
+function DashboardShell({ children, subtitle }: { children: ReactNode; subtitle: string }) {
+  return (
+    <AppShell title="Дашборд" subtitle={subtitle} activeKey="dashboard">
+      <main className={styles.page}>{children}</main>
+    </AppShell>
+  );
+}
+
+function DashboardStateCard({
+  action,
+  description,
+  title,
+}: {
+  action?: ReactNode;
+  description: string;
+  title: string;
+}) {
+  return (
+    <CardSurface theme="dark" className={styles.stateCard}>
+      <h2 className={styles.stateTitle}>{title}</h2>
+      <p className={styles.stateText}>{description}</p>
+      {action ? <div className={styles.stateAction}>{action}</div> : null}
+    </CardSurface>
   );
 }
 

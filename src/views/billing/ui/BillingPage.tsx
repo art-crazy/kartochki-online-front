@@ -1,8 +1,14 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getBillingOptions } from "@/shared/api";
+import { useEffect, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  cancelBillingSubscriptionMutation,
+  getBillingOptions,
+  getBillingQueryKey,
+  type ErrorResponse,
+} from "@/shared/api";
 import { Button, CardSurface } from "@/shared/ui";
 import { AppShell } from "@/widgets/app/app-shell/ui/AppShell";
 import { mapBillingResponse } from "@/views/billing/model/mappers";
@@ -10,6 +16,9 @@ import { BillingPricing } from "./BillingPricing";
 import styles from "./BillingPage.module.scss";
 
 export function BillingPage() {
+  const queryClient = useQueryClient();
+  const [cancelModalOpen, setCancelModalOpen] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
   const {
     data: pageContent,
     isError,
@@ -19,6 +28,40 @@ export function BillingPage() {
     ...getBillingOptions(),
     select: mapBillingResponse,
   });
+  const cancelMutation = useMutation({
+    ...cancelBillingSubscriptionMutation(),
+    onSuccess: () => {
+      setCancelModalOpen(false);
+      setToast("Автопродление отключено");
+      void queryClient.invalidateQueries({ queryKey: getBillingQueryKey() });
+    },
+    onError: (error: ErrorResponse) => setToast(error.message ?? "Не удалось отменить подписку"),
+  });
+
+  useEffect(() => {
+    if (!toast) return undefined;
+    const timer = window.setTimeout(() => setToast(null), 2500);
+    return () => window.clearTimeout(timer);
+  }, [toast]);
+
+  useEffect(() => {
+    if (!cancelModalOpen) return undefined;
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape" && !cancelMutation.isPending) {
+        setCancelModalOpen(false);
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [cancelModalOpen, cancelMutation.isPending]);
+
+  function closeCancelModal() {
+    if (!cancelMutation.isPending) {
+      setCancelModalOpen(false);
+    }
+  }
 
   if (isPending) {
     return (
@@ -64,6 +107,13 @@ export function BillingPage() {
             <p className={styles.bannerSubtitle}>
               {currentSubscription.renewalLabel} · {currentSubscription.paymentLabel}
             </p>
+            {currentSubscription.canCancel ? (
+              <div className={styles.bannerActions}>
+                <Button variant="darkOutline" size="sm" onClick={() => setCancelModalOpen(true)}>
+                  Отключить автопродление
+                </Button>
+              </div>
+            ) : null}
           </div>
 
           <div className={styles.bannerUsage}>
@@ -87,6 +137,28 @@ export function BillingPage() {
 
         <BillingPricing addons={pageContent.addons} plans={pageContent.plans} />
       </main>
+
+      {cancelModalOpen ? (
+        <div className={styles.modalOverlay} role="presentation" onClick={closeCancelModal}>
+          <div className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="billing-cancel-title" onClick={(event) => event.stopPropagation()}>
+            <h2 id="billing-cancel-title" className={styles.modalTitle}>Отключить автопродление?</h2>
+            <p className={styles.modalText}>Оплаченный доступ сохранится до конца текущего периода.</p>
+            <div className={styles.modalActions}>
+              <Button variant="darkOutline" block disabled={cancelMutation.isPending} onClick={closeCancelModal}>Оставить</Button>
+              <Button variant="danger" block disabled={cancelMutation.isPending} onClick={() => cancelMutation.mutate({})}>
+                {cancelMutation.isPending ? "Отключаем..." : "Отключить"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {toast ? (
+        <div className={styles.toast} role="status" aria-live="polite">
+          <span className={styles.toastDot} />
+          <span>{toast}</span>
+        </div>
+      ) : null}
     </AppShell>
   );
 }
