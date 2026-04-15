@@ -57,6 +57,14 @@ export type VkWidgetLoginRequest = {
      * Device ID, полученный frontend из события LOGIN_SUCCESS виджета VK ID One Tap.
      */
     device_id: string;
+    /**
+     * PKCE verifier, который frontend использовал при настройке VK ID SDK.
+     */
+    code_verifier: string;
+    /**
+     * Redirect URI, который frontend передал в VK ID SDK.
+     */
+    redirect_uri: string;
 };
 
 export type YandexWidgetLoginRequest = {

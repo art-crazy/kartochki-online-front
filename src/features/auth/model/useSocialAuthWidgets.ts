@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
+import type { MutableRefObject } from "react";
 import { useMutation } from "@tanstack/react-query";
 import {
   loginWithVkWidgetMutation,
@@ -26,6 +27,7 @@ type YaAuthSuggest = {
 type VkLoginPayload = {
   code?: unknown;
   device_id?: unknown;
+  state?: unknown;
 };
 
 type VkWidgetRenderResult = {
@@ -44,6 +46,8 @@ type VkIdSdk = {
       responseMode: string;
       source?: string;
       scope?: string;
+      state?: string;
+      codeVerifier?: string;
     }) => void;
   };
   ConfigResponseMode: {
@@ -72,6 +76,11 @@ const yandexClientId = process.env.NEXT_PUBLIC_YANDEX_CLIENT_ID ?? "";
 const vkAppId = Number(process.env.NEXT_PUBLIC_VK_ID_APP_ID);
 const isValidVkAppId = Number.isInteger(vkAppId) && vkAppId > 0;
 
+type VkAuthParams = {
+  state: string;
+  codeVerifier: string;
+};
+
 export function useSocialAuthWidgets(screen: AuthScreen) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -80,6 +89,7 @@ export function useSocialAuthWidgets(screen: AuthScreen) {
   const [yandexSdkReady, setYandexSdkReady] = useState(false);
   const [socialAuthError, setSocialAuthError] = useState("");
   const vkContainerRef = useRef<HTMLElement | null>(null);
+  const vkAuthParamsRef = useRef<VkAuthParams | null>(null);
   const yandexContainerRef = useRef<HTMLElement | null>(null);
   const isVisible = screen === "login" || screen === "register";
   const completeAuth = useCallback(() => {
@@ -123,11 +133,16 @@ export function useSocialAuthWidgets(screen: AuthScreen) {
     container.innerHTML = "";
 
     const VKID = window.VKIDSDK;
+    const redirectUri = `${window.location.origin}/auth`;
+    const authParams = ensureVkAuthParams(vkAuthParamsRef);
+
     VKID.Config.init({
       app: vkAppId,
-      redirectUrl: `${window.location.origin}/auth`,
+      redirectUrl: redirectUri,
       responseMode: VKID.ConfigResponseMode.Callback,
       source: VKID.ConfigSource.LOWCODE,
+      state: authParams.state,
+      codeVerifier: authParams.codeVerifier,
       scope: "",
     });
 
@@ -143,14 +158,23 @@ export function useSocialAuthWidgets(screen: AuthScreen) {
       .on(VKID.OneTapInternalEvents.LOGIN_SUCCESS, (payload) => {
         const code = typeof payload.code === "string" ? payload.code : "";
         const deviceId = typeof payload.device_id === "string" ? payload.device_id : "";
+        const state = typeof payload.state === "string" ? payload.state : "";
+        const latestAuthParams = vkAuthParamsRef.current;
 
-        if (!code || !deviceId) {
+        if (!code || !deviceId || !latestAuthParams || state !== latestAuthParams.state) {
           setSocialAuthError("VK ID не вернул данные для входа");
           return;
         }
 
         setSocialAuthError("");
-        loginWithVkWidget({ body: { code, device_id: deviceId } });
+        loginWithVkWidget({
+          body: {
+            code,
+            device_id: deviceId,
+            code_verifier: latestAuthParams.codeVerifier,
+            redirect_uri: redirectUri,
+          },
+        });
       });
   }, [isVisible, loginWithVkWidget, vkSdkReady]);
 
@@ -219,4 +243,30 @@ function getYandexAccessToken(data: unknown) {
   const token = (data as { access_token?: unknown; token?: unknown }).access_token
     ?? (data as { token?: unknown }).token;
   return typeof token === "string" ? token : "";
+}
+
+function ensureVkAuthParams(ref: MutableRefObject<VkAuthParams | null>) {
+  if (!ref.current) {
+    ref.current = {
+      state: randomBase64Url(16),
+      codeVerifier: randomBase64Url(32),
+    };
+  }
+
+  return ref.current;
+}
+
+function randomBase64Url(byteLength: number) {
+  const bytes = new Uint8Array(byteLength);
+  window.crypto.getRandomValues(bytes);
+
+  let binary = "";
+  bytes.forEach((byte) => {
+    binary += String.fromCharCode(byte);
+  });
+
+  return window.btoa(binary)
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/g, "");
 }
