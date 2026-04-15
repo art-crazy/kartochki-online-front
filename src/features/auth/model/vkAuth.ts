@@ -23,7 +23,6 @@ export async function getVkOAuthParams(origin: string) {
   url.searchParams.set("response_type", "code");
   url.searchParams.set("state", state);
   url.searchParams.set("code_challenge", codeChallenge);
-  url.searchParams.set("code_challenge_method", "S256");
 
   return { state, codeVerifier, redirectUri, authUrl: url.toString() };
 }
