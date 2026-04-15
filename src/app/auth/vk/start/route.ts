@@ -1,18 +1,18 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { getVkOAuthParams, normalizeVkOrigin } from "@/features/auth/model/vkAuth";
+import { getVkOAuthParams } from "@/features/auth/model/vkAuth";
 import { getSafeNextPath } from "@/features/auth/model/validation";
+import { siteConfig } from "@/shared/config/site";
 
 const isProduction = process.env.NODE_ENV === "production";
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
-  const origin = normalizeVkOrigin(requestUrl.origin);
   const nextPath = getSafeNextPath(requestUrl.searchParams.get("next"));
-  const params = await getVkOAuthParams(origin);
+  const params = await getVkOAuthParams(siteConfig.appUrl);
 
   if (!params) {
-    return NextResponse.redirect(new URL("/auth", origin));
+    return NextResponse.redirect(new URL("/auth", siteConfig.appUrl));
   }
 
   const cookieOptions = { httpOnly: true, sameSite: "lax" as const, path: "/", secure: isProduction };

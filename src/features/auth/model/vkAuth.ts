@@ -2,9 +2,6 @@ import { computeCodeChallenge, randomBase64Url } from "./pkce";
 
 const vkAppId = process.env.NEXT_PUBLIC_VK_ID_APP_ID ?? "";
 
-export function normalizeVkOrigin(origin: string) {
-  return origin.replace("://0.0.0.0", "://localhost");
-}
 
 export function getVkRedirectUri(origin: string) {
   return `${origin}/auth/vk/callback`;

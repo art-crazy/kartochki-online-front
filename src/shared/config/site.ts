@@ -14,5 +14,6 @@ export const siteConfig = {
   ],
   domains: ["kartochki-online.ru", "xn----7sbabjowfpen9ag6h.xn--p1ai"],
   defaultUrl: "https://kartochki-online.ru",
+  appUrl: process.env.NEXT_PUBLIC_APP_URL ?? "https://kartochki-online.ru",
   supportEmail: "support@kartochki-online.ru",
 };

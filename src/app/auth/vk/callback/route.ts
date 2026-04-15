@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { getVkRedirectUri, normalizeVkOrigin } from "@/features/auth/model/vkAuth";
+import { getVkRedirectUri } from "@/features/auth/model/vkAuth";
 import { loginWithVkWidget } from "@/shared/api";
+import { getSafeNextPath } from "@/features/auth/model/validation";
+import { siteConfig } from "@/shared/config/site";
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
-  const origin = normalizeVkOrigin(requestUrl.origin);
   const code = requestUrl.searchParams.get("code") ?? "";
   const deviceId = requestUrl.searchParams.get("device_id") ?? "";
   const returnedState = requestUrl.searchParams.get("state") ?? "";
@@ -13,9 +14,9 @@ export async function GET(request: Request) {
   const cookieStore = await cookies();
   const savedState = cookieStore.get("vk_auth_state")?.value ?? "";
   const codeVerifier = cookieStore.get("vk_auth_code_verifier")?.value ?? "";
-  const nextPath = cookieStore.get("vk_auth_next")?.value ?? "";
+  const nextPath = getSafeNextPath(cookieStore.get("vk_auth_next")?.value ?? "");
 
-  const authErrorUrl = new URL("/auth?error=vk_auth_failed", requestUrl.origin);
+  const authErrorUrl = new URL("/auth?error=vk_auth_failed", siteConfig.appUrl);
 
   if (!code || !deviceId || !codeVerifier || !savedState || returnedState !== savedState) {
     return NextResponse.redirect(authErrorUrl);
@@ -26,15 +27,14 @@ export async function GET(request: Request) {
   cookieStore.delete("vk_auth_next");
 
   const result = await loginWithVkWidget({
-    body: { code, device_id: deviceId, code_verifier: codeVerifier, redirect_uri: getVkRedirectUri(origin) },
+    body: { code, device_id: deviceId, code_verifier: codeVerifier, redirect_uri: getVkRedirectUri(siteConfig.appUrl) },
   });
 
   if (result.error) {
     return NextResponse.redirect(authErrorUrl);
   }
 
-  const redirectPath = nextPath ? new URL(nextPath, requestUrl.origin) : new URL("/dashboard", requestUrl.origin);
-  const response = NextResponse.redirect(redirectPath);
+  const response = NextResponse.redirect(new URL(nextPath, siteConfig.appUrl));
 
   const setCookieHeader = result.response.headers.get("set-cookie");
   if (setCookieHeader) {
