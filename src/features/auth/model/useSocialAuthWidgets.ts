@@ -239,7 +239,7 @@ export function useSocialAuthWidgets(screen: AuthScreen) {
         }
 
         yandexInitializedRef.current = false;
-        setSocialAuthError("Не удалось отобразить виджет Яндекс ID");
+        setSocialAuthError("");
       });
 
     return () => {
