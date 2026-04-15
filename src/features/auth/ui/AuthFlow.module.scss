@@ -1,7 +1,7 @@
 .flow {
   position: relative;
   width: 100%;
-  max-width: 400px;
+  max-width: 450px;
 }
 
 .devTabs {
@@ -94,11 +94,10 @@
 
 .socialGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 10px;
+  gap: 8px;
 }
 
-.socialWidget {
+.yandexWidget {
   display: grid;
   align-items: center;
   justify-items: center;
@@ -108,6 +107,21 @@
   border: 1.5px solid var(--line);
   border-radius: var(--radius-md);
   background: var(--background-elevated);
+}
+
+.vkWidget {
+  display: grid;
+  justify-items: stretch;
+  justify-self: center;
+  width: 100%;
+  max-width: 450px;
+  min-height: 118px;
+}
+
+.vkWidget > div,
+.vkWidget iframe {
+  width: 100% !important;
+  max-width: 100%;
 }
 
 .socialBlock[aria-busy="true"] {

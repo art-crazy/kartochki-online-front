@@ -9,10 +9,10 @@ export function SocialAuthButtons({ error, isPending }: SocialAuthButtonsProps) 
   return (
     <div className={styles.socialBlock} aria-busy={isPending}>
       <div className={styles.socialGrid}>
-        <div className={styles.socialWidget}>
+        <div className={styles.yandexWidget}>
           <div id="yandex-auth-container" />
         </div>
-        <div className={styles.socialWidget}>
+        <div className={styles.vkWidget}>
           <div id="vk-auth-container" />
         </div>
       </div>

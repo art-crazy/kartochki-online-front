@@ -34,8 +34,18 @@ type VkWidgetRenderResult = {
   on: (event: string, handler: (payload: VkLoginPayload) => void) => VkWidgetRenderResult;
 };
 
+type VkOneTapStyles = {
+  width?: number;
+  height?: number;
+  borderRadius?: number;
+};
+
 type VkOneTap = {
-  render: (params: { container: HTMLElement; showAlternativeLogin?: boolean }) => VkWidgetRenderResult;
+  render: (params: {
+    container: HTMLElement;
+    showAlternativeLogin?: boolean;
+    styles?: VkOneTapStyles;
+  }) => VkWidgetRenderResult;
 };
 
 type VkIdSdk = {
@@ -75,6 +85,9 @@ declare global {
 const yandexClientId = process.env.NEXT_PUBLIC_YANDEX_CLIENT_ID ?? "";
 const vkAppId = Number(process.env.NEXT_PUBLIC_VK_ID_APP_ID);
 const isValidVkAppId = Number.isInteger(vkAppId) && vkAppId > 0;
+const vkOneTapMaxWidth = 450;
+const vkOneTapHeight = 56;
+const vkOneTapBorderRadius = 8;
 
 export function useSocialAuthWidgets(screen: AuthScreen) {
   const router = useRouter();
@@ -145,10 +158,17 @@ export function useSocialAuthWidgets(screen: AuthScreen) {
     });
 
     const oneTap = new VKID.OneTap();
+    const width = getVkWidgetWidth(container);
+
     oneTap
       .render({
         container,
         showAlternativeLogin: true,
+        styles: {
+          width,
+          height: vkOneTapHeight,
+          borderRadius: vkOneTapBorderRadius,
+        },
       })
       .on(VKID.WidgetEvents.ERROR, () => {
         setSocialAuthError("Не удалось загрузить VK ID");
@@ -231,6 +251,16 @@ export function useSocialAuthWidgets(screen: AuthScreen) {
     socialAuthError,
     socialAuthPending: isVkPending || isYandexPending,
   };
+}
+
+function getVkWidgetWidth(container: HTMLElement) {
+  const measuredWidth = Math.floor(container.getBoundingClientRect().width);
+
+  if (!measuredWidth) {
+    return vkOneTapMaxWidth;
+  }
+
+  return Math.min(measuredWidth, vkOneTapMaxWidth);
 }
 
 function getYandexAccessToken(data: unknown) {
