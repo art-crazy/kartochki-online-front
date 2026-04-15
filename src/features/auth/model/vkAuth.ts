@@ -17,8 +17,8 @@ export async function getVkOAuthParams(origin: string) {
   const codeChallenge = await computeCodeChallenge(codeVerifier);
   const redirectUri = getVkRedirectUri(origin);
 
-  const url = new URL("https://id.vk.com/authorize");
-  url.searchParams.set("app_id", vkAppId);
+  const url = new URL("https://id.vk.com/auth");
+  url.searchParams.set("client_id", vkAppId);
   url.searchParams.set("redirect_uri", redirectUri);
   url.searchParams.set("response_type", "code");
   url.searchParams.set("state", state);
