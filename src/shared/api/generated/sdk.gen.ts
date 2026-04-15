@@ -153,7 +153,7 @@ export const resetPassword = <ThrowOnError extends boolean = false>(options: Opt
 /**
  * Войти через VK ID One Tap
  *
- * Frontend показывает виджет VK ID One Tap и после LOGIN_SUCCESS отправляет `code` и `device_id` на backend.
+ * Frontend показывает виджет VK ID One Tap и после LOGIN_SUCCESS отправляет `code`, `device_id`, `code_verifier` и `redirect_uri` на backend.
  * Backend проверяет payload у VK ID, находит или создаёт пользователя, привязывает OAuth-аккаунт и открывает локальную сессию.
  *
  */

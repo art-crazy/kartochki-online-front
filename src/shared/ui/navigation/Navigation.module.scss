@@ -183,6 +183,13 @@
   background: linear-gradient(135deg, #7832b5, #e040fb);
 }
 
+.avatarImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .breadcrumbs {
   display: flex;
   flex-wrap: wrap;

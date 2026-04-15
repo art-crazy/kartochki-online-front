@@ -57,16 +57,18 @@ export function SidebarProfileCard({
   initials,
   name,
   plan,
+  avatarUrl,
   gradient = 1,
 }: {
   initials: string;
   name: string;
   plan: string;
+  avatarUrl?: string | null;
   gradient?: 1 | 2 | 3;
 }) {
   return (
     <button type="button" className={styles.sidebarProfile}>
-      <Avatar initials={initials} size="md" gradient={gradient} />
+      <Avatar initials={initials} src={avatarUrl} alt={name} size="md" gradient={gradient} />
       <div className={styles.sidebarProfileBody}>
         <div className={styles.sidebarProfileName}>{name}</div>
         <div className={styles.sidebarProfilePlan}>{plan}</div>
@@ -78,10 +80,14 @@ export function SidebarProfileCard({
 
 export function Avatar({
   initials,
+  src,
+  alt = "",
   size = "md",
   gradient = 1,
 }: {
   initials: string;
+  src?: string | null;
+  alt?: string;
   size?: "sm" | "md" | "lg" | "xl";
   gradient?: 1 | 2 | 3;
 }) {
@@ -98,7 +104,13 @@ export function Avatar({
         gradient === 3 && styles.avatarGradient3,
       )}
     >
-      {initials}
+      {src ? (
+        // OAuth avatar hosts are provider-controlled, so Next image allow-listing is not practical here.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img className={styles.avatarImage} src={src} alt={alt} />
+      ) : (
+        initials
+      )}
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { getSettingsOptions, type SettingsResponse } from "@/shared/api";
+import { useAuthSession } from "@/shared/auth/ui/AuthSessionProvider";
 import { classNames } from "@/shared/lib/classNames";
 import { getUserInitials } from "@/shared/lib/user";
 import { Avatar, Button, CardSurface, Input, Select } from "@/shared/ui";
@@ -48,6 +49,7 @@ export function SettingsPage() {
 }
 
 function SettingsPageContent({ settings }: { settings: SettingsResponse }) {
+  const { user } = useAuthSession();
   const page = useSettingsPage(settings);
   const emailNotifications = Object.entries(notificationLabels).filter(([, v]) => v.group === "email");
   const securityNotifications = Object.entries(notificationLabels).filter(([, v]) => v.group === "security");
@@ -64,7 +66,7 @@ function SettingsPageContent({ settings }: { settings: SettingsResponse }) {
               <SettingsCard title="Фото профиля" subtitle="Изображение аккаунта и публичные данные профиля.">
                 <div className={styles.avatarRow}>
                   <div className={styles.avatarWrap}>
-                    <Avatar initials={initials} size="xl" />
+                    <Avatar initials={initials} src={user?.avatar_url} alt={settings.profile.name} size="xl" />
                     <span className={styles.avatarEdit} aria-hidden="true">✎</span>
                   </div>
                   <div className={styles.avatarMeta}>
