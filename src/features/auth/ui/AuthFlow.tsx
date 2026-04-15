@@ -2,6 +2,7 @@
 
 import Script from "next/script";
 import { classNames } from "@/shared/lib/classNames";
+import { yandexSuggestScriptSrc } from "../model/yandexAuth";
 import { useAuthFlow } from "../model/useAuthFlow";
 import { AuthDevTabs } from "./AuthDevTabs";
 import styles from "./AuthFlow.module.scss";
@@ -20,9 +21,11 @@ export function AuthFlow({ className }: AuthFlowProps) {
   return (
     <div className={classNames(styles.flow, className)}>
       <Script
-        src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js"
+        src={yandexSuggestScriptSrc}
         strategy="afterInteractive"
         onLoad={authFlow.onYandexSdkLoad}
+        onReady={authFlow.onYandexSdkLoad}
+        onError={authFlow.onYandexSdkError}
       />
       <Script
         src="https://unpkg.com/@vkid/sdk@2.6.5/dist-sdk/umd/index.js"
@@ -47,6 +50,7 @@ export function AuthFlow({ className }: AuthFlowProps) {
           setPasswordVisible={authFlow.setLoginPasswordVisible}
           socialAuthError={authFlow.socialAuthError}
           socialAuthPending={authFlow.socialAuthPending}
+          yandexFallbackUrl={authFlow.yandexFallbackUrl}
         />
       ) : null}
 
@@ -67,6 +71,7 @@ export function AuthFlow({ className }: AuthFlowProps) {
           setPasswordVisible={authFlow.setRegisterPasswordVisible}
           socialAuthError={authFlow.socialAuthError}
           socialAuthPending={authFlow.socialAuthPending}
+          yandexFallbackUrl={authFlow.yandexFallbackUrl}
         />
       ) : null}
 
