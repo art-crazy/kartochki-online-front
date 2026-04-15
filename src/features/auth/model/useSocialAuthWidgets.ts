@@ -2,7 +2,6 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { MutableRefObject } from "react";
 import { useMutation } from "@tanstack/react-query";
 import {
   loginWithVkWidgetMutation,
@@ -11,6 +10,7 @@ import {
 } from "@/shared/api";
 import type { AuthScreen } from "./types";
 import { getSafeNextPath } from "./validation";
+import { clearVkAuthParams, ensureVkAuthParams, type VkAuthParams } from "./vkAuthParams";
 
 type YaAuthSuggestInitResult = {
   handler: () => Promise<unknown>;
@@ -76,11 +76,6 @@ const yandexClientId = process.env.NEXT_PUBLIC_YANDEX_CLIENT_ID ?? "";
 const vkAppId = Number(process.env.NEXT_PUBLIC_VK_ID_APP_ID);
 const isValidVkAppId = Number.isInteger(vkAppId) && vkAppId > 0;
 
-type VkAuthParams = {
-  state: string;
-  codeVerifier: string;
-};
-
 export function useSocialAuthWidgets(screen: AuthScreen) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -102,7 +97,10 @@ export function useSocialAuthWidgets(screen: AuthScreen) {
     mutate: loginWithVkWidget,
   } = useMutation({
     ...loginWithVkWidgetMutation(),
-    onSuccess: completeAuth,
+    onSuccess: () => {
+      clearVkAuthParams(vkAuthParamsRef);
+      completeAuth();
+    },
     onError: (error: ErrorResponse) => {
       setSocialAuthError(error.message ?? "Не удалось войти через VK ID");
     },
@@ -243,30 +241,4 @@ function getYandexAccessToken(data: unknown) {
   const token = (data as { access_token?: unknown; token?: unknown }).access_token
     ?? (data as { token?: unknown }).token;
   return typeof token === "string" ? token : "";
-}
-
-function ensureVkAuthParams(ref: MutableRefObject<VkAuthParams | null>) {
-  if (!ref.current) {
-    ref.current = {
-      state: randomBase64Url(16),
-      codeVerifier: randomBase64Url(32),
-    };
-  }
-
-  return ref.current;
-}
-
-function randomBase64Url(byteLength: number) {
-  const bytes = new Uint8Array(byteLength);
-  window.crypto.getRandomValues(bytes);
-
-  let binary = "";
-  bytes.forEach((byte) => {
-    binary += String.fromCharCode(byte);
-  });
-
-  return window.btoa(binary)
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/g, "");
 }
