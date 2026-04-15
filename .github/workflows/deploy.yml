@@ -13,6 +13,7 @@ permissions:
 env:
   IMAGE_NAME: ghcr.io/art-crazy/kartochki-online-front:latest
   NEXT_PUBLIC_API_URL: https://api.kartochki-online.ru
+  INTERNAL_API_URL: http://backend:8080
 
 jobs:
   deploy:
@@ -37,6 +38,7 @@ jobs:
       - name: Build check
         env:
           NEXT_PUBLIC_API_URL: ${{ env.NEXT_PUBLIC_API_URL }}
+          INTERNAL_API_URL: ${{ env.INTERNAL_API_URL }}
           NEXT_PUBLIC_VK_ID_APP_ID: ${{ secrets.NEXT_PUBLIC_VK_ID_APP_ID }}
           NEXT_PUBLIC_YANDEX_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_YANDEX_CLIENT_ID }}
         run: npm run build
@@ -56,6 +58,7 @@ jobs:
           tags: ${{ env.IMAGE_NAME }}
           build-args: |
             NEXT_PUBLIC_API_URL=${{ env.NEXT_PUBLIC_API_URL }}
+            INTERNAL_API_URL=${{ env.INTERNAL_API_URL }}
             NEXT_PUBLIC_VK_ID_APP_ID=${{ secrets.NEXT_PUBLIC_VK_ID_APP_ID }}
             NEXT_PUBLIC_YANDEX_CLIENT_ID=${{ secrets.NEXT_PUBLIC_YANDEX_CLIENT_ID }}
 
@@ -76,6 +79,7 @@ jobs:
         run: |
           {
             printf 'NEXT_PUBLIC_API_URL=%s\n' "${{ env.NEXT_PUBLIC_API_URL }}"
+            printf 'INTERNAL_API_URL=%s\n' "${{ env.INTERNAL_API_URL }}"
             printf 'NEXT_PUBLIC_VK_ID_APP_ID=%s\n' "$NEXT_PUBLIC_VK_ID_APP_ID"
             printf 'NEXT_PUBLIC_YANDEX_CLIENT_ID=%s\n' "$NEXT_PUBLIC_YANDEX_CLIENT_ID"
           } > frontend.env
