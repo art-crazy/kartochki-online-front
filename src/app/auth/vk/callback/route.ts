@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { getVkRedirectUri } from "@/features/auth/model/vkAuth";
+import { getVkRedirectUri, normalizeVkOrigin } from "@/features/auth/model/vkAuth";
 import { loginWithVkWidget } from "@/shared/api";
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
+  const origin = normalizeVkOrigin(requestUrl.origin);
   const code = requestUrl.searchParams.get("code") ?? "";
   const deviceId = requestUrl.searchParams.get("device_id") ?? "";
   const returnedState = requestUrl.searchParams.get("state") ?? "";
@@ -25,7 +26,7 @@ export async function GET(request: Request) {
   cookieStore.delete("vk_auth_next");
 
   const result = await loginWithVkWidget({
-    body: { code, device_id: deviceId, code_verifier: codeVerifier, redirect_uri: getVkRedirectUri(requestUrl.origin) },
+    body: { code, device_id: deviceId, code_verifier: codeVerifier, redirect_uri: getVkRedirectUri(origin) },
   });
 
   if (result.error) {
