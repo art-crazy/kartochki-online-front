@@ -30,6 +30,7 @@ export async function GET(request: Request) {
   });
 
   if (result.error) {
+    console.error("[vk/callback] loginWithVkOAuth error:", JSON.stringify(result.error));
     return NextResponse.redirect(authErrorUrl);
   }
 
