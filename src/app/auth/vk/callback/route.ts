@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { getVkRedirectUri } from "@/features/auth/model/vkAuth";
-import { loginWithVkWidget } from "@/shared/api";
+import { loginWithVkOAuth } from "@/shared/api";
 import { getSafeNextPath } from "@/features/auth/model/validation";
 import { siteConfig } from "@/shared/config/site";
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code") ?? "";
-  const deviceId = requestUrl.searchParams.get("device_id") ?? "";
   const returnedState = requestUrl.searchParams.get("state") ?? "";
 
   const cookieStore = await cookies();
@@ -18,7 +17,7 @@ export async function GET(request: Request) {
 
   const authErrorUrl = new URL("/auth?error=vk_auth_failed", siteConfig.appUrl);
 
-  if (!code || !deviceId || !codeVerifier || !savedState || returnedState !== savedState) {
+  if (!code || !codeVerifier || !savedState || returnedState !== savedState) {
     return NextResponse.redirect(authErrorUrl);
   }
 
@@ -26,8 +25,8 @@ export async function GET(request: Request) {
   cookieStore.delete("vk_auth_code_verifier");
   cookieStore.delete("vk_auth_next");
 
-  const result = await loginWithVkWidget({
-    body: { code, device_id: deviceId, code_verifier: codeVerifier, redirect_uri: getVkRedirectUri(siteConfig.appUrl) },
+  const result = await loginWithVkOAuth({
+    body: { code, code_verifier: codeVerifier, redirect_uri: getVkRedirectUri(siteConfig.appUrl) },
   });
 
   if (result.error) {

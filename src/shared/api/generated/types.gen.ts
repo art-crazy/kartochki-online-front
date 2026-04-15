@@ -48,6 +48,21 @@ export type TelegramLoginRequest = {
     hash: string;
 };
 
+export type VkOAuthLoginRequest = {
+    /**
+     * Authorization code, полученный frontend после завершения VK OAuth 2.0 Authorization Code + PKCE flow.
+     */
+    code: string;
+    /**
+     * PKCE verifier, который frontend использовал при генерации code_challenge.
+     */
+    code_verifier: string;
+    /**
+     * Redirect URI, который frontend передал при старте авторизации. Должен точно совпасть с тем, что был передан VK.
+     */
+    redirect_uri: string;
+};
+
 export type VkWidgetLoginRequest = {
     /**
      * Code, полученный frontend из события LOGIN_SUCCESS виджета VK ID One Tap.
@@ -781,6 +796,47 @@ export type ResetPasswordResponses = {
 };
 
 export type ResetPasswordResponse = ResetPasswordResponses[keyof ResetPasswordResponses];
+
+export type LoginWithVkOAuthData = {
+    body: VkOAuthLoginRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/auth/vk/oauth';
+};
+
+export type LoginWithVkOAuthErrors = {
+    /**
+     * Невалидные параметры запроса
+     */
+    400: ErrorResponse;
+    /**
+     * VK ID отклонил code или code_verifier
+     */
+    401: ErrorResponse;
+    /**
+     * Email уже связан с другим способом входа
+     */
+    409: ErrorResponse;
+    /**
+     * VK ID недоступен или вернул неожиданный ответ
+     */
+    500: ErrorResponse;
+    /**
+     * Вход через VK OAuth пока не настроен
+     */
+    501: ErrorResponse;
+};
+
+export type LoginWithVkOAuthError = LoginWithVkOAuthErrors[keyof LoginWithVkOAuthErrors];
+
+export type LoginWithVkOAuthResponses = {
+    /**
+     * Вход через VK ID завершён, локальная сессия создана
+     */
+    200: AuthResponse;
+};
+
+export type LoginWithVkOAuthResponse = LoginWithVkOAuthResponses[keyof LoginWithVkOAuthResponses];
 
 export type LoginWithVkWidgetData = {
     body: VkWidgetLoginRequest;
