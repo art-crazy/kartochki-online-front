@@ -34,10 +34,9 @@ export function useAuthFlow() {
   const nextPath = getSafeNextPath(searchParams.get("next"));
   const {
     onVkSdkLoad,
-    onYandexSdkError,
-    onYandexSdkLoad,
     socialAuthError,
     socialAuthPending,
+    yandexAuthUrl,
   } = useSocialAuthWidgets(screen);
 
   const changeScreen = (nextScreen: AuthScreen) => {
@@ -189,8 +188,6 @@ export function useAuthFlow() {
     loginErrors,
     loginPassword,
     loginPasswordVisible,
-    onYandexSdkError,
-    onYandexSdkLoad,
     onVkSdkLoad,
     passwordStrength,
     registerEmail,
@@ -204,5 +201,6 @@ export function useAuthFlow() {
     setRegisterPasswordVisible,
     socialAuthError,
     socialAuthPending,
+    yandexAuthUrl,
   };
 }

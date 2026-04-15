@@ -5,19 +5,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import {
   loginWithVkWidgetMutation,
-  loginWithYandexWidgetMutation,
   type ErrorResponse,
 } from "@/shared/api";
 import type { AuthScreen } from "./types";
 import { getSafeNextPath } from "./validation";
 import { clearVkAuthParams, ensureVkAuthParams, type VkAuthParams } from "./vkAuthParams";
-import {
-  getYandexAccessToken,
-  getYandexRedirectUri,
-  yandexAuthContainerId,
-  yandexClientId,
-  type YaAuthSuggest,
-} from "./yandexAuth";
 
 type VkLoginPayload = {
   code?: unknown;
@@ -73,7 +65,6 @@ type VkIdSdk = {
 declare global {
   interface Window {
     VKIDSDK?: VkIdSdk;
-    YaAuthSuggest?: YaAuthSuggest;
   }
 }
 
@@ -82,23 +73,21 @@ const isValidVkAppId = Number.isInteger(vkAppId) && vkAppId > 0;
 const vkOneTapMaxWidth = 450;
 const vkOneTapHeight = 56;
 const vkOneTapBorderRadius = 8;
-const yandexButtonBorderRadius = 0;
 
 export function useSocialAuthWidgets(screen: AuthScreen) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const nextPath = getSafeNextPath(searchParams.get("next"));
   const [vkSdkReady, setVkSdkReady] = useState(false);
-  const [yandexSdkReady, setYandexSdkReady] = useState(false);
   const [socialAuthError, setSocialAuthError] = useState("");
   const vkContainerRef = useRef<HTMLElement | null>(null);
   const vkAuthParamsRef = useRef<VkAuthParams | null>(null);
-  const yandexContainerRef = useRef<HTMLElement | null>(null);
   const isVisible = screen === "login" || screen === "register";
   const completeAuth = useCallback(() => {
     router.push(nextPath);
     router.refresh();
   }, [nextPath, router]);
+  const yandexAuthUrl = `/auth/yandex/start?${new URLSearchParams({ next: nextPath }).toString()}`;
 
   const {
     isPending: isVkPending,
@@ -111,17 +100,6 @@ export function useSocialAuthWidgets(screen: AuthScreen) {
     },
     onError: (error: ErrorResponse) => {
       setSocialAuthError(error.message ?? "Не удалось войти через VK ID");
-    },
-  });
-
-  const {
-    isPending: isYandexPending,
-    mutate: loginWithYandexWidget,
-  } = useMutation({
-    ...loginWithYandexWidgetMutation(),
-    onSuccess: completeAuth,
-    onError: (error: ErrorResponse) => {
-      setSocialAuthError(error.message ?? "Не удалось войти через Яндекс ID");
     },
   });
 
@@ -191,82 +169,11 @@ export function useSocialAuthWidgets(screen: AuthScreen) {
       });
   }, [isVisible, loginWithVkWidget, vkSdkReady]);
 
-  useEffect(() => {
-    if (!isVisible || !yandexSdkReady || !yandexClientId || !window.YaAuthSuggest) {
-      return;
-    }
-
-    const container = document.getElementById(yandexAuthContainerId);
-    if (!container || yandexContainerRef.current === container) {
-      return;
-    }
-
-    yandexContainerRef.current = container;
-    container.innerHTML = "";
-
-    const origin = window.location.origin;
-    const redirectUri = getYandexRedirectUri(origin);
-    let isCancelled = false;
-
-    window.YaAuthSuggest.init(
-      {
-        client_id: yandexClientId,
-        response_type: "token",
-        redirect_uri: redirectUri,
-      },
-      origin,
-      {
-        view: "button",
-        parentId: yandexAuthContainerId,
-        buttonView: "main",
-        buttonTheme: "light",
-        buttonSize: "xl",
-        buttonBorderRadius: yandexButtonBorderRadius,
-      },
-    )
-      .then(({ handler }) => {
-        if (!handler) {
-          throw new Error("Yandex ID did not return an auth handler");
-        }
-
-        return handler();
-      })
-      .then((data) => {
-        if (isCancelled) {
-          return;
-        }
-
-        const accessToken = getYandexAccessToken(data);
-        if (!accessToken) {
-          setSocialAuthError("Яндекс ID не вернул токен для входа");
-          return;
-        }
-
-        setSocialAuthError("");
-        loginWithYandexWidget({ body: { access_token: accessToken } });
-      })
-      .catch(() => {
-        if (isCancelled) {
-          return;
-        }
-
-        yandexContainerRef.current = null;
-        setSocialAuthError("Не удалось отобразить кнопку Яндекс ID");
-      });
-
-    return () => {
-      isCancelled = true;
-    };
-  }, [isVisible, loginWithYandexWidget, yandexSdkReady]);
-
   return {
     onVkSdkLoad: () => setVkSdkReady(true),
-    onYandexSdkLoad: () => setYandexSdkReady(true),
-    onYandexSdkError: () => {
-      setSocialAuthError("Не удалось загрузить виджет Яндекс ID");
-    },
     socialAuthError,
-    socialAuthPending: isVkPending || isYandexPending,
+    socialAuthPending: isVkPending,
+    yandexAuthUrl,
   };
 }
 

@@ -2,23 +2,13 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import Script from "next/script";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { loginWithYandexWidgetMutation } from "@/shared/api";
-import { getYandexTokenHash, yandexTokenScriptSrc } from "../model/yandexAuth";
+import { getYandexTokenHash } from "../model/yandexAuth";
 import { getSafeNextPath } from "../model/validation";
-
-type YaSendSuggestToken = (origin: string, extraData?: Record<string, unknown>) => void;
-
-declare global {
-  interface Window {
-    YaSendSuggestToken?: YaSendSuggestToken;
-  }
-}
 
 export function YandexTokenHandler() {
   const router = useRouter();
-  const [sdkReady, setSdkReady] = useState(false);
   const tokenHandledRef = useRef(false);
   const { mutate: loginWithYandexWidget } = useMutation({
     ...loginWithYandexWidgetMutation(),
@@ -33,21 +23,6 @@ export function YandexTokenHandler() {
   });
 
   useEffect(() => {
-    if (!sdkReady || !window.YaSendSuggestToken) {
-      return;
-    }
-
-    window.YaSendSuggestToken(window.location.origin, {
-      source: "auth_token_page",
-      timestamp: Date.now(),
-    });
-  }, [sdkReady]);
-
-  useEffect(() => {
-    if (window.opener) {
-      return;
-    }
-
     if (tokenHandledRef.current) {
       return;
     }
@@ -63,15 +38,5 @@ export function YandexTokenHandler() {
     loginWithYandexWidget({ body: { access_token: accessToken } });
   }, [loginWithYandexWidget, router]);
 
-  return (
-    <>
-      <Script
-        src={yandexTokenScriptSrc}
-        strategy="afterInteractive"
-        onLoad={() => setSdkReady(true)}
-        onReady={() => setSdkReady(true)}
-      />
-      <main aria-hidden />
-    </>
-  );
+  return <main aria-hidden />;
 }
