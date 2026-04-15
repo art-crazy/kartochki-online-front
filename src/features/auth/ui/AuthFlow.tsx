@@ -50,7 +50,6 @@ export function AuthFlow({ className }: AuthFlowProps) {
           setPasswordVisible={authFlow.setLoginPasswordVisible}
           socialAuthError={authFlow.socialAuthError}
           socialAuthPending={authFlow.socialAuthPending}
-          yandexFallbackUrl={authFlow.yandexFallbackUrl}
         />
       ) : null}
 
@@ -71,7 +70,6 @@ export function AuthFlow({ className }: AuthFlowProps) {
           setPasswordVisible={authFlow.setRegisterPasswordVisible}
           socialAuthError={authFlow.socialAuthError}
           socialAuthPending={authFlow.socialAuthPending}
-          yandexFallbackUrl={authFlow.yandexFallbackUrl}
         />
       ) : null}
 

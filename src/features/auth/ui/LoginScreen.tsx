@@ -19,7 +19,6 @@ type LoginScreenProps = {
   setPasswordVisible: (updater: (value: boolean) => boolean) => void;
   socialAuthError: string;
   socialAuthPending: boolean;
-  yandexFallbackUrl: string;
 };
 
 export function LoginScreen({
@@ -36,7 +35,6 @@ export function LoginScreen({
   setPasswordVisible,
   socialAuthError,
   socialAuthPending,
-  yandexFallbackUrl,
 }: LoginScreenProps) {
   return (
     <section className={styles.screen} aria-labelledby="auth-login-title">
@@ -45,7 +43,7 @@ export function LoginScreen({
       </h1>
       <p className={styles.subheading}>Войдите, чтобы продолжить генерацию карточек</p>
 
-      <SocialAuthButtons error={socialAuthError} isPending={socialAuthPending} yandexFallbackUrl={yandexFallbackUrl} />
+      <SocialAuthButtons error={socialAuthError} isPending={socialAuthPending} />
 
       <form className={styles.form} onSubmit={onSubmit} noValidate>
         {errors.form ? <div className={styles.formError}>{errors.form}</div> : null}

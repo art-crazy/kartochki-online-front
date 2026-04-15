@@ -24,7 +24,6 @@ type RegisterScreenProps = {
   setPasswordVisible: (updater: (value: boolean) => boolean) => void;
   socialAuthError: string;
   socialAuthPending: boolean;
-  yandexFallbackUrl: string;
 };
 
 export function RegisterScreen({
@@ -43,7 +42,6 @@ export function RegisterScreen({
   setPasswordVisible,
   socialAuthError,
   socialAuthPending,
-  yandexFallbackUrl,
 }: RegisterScreenProps) {
   return (
     <section className={styles.screen} aria-labelledby="auth-register-title">
@@ -52,7 +50,7 @@ export function RegisterScreen({
       </h1>
       <p className={styles.subheading}>10 карточек бесплатно, без карты</p>
 
-      <SocialAuthButtons error={socialAuthError} isPending={socialAuthPending} yandexFallbackUrl={yandexFallbackUrl} />
+      <SocialAuthButtons error={socialAuthError} isPending={socialAuthPending} />
 
       <form className={styles.form} onSubmit={onSubmit} noValidate>
         {errors.form ? <div className={styles.formError}>{errors.form}</div> : null}

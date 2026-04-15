@@ -13,9 +13,7 @@ import { getSafeNextPath } from "./validation";
 import { clearVkAuthParams, ensureVkAuthParams, type VkAuthParams } from "./vkAuthParams";
 import {
   getYandexAccessToken,
-  getYandexOAuthUrl,
   getYandexRedirectUri,
-  yandexAuthContainerId,
   yandexClientId,
   type YaAuthSuggest,
 } from "./yandexAuth";
@@ -91,10 +89,9 @@ export function useSocialAuthWidgets(screen: AuthScreen) {
   const [vkSdkReady, setVkSdkReady] = useState(false);
   const [yandexSdkReady, setYandexSdkReady] = useState(false);
   const [socialAuthError, setSocialAuthError] = useState("");
-  const [yandexFallbackUrl, setYandexFallbackUrl] = useState("");
   const vkContainerRef = useRef<HTMLElement | null>(null);
   const vkAuthParamsRef = useRef<VkAuthParams | null>(null);
-  const yandexContainerRef = useRef<HTMLElement | null>(null);
+  const yandexInitializedRef = useRef(false);
   const isVisible = screen === "login" || screen === "register";
   const completeAuth = useCallback(() => {
     router.push(nextPath);
@@ -190,20 +187,18 @@ export function useSocialAuthWidgets(screen: AuthScreen) {
           },
         });
       });
-  }, [isVisible, loginWithVkWidget, screen, vkSdkReady]);
+  }, [isVisible, loginWithVkWidget, vkSdkReady]);
 
   useEffect(() => {
     if (!isVisible || !yandexSdkReady || !yandexClientId || !window.YaAuthSuggest) {
       return;
     }
 
-    const container = document.getElementById(yandexAuthContainerId);
-    if (!container || yandexContainerRef.current === container) {
+    if (yandexInitializedRef.current) {
       return;
     }
 
-    yandexContainerRef.current = container;
-    container.innerHTML = "";
+    yandexInitializedRef.current = true;
 
     const origin = window.location.origin;
     const redirectUri = getYandexRedirectUri(origin);
@@ -216,14 +211,6 @@ export function useSocialAuthWidgets(screen: AuthScreen) {
         redirect_uri: redirectUri,
       },
       origin,
-      {
-        view: "button",
-        parentId: yandexAuthContainerId,
-        buttonView: "main",
-        buttonTheme: "light",
-        buttonSize: "m",
-        buttonBorderRadius: 8,
-      },
     )
       .then(({ handler }) => {
         if (!handler) {
@@ -251,27 +238,23 @@ export function useSocialAuthWidgets(screen: AuthScreen) {
           return;
         }
 
-        yandexContainerRef.current = null;
-        setYandexFallbackUrl(getYandexOAuthUrl(origin, nextPath));
-        setSocialAuthError("");
+        yandexInitializedRef.current = false;
+        setSocialAuthError("Не удалось отобразить виджет Яндекс ID");
       });
 
     return () => {
       isCancelled = true;
     };
-  }, [isVisible, loginWithYandexWidget, nextPath, screen, yandexSdkReady]);
+  }, [isVisible, loginWithYandexWidget, yandexSdkReady]);
 
   return {
     onVkSdkLoad: () => setVkSdkReady(true),
     onYandexSdkLoad: () => setYandexSdkReady(true),
     onYandexSdkError: () => {
-      if (typeof window !== "undefined") {
-        setYandexFallbackUrl(getYandexOAuthUrl(window.location.origin, nextPath));
-      }
+      setSocialAuthError("Не удалось загрузить виджет Яндекс ID");
     },
     socialAuthError,
     socialAuthPending: isVkPending || isYandexPending,
-    yandexFallbackUrl,
   };
 }
 

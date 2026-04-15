@@ -11,27 +11,11 @@ export type YaAuthSuggest = {
 };
 
 export const yandexClientId = process.env.NEXT_PUBLIC_YANDEX_CLIENT_ID ?? "";
-export const yandexAuthContainerId = "yandex-auth-container";
 export const yandexSuggestScriptSrc = "https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js";
 export const yandexTokenScriptSrc = "https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-token-with-polyfills-latest.js";
 
 export function getYandexRedirectUri(origin: string) {
   return `${origin}/auth/yandex/token`;
-}
-
-export function getYandexOAuthUrl(origin: string, nextPath: string) {
-  if (!yandexClientId) {
-    return "";
-  }
-
-  const params = new URLSearchParams({
-    client_id: yandexClientId,
-    response_type: "token",
-    redirect_uri: getYandexRedirectUri(origin),
-    state: nextPath,
-  });
-
-  return `https://oauth.yandex.ru/authorize?${params.toString()}`;
 }
 
 export function getYandexAccessToken(data: unknown) {

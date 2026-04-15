@@ -1,0 +1,39 @@
+.socialBlock {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 20px;
+}
+
+.socialGrid {
+  display: grid;
+  gap: 8px;
+}
+
+.vkWidget {
+  display: grid;
+  justify-items: stretch;
+  justify-self: center;
+  width: 100%;
+  max-width: 450px;
+  min-height: 118px;
+}
+
+.vkWidget > div,
+.vkWidget iframe {
+  width: 100% !important;
+  max-width: 100%;
+}
+
+.socialBlock[aria-busy="true"] {
+  opacity: 0.78;
+  pointer-events: none;
+}
+
+.oauthError {
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: rgba(192, 57, 43, 0.1);
+  color: var(--danger);
+  font-size: 0.75rem;
+  text-align: center;
+}

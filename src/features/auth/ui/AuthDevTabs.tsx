@@ -1,6 +1,6 @@
 import type { AuthScreen } from "../model/types";
 import { classNames } from "@/shared/lib/classNames";
-import styles from "./AuthFlow.module.scss";
+import styles from "./AuthDevTabs.module.scss";
 
 const screenTabs: ReadonlyArray<{ screen: AuthScreen; label: string }> = [
   { screen: "login", label: "Вход" },

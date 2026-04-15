@@ -38,7 +38,6 @@ export function useAuthFlow() {
     onYandexSdkLoad,
     socialAuthError,
     socialAuthPending,
-    yandexFallbackUrl,
   } = useSocialAuthWidgets(screen);
 
   const changeScreen = (nextScreen: AuthScreen) => {
@@ -205,6 +204,5 @@ export function useAuthFlow() {
     setRegisterPasswordVisible,
     socialAuthError,
     socialAuthPending,
-    yandexFallbackUrl,
   };
 }
