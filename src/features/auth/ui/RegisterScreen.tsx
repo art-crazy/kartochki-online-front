@@ -25,6 +25,7 @@ type RegisterScreenProps = {
   socialAuthError: string;
   socialAuthPending: boolean;
   yandexAuthUrl: string;
+  vkAuthUrl: string;
 };
 
 export function RegisterScreen({
@@ -44,6 +45,7 @@ export function RegisterScreen({
   socialAuthError,
   socialAuthPending,
   yandexAuthUrl,
+  vkAuthUrl,
 }: RegisterScreenProps) {
   return (
     <section className={styles.screen} aria-labelledby="auth-register-title">
@@ -51,8 +53,6 @@ export function RegisterScreen({
         Создать аккаунт
       </h1>
       <p className={styles.subheading}>10 карточек бесплатно, без карты</p>
-
-      <SocialAuthButtons error={socialAuthError} isPending={socialAuthPending} yandexAuthUrl={yandexAuthUrl} />
 
       <form className={styles.form} onSubmit={onSubmit} noValidate>
         {errors.form ? <div className={styles.formError}>{errors.form}</div> : null}
@@ -116,6 +116,8 @@ export function RegisterScreen({
           {loadingAction === "register" ? <Spinner /> : null}
           <span className={loadingAction === "register" ? styles.buttonTextLoading : undefined}>Создать аккаунт</span>
         </button>
+
+        <SocialAuthButtons error={socialAuthError} isPending={socialAuthPending} yandexAuthUrl={yandexAuthUrl} vkAuthUrl={vkAuthUrl} />
       </form>
 
       <p className={styles.terms}>

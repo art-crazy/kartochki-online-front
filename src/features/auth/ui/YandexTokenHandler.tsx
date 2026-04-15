@@ -18,7 +18,7 @@ export function YandexTokenHandler() {
       router.refresh();
     },
     onError: () => {
-      router.replace("/auth");
+      router.replace("/auth?error=yandex_auth_failed");
     },
   });
 

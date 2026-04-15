@@ -33,11 +33,11 @@ export function useAuthFlow() {
   const passwordStrength = useMemo(() => getPasswordStrength(registerPassword), [registerPassword]);
   const nextPath = getSafeNextPath(searchParams.get("next"));
   const {
-    onVkSdkLoad,
     socialAuthError,
     socialAuthPending,
     yandexAuthUrl,
-  } = useSocialAuthWidgets(screen);
+    vkAuthUrl,
+  } = useSocialAuthWidgets();
 
   const changeScreen = (nextScreen: AuthScreen) => {
     setLoadingAction(null);
@@ -188,7 +188,6 @@ export function useAuthFlow() {
     loginErrors,
     loginPassword,
     loginPasswordVisible,
-    onVkSdkLoad,
     passwordStrength,
     registerEmail,
     registerErrors,
@@ -202,5 +201,6 @@ export function useAuthFlow() {
     socialAuthError,
     socialAuthPending,
     yandexAuthUrl,
+    vkAuthUrl,
   };
 }

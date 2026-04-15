@@ -1,3 +1,4 @@
+export * from "./icons/SocialIcons";
 export * from "./primitives/Primitives";
 export * from "./composite/Composite";
 export * from "./navigation/Navigation";

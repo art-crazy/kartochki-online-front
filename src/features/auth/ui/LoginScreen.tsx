@@ -20,6 +20,7 @@ type LoginScreenProps = {
   socialAuthError: string;
   socialAuthPending: boolean;
   yandexAuthUrl: string;
+  vkAuthUrl: string;
 };
 
 export function LoginScreen({
@@ -37,6 +38,7 @@ export function LoginScreen({
   socialAuthError,
   socialAuthPending,
   yandexAuthUrl,
+  vkAuthUrl,
 }: LoginScreenProps) {
   return (
     <section className={styles.screen} aria-labelledby="auth-login-title">
@@ -44,8 +46,6 @@ export function LoginScreen({
         Добро пожаловать
       </h1>
       <p className={styles.subheading}>Войдите, чтобы продолжить генерацию карточек</p>
-
-      <SocialAuthButtons error={socialAuthError} isPending={socialAuthPending} yandexAuthUrl={yandexAuthUrl} />
 
       <form className={styles.form} onSubmit={onSubmit} noValidate>
         {errors.form ? <div className={styles.formError}>{errors.form}</div> : null}
@@ -94,6 +94,8 @@ export function LoginScreen({
           {loadingAction === "login" ? <Spinner /> : null}
           <span className={loadingAction === "login" ? styles.buttonTextLoading : undefined}>Войти</span>
         </button>
+
+        <SocialAuthButtons error={socialAuthError} isPending={socialAuthPending} yandexAuthUrl={yandexAuthUrl} vkAuthUrl={vkAuthUrl} />
       </form>
 
       <p className={styles.footerText}>

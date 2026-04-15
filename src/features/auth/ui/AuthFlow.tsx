@@ -1,6 +1,5 @@
 "use client";
 
-import Script from "next/script";
 import { classNames } from "@/shared/lib/classNames";
 import { useAuthFlow } from "../model/useAuthFlow";
 import { AuthDevTabs } from "./AuthDevTabs";
@@ -19,12 +18,6 @@ export function AuthFlow({ className }: AuthFlowProps) {
 
   return (
     <div className={classNames(styles.flow, className)}>
-      <Script
-        src="https://unpkg.com/@vkid/sdk@2.6.5/dist-sdk/umd/index.js"
-        strategy="afterInteractive"
-        onLoad={authFlow.onVkSdkLoad}
-      />
-
       <AuthDevTabs activeScreen={authFlow.screen} onChange={authFlow.changeScreen} />
 
       {authFlow.screen === "login" ? (
@@ -43,6 +36,7 @@ export function AuthFlow({ className }: AuthFlowProps) {
           socialAuthError={authFlow.socialAuthError}
           socialAuthPending={authFlow.socialAuthPending}
           yandexAuthUrl={authFlow.yandexAuthUrl}
+          vkAuthUrl={authFlow.vkAuthUrl}
         />
       ) : null}
 
@@ -64,6 +58,7 @@ export function AuthFlow({ className }: AuthFlowProps) {
           socialAuthError={authFlow.socialAuthError}
           socialAuthPending={authFlow.socialAuthPending}
           yandexAuthUrl={authFlow.yandexAuthUrl}
+          vkAuthUrl={authFlow.vkAuthUrl}
         />
       ) : null}
 
