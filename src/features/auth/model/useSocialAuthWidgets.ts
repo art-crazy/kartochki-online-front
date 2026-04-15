@@ -14,6 +14,7 @@ import { clearVkAuthParams, ensureVkAuthParams, type VkAuthParams } from "./vkAu
 import {
   getYandexAccessToken,
   getYandexRedirectUri,
+  yandexAuthContainerId,
   yandexClientId,
   type YaAuthSuggest,
 } from "./yandexAuth";
@@ -81,6 +82,7 @@ const isValidVkAppId = Number.isInteger(vkAppId) && vkAppId > 0;
 const vkOneTapMaxWidth = 450;
 const vkOneTapHeight = 56;
 const vkOneTapBorderRadius = 8;
+const yandexButtonBorderRadius = 0;
 
 export function useSocialAuthWidgets(screen: AuthScreen) {
   const router = useRouter();
@@ -91,7 +93,7 @@ export function useSocialAuthWidgets(screen: AuthScreen) {
   const [socialAuthError, setSocialAuthError] = useState("");
   const vkContainerRef = useRef<HTMLElement | null>(null);
   const vkAuthParamsRef = useRef<VkAuthParams | null>(null);
-  const yandexInitializedRef = useRef(false);
+  const yandexContainerRef = useRef<HTMLElement | null>(null);
   const isVisible = screen === "login" || screen === "register";
   const completeAuth = useCallback(() => {
     router.push(nextPath);
@@ -194,11 +196,13 @@ export function useSocialAuthWidgets(screen: AuthScreen) {
       return;
     }
 
-    if (yandexInitializedRef.current) {
+    const container = document.getElementById(yandexAuthContainerId);
+    if (!container || yandexContainerRef.current === container) {
       return;
     }
 
-    yandexInitializedRef.current = true;
+    yandexContainerRef.current = container;
+    container.innerHTML = "";
 
     const origin = window.location.origin;
     const redirectUri = getYandexRedirectUri(origin);
@@ -211,6 +215,14 @@ export function useSocialAuthWidgets(screen: AuthScreen) {
         redirect_uri: redirectUri,
       },
       origin,
+      {
+        view: "button",
+        parentId: yandexAuthContainerId,
+        buttonView: "main",
+        buttonTheme: "light",
+        buttonSize: "xl",
+        buttonBorderRadius: yandexButtonBorderRadius,
+      },
     )
       .then(({ handler }) => {
         if (!handler) {
@@ -238,8 +250,8 @@ export function useSocialAuthWidgets(screen: AuthScreen) {
           return;
         }
 
-        yandexInitializedRef.current = false;
-        setSocialAuthError("");
+        yandexContainerRef.current = null;
+        setSocialAuthError("Не удалось отобразить кнопку Яндекс ID");
       });
 
     return () => {

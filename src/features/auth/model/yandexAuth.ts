@@ -11,6 +11,7 @@ export type YaAuthSuggest = {
 };
 
 export const yandexClientId = process.env.NEXT_PUBLIC_YANDEX_CLIENT_ID ?? "";
+export const yandexAuthContainerId = "yandex-auth-container";
 export const yandexSuggestScriptSrc = "https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js";
 export const yandexTokenScriptSrc = "https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-token-with-polyfills-latest.js";
 

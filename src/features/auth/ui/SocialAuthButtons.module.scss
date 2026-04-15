@@ -9,6 +9,21 @@
   gap: 8px;
 }
 
+.yandexButton {
+  display: grid;
+  justify-items: stretch;
+  justify-self: center;
+  width: 100%;
+  max-width: 450px;
+  min-height: 56px;
+}
+
+.yandexButton > div,
+.yandexButton iframe {
+  width: 100% !important;
+  max-width: 100%;
+}
+
 .vkWidget {
   display: grid;
   justify-items: stretch;
