@@ -8,7 +8,9 @@ import { siteConfig } from "@/shared/config/site";
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code") ?? "";
+  const deviceId = requestUrl.searchParams.get("device_id") ?? "";
   const returnedState = requestUrl.searchParams.get("state") ?? "";
+  console.log("[vk/callback] params:", { code: !!code, device_id: !!deviceId, state: !!returnedState, allParams: requestUrl.search });
 
   const cookieStore = await cookies();
   const savedState = cookieStore.get("vk_auth_state")?.value ?? "";
