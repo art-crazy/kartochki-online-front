@@ -1,12 +1,6 @@
 import type { DashboardProject as ApiDashboardProject, DashboardResponse, DashboardStat as ApiDashboardStat } from "@/shared/api";
 import type { DashboardPageContent, DashboardProject, DashboardStat, DashboardStatVariant } from "./content";
 
-const fallbackPreviews = [
-  "linear-gradient(135deg, #0f3460, #e94560)",
-  "linear-gradient(135deg, #1a472a, #52b788)",
-  "linear-gradient(135deg, #2d1b69, #f5a623)",
-] as const;
-
 export function mapDashboardResponse(response: DashboardResponse): DashboardPageContent {
   return {
     stats: response.stats.map(mapStat),
@@ -43,7 +37,7 @@ function mapProject(project: ApiDashboardProject): DashboardProject {
     cardCount: project.card_count ?? 0,
     marketplace: project.marketplace_id ?? "wildberries",
     updatedAt: formatUpdatedAt(project.updated_at),
-    previews: getProjectPreviews(project.preview_urls),
+    previewUrls: project.preview_urls,
     href: project.canonical_path,
   };
 }
@@ -59,13 +53,6 @@ function splitUsageValue(value: string) {
   const [primary, ...rest] = value.split("/");
   if (!primary || rest.length === 0) return undefined;
   return { primary: primary.trim(), secondary: `/ ${rest.join("/").trim()}` };
-}
-
-function getProjectPreviews(previewUrls?: Array<string>) {
-  const previews = previewUrls?.length ? previewUrls : fallbackPreviews;
-  return previews.map((preview) =>
-    preview.startsWith("linear-gradient(") ? preview : `url("${preview}") center / cover`,
-  );
 }
 
 function formatUpdatedAt(value: string) {

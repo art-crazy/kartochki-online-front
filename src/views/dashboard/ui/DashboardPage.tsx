@@ -1,8 +1,10 @@
 "use client";
 
 import type { ReactNode } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
+import { getMarketplaceLabel } from "@/entities/project";
 import { getDashboardOptions } from "@/shared/api";
 import { Badge, Button, CardSurface } from "@/shared/ui";
 import { AppShell } from "@/widgets/app/app-shell/ui/AppShell";
@@ -23,19 +25,19 @@ export function DashboardPage() {
 
   if (isPending) {
     return (
-      <DashboardShell subtitle="Загружаем данные аккаунта">
-        <DashboardStateCard title="Загружаем дашборд" description="Получаем лимиты, проекты и быстрый старт." />
+      <DashboardShell subtitle="\u0417\u0430\u0433\u0440\u0443\u0436\u0430\u0435\u043c \u0434\u0430\u043d\u043d\u044b\u0435 \u0430\u043a\u043a\u0430\u0443\u043d\u0442\u0430">
+        <DashboardStateCard title="\u0417\u0430\u0433\u0440\u0443\u0436\u0430\u0435\u043c \u0434\u0430\u0448\u0431\u043e\u0440\u0434" description="\u041f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u043b\u0438\u043c\u0438\u0442\u044b, \u043f\u0440\u043e\u0435\u043a\u0442\u044b \u0438 \u0431\u044b\u0441\u0442\u0440\u044b\u0439 \u0441\u0442\u0430\u0440\u0442." />
       </DashboardShell>
     );
   }
 
   if (isError || !pageContent) {
     return (
-      <DashboardShell subtitle="Не удалось получить данные аккаунта">
+      <DashboardShell subtitle="\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u043f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u0434\u0430\u043d\u043d\u044b\u0435 \u0430\u043a\u043a\u0430\u0443\u043d\u0442\u0430">
         <DashboardStateCard
-          title="Дашборд не загрузился"
-          description="Проверьте API и повторите запрос."
-          action={<Button variant="darkPrimary" onClick={() => void refetch()}>Повторить</Button>}
+          title="\u0414\u0430\u0448\u0431\u043e\u0440\u0434 \u043d\u0435 \u0437\u0430\u0433\u0440\u0443\u0437\u0438\u043b\u0441\u044f"
+          description="\u041f\u0440\u043e\u0432\u0435\u0440\u044c\u0442\u0435 API \u0438 \u043f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u0435 \u0437\u0430\u043f\u0440\u043e\u0441."
+          action={<Button variant="darkPrimary" onClick={() => void refetch()}>{ "\u041f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u044c" }</Button>}
         />
       </DashboardShell>
     );
@@ -43,22 +45,22 @@ export function DashboardPage() {
 
   return (
     <AppShell
-      title="Дашборд"
+      title="\u0414\u0430\u0448\u0431\u043e\u0440\u0434"
       subtitle={new Intl.DateTimeFormat("ru-RU", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(new Date())}
       activeKey="dashboard"
-      action={
+      action={(
         <>
-          <Button variant="darkOutline" size="md" iconOnly className={styles.notificationButton} aria-label="Уведомления">
-            🔔
+          <Button variant="darkOutline" size="md" iconOnly className={styles.notificationButton} aria-label="\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u044f">
+            {"\uD83D\uDD14"}
           </Button>
           <Button as={Link} href="/app/generate" variant="darkPrimary" size="md">
-            + Создать карточки
+            {"+ \u0421\u043e\u0437\u0434\u0430\u0442\u044c \u043a\u0430\u0440\u0442\u043e\u0447\u043a\u0438"}
           </Button>
         </>
-      }
+      )}
     >
       <main className={styles.page}>
-        <section className={styles.statsGrid} aria-label="Обзор аккаунта">
+        <section className={styles.statsGrid} aria-label="\u041e\u0431\u0437\u043e\u0440 \u0430\u043a\u043a\u0430\u0443\u043d\u0442\u0430">
           {pageContent.stats.map((stat) => (
             <CardSurface key={stat.label} theme="dark" className={styles.statCard}>
               <div className={styles.statLabel}>{stat.label}</div>
@@ -83,8 +85,8 @@ export function DashboardPage() {
 
         <section className={styles.section}>
           <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Последние проекты</h2>
-            <Link href="#projects" className={styles.sectionLink}>Все проекты →</Link>
+            <h2 className={styles.sectionTitle}>{ "\u041f\u043e\u0441\u043b\u0435\u0434\u043d\u0438\u0435 \u043f\u0440\u043e\u0435\u043a\u0442\u044b" }</h2>
+            <Link href="#projects" className={styles.sectionLink}>{ "\u0412\u0441\u0435 \u043f\u0440\u043e\u0435\u043a\u0442\u044b \u2192" }</Link>
           </div>
 
           <div className={styles.projectsGrid}>
@@ -92,14 +94,12 @@ export function DashboardPage() {
               <Link key={project.id} href={project.href} className={styles.cardLink}>
                 <CardSurface theme="dark" className={styles.projectCard}>
                   <div className={styles.projectPreview}>
-                    {project.previews.map((preview) => (
-                      <span key={preview} className={styles.projectThumbPreview} style={{ background: preview }} />
-                    ))}
+                    <ProjectPreviewStrip previewUrls={project.previewUrls} variant="grid" />
                   </div>
                   <div className={styles.projectBody}>
                     <div className={styles.projectName}>{project.title}</div>
                     <div className={styles.projectMeta}>
-                      <span>{project.cardCount} карточек · {project.updatedAt}</span>
+                      <span>{project.cardCount} { "\u043a\u0430\u0440\u0442\u043e\u0447\u0435\u043a \u00b7 " }{project.updatedAt}</span>
                       <MarketplaceBadge marketplace={project.marketplace} />
                     </div>
                   </div>
@@ -109,21 +109,21 @@ export function DashboardPage() {
 
             <Button as={Link} href="/app/generate" variant="darkOutline" size="lg" className={styles.newProjectCard}>
               <span className={styles.newProjectPlus}>+</span>
-              <span className={styles.newProjectLabel}>Новый проект</span>
+              <span className={styles.newProjectLabel}>{ "\u041d\u043e\u0432\u044b\u0439 \u043f\u0440\u043e\u0435\u043a\u0442" }</span>
             </Button>
           </div>
         </section>
 
         <section className={styles.quickStartSection}>
-          <h2 className={styles.sectionTitle}>Быстрый старт</h2>
+          <h2 className={styles.sectionTitle}>{ "\u0411\u044b\u0441\u0442\u0440\u044b\u0439 \u0441\u0442\u0430\u0440\u0442" }</h2>
           <CardSurface theme="dark" className={styles.quickStartCard}>
-            <div className={styles.quickStartIcon} aria-hidden="true">⚡</div>
+            <div className={styles.quickStartIcon} aria-hidden="true">{"\u26A1"}</div>
             <div className={styles.quickStartBody}>
               <h2 className={styles.quickStartTitle}>{pageContent.quickStart.title}</h2>
               <p className={styles.quickStartText}>{pageContent.quickStart.description}</p>
             </div>
             <Button as={Link} href={pageContent.quickStart.href} variant="darkPrimary" size="lg">
-              Начать →
+              { "\u041d\u0430\u0447\u0430\u0442\u044C \u2192" }
             </Button>
           </CardSurface>
         </section>
@@ -131,8 +131,8 @@ export function DashboardPage() {
         <section id="projects" className={styles.section}>
           <div className={styles.sectionHeader}>
             <div>
-              <h2 className={styles.sectionTitle}>Все проекты</h2>
-              <p className={styles.sectionSub}>Быстрый доступ к сохранённым наборам карточек.</p>
+              <h2 className={styles.sectionTitle}>{ "\u0412\u0441\u0435 \u043f\u0440\u043e\u0435\u043a\u0442\u044b" }</h2>
+              <p className={styles.sectionSub}>{ "\u0411\u044b\u0441\u0442\u0440\u044b\u0439 \u0434\u043e\u0441\u0442\u0443\u043f \u043a \u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u043d\u044b\u043c \u043d\u0430\u0431\u043e\u0440\u0430\u043c \u043a\u0430\u0440\u0442\u043e\u0447\u0435\u043a." }</p>
             </div>
           </div>
 
@@ -140,20 +140,18 @@ export function DashboardPage() {
             {pageContent.allProjects.map((project) => (
               <Link key={project.id} href={project.href} className={styles.projectRow}>
                 <div className={styles.projectThumbs} aria-hidden="true">
-                  {project.previews.map((preview) => (
-                    <span key={preview} className={styles.projectThumb} style={{ background: preview }} />
-                  ))}
+                  <ProjectPreviewStrip previewUrls={project.previewUrls} variant="row" />
                 </div>
                 <div className={styles.projectInfo}>
                   <div className={styles.projectTitle}>{project.title}</div>
                   <div className={styles.projectMeta}>
-                    {project.cardCount} карточек · {getMarketplaceLabel(project.marketplace)} · {project.updatedAt}
+                    {project.cardCount} { "\u043a\u0430\u0440\u0442\u043e\u0447\u0435\u043a \u00b7 " }{getMarketplaceLabel(project.marketplace)}{" \u00b7 "}{project.updatedAt}
                   </div>
                 </div>
                 <MarketplaceBadge marketplace={project.marketplace} />
                 <div className={styles.projectActions} aria-hidden="true">
-                  <span className={styles.iconButton}>↓</span>
-                  <span className={styles.iconButton}>→</span>
+                  <span className={styles.iconButton}>{"\u2193"}</span>
+                  <span className={styles.iconButton}>{"\u2192"}</span>
                 </div>
               </Link>
             ))}
@@ -166,7 +164,7 @@ export function DashboardPage() {
 
 function DashboardShell({ children, subtitle }: { children: ReactNode; subtitle: string }) {
   return (
-    <AppShell title="Дашборд" subtitle={subtitle} activeKey="dashboard">
+    <AppShell title="\u0414\u0430\u0448\u0431\u043e\u0440\u0434" subtitle={subtitle} activeKey="dashboard">
       <main className={styles.page}>{children}</main>
     </AppShell>
   );
@@ -190,15 +188,6 @@ function DashboardStateCard({
   );
 }
 
-const marketplaceLabelMap = {
-  wildberries: "Wildberries",
-  wb: "Wildberries",
-  ozon: "Ozon",
-  ym: "Яндекс Маркет",
-  yandex: "Яндекс Маркет",
-  yandex_market: "Яндекс Маркет",
-} as const;
-
 const statValueClassMap = {
   usage: styles.statValueUsage,
   tariff: styles.statValueTariff,
@@ -209,13 +198,44 @@ function MarketplaceBadge({ marketplace }: { marketplace: string }) {
   const n = marketplace.trim().toLowerCase().replaceAll("-", "_");
   if (n === "wildberries" || n === "wb") return <Badge tone="wb">WB</Badge>;
   if (n === "ozon") return <Badge tone="ozon">Ozon</Badge>;
-  if (n === "ym" || n === "yandex" || n === "yandex_market") return <Badge tone="ym">Яндекс Маркет</Badge>;
+  if (n === "ym" || n === "yandex" || n === "yandex_market") return <Badge tone="ym">{ "\u042f\u043d\u0434\u0435\u043a\u0441 \u041c\u0430\u0440\u043a\u0435\u0442" }</Badge>;
   return <Badge>{getMarketplaceLabel(marketplace)}</Badge>;
 }
 
-function getMarketplaceLabel(marketplace: string) {
-  const n = marketplace.trim().toLowerCase().replaceAll("-", "_");
-  return marketplaceLabelMap[n as keyof typeof marketplaceLabelMap] ?? marketplace;
+function ProjectPreviewStrip({
+  previewUrls,
+  variant,
+}: {
+  previewUrls: ReadonlyArray<string>;
+  variant: "grid" | "row";
+}) {
+  const previews = previewUrls.slice(0, 3);
+  const slots = previews.length ? previews : Array.from({ length: variant === "grid" ? 3 : 2 }, () => "");
+
+  return (
+    <>
+      {slots.map((previewUrl, index) => (
+        <span
+          key={previewUrl || `empty-${variant}-${index}`}
+          className={variant === "grid" ? styles.projectThumbPreview : styles.projectThumb}
+        >
+          {previewUrl ? (
+            <Image
+              src={previewUrl}
+              alt=""
+              fill
+              sizes={variant === "grid" ? "160px" : "48px"}
+              unoptimized
+              className={styles.projectThumbImage}
+            />
+          ) : (
+            <span className={styles.projectThumbPlaceholder} />
+          )}
+        </span>
+      ))}
+      {!previewUrls.length ? <span className={styles.projectThumbLabel}>{ "\u041d\u0435\u0442 \u043f\u0440\u0435\u0432\u044c\u044e" }</span> : null}
+    </>
+  );
 }
 
 function getStatValueClassName(variant: DashboardStat["variant"]) {

@@ -199,8 +199,13 @@
 }
 
 .projectThumbPreview {
+  position: relative;
   aspect-ratio: 3 / 4;
   border-radius: 4px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0)),
+    var(--dark-bg-2);
 }
 
 .projectBody {
@@ -323,14 +328,41 @@
 
 .projectThumbs {
   display: flex;
+  align-items: center;
   gap: 3px;
   flex-shrink: 0;
 }
 
 .projectThumb {
+  position: relative;
   width: 28px;
   aspect-ratio: 3 / 4;
   border-radius: 3px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0)),
+    var(--dark-bg-3);
+}
+
+.projectThumbImage {
+  object-fit: cover;
+}
+
+.projectThumbPlaceholder {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent 60%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0));
+}
+
+.projectThumbLabel {
+  margin-left: 8px;
+  color: var(--dark-text-3);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .projectInfo {

@@ -114,6 +114,29 @@ export const loginAuthUserMutation = (options?: Partial<Options<LoginAuthUserDat
 };
 
 /**
+ * Войти через VK OAuth 2.0 (Authorization Code + PKCE)
+ *
+ * Frontend завершает стандартный VK OAuth 2.0 Authorization Code + PKCE flow и отправляет
+ * `code`, `code_verifier` и `redirect_uri` на backend.
+ * Backend обменивает code на токен у VK ID, загружает профиль, находит или создаёт пользователя
+ * и открывает локальную сессию. Device ID не требуется — это стандартный PKCE flow.
+ *
+ */
+export const loginWithVkOAuthMutation = (options?: Partial<Options<LoginWithVkOAuthData>>): UseMutationOptions<LoginWithVkOAuthResponse, LoginWithVkOAuthError, Options<LoginWithVkOAuthData>> => {
+    const mutationOptions: UseMutationOptions<LoginWithVkOAuthResponse, LoginWithVkOAuthError, Options<LoginWithVkOAuthData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await loginWithVkOAuth({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
  * Вход через Telegram
  *
  * Завершает вход через Telegram Login Widget.
@@ -221,29 +244,6 @@ export const resetPasswordMutation = (options?: Partial<Options<ResetPasswordDat
     const mutationOptions: UseMutationOptions<ResetPasswordResponse, ResetPasswordError, Options<ResetPasswordData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await resetPassword({
-                ...options,
-                ...fnOptions,
-                throwOnError: true
-            });
-            return data;
-        }
-    };
-    return mutationOptions;
-};
-
-/**
- * Войти через VK OAuth 2.0 (Authorization Code + PKCE)
- *
- * Frontend завершает стандартный VK OAuth 2.0 Authorization Code + PKCE flow и отправляет
- * `code`, `code_verifier` и `redirect_uri` на backend.
- * Backend обменивает code на токен у VK ID, загружает профиль, находит или создаёт пользователя
- * и открывает локальную сессию. Device ID не требуется — это стандартный PKCE flow.
- *
- */
-export const loginWithVkOAuthMutation = (options?: Partial<Options<LoginWithVkOAuthData>>): UseMutationOptions<LoginWithVkOAuthResponse, LoginWithVkOAuthError, Options<LoginWithVkOAuthData>> => {
-    const mutationOptions: UseMutationOptions<LoginWithVkOAuthResponse, LoginWithVkOAuthError, Options<LoginWithVkOAuthData>> = {
-        mutationFn: async (fnOptions) => {
-            const { data } = await loginWithVkOAuth({
                 ...options,
                 ...fnOptions,
                 throwOnError: true

@@ -57,6 +57,24 @@ export const loginAuthUser = <ThrowOnError extends boolean = false>(options: Opt
 });
 
 /**
+ * Войти через VK OAuth 2.0 (Authorization Code + PKCE)
+ *
+ * Frontend завершает стандартный VK OAuth 2.0 Authorization Code + PKCE flow и отправляет
+ * `code`, `code_verifier` и `redirect_uri` на backend.
+ * Backend обменивает code на токен у VK ID, загружает профиль, находит или создаёт пользователя
+ * и открывает локальную сессию. Device ID не требуется — это стандартный PKCE flow.
+ *
+ */
+export const loginWithVkOAuth = <ThrowOnError extends boolean = false>(options: Options<LoginWithVkOAuthData, ThrowOnError>) => (options.client ?? client).post<LoginWithVkOAuthResponses, LoginWithVkOAuthErrors, ThrowOnError>({
+    url: '/api/v1/auth/vk/oauth',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
  * Вход через Telegram
  *
  * Завершает вход через Telegram Login Widget.
@@ -143,24 +161,6 @@ export const forgotPassword = <ThrowOnError extends boolean = false>(options: Op
  */
 export const resetPassword = <ThrowOnError extends boolean = false>(options: Options<ResetPasswordData, ThrowOnError>) => (options.client ?? client).post<ResetPasswordResponses, ResetPasswordErrors, ThrowOnError>({
     url: '/api/v1/auth/reset-password',
-    ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
-});
-
-/**
- * Войти через VK OAuth 2.0 (Authorization Code + PKCE)
- *
- * Frontend завершает стандартный VK OAuth 2.0 Authorization Code + PKCE flow и отправляет
- * `code`, `code_verifier` и `redirect_uri` на backend.
- * Backend обменивает code на токен у VK ID, загружает профиль, находит или создаёт пользователя
- * и открывает локальную сессию. Device ID не требуется — это стандартный PKCE flow.
- *
- */
-export const loginWithVkOAuth = <ThrowOnError extends boolean = false>(options: Options<LoginWithVkOAuthData, ThrowOnError>) => (options.client ?? client).post<LoginWithVkOAuthResponses, LoginWithVkOAuthErrors, ThrowOnError>({
-    url: '/api/v1/auth/vk/oauth',
     ...options,
     headers: {
         'Content-Type': 'application/json',

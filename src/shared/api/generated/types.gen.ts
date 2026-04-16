@@ -38,16 +38,6 @@ export type LoginRequest = {
     password: string;
 };
 
-export type TelegramLoginRequest = {
-    id: number;
-    first_name?: string;
-    last_name?: string;
-    username?: string;
-    photo_url?: string;
-    auth_date: number;
-    hash: string;
-};
-
 export type VkOAuthLoginRequest = {
     /**
      * Authorization code, полученный frontend после завершения VK OAuth 2.0 Authorization Code + PKCE flow.
@@ -65,6 +55,16 @@ export type VkOAuthLoginRequest = {
      * Redirect URI, который frontend передал при старте авторизации. Должен точно совпасть с тем, что был передан VK.
      */
     redirect_uri: string;
+};
+
+export type TelegramLoginRequest = {
+    id: number;
+    first_name?: string;
+    last_name?: string;
+    username?: string;
+    photo_url?: string;
+    auth_date: number;
+    hash: string;
 };
 
 export type VkWidgetLoginRequest = {
@@ -159,6 +159,10 @@ export type Project = {
     status: 'draft' | 'active' | 'archived';
     created_at: string;
     updated_at: string;
+    /**
+     * Только готовые карточки проекта. Если карточек нет, массив пустой.
+     */
+    cards: Array<GeneratedCard>;
 };
 
 export type ProjectResponse = {
@@ -175,7 +179,7 @@ export type DashboardProject = {
     card_count?: number;
     marketplace_id?: string;
     updated_at: string;
-    preview_urls?: Array<string>;
+    preview_urls: Array<string>;
     canonical_path: string;
 };
 
@@ -672,6 +676,47 @@ export type LoginAuthUserResponses = {
 
 export type LoginAuthUserResponse = LoginAuthUserResponses[keyof LoginAuthUserResponses];
 
+export type LoginWithVkOAuthData = {
+    body: VkOAuthLoginRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/auth/vk/oauth';
+};
+
+export type LoginWithVkOAuthErrors = {
+    /**
+     * Невалидные параметры запроса
+     */
+    400: ErrorResponse;
+    /**
+     * VK ID отклонил code или code_verifier
+     */
+    401: ErrorResponse;
+    /**
+     * Email уже связан с другим способом входа
+     */
+    409: ErrorResponse;
+    /**
+     * VK ID недоступен или вернул неожиданный ответ
+     */
+    500: ErrorResponse;
+    /**
+     * Вход через VK OAuth пока не настроен
+     */
+    501: ErrorResponse;
+};
+
+export type LoginWithVkOAuthError = LoginWithVkOAuthErrors[keyof LoginWithVkOAuthErrors];
+
+export type LoginWithVkOAuthResponses = {
+    /**
+     * Вход через VK ID завершён, локальная сессия создана
+     */
+    200: AuthResponse;
+};
+
+export type LoginWithVkOAuthResponse = LoginWithVkOAuthResponses[keyof LoginWithVkOAuthResponses];
+
 export type LoginWithTelegramData = {
     body: TelegramLoginRequest;
     path?: never;
@@ -800,47 +845,6 @@ export type ResetPasswordResponses = {
 };
 
 export type ResetPasswordResponse = ResetPasswordResponses[keyof ResetPasswordResponses];
-
-export type LoginWithVkOAuthData = {
-    body: VkOAuthLoginRequest;
-    path?: never;
-    query?: never;
-    url: '/api/v1/auth/vk/oauth';
-};
-
-export type LoginWithVkOAuthErrors = {
-    /**
-     * Невалидные параметры запроса
-     */
-    400: ErrorResponse;
-    /**
-     * VK ID отклонил code или code_verifier
-     */
-    401: ErrorResponse;
-    /**
-     * Email уже связан с другим способом входа
-     */
-    409: ErrorResponse;
-    /**
-     * VK ID недоступен или вернул неожиданный ответ
-     */
-    500: ErrorResponse;
-    /**
-     * Вход через VK OAuth пока не настроен
-     */
-    501: ErrorResponse;
-};
-
-export type LoginWithVkOAuthError = LoginWithVkOAuthErrors[keyof LoginWithVkOAuthErrors];
-
-export type LoginWithVkOAuthResponses = {
-    /**
-     * Вход через VK ID завершён, локальная сессия создана
-     */
-    200: AuthResponse;
-};
-
-export type LoginWithVkOAuthResponse = LoginWithVkOAuthResponses[keyof LoginWithVkOAuthResponses];
 
 export type LoginWithVkWidgetData = {
     body: VkWidgetLoginRequest;

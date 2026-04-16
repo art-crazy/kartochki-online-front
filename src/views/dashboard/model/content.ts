@@ -22,7 +22,7 @@ export type DashboardProject = {
   cardCount: number;
   marketplace: string;
   updatedAt: string;
-  previews: readonly string[];
+  previewUrls: readonly string[];
   href: string;
 };
 
@@ -76,11 +76,7 @@ export const recentProjects: ReadonlyArray<DashboardProject> = [
     cardCount: 6,
     marketplace: "wildberries",
     updatedAt: "2 дня назад",
-    previews: [
-      "linear-gradient(135deg, #0f3460, #e94560)",
-      "linear-gradient(135deg, #1a472a, #52b788)",
-      "linear-gradient(135deg, #2d1b69, #f5a623)",
-    ],
+    previewUrls: [],
     href: "/app",
   },
   {
@@ -89,11 +85,7 @@ export const recentProjects: ReadonlyArray<DashboardProject> = [
     cardCount: 8,
     marketplace: "ozon",
     updatedAt: "5 дней назад",
-    previews: [
-      "linear-gradient(135deg, #2c3e50, #f39c12)",
-      "linear-gradient(135deg, #6a0572, #e040fb)",
-      "linear-gradient(135deg, #1b4332, #95d5b2)",
-    ],
+    previewUrls: [],
     href: "/app",
   },
 ];
@@ -106,11 +98,7 @@ export const allProjects: ReadonlyArray<DashboardProject> = [
     cardCount: 6,
     marketplace: "wildberries",
     updatedAt: "1 неделю назад",
-    previews: [
-      "linear-gradient(135deg, #c0392b, #e74c3c)",
-      "linear-gradient(135deg, #1a1a2e, #16213e)",
-      "linear-gradient(135deg, #2c3e50, #bdc3c7)",
-    ],
+    previewUrls: [],
     href: "/app",
   },
 ];
