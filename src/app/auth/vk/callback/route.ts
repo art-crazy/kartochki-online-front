@@ -5,6 +5,8 @@ import { loginWithVkOAuth } from "@/shared/api";
 import { getSafeNextPath } from "@/features/auth/model/validation";
 import { siteConfig } from "@/shared/config/site";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code") ?? "";
@@ -35,12 +37,17 @@ export async function GET(request: Request) {
     return NextResponse.redirect(authErrorUrl);
   }
 
-  const response = NextResponse.redirect(new URL(nextPath, siteConfig.appUrl));
-
-  const setCookieHeader = result.response.headers.get("set-cookie");
-  if (setCookieHeader) {
-    response.headers.set("set-cookie", setCookieHeader);
+  const token = result.data?.session?.access_token;
+  if (token) {
+    const expiresAt = result.data.session.expires_at;
+    cookieStore.set("auth_token", token, {
+      httpOnly: true,
+      sameSite: "lax",
+      path: "/",
+      secure: isProduction,
+      expires: expiresAt ? new Date(expiresAt) : undefined,
+    });
   }
 
-  return response;
+  return NextResponse.redirect(new URL(nextPath, siteConfig.appUrl));
 }
