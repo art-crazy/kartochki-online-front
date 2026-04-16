@@ -17,6 +17,7 @@ export {
   getReadyHealthOptions,
   // auth
   // oauth
+  loginWithVkOAuthMutation,
   loginWithVkWidgetMutation,
   loginWithYandexWidgetMutation,
   // user

@@ -1,11 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { getVkRedirectUri } from "@/features/auth/model/vkAuth";
-import { loginWithVkOAuth } from "@/shared/api";
 import { getSafeNextPath } from "@/features/auth/model/validation";
 import { siteConfig } from "@/shared/config/site";
-
-const isProduction = process.env.NODE_ENV === "production";
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
@@ -28,26 +24,14 @@ export async function GET(request: Request) {
   cookieStore.delete("vk_auth_code_verifier");
   cookieStore.delete("vk_auth_next");
 
-  const result = await loginWithVkOAuth({
-    body: { code, device_id: deviceId, code_verifier: codeVerifier, redirect_uri: getVkRedirectUri(siteConfig.appUrl) },
-  });
+  // Передаём параметры на client-side страницу через URL, чтобы браузер сам вызвал backend.
+  // Это нужно для корректной установки куки auth_token: backend ставит её напрямую в браузер,
+  // а не через промежуточный Next.js сервер (где домен куки не совпадает с api.kartochki-online.ru).
+  const tokenUrl = new URL("/auth/vk/token", siteConfig.appUrl);
+  tokenUrl.searchParams.set("code", code);
+  tokenUrl.searchParams.set("device_id", deviceId);
+  tokenUrl.searchParams.set("code_verifier", codeVerifier);
+  tokenUrl.searchParams.set("next", nextPath);
 
-  if (result.error) {
-    console.error("[vk/callback] loginWithVkOAuth error:", JSON.stringify(result.error));
-    return NextResponse.redirect(authErrorUrl);
-  }
-
-  const token = result.data?.session?.access_token;
-  if (token) {
-    const expiresAt = result.data.session.expires_at;
-    cookieStore.set("auth_token", token, {
-      httpOnly: true,
-      sameSite: "lax",
-      path: "/",
-      secure: isProduction,
-      expires: expiresAt ? new Date(expiresAt) : undefined,
-    });
-  }
-
-  return NextResponse.redirect(new URL(nextPath, siteConfig.appUrl));
+  return NextResponse.redirect(tokenUrl);
 }
