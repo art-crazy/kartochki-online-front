@@ -77,9 +77,11 @@ export function LoadingState({
 
 export function ResultStateView({
   cards,
+  downloadingCardId,
   onDownload,
 }: {
   cards: ReadonlyArray<ResultCard>;
+  downloadingCardId?: string;
   onDownload: (card: ResultCard) => void;
 }) {
   return (
@@ -97,14 +99,24 @@ export function ResultStateView({
                 </div>
               </div>
               <div className={styles.cardOverlay}>
-                <Button variant="secondary" size="sm" onClick={() => onDownload(card)}>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  loading={downloadingCardId === card.id}
+                  onClick={() => onDownload(card)}
+                >
                   ↓ Скачать
                 </Button>
               </div>
             </div>
             <div className={styles.cardFooter}>
               <span className={styles.cardLabel}>{card.label}</span>
-              <button type="button" className={styles.cardDownload} onClick={() => onDownload(card)}>
+              <button
+                type="button"
+                className={styles.cardDownload}
+                disabled={downloadingCardId === card.id}
+                onClick={() => onDownload(card)}
+              >
                 ↓
               </button>
             </div>

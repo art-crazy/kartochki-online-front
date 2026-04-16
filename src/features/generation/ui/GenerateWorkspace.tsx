@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { downloadFileFromUrl } from "@/shared/lib/downloadFile";
 import { Button } from "@/shared/ui";
 import { useGenerationFlow } from "../model/useGenerationFlow";
 import {
@@ -60,6 +61,8 @@ export function GenerateWorkspace({
   const [uploadedFileName, setUploadedFileName] = useState("");
   const [uploadedFileUrl, setUploadedFileUrl] = useState("");
   const [isDraggingFile, setIsDraggingFile] = useState(false);
+  const [isArchiveDownloading, setIsArchiveDownloading] = useState(false);
+  const [downloadingCardId, setDownloadingCardId] = useState("");
   const [toast, setToast] = useState<ToastState>({ visible: false, message: "" });
 
   const showToast = useCallback((message: string) => {
@@ -147,6 +150,48 @@ export function GenerateWorkspace({
     generationFlow.startGeneration(getDefaultCardTypeIds(availableCardTypes));
   }
 
+  async function handleArchiveDownload() {
+    const archiveUrl = generationStatus?.archive_download_url;
+
+    if (!archiveUrl) {
+      showToast("Архив еще не готов");
+      return;
+    }
+
+    setIsArchiveDownloading(true);
+
+    try {
+      await downloadFileFromUrl(archiveUrl, {
+        defaultExtension: "zip",
+        filename: projectName ? `${projectName}-cards` : "kartochki-online-cards",
+      });
+    } catch {
+      showToast("Не удалось скачать архив");
+    } finally {
+      setIsArchiveDownloading(false);
+    }
+  }
+
+  async function handleCardDownload(card: ResultCard) {
+    if (!card.previewUrl) {
+      showToast("Файл карточки еще не готов");
+      return;
+    }
+
+    setDownloadingCardId(card.id);
+
+    try {
+      await downloadFileFromUrl(card.previewUrl, {
+        defaultExtension: "png",
+        filename: projectName ? `${projectName}-${card.label}` : `kartochki-online-${card.label}`,
+      });
+    } catch {
+      showToast("Не удалось скачать карточку");
+    } finally {
+      setDownloadingCardId("");
+    }
+  }
+
   return (
     <>
       <section className={styles.workspace}>
@@ -183,7 +228,7 @@ export function GenerateWorkspace({
             </div>
             {effectiveResultState === "result" ? (
               <div className={styles.resultsActions}>
-                <Button variant="primary" size="sm" onClick={() => downloadArchive(generationStatus?.archive_download_url, showToast)}>
+                <Button variant="primary" size="sm" loading={isArchiveDownloading} onClick={() => void handleArchiveDownload()}>
                   ↓ Скачать все
                 </Button>
               </div>
@@ -194,7 +239,13 @@ export function GenerateWorkspace({
             {effectiveResultState === "empty" ? <EmptyState /> : null}
             {effectiveResultState === "error" ? <ErrorState message={generationStatus?.error_message} /> : null}
             {effectiveResultState === "loading" ? <LoadingState activeStep={activeLoadingStep} activeStepIndex={activeStepIndex} /> : null}
-            {effectiveResultState === "result" ? <ResultStateView cards={generatedCards} onDownload={(card) => downloadCard(card, showToast)} /> : null}
+            {effectiveResultState === "result" ? (
+              <ResultStateView
+                cards={generatedCards}
+                downloadingCardId={downloadingCardId}
+                onDownload={(card) => void handleCardDownload(card)}
+              />
+            ) : null}
           </div>
         </section>
       </section>
@@ -205,24 +256,6 @@ export function GenerateWorkspace({
       </div>
     </>
   );
-}
-
-function downloadArchive(url: string | undefined, showToast: (message: string) => void) {
-  if (!url) {
-    showToast("Архив еще не готов");
-    return;
-  }
-
-  window.open(url, "_blank", "noopener,noreferrer");
-}
-
-function downloadCard(card: ResultCard, showToast: (message: string) => void) {
-  if (!card.previewUrl) {
-    showToast("Файл карточки еще не готов");
-    return;
-  }
-
-  window.open(card.previewUrl, "_blank", "noopener,noreferrer");
 }
 
 function getDefaultCardTypeIds(cardTypes: ReadonlyArray<{ id: CardTypeId; defaultSelected?: boolean }>) {

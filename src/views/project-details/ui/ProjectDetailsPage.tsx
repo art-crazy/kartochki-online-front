@@ -13,6 +13,7 @@ import {
   listProjectsQueryKey,
   type ErrorResponse,
 } from "@/shared/api";
+import { downloadFileFromUrl } from "@/shared/lib/downloadFile";
 import { Badge, Button, CardSurface } from "@/shared/ui";
 import { AppShell } from "@/widgets/app/app-shell/ui/AppShell";
 import styles from "./ProjectDetailsPage.module.scss";
@@ -21,6 +22,8 @@ export function ProjectDetailsPage({ id }: { id: string }) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [downloadError, setDownloadError] = useState("");
+  const [isDownloadingCard, setIsDownloadingCard] = useState(false);
   const [selectedCardId, setSelectedCardId] = useState("");
 
   const { data, isError, isPending, refetch } = useQuery({
@@ -44,6 +47,31 @@ export function ProjectDetailsPage({ id }: { id: string }) {
   }
 
   const selectedCard = data?.cards.find((card) => card.id === selectedCardId) ?? data?.cards[0];
+
+  function handleSelectCard(cardId: string) {
+    setDownloadError("");
+    setSelectedCardId(cardId);
+  }
+
+  async function downloadSelectedCard() {
+    if (!data || !selectedCard) {
+      return;
+    }
+
+    setDownloadError("");
+    setIsDownloadingCard(true);
+
+    try {
+      await downloadFileFromUrl(selectedCard.previewUrl, {
+        defaultExtension: "png",
+        filename: `${data.title}-${selectedCard.label}`,
+      });
+    } catch {
+      setDownloadError("\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u0441\u043a\u0430\u0447\u0430\u0442\u044c \u0438\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435");
+    } finally {
+      setIsDownloadingCard(false);
+    }
+  }
 
   return (
     <AppShell
@@ -102,9 +130,10 @@ export function ProjectDetailsPage({ id }: { id: string }) {
                   <Button
                     variant="darkOutline"
                     size="sm"
-                    onClick={() => window.open(selectedCard.previewUrl, "_blank", "noopener,noreferrer")}
+                    loading={isDownloadingCard}
+                    onClick={() => void downloadSelectedCard()}
                   >
-                    { "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u0438\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435" }
+                    { "\u0421\u043a\u0430\u0447\u0430\u0442\u044c \u0438\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435" }
                   </Button>
                 ) : null}
               </div>
@@ -134,7 +163,7 @@ export function ProjectDetailsPage({ id }: { id: string }) {
                         key={card.id}
                         type="button"
                         className={[styles.thumbButton, card.id === selectedCard.id ? styles.thumbButtonActive : ""].join(" ")}
-                        onClick={() => setSelectedCardId(card.id)}
+                        onClick={() => handleSelectCard(card.id)}
                       >
                         <span className={styles.thumbImageWrap}>
                           <Image src={card.previewUrl} alt={card.label} fill sizes="160px" unoptimized className={styles.thumbImage} />
@@ -166,6 +195,7 @@ export function ProjectDetailsPage({ id }: { id: string }) {
               </Button>
             </div>
 
+            {downloadError ? <p className={styles.error}>{downloadError}</p> : null}
             {deleteMutation.error ? <p className={styles.error}>{getErrorMessage(deleteMutation.error)}</p> : null}
           </CardSurface>
         ) : null}
