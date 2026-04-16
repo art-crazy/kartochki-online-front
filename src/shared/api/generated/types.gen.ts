@@ -54,6 +54,10 @@ export type VkOAuthLoginRequest = {
      */
     code: string;
     /**
+     * Device ID, возвращённый VK в callback URL после завершения авторизации.
+     */
+    device_id: string;
+    /**
      * PKCE verifier, который frontend использовал при генерации code_challenge.
      */
     code_verifier: string;

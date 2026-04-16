@@ -10,7 +10,6 @@ export async function GET(request: Request) {
   const code = requestUrl.searchParams.get("code") ?? "";
   const deviceId = requestUrl.searchParams.get("device_id") ?? "";
   const returnedState = requestUrl.searchParams.get("state") ?? "";
-  console.log("[vk/callback] params:", { code: !!code, device_id: !!deviceId, state: !!returnedState, allParams: requestUrl.search });
 
   const cookieStore = await cookies();
   const savedState = cookieStore.get("vk_auth_state")?.value ?? "";
@@ -19,7 +18,7 @@ export async function GET(request: Request) {
 
   const authErrorUrl = new URL("/auth?error=vk_auth_failed", siteConfig.appUrl);
 
-  if (!code || !codeVerifier || !savedState || returnedState !== savedState) {
+  if (!code || !deviceId || !codeVerifier || !savedState || returnedState !== savedState) {
     return NextResponse.redirect(authErrorUrl);
   }
 
@@ -28,7 +27,7 @@ export async function GET(request: Request) {
   cookieStore.delete("vk_auth_next");
 
   const result = await loginWithVkOAuth({
-    body: { code, code_verifier: codeVerifier, redirect_uri: getVkRedirectUri(siteConfig.appUrl) },
+    body: { code, device_id: deviceId, code_verifier: codeVerifier, redirect_uri: getVkRedirectUri(siteConfig.appUrl) },
   });
 
   if (result.error) {
