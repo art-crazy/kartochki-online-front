@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import type { RefObject } from "react";
+import { useEffect, useState, type RefObject } from "react";
 import { Button, Chip, Input } from "@/shared/ui";
 import type {
   CardTypeId,
@@ -65,6 +65,34 @@ export function GenerateControls({
   onFileSelection,
   onGenerate,
 }: GenerateControlsProps) {
+  const [cardCountInput, setCardCountInput] = useState(String(cardCount));
+
+  useEffect(() => {
+    setCardCountInput(String(cardCount));
+  }, [cardCount]);
+
+  function applyCardCountInput(nextValue: string) {
+    const digitsOnly = nextValue.replace(/\D+/g, "");
+    setCardCountInput(digitsOnly);
+
+    if (!digitsOnly) {
+      return;
+    }
+
+    onCardCountChange(Math.max(1, Number(digitsOnly)));
+  }
+
+  function commitCardCountInput() {
+    if (!cardCountInput) {
+      setCardCountInput(String(cardCount));
+      return;
+    }
+
+    const normalizedValue = Math.max(1, Number(cardCountInput));
+    setCardCountInput(String(normalizedValue));
+    onCardCountChange(normalizedValue);
+  }
+
   return (
     <form className={styles.leftPanel} onSubmit={(event) => event.preventDefault()}>
       <section className={styles.section}>
@@ -149,17 +177,34 @@ export function GenerateControls({
       <section className={styles.section}>
         <h2 className={styles.label}>Количество карточек</h2>
         <div className={styles.countSelector}>
-          {cardCounts.map((option) => (
-            <button
-              key={option}
-              type="button"
-              className={[styles.countButton, cardCount === option ? styles.countButtonActive : ""].join(" ")}
-              onClick={() => onCardCountChange(option)}
-            >
-              {option}
-            </button>
-          ))}
+          <div className={styles.countPresets} role="group" aria-label="Быстрый выбор количества карточек">
+            {cardCounts.map((option) => (
+              <button
+                key={option}
+                type="button"
+                className={[styles.countButton, cardCount === option ? styles.countButtonActive : ""].join(" ")}
+                onClick={() => onCardCountChange(option)}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+
+          <Input
+            dark
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            label="Свое количество"
+            aria-label="Введите количество карточек"
+            className={styles.countInputField}
+            controlClassName={styles.countInput}
+            value={cardCountInput}
+            onChange={(event) => applyCardCountInput(event.target.value)}
+            onBlur={commitCardCountInput}
+          />
         </div>
+        <p className={styles.countHint}>Можно ввести любое количество, начиная с 1.</p>
       </section>
 
       <Input
