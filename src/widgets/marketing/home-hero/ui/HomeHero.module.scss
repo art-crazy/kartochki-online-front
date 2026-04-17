@@ -59,8 +59,35 @@
   text-wrap: balance;
 }
 
-.heroTitle span {
-  color: var(--accent);
+.wb {
+  color: #cb11ab;
+  text-shadow:
+    rgba(100, 8, 84, 1) 1px 0px,
+    rgba(100, 8, 84, 0.1) -1px 0px,
+    rgba(100, 8, 84, 0.1) 0px 1px,
+    rgba(100, 8, 84, 0.1) 0px -1px;
+}
+
+.ozon {
+  color: #005bff;
+  text-shadow:
+    rgba(0, 38, 160, 1) 1px 0px,
+    rgba(0, 38, 160, 0.1) -1px 0px,
+    rgba(0, 38, 160, 0.1) 0px 1px,
+    rgba(0, 38, 160, 0.1) 0px -1px;
+}
+
+.ymConnector {
+  color: inherit;
+}
+
+.ym {
+  color: #ffcc00;
+  text-shadow:
+    rgba(120, 90, 0, 1) 1px 0px,
+    rgba(120, 90, 0, 0.1) -1px 0px,
+    rgba(120, 90, 0, 0.1) 0px 1px,
+    rgba(120, 90, 0, 0.1) 0px -1px;
 }
 
 .heroPlatforms {
