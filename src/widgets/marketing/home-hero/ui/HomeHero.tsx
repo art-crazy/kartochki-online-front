@@ -22,7 +22,7 @@ export function HomeHero() {
           </Badge>
 
           <h1 className={styles.heroTitle}>
-            Карточки товаров для <span>трёх площадок</span> за 30 секунд
+            Карточки товаров для <span>Wildberries, Ozon и Яндекс Маркет</span> за 30 секунд
           </h1>
 
           <div className={styles.heroPlatforms}>
