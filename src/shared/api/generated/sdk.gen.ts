@@ -2,7 +2,7 @@
 
 import { type Client, formDataBodySerializer, type Options as Options2, type TDataShape } from './client';
 import { client } from './client.gen';
-import type { BillingWebhookData, BillingWebhookErrors, BillingWebhookResponses, CancelBillingSubscriptionData, CancelBillingSubscriptionErrors, CancelBillingSubscriptionResponses, ChangeSettingsPasswordData, ChangeSettingsPasswordErrors, ChangeSettingsPasswordResponses, CreateBillingAddonCheckoutData, CreateBillingAddonCheckoutErrors, CreateBillingAddonCheckoutResponses, CreateBillingCheckoutData, CreateBillingCheckoutErrors, CreateBillingCheckoutResponses, CreateGenerationData, CreateGenerationErrors, CreateGenerationResponses, CreateProjectData, CreateProjectErrors, CreateProjectResponses, DeleteProjectData, DeleteProjectErrors, DeleteProjectResponses, DeleteSettingsAccountData, DeleteSettingsAccountErrors, DeleteSettingsAccountResponses, DeleteSettingsSessionData, DeleteSettingsSessionErrors, DeleteSettingsSessionResponses, ForgotPasswordData, ForgotPasswordErrors, ForgotPasswordResponses, GetBillingData, GetBillingErrors, GetBillingResponses, GetCurrentUserData, GetCurrentUserErrors, GetCurrentUserResponses, GetDashboardData, GetDashboardErrors, GetDashboardResponses, GetGenerateConfigData, GetGenerateConfigErrors, GetGenerateConfigResponses, GetGenerationByIdData, GetGenerationByIdErrors, GetGenerationByIdResponses, GetLiveHealthData, GetLiveHealthResponses, GetProjectByIdData, GetProjectByIdErrors, GetProjectByIdResponses, GetPublicBlogPostBySlugData, GetPublicBlogPostBySlugErrors, GetPublicBlogPostBySlugResponses, GetReadyHealthData, GetReadyHealthErrors, GetReadyHealthResponses, GetSettingsData, GetSettingsErrors, GetSettingsResponses, ListProjectsData, ListProjectsErrors, ListProjectsResponses, ListPublicBlogPostsData, ListPublicBlogPostsErrors, ListPublicBlogPostsResponses, LoginAuthUserData, LoginAuthUserErrors, LoginAuthUserResponses, LoginWithTelegramData, LoginWithTelegramErrors, LoginWithTelegramResponses, LoginWithVkOAuthData, LoginWithVkOAuthErrors, LoginWithVkOAuthResponses, LoginWithVkWidgetData, LoginWithVkWidgetErrors, LoginWithVkWidgetResponses, LoginWithYandexWidgetData, LoginWithYandexWidgetErrors, LoginWithYandexWidgetResponses, LogoutAuthUserData, LogoutAuthUserErrors, LogoutAuthUserResponses, PatchProjectData, PatchProjectErrors, PatchProjectResponses, PatchSettingsDefaultsData, PatchSettingsDefaultsErrors, PatchSettingsDefaultsResponses, PatchSettingsNotificationsData, PatchSettingsNotificationsErrors, PatchSettingsNotificationsResponses, PatchSettingsProfileData, PatchSettingsProfileErrors, PatchSettingsProfileResponses, PostSettingsExportData, PostSettingsExportErrors, PostSettingsExportResponses, RegisterAuthUserData, RegisterAuthUserErrors, RegisterAuthUserResponses, ResetPasswordData, ResetPasswordErrors, ResetPasswordResponses, RotateSettingsApiKeyData, RotateSettingsApiKeyErrors, RotateSettingsApiKeyResponses, UploadGenerationImageData, UploadGenerationImageErrors, UploadGenerationImageResponses } from './types.gen';
+import type { BillingWebhookData, BillingWebhookErrors, BillingWebhookResponses, CancelBillingSubscriptionData, CancelBillingSubscriptionErrors, CancelBillingSubscriptionResponses, ChangeSettingsPasswordData, ChangeSettingsPasswordErrors, ChangeSettingsPasswordResponses, CreateBillingAddonCheckoutData, CreateBillingAddonCheckoutErrors, CreateBillingAddonCheckoutResponses, CreateBillingCheckoutData, CreateBillingCheckoutErrors, CreateBillingCheckoutResponses, CreateGenerationData, CreateGenerationErrors, CreateGenerationResponses, CreateProjectData, CreateProjectErrors, CreateProjectResponses, DeleteProjectData, DeleteProjectErrors, DeleteProjectResponses, DeleteSettingsAccountData, DeleteSettingsAccountErrors, DeleteSettingsAccountResponses, DeleteSettingsSessionData, DeleteSettingsSessionErrors, DeleteSettingsSessionResponses, ForgotPasswordData, ForgotPasswordErrors, ForgotPasswordResponses, GetBillingData, GetBillingErrors, GetBillingResponses, GetCurrentUserData, GetCurrentUserErrors, GetCurrentUserResponses, GetDashboardData, GetDashboardErrors, GetDashboardResponses, GetGenerateConfigData, GetGenerateConfigErrors, GetGenerateConfigResponses, GetGenerationByIdData, GetGenerationByIdErrors, GetGenerationByIdResponses, GetLiveHealthData, GetLiveHealthResponses, GetProjectByIdData, GetProjectByIdErrors, GetProjectByIdResponses, GetPublicBlogPostBySlugData, GetPublicBlogPostBySlugErrors, GetPublicBlogPostBySlugResponses, GetReadyHealthData, GetReadyHealthErrors, GetReadyHealthResponses, GetSettingsData, GetSettingsErrors, GetSettingsResponses, ListProjectsData, ListProjectsErrors, ListProjectsResponses, ListPublicBlogPostsData, ListPublicBlogPostsErrors, ListPublicBlogPostsResponses, LoginAuthUserData, LoginAuthUserErrors, LoginAuthUserResponses, LoginWithTelegramData, LoginWithTelegramErrors, LoginWithTelegramResponses, LoginWithVkOAuthData, LoginWithVkOAuthErrors, LoginWithVkOAuthResponses, LoginWithVkWidgetData, LoginWithVkWidgetErrors, LoginWithVkWidgetResponses, LoginWithYandexWidgetData, LoginWithYandexWidgetErrors, LoginWithYandexWidgetResponses, LogoutAuthUserData, LogoutAuthUserErrors, LogoutAuthUserResponses, PatchProjectData, PatchProjectErrors, PatchProjectResponses, PatchSettingsDefaultsData, PatchSettingsDefaultsErrors, PatchSettingsDefaultsResponses, PatchSettingsNotificationsData, PatchSettingsNotificationsErrors, PatchSettingsNotificationsResponses, PatchSettingsProfileData, PatchSettingsProfileErrors, PatchSettingsProfileResponses, PostSettingsExportData, PostSettingsExportErrors, PostSettingsExportResponses, RegisterAuthUserData, RegisterAuthUserErrors, RegisterAuthUserResponses, ResendRegisterAuthCodeData, ResendRegisterAuthCodeErrors, ResendRegisterAuthCodeResponses, ResetPasswordData, ResetPasswordErrors, ResetPasswordResponses, RotateSettingsApiKeyData, RotateSettingsApiKeyErrors, RotateSettingsApiKeyResponses, UploadGenerationImageData, UploadGenerationImageErrors, UploadGenerationImageResponses, VerifyRegisterAuthUserData, VerifyRegisterAuthUserErrors, VerifyRegisterAuthUserResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -31,10 +31,38 @@ export const getReadyHealth = <ThrowOnError extends boolean = false>(options?: O
 /**
  * Регистрация по email и паролю
  *
- * Создаёт нового пользователя и сразу открывает первую сессию.
+ * Создаёт неподтверждённую регистрацию и отправляет одноразовый код на email.
  */
 export const registerAuthUser = <ThrowOnError extends boolean = false>(options: Options<RegisterAuthUserData, ThrowOnError>) => (options.client ?? client).post<RegisterAuthUserResponses, RegisterAuthUserErrors, ThrowOnError>({
     url: '/api/v1/auth/register',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Подтвердить регистрацию кодом из письма
+ *
+ * Проверяет одноразовый код, создаёт пользователя и открывает сессию.
+ */
+export const verifyRegisterAuthUser = <ThrowOnError extends boolean = false>(options: Options<VerifyRegisterAuthUserData, ThrowOnError>) => (options.client ?? client).post<VerifyRegisterAuthUserResponses, VerifyRegisterAuthUserErrors, ThrowOnError>({
+    url: '/api/v1/auth/register/verify',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Повторно отправить код подтверждения регистрации
+ *
+ * Выпускает новый код для действующего flow и отправляет письмо повторно.
+ */
+export const resendRegisterAuthCode = <ThrowOnError extends boolean = false>(options: Options<ResendRegisterAuthCodeData, ThrowOnError>) => (options.client ?? client).post<ResendRegisterAuthCodeResponses, ResendRegisterAuthCodeErrors, ThrowOnError>({
+    url: '/api/v1/auth/register/resend',
     ...options,
     headers: {
         'Content-Type': 'application/json',

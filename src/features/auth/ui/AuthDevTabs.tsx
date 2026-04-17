@@ -21,7 +21,10 @@ export function AuthDevTabs({ activeScreen, onChange }: AuthDevTabsProps) {
         <button
           key={tab.screen}
           type="button"
-          className={classNames(styles.devTab, activeScreen === tab.screen && styles.devTabActive)}
+          className={classNames(
+            styles.devTab,
+            (activeScreen === tab.screen || (activeScreen === "register-verify" && tab.screen === "register")) && styles.devTabActive,
+          )}
           onClick={() => onChange(tab.screen)}
         >
           {tab.label}

@@ -212,6 +212,9 @@ export type GenerateConfigResponse = {
     marketplaces: Array<GenerateMarketplace>;
     styles: Array<GenerateStyle>;
     card_types: Array<GenerateCardType>;
+    /**
+     * Допустимые значения количества карточек. Сейчас поддерживается диапазон от 1 до 15.
+     */
     card_count_options: Array<number>;
     /**
      * Доступные AI-модели. Первая — выбор по умолчанию. price_per_image × card_count = итоговая стоимость.
@@ -245,6 +248,9 @@ export type CreateGenerationRequest = {
     marketplace_id: string;
     style_id: string;
     card_type_ids: Array<string>;
+    /**
+     * Количество карточек для генерации. Поддерживаются значения от 1 до 15.
+     */
     card_count: number;
     source_asset_id: string;
     /**
@@ -372,7 +378,7 @@ export type SettingsResponse = {
 
 export type SettingsProfile = {
     name: string;
-    email: string;
+    email?: string;
     phone?: string;
     company?: string;
 };
@@ -567,6 +573,24 @@ export type RelatedBlogPost = {
     canonical_path: string;
 };
 
+export type RegisterPendingResponse = {
+    status: string;
+    verification_id: string;
+    email: string;
+    code_length: number;
+    resend_available_in_seconds: number;
+    expires_in_seconds: number;
+};
+
+export type VerifyRegisterRequest = {
+    verification_id: string;
+    code: string;
+};
+
+export type ResendRegisterCodeRequest = {
+    verification_id: string;
+};
+
 export type GenerateModel = {
     id: string;
     label: string;
@@ -634,18 +658,120 @@ export type RegisterAuthUserErrors = {
      * Пользователь с таким email уже существует
      */
     409: ErrorResponse;
+    /**
+     * Слишком много запусков регистрации или отправок кода
+     */
+    429: ErrorResponse;
+    /**
+     * Не удалось создать pending-регистрацию или отправить письмо
+     */
+    500: ErrorResponse;
 };
 
 export type RegisterAuthUserError = RegisterAuthUserErrors[keyof RegisterAuthUserErrors];
 
 export type RegisterAuthUserResponses = {
     /**
-     * Пользователь создан и сразу авторизован
+     * Регистрация начата, ожидается подтверждение email
      */
-    201: AuthResponse;
+    201: RegisterPendingResponse;
 };
 
 export type RegisterAuthUserResponse = RegisterAuthUserResponses[keyof RegisterAuthUserResponses];
+
+export type VerifyRegisterAuthUserData = {
+    body: VerifyRegisterRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/auth/register/verify';
+};
+
+export type VerifyRegisterAuthUserErrors = {
+    /**
+     * Неверный формат verification_id или кода
+     */
+    400: ErrorResponse;
+    /**
+     * Код подтверждения неверный
+     */
+    401: ErrorResponse;
+    /**
+     * Pending-регистрация не найдена
+     */
+    404: ErrorResponse;
+    /**
+     * Регистрация уже подтверждена или email успел заняться
+     */
+    409: ErrorResponse;
+    /**
+     * Код истёк, регистрацию нужно начать заново
+     */
+    410: ErrorResponse;
+    /**
+     * Лимит попыток ввода кода превышен
+     */
+    429: ErrorResponse;
+    /**
+     * Внутренняя ошибка сервера
+     */
+    500: ErrorResponse;
+};
+
+export type VerifyRegisterAuthUserError = VerifyRegisterAuthUserErrors[keyof VerifyRegisterAuthUserErrors];
+
+export type VerifyRegisterAuthUserResponses = {
+    /**
+     * Email подтверждён, пользователь авторизован
+     */
+    200: AuthResponse;
+};
+
+export type VerifyRegisterAuthUserResponse = VerifyRegisterAuthUserResponses[keyof VerifyRegisterAuthUserResponses];
+
+export type ResendRegisterAuthCodeData = {
+    body: ResendRegisterCodeRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/auth/register/resend';
+};
+
+export type ResendRegisterAuthCodeErrors = {
+    /**
+     * Неверный формат запроса
+     */
+    400: ErrorResponse;
+    /**
+     * Pending-регистрация не найдена
+     */
+    404: ErrorResponse;
+    /**
+     * Регистрация уже подтверждена
+     */
+    409: ErrorResponse;
+    /**
+     * Flow истёк, регистрацию нужно начать заново
+     */
+    410: ErrorResponse;
+    /**
+     * Запрос слишком рано или лимит отправок превышен
+     */
+    429: ErrorResponse;
+    /**
+     * Не удалось отправить письмо
+     */
+    500: ErrorResponse;
+};
+
+export type ResendRegisterAuthCodeError = ResendRegisterAuthCodeErrors[keyof ResendRegisterAuthCodeErrors];
+
+export type ResendRegisterAuthCodeResponses = {
+    /**
+     * Новый код отправлен
+     */
+    200: RegisterPendingResponse;
+};
+
+export type ResendRegisterAuthCodeResponse = ResendRegisterAuthCodeResponses[keyof ResendRegisterAuthCodeResponses];
 
 export type LoginAuthUserData = {
     body: LoginRequest;

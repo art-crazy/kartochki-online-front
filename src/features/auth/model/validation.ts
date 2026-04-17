@@ -41,3 +41,18 @@ export function getSafeNextPath(value: string | null) {
 
   return value;
 }
+
+export function sanitizeVerificationCode(value: string, maxLength: number) {
+  return value.replace(/\D/g, "").slice(0, maxLength);
+}
+
+export function formatSeconds(value: number) {
+  const minutes = Math.floor(value / 60);
+  const seconds = value % 60;
+
+  if (minutes === 0) {
+    return `${seconds} сек`;
+  }
+
+  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+}

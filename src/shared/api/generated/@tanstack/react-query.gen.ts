@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { billingWebhook, cancelBillingSubscription, changeSettingsPassword, createBillingAddonCheckout, createBillingCheckout, createGeneration, createProject, deleteProject, deleteSettingsAccount, deleteSettingsSession, forgotPassword, getBilling, getCurrentUser, getDashboard, getGenerateConfig, getGenerationById, getLiveHealth, getProjectById, getPublicBlogPostBySlug, getReadyHealth, getSettings, listProjects, listPublicBlogPosts, loginAuthUser, loginWithTelegram, loginWithVkOAuth, loginWithVkWidget, loginWithYandexWidget, logoutAuthUser, type Options, patchProject, patchSettingsDefaults, patchSettingsNotifications, patchSettingsProfile, postSettingsExport, registerAuthUser, resetPassword, rotateSettingsApiKey, uploadGenerationImage } from '../sdk.gen';
-import type { BillingWebhookData, BillingWebhookError, BillingWebhookResponse, CancelBillingSubscriptionData, CancelBillingSubscriptionError, CancelBillingSubscriptionResponse, ChangeSettingsPasswordData, ChangeSettingsPasswordError, ChangeSettingsPasswordResponse, CreateBillingAddonCheckoutData, CreateBillingAddonCheckoutError, CreateBillingAddonCheckoutResponse, CreateBillingCheckoutData, CreateBillingCheckoutError, CreateBillingCheckoutResponse, CreateGenerationData, CreateGenerationError, CreateGenerationResponse2, CreateProjectData, CreateProjectError, CreateProjectResponse, DeleteProjectData, DeleteProjectError, DeleteProjectResponse, DeleteSettingsAccountData, DeleteSettingsAccountError, DeleteSettingsAccountResponse, DeleteSettingsSessionData, DeleteSettingsSessionError, DeleteSettingsSessionResponse, ForgotPasswordData, ForgotPasswordError, ForgotPasswordResponse, GetBillingData, GetBillingError, GetBillingResponse, GetCurrentUserData, GetCurrentUserError, GetCurrentUserResponse, GetDashboardData, GetDashboardError, GetDashboardResponse, GetGenerateConfigData, GetGenerateConfigError, GetGenerateConfigResponse, GetGenerationByIdData, GetGenerationByIdError, GetGenerationByIdResponse, GetLiveHealthData, GetLiveHealthResponse, GetProjectByIdData, GetProjectByIdError, GetProjectByIdResponse, GetPublicBlogPostBySlugData, GetPublicBlogPostBySlugError, GetPublicBlogPostBySlugResponse, GetReadyHealthData, GetReadyHealthError, GetReadyHealthResponse, GetSettingsData, GetSettingsError, GetSettingsResponse, ListProjectsData, ListProjectsError, ListProjectsResponse, ListPublicBlogPostsData, ListPublicBlogPostsError, ListPublicBlogPostsResponse, LoginAuthUserData, LoginAuthUserError, LoginAuthUserResponse, LoginWithTelegramData, LoginWithTelegramError, LoginWithTelegramResponse, LoginWithVkOAuthData, LoginWithVkOAuthError, LoginWithVkOAuthResponse, LoginWithVkWidgetData, LoginWithVkWidgetError, LoginWithVkWidgetResponse, LoginWithYandexWidgetData, LoginWithYandexWidgetError, LoginWithYandexWidgetResponse, LogoutAuthUserData, LogoutAuthUserError, LogoutAuthUserResponse, PatchProjectData, PatchProjectError, PatchProjectResponse, PatchSettingsDefaultsData, PatchSettingsDefaultsError, PatchSettingsDefaultsResponse, PatchSettingsNotificationsData, PatchSettingsNotificationsError, PatchSettingsNotificationsResponse, PatchSettingsProfileData, PatchSettingsProfileError, PatchSettingsProfileResponse, PostSettingsExportData, PostSettingsExportError, PostSettingsExportResponse, RegisterAuthUserData, RegisterAuthUserError, RegisterAuthUserResponse, ResetPasswordData, ResetPasswordError, ResetPasswordResponse, RotateSettingsApiKeyData, RotateSettingsApiKeyError, RotateSettingsApiKeyResponse, UploadGenerationImageData, UploadGenerationImageError, UploadGenerationImageResponse } from '../types.gen';
+import { billingWebhook, cancelBillingSubscription, changeSettingsPassword, createBillingAddonCheckout, createBillingCheckout, createGeneration, createProject, deleteProject, deleteSettingsAccount, deleteSettingsSession, forgotPassword, getBilling, getCurrentUser, getDashboard, getGenerateConfig, getGenerationById, getLiveHealth, getProjectById, getPublicBlogPostBySlug, getReadyHealth, getSettings, listProjects, listPublicBlogPosts, loginAuthUser, loginWithTelegram, loginWithVkOAuth, loginWithVkWidget, loginWithYandexWidget, logoutAuthUser, type Options, patchProject, patchSettingsDefaults, patchSettingsNotifications, patchSettingsProfile, postSettingsExport, registerAuthUser, resendRegisterAuthCode, resetPassword, rotateSettingsApiKey, uploadGenerationImage, verifyRegisterAuthUser } from '../sdk.gen';
+import type { BillingWebhookData, BillingWebhookError, BillingWebhookResponse, CancelBillingSubscriptionData, CancelBillingSubscriptionError, CancelBillingSubscriptionResponse, ChangeSettingsPasswordData, ChangeSettingsPasswordError, ChangeSettingsPasswordResponse, CreateBillingAddonCheckoutData, CreateBillingAddonCheckoutError, CreateBillingAddonCheckoutResponse, CreateBillingCheckoutData, CreateBillingCheckoutError, CreateBillingCheckoutResponse, CreateGenerationData, CreateGenerationError, CreateGenerationResponse2, CreateProjectData, CreateProjectError, CreateProjectResponse, DeleteProjectData, DeleteProjectError, DeleteProjectResponse, DeleteSettingsAccountData, DeleteSettingsAccountError, DeleteSettingsAccountResponse, DeleteSettingsSessionData, DeleteSettingsSessionError, DeleteSettingsSessionResponse, ForgotPasswordData, ForgotPasswordError, ForgotPasswordResponse, GetBillingData, GetBillingError, GetBillingResponse, GetCurrentUserData, GetCurrentUserError, GetCurrentUserResponse, GetDashboardData, GetDashboardError, GetDashboardResponse, GetGenerateConfigData, GetGenerateConfigError, GetGenerateConfigResponse, GetGenerationByIdData, GetGenerationByIdError, GetGenerationByIdResponse, GetLiveHealthData, GetLiveHealthResponse, GetProjectByIdData, GetProjectByIdError, GetProjectByIdResponse, GetPublicBlogPostBySlugData, GetPublicBlogPostBySlugError, GetPublicBlogPostBySlugResponse, GetReadyHealthData, GetReadyHealthError, GetReadyHealthResponse, GetSettingsData, GetSettingsError, GetSettingsResponse, ListProjectsData, ListProjectsError, ListProjectsResponse, ListPublicBlogPostsData, ListPublicBlogPostsError, ListPublicBlogPostsResponse, LoginAuthUserData, LoginAuthUserError, LoginAuthUserResponse, LoginWithTelegramData, LoginWithTelegramError, LoginWithTelegramResponse, LoginWithVkOAuthData, LoginWithVkOAuthError, LoginWithVkOAuthResponse, LoginWithVkWidgetData, LoginWithVkWidgetError, LoginWithVkWidgetResponse, LoginWithYandexWidgetData, LoginWithYandexWidgetError, LoginWithYandexWidgetResponse, LogoutAuthUserData, LogoutAuthUserError, LogoutAuthUserResponse, PatchProjectData, PatchProjectError, PatchProjectResponse, PatchSettingsDefaultsData, PatchSettingsDefaultsError, PatchSettingsDefaultsResponse, PatchSettingsNotificationsData, PatchSettingsNotificationsError, PatchSettingsNotificationsResponse, PatchSettingsProfileData, PatchSettingsProfileError, PatchSettingsProfileResponse, PostSettingsExportData, PostSettingsExportError, PostSettingsExportResponse, RegisterAuthUserData, RegisterAuthUserError, RegisterAuthUserResponse, ResendRegisterAuthCodeData, ResendRegisterAuthCodeError, ResendRegisterAuthCodeResponse, ResetPasswordData, ResetPasswordError, ResetPasswordResponse, RotateSettingsApiKeyData, RotateSettingsApiKeyError, RotateSettingsApiKeyResponse, UploadGenerationImageData, UploadGenerationImageError, UploadGenerationImageResponse, VerifyRegisterAuthUserData, VerifyRegisterAuthUserError, VerifyRegisterAuthUserResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -78,12 +78,50 @@ export const getReadyHealthOptions = (options?: Options<GetReadyHealthData>) => 
 /**
  * Регистрация по email и паролю
  *
- * Создаёт нового пользователя и сразу открывает первую сессию.
+ * Создаёт неподтверждённую регистрацию и отправляет одноразовый код на email.
  */
 export const registerAuthUserMutation = (options?: Partial<Options<RegisterAuthUserData>>): UseMutationOptions<RegisterAuthUserResponse, RegisterAuthUserError, Options<RegisterAuthUserData>> => {
     const mutationOptions: UseMutationOptions<RegisterAuthUserResponse, RegisterAuthUserError, Options<RegisterAuthUserData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await registerAuthUser({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Подтвердить регистрацию кодом из письма
+ *
+ * Проверяет одноразовый код, создаёт пользователя и открывает сессию.
+ */
+export const verifyRegisterAuthUserMutation = (options?: Partial<Options<VerifyRegisterAuthUserData>>): UseMutationOptions<VerifyRegisterAuthUserResponse, VerifyRegisterAuthUserError, Options<VerifyRegisterAuthUserData>> => {
+    const mutationOptions: UseMutationOptions<VerifyRegisterAuthUserResponse, VerifyRegisterAuthUserError, Options<VerifyRegisterAuthUserData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await verifyRegisterAuthUser({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Повторно отправить код подтверждения регистрации
+ *
+ * Выпускает новый код для действующего flow и отправляет письмо повторно.
+ */
+export const resendRegisterAuthCodeMutation = (options?: Partial<Options<ResendRegisterAuthCodeData>>): UseMutationOptions<ResendRegisterAuthCodeResponse, ResendRegisterAuthCodeError, Options<ResendRegisterAuthCodeData>> => {
+    const mutationOptions: UseMutationOptions<ResendRegisterAuthCodeResponse, ResendRegisterAuthCodeError, Options<ResendRegisterAuthCodeData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await resendRegisterAuthCode({
                 ...options,
                 ...fnOptions,
                 throwOnError: true

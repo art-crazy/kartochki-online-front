@@ -8,6 +8,7 @@ import { ForgotPasswordScreen } from "./ForgotPasswordScreen";
 import { ForgotSentScreen } from "./ForgotSentScreen";
 import { LoginScreen } from "./LoginScreen";
 import { RegisterScreen } from "./RegisterScreen";
+import { RegisterVerificationScreen } from "./RegisterVerificationScreen";
 
 type AuthFlowProps = {
   className?: string;
@@ -59,6 +60,22 @@ export function AuthFlow({ className }: AuthFlowProps) {
           socialAuthPending={authFlow.socialAuthPending}
           yandexAuthUrl={authFlow.yandexAuthUrl}
           vkAuthUrl={authFlow.vkAuthUrl}
+        />
+      ) : null}
+
+      {authFlow.screen === "register-verify" ? (
+        <RegisterVerificationScreen
+          code={authFlow.verificationCode}
+          codeLength={authFlow.verificationCodeLength}
+          email={authFlow.verificationEmail}
+          errors={authFlow.verifyErrors}
+          expiresInSeconds={authFlow.verificationExpiresInSeconds}
+          loadingAction={authFlow.loadingAction}
+          onBackClick={() => authFlow.changeScreen("register")}
+          onCodeChange={authFlow.handleVerificationCodeChange}
+          onResendClick={authFlow.handleVerificationResend}
+          onSubmit={authFlow.handleVerificationSubmit}
+          resendInSeconds={authFlow.resendAvailableInSeconds}
         />
       ) : null}
 

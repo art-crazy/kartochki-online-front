@@ -146,6 +146,13 @@
   font-size: 0.78rem;
 }
 
+.codeInput {
+  text-align: center;
+  letter-spacing: 0.32em;
+  font-size: 1.1rem;
+  font-variant-numeric: tabular-nums;
+}
+
 .passwordStrength {
   display: grid;
   gap: 5px;
@@ -268,9 +275,28 @@
   text-underline-offset: 3px;
 }
 
+.footerLink:disabled {
+  color: var(--muted);
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
 .terms {
   font-size: 0.75rem;
   line-height: 1.6;
+}
+
+.metaBlock {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.metaText {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.5;
 }
 
 .termsLink {

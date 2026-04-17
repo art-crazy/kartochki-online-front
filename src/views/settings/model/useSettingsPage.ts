@@ -29,7 +29,7 @@ export function useSettingsPage(settings: SettingsResponse) {
   const [toast, setToast] = useState<ToastState | null>(null);
   const [profileForm, setProfileForm] = useState(() => ({
     name: settings.profile.name,
-    email: settings.profile.email,
+    email: settings.profile.email ?? "",
     phone: settings.profile.phone ?? "",
     company: settings.profile.company ?? "",
   }));

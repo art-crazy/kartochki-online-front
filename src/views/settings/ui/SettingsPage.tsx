@@ -54,6 +54,7 @@ function SettingsPageContent({ settings }: { settings: SettingsResponse }) {
   const emailNotifications = Object.entries(notificationLabels).filter(([, v]) => v.group === "email");
   const securityNotifications = Object.entries(notificationLabels).filter(([, v]) => v.group === "security");
   const initials = getUserInitials(settings.profile.name, settings.profile.email);
+  const profileEmail = settings.profile.email ?? "Email не указан";
 
   return (
     <AppShell title="Настройки" subtitle="Профиль, безопасность, уведомления и интеграции" activeKey="settings">
@@ -71,7 +72,7 @@ function SettingsPageContent({ settings }: { settings: SettingsResponse }) {
                   </div>
                   <div className={styles.avatarMeta}>
                     <div className={styles.avatarName}>{settings.profile.name}</div>
-                    <div className={styles.avatarEmail}>{settings.profile.email}</div>
+                    <div className={styles.avatarEmail}>{profileEmail}</div>
                     <div className={styles.avatarActions}>
                       <Button variant="darkPrimary" size="sm" onClick={() => page.showToast("Загрузка аватара будет подключена позже")}>Загрузить фото</Button>
                       <Button variant="darkOutline" size="sm" onClick={() => page.showToast("Аватар удален")}>Удалить</Button>
@@ -158,7 +159,7 @@ function SettingsPageContent({ settings }: { settings: SettingsResponse }) {
             </section>
 
             <section id="settings-panel-notifications" role="tabpanel" aria-labelledby="settings-tab-notifications" hidden={page.activeTab !== "notifications"} className={page.activeTab === "notifications" ? styles.panelActive : styles.panelHidden}>
-              <SettingsCard title="Email-уведомления" subtitle={`На адрес ${settings.profile.email}.`}>
+              <SettingsCard title="Email-уведомления" subtitle={`На адрес ${profileEmail}.`}>
                 <div className={styles.stack}>
                   {emailNotifications.map(([key, meta]) => (
                     <SwitchRow key={key} checked={page.notifications[key] ?? false} title={meta.title} description={meta.description} disabled={page.notificationsMutation.isPending} onToggle={() => page.toggleNotification(key)} />

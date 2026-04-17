@@ -1,5 +1,5 @@
 import type { ErrorResponse } from "@/shared/api";
-import type { ForgotErrors, LoginErrors, RegisterErrors } from "./types";
+import type { ForgotErrors, LoginErrors, RegisterErrors, VerifyErrors } from "./types";
 
 export function mapLoginErrors(error: ErrorResponse): LoginErrors {
   const mapped: LoginErrors = { form: error.message };
@@ -25,6 +25,14 @@ export function mapForgotErrors(error: ErrorResponse): ForgotErrors {
   const mapped: ForgotErrors = { form: error.message };
   for (const detail of error.details ?? []) {
     if (detail.field === "email") mapped.email = detail.message;
+  }
+  return mapped;
+}
+
+export function mapVerifyErrors(error: ErrorResponse): VerifyErrors {
+  const mapped: VerifyErrors = { form: error.message };
+  for (const detail of error.details ?? []) {
+    if (detail.field === "code") mapped.code = detail.message;
   }
   return mapped;
 }
