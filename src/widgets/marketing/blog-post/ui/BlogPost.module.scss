@@ -24,39 +24,14 @@
   transition: width 0.12s linear;
 }
 
-.breadcrumbs,
 .layout {
   position: relative;
   z-index: 1;
 }
 
-.breadcrumbs,
 .layout {
   width: min(100% - 32px, 1100px);
   margin: 0 auto;
-}
-
-.breadcrumbs {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 24px 0 0;
-  color: var(--muted-2);
-  font-size: 0.78rem;
-}
-
-.breadcrumbItem {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.breadcrumbItem a:hover {
-  color: var(--foreground);
-}
-
-.breadcrumbSeparator {
-  color: var(--line-strong);
 }
 
 .layout {
@@ -857,7 +832,6 @@
 }
 
 @media (width <= 768px) {
-  .breadcrumbs,
   .layout {
     width: min(100% - 24px, 1100px);
   }
@@ -895,11 +869,6 @@
 }
 
 @media (width <= 560px) {
-  .breadcrumbs {
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
   .title {
     font-size: 1.8rem;
   }

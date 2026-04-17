@@ -10,8 +10,6 @@ type ApiBlogPostProps = {
   content: BlogPostResponse;
 };
 
-const HOME_LABEL = "Главная";
-const BLOG_LABEL = "Блог";
 const UPDATED_LABEL = "Обновлено";
 const READ_TIME_LABEL = "мин чтения";
 const VIEWS_LABEL = "просмотров";
@@ -43,20 +41,6 @@ export function ApiBlogPost({ content }: ApiBlogPostProps) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <div id="read-progress" className={styles.readProgress} aria-hidden="true" />
       <BlogPostEnhancements />
-
-      <nav className={styles.breadcrumbs} aria-label={TOC_LABEL}>
-        <div className={styles.breadcrumbItem}>
-          <Link href="/">{HOME_LABEL}</Link>
-          <span className={styles.breadcrumbSeparator} aria-hidden="true">›</span>
-        </div>
-        <div className={styles.breadcrumbItem}>
-          <Link href="/blog">{BLOG_LABEL}</Link>
-          <span className={styles.breadcrumbSeparator} aria-hidden="true">›</span>
-        </div>
-        <div className={styles.breadcrumbItem}>
-          <span>{post.title}</span>
-        </div>
-      </nav>
 
       <div className={styles.layout}>
         <article id="blog-post-article" className={styles.article}>
@@ -119,7 +103,9 @@ export function ApiBlogPost({ content }: ApiBlogPostProps) {
           <section className={styles.sidebarCta}>
             <h2 className={styles.sidebarCtaTitle}>{CTA_TITLE}</h2>
             <p className={styles.sidebarCtaText}>{CTA_TEXT}</p>
-            <Button as={Link} href="/auth" size="lg" block>{TRY_LABEL}</Button>
+            <Button as={Link} href="/auth" size="lg" block>
+              {TRY_LABEL}
+            </Button>
           </section>
         </aside>
       </div>
@@ -142,7 +128,9 @@ function Section({ section }: { section: BlogArticleSection }) {
               <div className={styles.relatedBody}>
                 <div className={styles.relatedCardTitle}>{card.title}</div>
                 {card.meta?.map((row) => (
-                  <p key={row.label}>{row.label}: {row.value}</p>
+                  <p key={row.label}>
+                    {row.label}: {row.value}
+                  </p>
                 ))}
               </div>
             </article>
@@ -175,7 +163,9 @@ function TocList({ sections, mobile = false }: { sections: ReadonlyArray<BlogArt
           className={[
             mobile ? styles.mobileTocItem : styles.tocItem,
             section.level >= 3 ? (mobile ? styles.mobileTocItemSub : styles.tocItemSub) : undefined,
-          ].filter(Boolean).join(" ")}
+          ]
+            .filter(Boolean)
+            .join(" ")}
           data-active={index === 0 ? "true" : "false"}
           data-toc-item={section.id}
         >

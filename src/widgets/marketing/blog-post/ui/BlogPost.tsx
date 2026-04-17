@@ -2,8 +2,6 @@ import Link from "next/link";
 import {
   bannedOnWildberries,
   blogPost,
-  type BlogTableCellTone,
-  breadcrumbItems,
   callouts,
   comparisonTable,
   faqItems,
@@ -18,91 +16,12 @@ import {
   yandexFeatures,
   yandexTable,
 } from "@/entities/blog/model/content";
-import { blogHeaderLinks, legalFooterLinks } from "@/shared/config/marketing";
 import { siteConfig } from "@/shared/config/site";
 import { Badge, Button } from "@/shared/ui/primitives/Primitives";
-import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
-import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
 import { BlogPostEnhancements } from "./BlogPostEnhancements";
+import { Callout, DataTable } from "./BlogPostParts";
 import { BlogPostShare } from "./BlogPostShare";
 import styles from "./BlogPost.module.scss";
-
-function Callout({
-  tone,
-  title,
-  text,
-}: {
-  tone: "tip" | "warn" | "info";
-  title: string;
-  text: string;
-}) {
-  const icon = tone === "tip" ? "💡" : tone === "warn" ? "⚠" : "ℹ";
-
-  return (
-    <div className={[styles.callout, styles[`callout${tone}`]].join(" ")}>
-      <span className={styles.calloutIcon} aria-hidden="true">
-        {icon}
-      </span>
-      <span className={styles.calloutText}>
-        <strong>{title}</strong> {text}
-      </span>
-    </div>
-  );
-}
-
-function DataTable({
-  head,
-  rows,
-  emphasizedColumns = [],
-  cellTones,
-}: {
-  head: readonly string[];
-  rows: readonly (readonly string[])[];
-  emphasizedColumns?: number[];
-  cellTones?: readonly (readonly (BlogTableCellTone | null)[])[];
-}) {
-  return (
-    <div className={styles.tableWrap}>
-      <table>
-        <thead>
-          <tr>
-            {head.map((cell, index) => (
-              <th
-                key={`${cell}-${index}`}
-                className={emphasizedColumns.includes(index) ? styles.emphasizedHeading : undefined}
-              >
-                {cell}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, rowIndex) => (
-            <tr key={row.join("-")}>
-              {row.map((cell, index) => {
-                const tone = cellTones?.[rowIndex]?.[index];
-
-                return (
-                  <td
-                    key={`${cell}-${index}`}
-                    className={[
-                      tone === "success" ? styles.checkCell : undefined,
-                      tone === "muted" ? styles.crossCell : undefined,
-                    ]
-                      .filter(Boolean)
-                      .join(" ")}
-                  >
-                    {cell}
-                  </td>
-                );
-              })}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
 
 export function BlogPost() {
   const canonicalUrl = `${siteConfig.defaultUrl}${blogPost.canonicalPath}`;
@@ -111,21 +30,6 @@ export function BlogPost() {
     <main className={styles.page}>
       <div id="read-progress" className={styles.readProgress} aria-hidden="true" />
       <BlogPostEnhancements />
-
-      <SiteHeader links={blogHeaderLinks} />
-
-      <nav className={styles.breadcrumbs} aria-label="Хлебные крошки">
-        {breadcrumbItems.map((item, index) => (
-          <div key={item.label} className={styles.breadcrumbItem}>
-            {"href" in item ? <Link href={item.href}>{item.label}</Link> : <span>{item.label}</span>}
-            {index < breadcrumbItems.length - 1 ? (
-              <span className={styles.breadcrumbSeparator} aria-hidden="true">
-                ›
-              </span>
-            ) : null}
-          </div>
-        ))}
-      </nav>
 
       <div className={styles.layout}>
         <article id="blog-post-article" className={styles.article}>
@@ -218,8 +122,9 @@ export function BlogPost() {
 
             <h2 id="wildberries">Wildberries: требования к фото в 2025</h2>
             <p>
-              WB самый лояльный маркетплейс в плане требований к фону. Здесь можно использовать любой фон, если товар
-              хорошо читается. Но у площадки есть строгие ограничения по размеру изображения и соотношению сторон.
+              WB остаётся самым лояльным маркетплейсом по требованиям к фону. Здесь можно использовать почти любой фон,
+              если товар читается и выглядит аккуратно. Но у площадки есть строгие ограничения по размеру изображения и
+              соотношению сторон.
             </p>
 
             <h3 id="wb-sizes">Размеры и технические параметры</h3>
@@ -236,8 +141,8 @@ export function BlogPost() {
 
             <h2 id="ozon">Ozon: требования к фото в 2025</h2>
             <p>
-              Ozon строже WB в плане главного изображения. Для большинства категорий основное фото должно быть на белом
-              или светло-сером фоне, а сам товар должен занимать большую часть кадра.
+              Ozon строже Wildberries в части главного изображения. Для большинства категорий основное фото должно быть
+              на белом или светло-сером фоне, а сам товар должен занимать большую часть кадра.
             </p>
 
             <h3 id="ozon-sizes">Размеры и форматы</h3>
@@ -246,14 +151,14 @@ export function BlogPost() {
 
             <h2 id="yandex">Яндекс Маркет: требования к фото в 2025</h2>
             <p>
-              Яндекс Маркет активно растёт и особенно силён в электронике, товарах для дома и технике. Требования
-              здесь близки к Ozon, но площадка чуть гибче по форматам и даёт больше медиа-возможностей.
+              Яндекс Маркет активно растёт и особенно силён в электронике, товарах для дома и технике. Требования здесь
+              близки к Ozon, но площадка чуть гибче по форматам и даёт больше медиа-возможностей.
             </p>
 
             <h3 id="ym-sizes">Размеры и особенности</h3>
             <DataTable head={yandexTable.head} rows={yandexTable.rows} cellTones={yandexTable.cellTones} />
 
-            <h3 id="ym-special">Особенности Яндекс Маркет</h3>
+            <h3 id="ym-special">Особенности Яндекс Маркета</h3>
             <ul>
               {yandexFeatures.map((item) => (
                 <li key={item}>{item}</li>
@@ -285,7 +190,7 @@ export function BlogPost() {
               <div className={styles.bannerText}>
                 <h3 className={styles.bannerTitle}>Устал делать карточки вручную?</h3>
                 <p className={styles.bannerDescription}>
-                  Загрузи фото товара, и kartochki.online автоматически подготовит версии для WB, Ozon и Яндекс Маркет
+                  Загрузи фото товара, и kartochki.online автоматически подготовит версии для WB, Ozon и Яндекс Маркета
                   с правильными размерами и инфографикой.
                 </p>
               </div>
@@ -352,7 +257,7 @@ export function BlogPost() {
           <section className={styles.sidebarCta}>
             <h2 className={styles.sidebarCtaTitle}>Сделай карточки автоматически</h2>
             <p className={styles.sidebarCtaText}>
-              Загрузи фото и получи готовые карточки для WB, Ozon и Яндекс Маркет за 30 секунд.
+              Загрузи фото и получи готовые карточки для WB, Ozon и Яндекс Маркета за 30 секунд.
             </p>
             <Button as={Link} href="/auth" size="lg" block>
               Попробовать бесплатно
@@ -372,8 +277,6 @@ export function BlogPost() {
           </section>
         </aside>
       </div>
-
-      <SiteFooter links={legalFooterLinks} />
     </main>
   );
 }

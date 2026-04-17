@@ -5,6 +5,7 @@ import {
   heroGradients,
 } from "@/entities/blog/model/content";
 import { blogHeaderLinks, legalFooterLinks } from "@/shared/config/marketing";
+import { SeoBreadcrumbs } from "@/shared/ui";
 import { Button } from "@/shared/ui/primitives/Primitives";
 import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
 import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
@@ -18,12 +19,20 @@ type BlogPageProps = {
 export function BlogPage({ content = fallbackBlogPageContent }: BlogPageProps) {
   const hasNextPage = content.pagination.page < content.pagination.totalPages;
   const nextPageHref = `/blog?page=${content.pagination.page + 1}`;
+  const currentPath = content.pagination.page > 1 ? `/blog?page=${content.pagination.page}` : "/blog";
 
   return (
     <main className={styles.page}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogListingSchema) }} />
 
       <SiteHeader links={blogHeaderLinks} />
+      <SeoBreadcrumbs
+        items={[
+          { label: "Главная", href: "/" },
+          { label: "Блог" },
+        ]}
+        currentPath={currentPath}
+      />
 
       <section className={[styles.hero, styles.reveal].join(" ")}>
         <div>

@@ -5,3 +5,4 @@ export * from "./navigation/Navigation";
 export * from "./feedback/Feedback";
 export * from "./feedback/Accordion";
 export * from "./domain/Domain";
+export * from "./seo-breadcrumbs/SeoBreadcrumbs";

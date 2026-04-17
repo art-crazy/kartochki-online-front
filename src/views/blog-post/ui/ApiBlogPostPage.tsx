@@ -1,19 +1,22 @@
 import type { BlogPostResponse } from "@/shared/api";
-import { blogHeaderLinks, legalFooterLinks } from "@/shared/config/marketing";
+import type { SeoBreadcrumbItem } from "@/shared/ui";
 import { ApiBlogPost } from "@/widgets/marketing/blog-post/ui/ApiBlogPost";
-import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
-import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
+import { BlogPostPageShell } from "./BlogPostPageShell";
 
 type ApiBlogPostPageProps = {
   content: BlogPostResponse;
 };
 
 export function ApiBlogPostPage({ content }: ApiBlogPostPageProps) {
+  const breadcrumbs: ReadonlyArray<SeoBreadcrumbItem> = [
+    { label: "Главная", href: "/" },
+    { label: "Блог", href: "/blog" },
+    { label: content.post.title },
+  ];
+
   return (
-    <>
-      <SiteHeader links={blogHeaderLinks} />
+    <BlogPostPageShell breadcrumbs={breadcrumbs} currentPath={content.post.canonical_path}>
       <ApiBlogPost content={content} />
-      <SiteFooter links={legalFooterLinks} />
-    </>
+    </BlogPostPageShell>
   );
 }
