@@ -213,19 +213,6 @@ export function BlogPage({ content = fallbackBlogPageContent }: BlogPageProps) {
             </div>
           </section>
 
-          <section className={[styles.sidebarWidget, styles.reveal, styles.delay6].join(" ")}>
-            <div className={styles.widgetHeader}>Рассылка</div>
-            <div className={styles.widgetBody}>
-              <p className={styles.newsletterLead}>Новые статьи и советы раз в неделю. Без спама.</p>
-              <div className={styles.newsletterForm}>
-                <input className={styles.newsletterInput} type="email" placeholder="your@email.com" readOnly />
-                <button type="button" className={styles.newsletterButton}>
-                  Подписаться
-                </button>
-                <div className={styles.newsletterNote}>Отписаться можно в любой момент</div>
-              </div>
-            </div>
-          </section>
         </aside>
       </div>
 

@@ -561,8 +561,7 @@
   pointer-events: none;
 }
 
-.searchInput,
-.newsletterInput {
+.searchInput {
   width: 100%;
   border: 1.5px solid var(--line);
   outline: none;
@@ -577,8 +576,7 @@
   font-size: 0.85rem;
 }
 
-.searchInput::placeholder,
-.newsletterInput::placeholder {
+.searchInput::placeholder {
   color: var(--muted-2);
 }
 
@@ -729,45 +727,6 @@
   border-color: var(--foreground);
   background: var(--foreground);
   color: #fff;
-}
-
-.newsletterLead {
-  margin-bottom: 14px;
-  color: var(--muted);
-  font-size: 0.78rem;
-  line-height: 1.6;
-}
-
-.newsletterForm {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.newsletterInput {
-  padding: 10px 14px;
-  border-radius: 8px;
-  background: #efece4;
-  color: var(--foreground);
-  font-size: 0.85rem;
-}
-
-.newsletterButton {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  background: var(--accent-button);
-  color: #fff;
-  font: inherit;
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.newsletterNote {
-  color: var(--muted-2);
-  font-size: 0.7rem;
-  text-align: center;
 }
 
 @keyframes reveal-in {
