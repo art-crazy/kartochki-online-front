@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, type PropsWithChildren } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getCurrentUserOptions, type AuthUser } from "@/shared/api";
+import { type AuthUser } from "@/shared/api";
+import { getCurrentUserQueryOptions } from "@/shared/auth/model/getCurrentUserQueryOptions";
 
 type AuthSessionContextValue = {
   user: AuthUser | null;
@@ -17,7 +18,7 @@ const AuthSessionContext = createContext<AuthSessionContextValue>({
 
 export function AuthSessionProvider({ children }: PropsWithChildren) {
   const router = useRouter();
-  const { data, isLoading, isError } = useQuery(getCurrentUserOptions());
+  const { data, isLoading, isError } = useQuery(getCurrentUserQueryOptions());
 
   useEffect(() => {
     if (!isLoading && isError) {

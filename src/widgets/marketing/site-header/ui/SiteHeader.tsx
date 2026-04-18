@@ -1,4 +1,5 @@
 import type { MarketingLink } from "@/shared/config/marketing";
+import { getOptionalServerAuthUser } from "@/shared/auth/model/getOptionalServerAuthUser";
 import Link from "next/link";
 import { SiteHeaderAuthActions } from "./SiteHeaderAuthActions";
 import styles from "./SiteHeader.module.scss";
@@ -11,7 +12,9 @@ type SiteHeaderProps = {
   links: readonly SiteHeaderLink[];
 };
 
-export function SiteHeader({ links }: SiteHeaderProps) {
+export async function SiteHeader({ links }: SiteHeaderProps) {
+  const user = await getOptionalServerAuthUser();
+
   return (
     <header className={styles.header}>
       <div className={styles.container}>
@@ -29,7 +32,7 @@ export function SiteHeader({ links }: SiteHeaderProps) {
           </ul>
 
           <div className={styles.navActions}>
-            <SiteHeaderAuthActions />
+            <SiteHeaderAuthActions user={user} />
           </div>
         </nav>
       </div>

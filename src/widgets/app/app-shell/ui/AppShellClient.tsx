@@ -68,7 +68,7 @@ export function AppShellClient({ title, subtitle, activeKey, action, children }:
 
         <div className={styles.sidebarBottom}>
           <SidebarPlanCard />
-          <SidebarProfileCard initials={userInitials} name={userName} avatarUrl={user?.avatar_url} plan="Активная сессия" />
+          <SidebarProfileCard initials={userInitials} name={userName} avatarUrl={user?.avatar_url} />
           <LogoutButton />
         </div>
       </aside>

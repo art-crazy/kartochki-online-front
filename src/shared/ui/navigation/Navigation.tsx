@@ -62,7 +62,7 @@ export function SidebarProfileCard({
 }: {
   initials: string;
   name: string;
-  plan: string;
+  plan?: string;
   avatarUrl?: string | null;
   gradient?: 1 | 2 | 3;
 }) {
@@ -71,9 +71,8 @@ export function SidebarProfileCard({
       <Avatar initials={initials} src={avatarUrl} alt={name} size="md" gradient={gradient} />
       <div className={styles.sidebarProfileBody}>
         <div className={styles.sidebarProfileName}>{name}</div>
-        <div className={styles.sidebarProfilePlan}>{plan}</div>
+        {plan ? <div className={styles.sidebarProfilePlan}>{plan}</div> : null}
       </div>
-      <span className={styles.sidebarProfileChevron}>▾</span>
     </button>
   );
 }
