@@ -1,6 +1,6 @@
 import type { MarketingLink } from "@/shared/config/marketing";
 import Link from "next/link";
-import { Button } from "@/shared/ui/primitives/Primitives";
+import { SiteHeaderAuthActions } from "./SiteHeaderAuthActions";
 import styles from "./SiteHeader.module.scss";
 
 type SiteHeaderLink = MarketingLink & {
@@ -29,12 +29,7 @@ export function SiteHeader({ links }: SiteHeaderProps) {
           </ul>
 
           <div className={styles.navActions}>
-            <Button as={Link} href="/auth" variant="outline" size="md">
-              Войти
-            </Button>
-            <Button as={Link} href="/auth" variant="primary" size="md">
-              Попробовать бесплатно
-            </Button>
+            <SiteHeaderAuthActions />
           </div>
         </nav>
       </div>
