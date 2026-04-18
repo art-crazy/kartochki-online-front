@@ -54,7 +54,7 @@
   align-items: center;
   gap: 8px;
   margin-bottom: 16px;
-  color: var(--accent);
+  color: var(--accent-text);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -200,7 +200,7 @@
   padding: 3px 10px;
   border: 1px solid rgb(232 68 10 / 0.4);
   border-radius: 999px;
-  color: var(--accent);
+  color: var(--accent-text);
   font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -347,7 +347,7 @@
 
 .labelboth {
   background: rgb(232 68 10 / 0.12);
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .labeltips {
@@ -375,7 +375,7 @@
 
 .postTag {
   margin-bottom: 8px;
-  color: var(--accent);
+  color: var(--accent-text);
   font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -415,7 +415,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  color: var(--accent);
+  color: var(--accent-text);
   font-size: 0.72rem;
   font-weight: 600;
   transition: gap 0.15s ease;
@@ -460,7 +460,7 @@
 
 .listPost:hover .listTitle,
 .listPost:hover .listArrow {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .listNumber {
@@ -651,7 +651,7 @@
 }
 
 .categoryItem:hover {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .categoryCount {
@@ -695,7 +695,7 @@
 }
 
 .popularItem:hover .popularTitle {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .popularMeta {
@@ -757,7 +757,7 @@
   padding: 10px;
   border: none;
   border-radius: 8px;
-  background: var(--accent);
+  background: var(--accent-button);
   color: #fff;
   font: inherit;
   font-size: 0.85rem;

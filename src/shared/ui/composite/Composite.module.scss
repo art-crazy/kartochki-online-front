@@ -213,10 +213,11 @@
   padding: 4px 10px;
   border-radius: var(--radius-full);
   background: var(--accent-dim);
-  color: var(--accent);
+  color: var(--accent-text);
   font-size: 0.68rem;
   font-weight: 700;
   text-transform: uppercase;
+  border: 1px solid var(--accent-border);
 }
 
 .planName {
@@ -413,7 +414,7 @@
 }
 
 .blogRead {
-  color: var(--accent);
+  color: var(--accent-text);
   font-weight: 600;
 }
 

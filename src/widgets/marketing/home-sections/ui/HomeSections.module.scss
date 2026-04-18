@@ -51,7 +51,7 @@
 }
 
 .marqueeDot {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .section {
@@ -83,7 +83,7 @@
 .sectionLabel {
   display: inline-block;
   margin-bottom: 12px;
-  color: var(--accent);
+  color: var(--accent-text);
   font-family: var(--font-display), sans-serif;
   font-size: 0.72rem;
   font-weight: 800;
@@ -247,7 +247,7 @@
 
 .platformIconym {
   background: var(--marketplace-ym-dim);
-  color: #9a6800;
+  color: #7a5200;
 }
 
 .platformName {
@@ -267,7 +267,7 @@
 }
 
 .platformNameym {
-  color: #9a6800;
+  color: #7a5200;
 }
 
 .platformMeta {
@@ -360,7 +360,7 @@
 }
 
 .statValue span {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .statLabel {

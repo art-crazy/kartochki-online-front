@@ -77,7 +77,7 @@
 }
 
 .variantPrimary {
-  background: var(--accent);
+  background: var(--accent-button);
   color: #fff;
 }
 
@@ -251,7 +251,8 @@
 
 .badgeAccent {
   background: var(--accent-dim);
-  color: var(--accent);
+  color: var(--accent-text);
+  border: 1px solid var(--accent-border);
 }
 
 .badgeSuccess {
@@ -287,7 +288,8 @@
 
 .badgeYm {
   background: var(--marketplace-ym-dim);
-  color: #9a6800;
+  color: #7a5200;
+  border: 1px solid rgba(245, 166, 35, 0.35);
 }
 
 .chip {
@@ -324,7 +326,7 @@
 .chipAccentSelected {
   border-color: var(--accent-border);
   background: var(--accent-dim);
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .chipDark {
