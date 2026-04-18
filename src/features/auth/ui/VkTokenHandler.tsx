@@ -4,21 +4,21 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { loginWithVkOAuthMutation } from "@/shared/api";
+import { useAuthTransition } from "@/shared/auth/model/useAuthTransition";
 import { getVkRedirectUri } from "../model/vkAuth";
 import { getSafeNextPath } from "../model/validation";
 import { siteConfig } from "@/shared/config/site";
 
 export function VkTokenHandler() {
   const router = useRouter();
+  const { completeLogin } = useAuthTransition();
   const searchParams = useSearchParams();
   const tokenHandledRef = useRef(false);
 
   const { mutate: loginWithVkOAuth } = useMutation({
     ...loginWithVkOAuthMutation(),
     onSuccess: () => {
-      const nextPath = getSafeNextPath(searchParams.get("next"));
-      router.replace(nextPath);
-      router.refresh();
+      completeLogin(getSafeNextPath(searchParams.get("next")));
     },
     onError: () => {
       router.replace("/auth?error=vk_auth_failed");

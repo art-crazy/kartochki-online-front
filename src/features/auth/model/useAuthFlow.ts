@@ -1,9 +1,10 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import type { FormEvent } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { forgotPassword, loginAuthUser, registerAuthUser, resendRegisterAuthCode, verifyRegisterAuthUser } from "@/shared/api";
+import { useAuthTransition } from "@/shared/auth/model/useAuthTransition";
 import { mapForgotErrors, mapLoginErrors, mapRegisterErrors, mapVerifyErrors } from "./mappers";
 import { clearRegisterVerificationSnapshot, loadRegisterVerificationSnapshot, saveRegisterVerificationSnapshot } from "./registerVerificationStorage";
 import { useCountdown } from "./useCountdown";
@@ -12,8 +13,8 @@ import { getPasswordStrength, getSafeNextPath, sanitizeVerificationCode, validat
 import { useSocialAuthWidgets } from "./useSocialAuthWidgets";
 
 export function useAuthFlow() {
-  const router = useRouter();
   const searchParams = useSearchParams();
+  const { completeLogin } = useAuthTransition();
   const [screen, setScreen] = useState<AuthScreen>("login");
   const [sentEmail, setSentEmail] = useState("");
   const [loadingAction, setLoadingAction] = useState<LoadingAction | null>(null);
@@ -171,8 +172,7 @@ export function useAuthFlow() {
         return;
       }
 
-      router.push(nextPath);
-      router.refresh();
+      completeLogin(nextPath);
     } finally {
       setLoadingAction(null);
     }
@@ -231,8 +231,7 @@ export function useAuthFlow() {
       }
 
       clearRegisterVerificationSnapshot();
-      router.push(nextPath);
-      router.refresh();
+      completeLogin(nextPath);
     } finally {
       setLoadingAction(null);
     }

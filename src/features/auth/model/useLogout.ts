@@ -1,11 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { logoutAuthUser } from "@/shared/api";
+import { useAuthTransition } from "@/shared/auth/model/useAuthTransition";
 
 export function useLogout() {
-  const router = useRouter();
+  const { completeLogout } = useAuthTransition();
   const [isPending, setIsPending] = useState(false);
 
   async function logout() {
@@ -13,8 +13,7 @@ export function useLogout() {
     try {
       await logoutAuthUser();
     } finally {
-      router.push("/auth");
-      router.refresh();
+      completeLogout();
       setIsPending(false);
     }
   }

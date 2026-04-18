@@ -4,18 +4,19 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { loginWithYandexWidgetMutation } from "@/shared/api";
+import { useAuthTransition } from "@/shared/auth/model/useAuthTransition";
 import { getYandexTokenHash } from "../model/yandexAuth";
 import { getSafeNextPath } from "../model/validation";
 
 export function YandexTokenHandler() {
   const router = useRouter();
+  const { completeLogin } = useAuthTransition();
   const tokenHandledRef = useRef(false);
   const { mutate: loginWithYandexWidget } = useMutation({
     ...loginWithYandexWidgetMutation(),
     onSuccess: () => {
       const { state } = getYandexTokenHash(window.location.hash);
-      router.replace(getSafeNextPath(state));
-      router.refresh();
+      completeLogin(getSafeNextPath(state));
     },
     onError: () => {
       router.replace("/auth?error=yandex_auth_failed");
