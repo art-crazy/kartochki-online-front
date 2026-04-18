@@ -46,7 +46,6 @@ export function SiteHeaderAuthActions() {
         <Avatar initials={userInitials} src={user.avatar_url} alt={userName} size="sm" gradient={1} />
         <span className={styles.profileBody}>
           <span className={styles.profileName}>{userName}</span>
-          <span className={styles.profileMeta}>Мои проекты</span>
         </span>
       </Link>
       <Button as={Link} href="/app/generate" variant="primary" size="md" className={styles.primaryAction}>
