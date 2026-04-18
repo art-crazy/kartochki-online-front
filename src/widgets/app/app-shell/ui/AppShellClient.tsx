@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type ReactNode } from "react";
+import { usePathname } from "next/navigation";
+import { useState, type MouseEvent, type ReactNode } from "react";
 import { LogoutButton } from "@/features/auth/ui/LogoutButton";
 import { useAuthSession } from "@/shared/auth/ui/AuthSessionProvider";
 import { classNames } from "@/shared/lib/classNames";
@@ -18,18 +19,38 @@ type AppShellClientProps = {
   children: ReactNode;
 };
 
+function isPlainLeftClick(event: MouseEvent<HTMLAnchorElement>) {
+  return (
+    event.button === 0 &&
+    !event.defaultPrevented &&
+    !event.metaKey &&
+    !event.ctrlKey &&
+    !event.shiftKey &&
+    !event.altKey
+  );
+}
+
 export function AppShellClient({ title, subtitle, activeKey, action, children }: AppShellClientProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { user } = useAuthSession();
+  const pathname = usePathname();
 
   const closeSidebar = () => setIsSidebarOpen(false);
+  const handleLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    closeSidebar();
+
+    if (pathname === "/app" && isPlainLeftClick(event)) {
+      event.preventDefault();
+      window.location.reload();
+    }
+  };
   const userName = user?.name?.trim() || user?.email || "Пользователь";
   const userInitials = getUserInitials(user?.name, user?.email);
 
   return (
     <div className={styles.surface}>
       <aside className={classNames(styles.sidebar, isSidebarOpen && styles.sidebarOpen)}>
-        <Link href="/" className={styles.logo} onClick={closeSidebar}>
+        <Link href="/app" className={styles.logo} onClick={handleLogoClick}>
           карточки<span>.</span>онлайн
         </Link>
 
