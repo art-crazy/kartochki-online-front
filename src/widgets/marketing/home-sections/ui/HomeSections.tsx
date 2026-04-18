@@ -61,7 +61,7 @@ export function HomeSections() {
 
           <div className={styles.cardsThree}>
             {testimonials.map((testimonial) => (
-              <article key={testimonial.name} className={styles.surfaceCard}>
+              <article key={testimonial.name} className={[styles.surfaceCard, styles.testimonialCard].join(" ")}>
                 <div className={styles.stars}>★★★★★</div>
                 <p className={styles.testimonialQuote}>«{testimonial.quote}»</p>
                 <div className={styles.testimonialAuthor}>

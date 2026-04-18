@@ -144,6 +144,11 @@
     box-shadow 0.2s ease;
 }
 
+.testimonialCard {
+  display: flex;
+  flex-direction: column;
+}
+
 .surfaceCard:hover,
 .stepCard:hover {
   box-shadow: var(--shadow-hover);
@@ -165,6 +170,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  margin-top: auto;
 }
 
 .testimonialName {
