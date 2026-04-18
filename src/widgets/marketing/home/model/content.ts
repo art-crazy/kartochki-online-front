@@ -236,6 +236,7 @@ export const blogPosts = [
     tag: "Ozon",
     tone: "ozon" as const,
     gradient: "linear-gradient(135deg, #fef3e2, #fdd89a)",
+    href: "/blog/infografika-dlya-ozon-conversion",
   },
   {
     title: "7 ошибок в карточках товаров, которые допускают 90% продавцов",
@@ -243,6 +244,7 @@ export const blogPosts = [
     tag: "WB + Ozon + ЯМ",
     tone: "accent" as const,
     gradient: "linear-gradient(135deg, #e8f8f2, #95d5b2)",
+    href: "/blog/pochemu-kartochka-ne-prodaet-7-oshibok",
   },
 ];
 
