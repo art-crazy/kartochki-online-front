@@ -63,10 +63,7 @@ export function SiteHeaderUserMenu({ user }: SiteHeaderUserMenuProps) {
         aria-label={`Меню пользователя: ${userName}`}
       >
         <Avatar initials={userInitials} src={user.avatar_url} alt={userName} size="sm" gradient={1} />
-        <span className={styles.profileBody}>
-          <span className={styles.profileName}>{userName}</span>
-          <span className={styles.profileMeta}>Личный кабинет</span>
-        </span>
+        <span className={styles.profileName}>{userName}</span>
         <span className={`${styles.chevron} ${isOpen ? styles.chevronOpen : ""}`}>
           <ChevronDownIcon />
         </span>

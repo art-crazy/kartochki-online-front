@@ -23,13 +23,6 @@
   box-shadow: 0 8px 22px rgba(232, 68, 10, 0.08);
 }
 
-.profileBody {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  text-align: left;
-}
-
 .profileName {
   overflow: hidden;
   max-width: 160px;
@@ -40,11 +33,6 @@
   white-space: nowrap;
 }
 
-.profileMeta {
-  color: var(--muted);
-  font-size: 0.72rem;
-  font-weight: 500;
-}
 
 .chevron {
   color: var(--muted);
