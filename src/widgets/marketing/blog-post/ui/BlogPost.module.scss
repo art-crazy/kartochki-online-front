@@ -163,7 +163,6 @@
   border-color: var(--foreground);
   background: var(--foreground);
   color: #fff;
-  transform: translateY(-1px);
 }
 
 .hero {
@@ -632,7 +631,6 @@
 .relatedCard:hover {
   border-color: var(--line-strong);
   box-shadow: var(--shadow-card);
-  transform: translateY(-2px);
 }
 
 .relatedVisual {

@@ -222,11 +222,9 @@
 
 .submitButton:hover {
   background: var(--accent-strong);
-  transform: translateY(-1px);
 }
 
 .submitButton:active {
-  transform: translateY(0);
 }
 
 .submitButton:disabled {

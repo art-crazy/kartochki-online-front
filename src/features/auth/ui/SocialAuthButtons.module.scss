@@ -49,11 +49,9 @@
 .socialLink:hover {
   border-color: rgba(13, 13, 13, 0.2);
   box-shadow: 0 10px 24px rgba(13, 13, 13, 0.1);
-  transform: translateY(-1px);
 }
 
 .socialLink:active {
-  transform: translateY(0);
 }
 
 .socialLink[aria-disabled="true"] {

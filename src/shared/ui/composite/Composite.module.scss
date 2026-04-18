@@ -129,7 +129,6 @@
 
 .projectCard:hover {
   border-color: var(--dark-border-2);
-  transform: translateY(-2px);
 }
 
 .projectCardAddSurface {
@@ -287,7 +286,6 @@
 
 .resultCard:hover {
   border-color: var(--dark-border-2);
-  transform: translateY(-2px);
 }
 
 .resultVisual {
@@ -383,7 +381,6 @@
 .blogCardLink:hover .blogCard,
 .blogCardLink:focus-visible .blogCard {
   border-color: color-mix(in srgb, var(--accent) 24%, var(--line));
-  transform: translateY(-2px);
 }
 
 .blogVisual {
