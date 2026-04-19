@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { BlogArticleSection, BlogPostResponse, BlogSectionCallout, BlogSectionTable } from "@/shared/api";
-import { siteConfig } from "@/shared/config/site";
+import { buildCanonicalUrl } from "@/shared/seo";
 import { Badge, Button } from "@/shared/ui/primitives/Primitives";
 import { buildArticleSchema } from "../model/structuredData";
 import { BlogPostEnhancements } from "./BlogPostEnhancements";
@@ -22,7 +22,7 @@ const RELATED_LABEL = "Читайте также";
 
 export function ApiBlogPost({ content }: ApiBlogPostProps) {
   const { post, article_sections: sections, related_posts: relatedPosts } = content;
-  const canonicalUrl = `${siteConfig.defaultUrl}${post.canonical_path}`;
+  const canonicalUrl = buildCanonicalUrl(post.canonical_path);
 
   return (
     <main className={styles.page}>

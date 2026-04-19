@@ -1,5 +1,6 @@
-import { siteConfig } from "@/shared/config/site";
+import { buildSiteUrl, siteConfig } from "@/shared/config/site";
 import { seoPublisher } from "@/shared/config/seo";
+import { buildCanonicalUrl } from "@/shared/seo";
 import { faqItems } from "@/widgets/marketing/home/model/content";
 
 export const organizationSchema = {
@@ -19,13 +20,13 @@ export const webSiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: "kartochki.online",
-  url: siteConfig.defaultUrl,
+  url: buildSiteUrl("/"),
   inLanguage: "ru",
   potentialAction: {
     "@type": "SearchAction",
     target: {
       "@type": "EntryPoint",
-      urlTemplate: `${siteConfig.defaultUrl}/blog?q={search_term_string}`,
+      urlTemplate: `${buildCanonicalUrl("/blog")}?q={search_term_string}`,
     },
     "query-input": "required name=search_term_string",
   },
@@ -40,7 +41,7 @@ export const softwareSchema = {
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
   inLanguage: "ru",
-  url: siteConfig.defaultUrl,
+  url: buildSiteUrl("/"),
   offers: [
     { "@type": "Offer", name: "Старт", price: "0", priceCurrency: "RUB" },
     { "@type": "Offer", name: "Про", price: "490", priceCurrency: "RUB" },

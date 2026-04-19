@@ -17,3 +17,11 @@ export const siteConfig = {
   appUrl: process.env.NEXT_PUBLIC_APP_URL ?? "https://kartochki-online.ru",
   supportEmail: "support@kartochki-online.ru",
 };
+
+export function buildSiteUrl(path = "/") {
+  if (path.startsWith("http://") || path.startsWith("https://")) {
+    return path;
+  }
+
+  return new URL(path.startsWith("/") ? path : `/${path}`, siteConfig.defaultUrl).toString();
+}

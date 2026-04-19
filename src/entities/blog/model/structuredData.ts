@@ -1,5 +1,5 @@
-import { siteConfig } from "@/shared/config/site";
 import { seoBlogImageUrl, seoPublisher } from "@/shared/config/seo";
+import { buildCanonicalUrl } from "@/shared/seo";
 import { blogPost, faqItems } from "./content";
 
 export const articleSchema = {
@@ -18,7 +18,7 @@ export const articleSchema = {
   },
   mainEntityOfPage: {
     "@type": "WebPage",
-    "@id": `${siteConfig.defaultUrl}${blogPost.canonicalPath}`,
+    "@id": buildCanonicalUrl(blogPost.canonicalPath),
   },
 } as const;
 
@@ -40,7 +40,7 @@ export const blogListingSchema = {
   "@type": "Blog",
   name: "Блог kartochki.online",
   description: "Советы для продавцов на маркетплейсах: требования к фото, инфографика и оформление карточек.",
-  url: `${siteConfig.defaultUrl}/blog`,
+  url: buildCanonicalUrl("/blog"),
   inLanguage: "ru",
   publisher: seoPublisher,
 } as const;

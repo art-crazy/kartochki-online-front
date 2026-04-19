@@ -16,7 +16,7 @@ import {
   yandexFeatures,
   yandexTable,
 } from "@/entities/blog/model/content";
-import { siteConfig } from "@/shared/config/site";
+import { buildCanonicalUrl } from "@/shared/seo";
 import { Badge, Button } from "@/shared/ui/primitives/Primitives";
 import { BlogPostEnhancements } from "./BlogPostEnhancements";
 import { Callout, DataTable } from "./BlogPostParts";
@@ -24,7 +24,7 @@ import { BlogPostShare } from "./BlogPostShare";
 import styles from "./BlogPost.module.scss";
 
 export function BlogPost() {
-  const canonicalUrl = `${siteConfig.defaultUrl}${blogPost.canonicalPath}`;
+  const canonicalUrl = buildCanonicalUrl(blogPost.canonicalPath);
 
   return (
     <main className={styles.page}>

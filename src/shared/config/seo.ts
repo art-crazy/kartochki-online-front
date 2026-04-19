@@ -1,13 +1,13 @@
-import { siteConfig } from "./site";
+import { buildSiteUrl } from "./site";
 
 export const seoPublisher = {
   "@type": "Organization" as const,
   name: "kartochki.online",
-  url: siteConfig.defaultUrl,
+  url: buildSiteUrl("/"),
   logo: {
     "@type": "ImageObject" as const,
-    url: `${siteConfig.defaultUrl}/logo.png`,
+    url: buildSiteUrl("/logo.png"),
   },
 };
 
-export const seoBlogImageUrl = `${siteConfig.defaultUrl}/og-blog.png`;
+export const seoBlogImageUrl = buildSiteUrl("/og-blog.png");

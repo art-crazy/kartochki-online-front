@@ -1,9 +1,9 @@
 import type { BlogPostDetail } from "@/shared/api";
-import { siteConfig } from "@/shared/config/site";
 import { seoBlogImageUrl, seoPublisher } from "@/shared/config/seo";
+import { buildCanonicalUrl } from "@/shared/seo";
 
 export function buildArticleSchema(post: BlogPostDetail) {
-  const canonicalUrl = `${siteConfig.defaultUrl}${post.canonical_path}`;
+  const canonicalUrl = buildCanonicalUrl(post.canonical_path);
 
   return {
     "@context": "https://schema.org",

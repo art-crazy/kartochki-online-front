@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { classNames } from "@/shared/lib/classNames";
-import { siteConfig } from "@/shared/config/site";
+import { buildCanonicalUrl } from "@/shared/seo";
 import styles from "./SeoBreadcrumbs.module.scss";
 
 export type SeoBreadcrumbItem = {
@@ -81,9 +81,5 @@ function renderItem({ item, isLast }: { item: SeoBreadcrumbItem; isLast: boolean
 }
 
 function toAbsoluteUrl(path: string) {
-  if (path.startsWith("http://") || path.startsWith("https://")) {
-    return path;
-  }
-
-  return `${siteConfig.defaultUrl}${path.startsWith("/") ? path : `/${path}`}`;
+  return buildCanonicalUrl(path);
 }

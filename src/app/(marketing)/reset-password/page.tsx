@@ -1,18 +1,12 @@
 import type { Metadata } from "next";
-import { siteConfig } from "@/shared/config/site";
+import { buildNoindexMetadata } from "@/shared/seo";
 import { ResetPasswordPage } from "@/views/auth/ui/ResetPasswordPage";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildNoindexMetadata({
   title: "Сброс пароля",
   description: "Установите новый пароль для аккаунта kartochki.online.",
-  alternates: {
-    canonical: `${siteConfig.defaultUrl}/reset-password`,
-  },
-  robots: {
-    index: false,
-    follow: false,
-  },
-};
+  path: "/reset-password",
+});
 
 type ResetPasswordRouteProps = {
   searchParams: Promise<{

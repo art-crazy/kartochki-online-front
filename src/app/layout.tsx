@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { buildSiteUrl, siteConfig } from "@/shared/config/site";
 import { AppProviders } from "@/shared/providers/AppProviders";
-import { siteConfig } from "@/shared/config/site";
+import { buildCanonicalUrl, buildNoindexRobots } from "@/shared/seo";
 import "./globals.scss";
 
 const geistSans = localFont({
@@ -58,16 +59,16 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   applicationName: siteConfig.applicationName,
   alternates: {
-    canonical: siteConfig.defaultUrl,
+    canonical: buildCanonicalUrl("/"),
     languages: {
-      [siteConfig.locale]: siteConfig.defaultUrl,
+      [siteConfig.locale]: buildSiteUrl("/"),
     },
   },
   keywords: siteConfig.keywords,
   openGraph: {
     type: "website",
     locale: siteConfig.openGraphLocale,
-    url: siteConfig.defaultUrl,
+    url: buildSiteUrl("/"),
     siteName: siteConfig.name,
     title: siteConfig.name,
     description: siteConfig.description,
@@ -77,15 +78,7 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
   },
-  robots: {
-    index: false,
-    follow: false,
-    googleBot: {
-      index: false,
-      follow: false,
-      noimageindex: true,
-    },
-  },
+  robots: buildNoindexRobots(),
   category: "business",
 };
 

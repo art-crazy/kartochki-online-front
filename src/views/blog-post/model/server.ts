@@ -2,7 +2,7 @@ import { cache } from "react";
 import type { Metadata } from "next";
 import { blogPostSlugs, getBlogPostBySlug } from "@/entities/blog/model/content";
 import { getPublicBlogPostBySlug } from "@/shared/api";
-import { siteConfig } from "@/shared/config/site";
+import { buildArticleMetadata, buildIndexRobots } from "@/shared/seo";
 
 export const getApiBlogPost = cache(async (slug: string) => {
   try {
@@ -32,28 +32,16 @@ export async function getBlogPostMetadata(slug: string): Promise<Metadata> {
 
   if (apiPost) {
     const { post } = apiPost;
-    const canonical = `${siteConfig.defaultUrl}${post.canonical_path}`;
 
-    return {
+    return buildArticleMetadata({
       title: post.title,
       description: post.description,
       keywords: post.tags.map((tag) => tag.label),
-      alternates: {
-        canonical,
-      },
-      openGraph: {
-        type: "article",
-        title: post.title,
-        description: post.description,
-        url: canonical,
-        publishedTime: post.published_at,
-        modifiedTime: post.updated_at,
-      },
-      robots: {
-        index: true,
-        follow: true,
-      },
-    };
+      path: post.canonical_path,
+      robots: buildIndexRobots(),
+      publishedTime: post.published_at,
+      modifiedTime: post.updated_at,
+    });
   }
 
   const post = getBlogPostBySlug(slug);
@@ -62,26 +50,13 @@ export async function getBlogPostMetadata(slug: string): Promise<Metadata> {
     return {};
   }
 
-  const canonical = `${siteConfig.defaultUrl}${post.canonicalPath}`;
-
-  return {
+  return buildArticleMetadata({
     title: post.title,
     description: post.description,
     keywords: [...post.keywords],
-    alternates: {
-      canonical,
-    },
-    openGraph: {
-      type: "article",
-      title: post.title,
-      description: post.description,
-      url: canonical,
-      publishedTime: post.publishedAt,
-      modifiedTime: post.updatedAt,
-    },
-    robots: {
-      index: true,
-      follow: true,
-    },
-  };
+    path: post.canonicalPath,
+    robots: buildIndexRobots(),
+    publishedTime: post.publishedAt,
+    modifiedTime: post.updatedAt,
+  });
 }
