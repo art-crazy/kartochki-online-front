@@ -1,18 +1,15 @@
-import type { MarketingLink } from "@/shared/config/marketing";
+import type { NavItem } from "@/shared/config/marketing";
 import { getOptionalServerAuthUser } from "@/shared/auth/model/getOptionalServerAuthUser";
 import Link from "next/link";
+import { NavDropdown } from "./NavDropdown";
 import { SiteHeaderAuthActions } from "./SiteHeaderAuthActions";
 import styles from "./SiteHeader.module.scss";
 
-type SiteHeaderLink = MarketingLink & {
-  href: string;
-};
-
 type SiteHeaderProps = {
-  links: readonly SiteHeaderLink[];
+  nav: readonly NavItem[];
 };
 
-export async function SiteHeader({ links }: SiteHeaderProps) {
+export async function SiteHeader({ nav }: SiteHeaderProps) {
   const user = await getOptionalServerAuthUser();
 
   return (
@@ -24,11 +21,18 @@ export async function SiteHeader({ links }: SiteHeaderProps) {
           </Link>
 
           <ul className={styles.navLinks}>
-            {links.map((link) => (
-              <li key={`${link.label}-${link.href}`}>
-                <Link href={link.href}>{link.label}</Link>
-              </li>
-            ))}
+            {nav.map((item) => {
+              if (item.type === "dropdown") {
+                return (
+                  <NavDropdown key={item.label} label={item.label} items={item.items} />
+                );
+              }
+              return (
+                <li key={item.href}>
+                  <Link href={item.href}>{item.label}</Link>
+                </li>
+              );
+            })}
           </ul>
 
           <div className={styles.navActions}>

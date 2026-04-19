@@ -2,7 +2,7 @@
   position: relative;
   z-index: 1;
   margin-top: 48px;
-  padding: 36px 0 32px;
+  padding: 40px 0 32px;
   border-top: 1px solid var(--line);
 }
 
@@ -11,11 +11,14 @@
   margin: 0 auto;
 }
 
-.footerInner {
+.footerTop {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 20px;
+  gap: 40px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 24px;
 }
 
 .logo {
@@ -23,34 +26,56 @@
   font-size: 1.1rem;
   font-weight: 900;
   letter-spacing: -0.04em;
+  flex-shrink: 0;
 }
 
 .logo span {
   color: var(--accent-text);
 }
 
-.footerLinks {
+.columns {
   display: flex;
-  align-items: center;
-  gap: 28px;
+  gap: 48px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 120px;
+}
+
+.columnHeading {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--foreground);
+  margin-bottom: 4px;
+}
+
+.columnLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   list-style: none;
 }
 
-.footerLinks a {
+.columnLinks a {
   color: var(--muted);
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 500;
   transition: color 0.2s ease;
 }
 
-.footerText {
-  color: var(--muted);
-  font-size: 0.9rem;
-  font-weight: 500;
+.columnLinks a:hover {
+  color: var(--foreground);
 }
 
-.footerLinks a:hover {
-  color: var(--foreground);
+.footerText {
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
 .footerCopy {
@@ -63,14 +88,17 @@
     width: min(100% - 24px, 1120px);
   }
 
-  .footerInner {
+  .footerTop {
     flex-direction: column;
-    text-align: center;
+    gap: 32px;
   }
 
-  .footerLinks {
+  .columns {
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 14px;
+    gap: 28px 40px;
+  }
+
+  .footerCopy {
+    text-align: center;
   }
 }

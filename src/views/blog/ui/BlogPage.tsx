@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { blogHeroStats, heroGradients } from "@/entities/blog/model/content";
 import { blogListingSchema } from "@/entities/blog/model/structuredData";
-import { blogHeaderLinks, legalFooterLinks } from "@/shared/config/marketing";
+import { blogHeaderNav, blogFooterColumns } from "@/shared/config/marketing";
 import { SeoBreadcrumbs } from "@/shared/ui";
 import { Button } from "@/shared/ui/primitives/Primitives";
 import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
@@ -22,7 +22,7 @@ export function BlogPage({ content = fallbackBlogPageContent }: BlogPageProps) {
     <main className={styles.page}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogListingSchema) }} />
 
-      <SiteHeader links={blogHeaderLinks} />
+      <SiteHeader nav={blogHeaderNav} />
       <SeoBreadcrumbs
         items={[
           { label: "Главная", href: "/" },
@@ -213,7 +213,7 @@ export function BlogPage({ content = fallbackBlogPageContent }: BlogPageProps) {
         </aside>
       </div>
 
-      <SiteFooter links={legalFooterLinks} />
+      <SiteFooter columns={blogFooterColumns} />
     </main>
   );
 }

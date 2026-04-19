@@ -1,0 +1,78 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 100%;
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #fff;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  border-color: #d1d5db;
+  box-shadow: 0 16px 40px rgba(17, 24, 39, 0.08);
+}
+
+.cardBadge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  color: #374151;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.cardBadge[data-tone="wb"] {
+  background: rgba(163, 67, 226, 0.12);
+  color: #8b33d7;
+}
+
+.cardBadge[data-tone="ozon"] {
+  background: rgba(0, 91, 255, 0.12);
+  color: #0057d9;
+}
+
+.cardBadge[data-tone="ym"] {
+  background: rgba(255, 204, 0, 0.18);
+  color: #8a6a00;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.cardDescription {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--muted, #6b7280);
+}
+
+.cardCta {
+  margin-top: auto;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+}

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { legalFooterLinks, blogHeaderLinks } from "@/shared/config/marketing";
+import { legalFooterColumns, blogHeaderNav } from "@/shared/config/marketing";
 import { siteConfig } from "@/shared/config/site";
 import { buildNoindexMetadata } from "@/shared/seo";
 import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
@@ -23,7 +23,7 @@ const rows = [
 export default function RekvizityPage() {
   return (
     <main className={styles.page}>
-      <SiteHeader links={blogHeaderLinks} />
+      <SiteHeader nav={blogHeaderNav} />
 
       <section className={styles.content}>
         <div className={styles.label}>Юридическая информация</div>
@@ -39,7 +39,7 @@ export default function RekvizityPage() {
         </div>
       </section>
 
-      <SiteFooter links={legalFooterLinks} />
+      <SiteFooter columns={legalFooterColumns} />
     </main>
   );
 }
