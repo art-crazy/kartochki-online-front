@@ -83,16 +83,16 @@ export const fallbackBlogPageContent: BlogPageContent = {
   categories: blogCategories.map((category) => ({
     label: category.label,
     count: category.count,
-    href: blogPost.canonicalPath,
+    href: "/blog",
   })),
   popularPosts: blogPopularPosts.map((post) => ({
     title: post.title,
     meta: post.meta,
-    href: post.href ?? blogPost.canonicalPath,
+    href: post.href ?? "/blog",
   })),
   tags: blogTags.map((tag) => ({
     label: tag,
-    href: blogPost.canonicalPath,
+    href: "/blog",
   })),
   pagination: {
     page: 1,
@@ -105,10 +105,7 @@ export function mapBlogListResponse(response: BlogListResponse): BlogPageContent
 
   return {
     featuredPost: mapFeaturedPost(response.featured_post, posts[0]),
-    filterChips: [
-      ALL_LABEL,
-      ...response.categories.slice(0, 4).map((category) => category.label),
-    ],
+    filterChips: [ALL_LABEL, ...response.categories.slice(0, 4).map((category) => category.label)],
     feedPosts: posts.slice(0, 6),
     morePosts: response.posts.slice(6).map(mapListPost),
     categories: response.categories.map((category) => ({
@@ -134,7 +131,7 @@ function mapFeaturedPost(post: ApiFeaturedBlogPost | undefined, firstPost: BlogF
       ? {
           title: firstPost.title,
           excerpt: firstPost.excerpt,
-          href: firstPost.href ?? blogPost.canonicalPath,
+          href: firstPost.href ?? "/blog",
           publishedLabel: firstPost.meta,
           author: AUTHOR,
           authorInitials: AUTHOR_INITIALS,
@@ -193,6 +190,13 @@ function formatReadingTime(minutes: number) {
 
 function formatDate(value: string) {
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
-  return new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "short" }).format(date);
+
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat("ru-RU", {
+    day: "numeric",
+    month: "short",
+  }).format(date);
 }

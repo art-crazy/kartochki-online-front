@@ -1,0 +1,108 @@
+.heroBadge {
+  display: inline-block;
+  margin-bottom: 16px;
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.heroBadge[data-tone="wb"] {
+  background: #f0e8f8;
+  color: #7c3aed;
+}
+
+.heroBadge[data-tone="ozon"] {
+  background: #fff0e0;
+  color: #e06a00;
+}
+
+.heroBadge[data-tone="ym"] {
+  background: #fff7e0;
+  color: #c87d00;
+}
+
+.requirementsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.requirementsItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.requirementsItem::before {
+  content: "+";
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.stepsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 24px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+
+.stepNumber {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.stepContent {
+  flex: 1;
+}
+
+.stepTitle {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.stepDescription {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted, #6b7280);
+}

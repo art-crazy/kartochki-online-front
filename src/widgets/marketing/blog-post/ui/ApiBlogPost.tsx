@@ -180,11 +180,11 @@ function DataTable({ table }: { table: BlogSectionTable }) {
     <div className={styles.tableWrap}>
       <table>
         <thead>
-          <tr>{table.head.map((cell) => <th key={cell}>{cell}</th>)}</tr>
+          <tr>{table.head.map((cell, i) => <th key={i}>{cell}</th>)}</tr>
         </thead>
         <tbody>
-          {table.rows.map((row) => (
-            <tr key={row.join("-")}>{row.map((cell) => <td key={cell}>{cell}</td>)}</tr>
+          {table.rows.map((row, rowIndex) => (
+            <tr key={rowIndex}>{row.map((cell, cellIndex) => <td key={cellIndex}>{cell}</td>)}</tr>
           ))}
         </tbody>
       </table>

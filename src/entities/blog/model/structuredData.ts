@@ -1,28 +1,28 @@
+import type { BlogPostEntry } from "./content";
 import { seoBlogImageUrl, seoPublisher } from "@/shared/config/seo";
-import { buildCanonicalUrl, buildFaqPageSchema } from "@/shared/seo";
-import { blogPost, faqItems } from "./content";
+import { buildCanonicalUrl } from "@/shared/seo";
 
-export const articleSchema = {
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  headline: blogPost.title,
-  description: "Полный гайд по требованиям к фото для трёх крупнейших маркетплейсов России.",
-  datePublished: blogPost.publishedAt,
-  dateModified: blogPost.updatedAt,
-  inLanguage: "ru",
-  author: seoPublisher,
-  publisher: seoPublisher,
-  image: {
-    "@type": "ImageObject",
-    url: seoBlogImageUrl,
-  },
-  mainEntityOfPage: {
-    "@type": "WebPage",
-    "@id": buildCanonicalUrl(blogPost.canonicalPath),
-  },
-} as const;
-
-export const faqSchema = buildFaqPageSchema(faqItems);
+export function buildMarkdownArticleSchema(post: BlogPostEntry) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.description,
+    datePublished: post.publishedAt,
+    dateModified: post.updatedAt,
+    inLanguage: "ru",
+    author: seoPublisher,
+    publisher: seoPublisher,
+    image: {
+      "@type": "ImageObject",
+      url: seoBlogImageUrl,
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": buildCanonicalUrl(post.canonicalPath),
+    },
+  } as const;
+}
 
 export const blogListingSchema = {
   "@context": "https://schema.org",

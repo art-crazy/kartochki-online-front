@@ -1,0 +1,107 @@
+.heroBadge {
+  display: inline-block;
+  margin-bottom: 16px;
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.heroBadge[data-tone="wb"] {
+  background: #f0e8f8;
+  color: #7c3aed;
+}
+
+.heroBadge[data-tone="ozon"] {
+  background: #fff0e0;
+  color: #e06a00;
+}
+
+.heroBadge[data-tone="ym"] {
+  background: #fff7e0;
+  color: #c87d00;
+}
+
+.slidesList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.slideItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 24px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+
+.slideNumber {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.slideContent {
+  flex: 1;
+}
+
+.slideLabel {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.slideDescription {
+  margin: 0;
+  color: var(--muted, #6b7280);
+  line-height: 1.6;
+}
+
+.useCasesList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.useCaseItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.useCaseItem::before {
+  content: "+";
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}

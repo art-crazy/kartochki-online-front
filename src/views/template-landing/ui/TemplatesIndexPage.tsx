@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { marketingFooterColumns, marketingHeaderNav } from "@/shared/config/marketing";
-import { buildCollectionPageSchema, buildHubBreadcrumbs, getTemplatesHubLinkGroups } from "@/shared/seo";
+import { buildCollectionPageSchema, buildHubBreadcrumbs } from "@/shared/seo";
+import { getTemplatesHubLinkGroups } from "@/shared/seo/internal-linking";
 import { SeoBreadcrumbs, SeoJsonLd, SeoLinkSection } from "@/shared/ui";
 import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
 import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";

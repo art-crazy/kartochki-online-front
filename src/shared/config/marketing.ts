@@ -63,6 +63,7 @@ export const marketingFooterColumns: readonly FooterColumn[] = [
     links: [
       { label: "Тарифы", href: "/#pricing" },
       { label: "Блог", href: "/blog" },
+      { label: "Карта сайта", href: "/sitemap" },
       { label: "FAQ", href: "/#faq" },
       { label: "Поддержка", href: `mailto:${siteConfig.supportEmail}` },
     ],
@@ -78,6 +79,7 @@ export const blogFooterColumns: readonly FooterColumn[] = [
     heading: "Сервис",
     links: [
       { label: "Главная", href: "/" },
+      { label: "Карта сайта", href: "/sitemap" },
       { label: "Тарифы", href: "/#pricing" },
       { label: "Поддержка", href: `mailto:${siteConfig.supportEmail}` },
     ],

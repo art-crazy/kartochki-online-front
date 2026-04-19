@@ -1,11 +1,7 @@
 import Link from "next/link";
 import { marketingHeaderNav, marketingFooterColumns } from "@/shared/config/marketing";
-import {
-  buildDetailBreadcrumbs,
-  buildFaqPageSchema,
-  buildSoftwareApplicationSchema,
-  getTemplatePageLinkGroups,
-} from "@/shared/seo";
+import { buildDetailBreadcrumbs, buildFaqPageSchema, buildSoftwareApplicationSchema } from "@/shared/seo";
+import { getTemplatePageLinkGroups } from "@/shared/seo/internal-linking";
 import { SeoBreadcrumbs, SeoJsonLd, SeoLinkSection } from "@/shared/ui";
 import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
 import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";

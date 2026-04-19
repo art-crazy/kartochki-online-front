@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { buildItemListSchema, type SeoLinkGroup } from "@/shared/seo";
+import { buildItemListSchema } from "@/shared/seo/structured-data";
+import type { SeoLinkGroup } from "@/shared/seo/internal-linking";
 import { SeoJsonLd } from "../seo-json-ld/SeoJsonLd";
 import styles from "./SeoLinkSection.module.scss";
 

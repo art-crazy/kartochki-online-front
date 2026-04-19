@@ -1,7 +1,4 @@
-import { odezhda } from "./data/odezhda";
-import { elektronika } from "./data/elektronika";
-import { kosmetika } from "./data/kosmetika";
-import { tovaryDlyaDoma } from "./data/tovary-dlya-doma";
+import { readMarkdownCollection } from "@/shared/content/marketing/markdown";
 
 export type TemplatePage = {
   slug: string;
@@ -27,7 +24,25 @@ export type TemplatePage = {
   }[];
 };
 
-const templatePagesList: TemplatePage[] = [odezhda, elektronika, kosmetika, tovaryDlyaDoma];
+type TemplatePageFrontmatter = Omit<TemplatePage, "slug"> & {
+  order?: number;
+};
+
+const templatePagesList: TemplatePage[] = readMarkdownCollection<TemplatePageFrontmatter>("templates").map(
+  ({ slug, data }) => ({
+    slug,
+    categoryName: data.categoryName,
+    title: data.title,
+    description: data.description,
+    keywords: data.keywords,
+    openGraphTitle: data.openGraphTitle,
+    openGraphDescription: data.openGraphDescription,
+    hero: data.hero,
+    slides: data.slides,
+    useCases: data.useCases,
+    faq: data.faq,
+  }),
+);
 
 const templatePages: Record<string, TemplatePage> = Object.fromEntries(
   templatePagesList.map((page) => [page.slug, page]),

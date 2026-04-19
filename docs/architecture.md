@@ -107,3 +107,15 @@ Do not add a Next.js BFF auth layer unless the backend contract changes and the 
 - Use Next metadata APIs for canonical URLs, Open Graph, `robots`, and `sitemap`.
 - Add structured data to high-intent pages when they are implemented.
 - Avoid client-only rendering for indexable content.
+
+## Marketing Content Source
+
+- Markdown content for public SEO pages lives in `content/marketing/`.
+- Organize content by intent cluster, not by framework route internals:
+  - `content/marketing/marketplaces/*.md`
+  - `content/marketing/tools/*.md`
+  - `content/marketing/templates/*.md`
+  - `content/marketing/blog/*.md`
+- Keep markdown parsing in shared infrastructure such as `src/shared/content/marketing`.
+- Route-facing models in `src/views/*/model` and `src/entities/blog/model` should map markdown frontmatter into typed page models.
+- Treat markdown as the source of truth for static marketing content; avoid duplicating the same titles, descriptions, and body copy in TS objects.

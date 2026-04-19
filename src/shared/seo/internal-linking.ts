@@ -1,3 +1,12 @@
+import {
+  getMarketplaceToolLinksForMarketplace,
+  getMarketplaceToolLinksForTool,
+} from "./internal-linking-marketplace-tools";
+import {
+  getMarketplaceTemplateLinksForMarketplace,
+  getMarketplaceTemplateLinksForTemplate,
+} from "./internal-linking-marketplace-templates";
+
 export type SeoLinkItem = {
   href: string;
   label: string;
@@ -156,21 +165,15 @@ export function getToolsHubLinkGroups(): SeoLinkGroup[] {
 export function getMarketplacePageLinkGroups(slug: string): SeoLinkGroup[] {
   const currentHref = `/marketplaces/${slug}`;
 
-  const marketplaceSpecificTemplates: Record<string, readonly SeoLinkItem[]> = {
-    wildberries: [templateLinks.odezhda, templateLinks.kosmetika, templateLinks.tovaryDlyaDoma],
-    ozon: [templateLinks.elektronika, templateLinks.kosmetika, templateLinks.tovaryDlyaDoma],
-    "yandex-market": [templateLinks.elektronika, templateLinks.tovaryDlyaDoma, templateLinks.odezhda],
-  };
-
   return withoutCurrent(
     [
       {
         title: "Инструменты для этой площадки",
-        links: [toolLinks.generator, toolLinks.infographics],
+        links: getMarketplaceToolLinksForMarketplace(slug),
       },
       {
         title: "Шаблоны, которые обычно используют продавцы",
-        links: marketplaceSpecificTemplates[slug] ?? [templateLinks.odezhda, templateLinks.elektronika, templateLinks.kosmetika],
+        links: getMarketplaceTemplateLinksForMarketplace(slug),
       },
       {
         title: "Смежные страницы и гайды",
@@ -193,7 +196,7 @@ export function getToolPageLinkGroups(slug: string): SeoLinkGroup[] {
     [
       {
         title: "Куда применять инструмент",
-        links: [marketplaceLinks.wildberries, marketplaceLinks.ozon, marketplaceLinks.yandexMarket],
+        links: getMarketplaceToolLinksForTool(slug),
       },
       {
         title: "Подходящие шаблоны",
@@ -219,7 +222,7 @@ export function getTemplatePageLinkGroups(slug: string): SeoLinkGroup[] {
       },
       {
         title: "Маркетплейсы для адаптации карточек",
-        links: [marketplaceLinks.wildberries, marketplaceLinks.ozon, marketplaceLinks.yandexMarket],
+        links: getMarketplaceTemplateLinksForTemplate(slug),
       },
       {
         title: "Инструменты для финальной сборки",

@@ -1,6 +1,4 @@
-import { yandexMarket } from "./data/yandex-market";
-import { ozon } from "./data/ozon";
-import { wildberries } from "./data/wildberries";
+import { readMarkdownCollection } from "@/shared/content/marketing/markdown";
 
 export type MarketplaceTone = "wb" | "ozon" | "ym";
 
@@ -35,7 +33,27 @@ export type MarketplacePage = {
   }[];
 };
 
-const marketplacePagesList: MarketplacePage[] = [wildberries, ozon, yandexMarket];
+type MarketplacePageFrontmatter = Omit<MarketplacePage, "slug"> & {
+  order?: number;
+};
+
+const marketplacePagesList: MarketplacePage[] = readMarkdownCollection<MarketplacePageFrontmatter>("marketplaces").map(
+  ({ slug, data }) => ({
+    slug,
+    tone: data.tone,
+    name: data.name,
+    nameGenitive: data.nameGenitive,
+    title: data.title,
+    description: data.description,
+    keywords: data.keywords,
+    openGraphTitle: data.openGraphTitle,
+    openGraphDescription: data.openGraphDescription,
+    hero: data.hero,
+    requirements: data.requirements,
+    features: data.features,
+    faq: data.faq,
+  }),
+);
 
 const marketplacePages: Record<string, MarketplacePage> = Object.fromEntries(
   marketplacePagesList.map((page) => [page.slug, page]),

@@ -34,5 +34,5 @@ export default async function BlogPostRoute({ params }: BlogPostRouteProps) {
     notFound();
   }
 
-  return <BlogPostPage />;
+  return <BlogPostPage slug={slug} />;
 }

@@ -1,4 +1,4 @@
-import { getHomeLinkGroups } from "@/shared/seo";
+import { getHomeLinkGroups } from "@/shared/seo/internal-linking";
 import { SeoJsonLd, SeoLinkSection } from "@/shared/ui";
 import { HomeFooter } from "@/widgets/marketing/home-footer/ui/HomeFooter";
 import { HomeHeader } from "@/widgets/marketing/home-header/ui/HomeHeader";
