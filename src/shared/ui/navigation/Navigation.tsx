@@ -67,13 +67,13 @@ export function SidebarProfileCard({
   gradient?: 1 | 2 | 3;
 }) {
   return (
-    <button type="button" className={styles.sidebarProfile}>
+    <div className={styles.sidebarProfile}>
       <Avatar initials={initials} src={avatarUrl} alt={name} size="md" gradient={gradient} />
       <div className={styles.sidebarProfileBody}>
         <div className={styles.sidebarProfileName}>{name}</div>
         {plan ? <div className={styles.sidebarProfilePlan}>{plan}</div> : null}
       </div>
-    </button>
+    </div>
   );
 }
 

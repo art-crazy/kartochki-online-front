@@ -101,17 +101,7 @@
   gap: 10px;
   width: 100%;
   padding: 0.5rem;
-  border: 0;
   border-radius: 8px;
-  background: transparent;
-  text-align: left;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.sidebarProfile:hover {
-  background: var(--dark-bg-3);
 }
 
 .sidebarProfileBody {
