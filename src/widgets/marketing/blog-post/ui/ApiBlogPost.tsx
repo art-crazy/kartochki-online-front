@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { BlogArticleSection, BlogPostResponse, BlogSectionCallout, BlogSectionTable } from "@/shared/api";
 import { buildCanonicalUrl } from "@/shared/seo";
+import { SeoJsonLd } from "@/shared/ui";
 import { Badge, Button } from "@/shared/ui/primitives/Primitives";
 import { buildArticleSchema } from "../model/structuredData";
 import { BlogPostEnhancements } from "./BlogPostEnhancements";
@@ -26,7 +27,7 @@ export function ApiBlogPost({ content }: ApiBlogPostProps) {
 
   return (
     <main className={styles.page}>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildArticleSchema(post)) }} />
+      <SeoJsonLd data={buildArticleSchema(post)} />
       <div id="read-progress" className={styles.readProgress} aria-hidden="true" />
       <BlogPostEnhancements />
 

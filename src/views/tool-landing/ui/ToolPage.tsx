@@ -1,8 +1,13 @@
 import Link from "next/link";
 import { marketingHeaderNav, marketingFooterColumns } from "@/shared/config/marketing";
-import { getToolPageLinkGroups } from "@/shared/seo";
+import {
+  buildDetailBreadcrumbs,
+  buildFaqPageSchema,
+  buildSoftwareApplicationSchema,
+  getToolPageLinkGroups,
+} from "@/shared/seo";
 import landing from "@/shared/ui/landing/LandingPage.module.scss";
-import { SeoBreadcrumbs, SeoLinkSection } from "@/shared/ui";
+import { SeoBreadcrumbs, SeoJsonLd, SeoLinkSection } from "@/shared/ui";
 import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
 import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
 import type { ToolPage } from "../model/tools";
@@ -13,17 +18,21 @@ type ToolPageProps = {
 };
 
 export function ToolLandingPage({ content }: ToolPageProps) {
+  const currentPath = `/tools/${content.slug}`;
+  const breadcrumbs = buildDetailBreadcrumbs("Инструменты", "/tools", content.hero.heading);
+  const faqSchema = buildFaqPageSchema(content.faq);
+  const softwareApplicationSchema = buildSoftwareApplicationSchema({
+    name: content.hero.heading,
+    description: content.description,
+    path: currentPath,
+  });
+
   return (
     <div className={landing.page}>
+      <SeoJsonLd data={faqSchema} />
+      <SeoJsonLd data={softwareApplicationSchema} />
       <SiteHeader nav={marketingHeaderNav} />
-      <SeoBreadcrumbs
-        items={[
-          { label: "Главная", href: "/" },
-          { label: "Инструменты", href: "/tools" },
-          { label: content.hero.heading },
-        ]}
-        currentPath={`/tools/${content.slug}`}
-      />
+      <SeoBreadcrumbs items={breadcrumbs} currentPath={currentPath} />
 
       <main>
         <section className={landing.hero}>

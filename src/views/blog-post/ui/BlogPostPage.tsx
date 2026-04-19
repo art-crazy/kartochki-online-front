@@ -1,14 +1,18 @@
 import { articleSchema, faqSchema } from "@/entities/blog/model/structuredData";
-import { blogPost, breadcrumbItems } from "@/entities/blog/model/content";
+import { blogPost } from "@/entities/blog/model/content";
+import { buildDetailBreadcrumbs } from "@/shared/seo";
+import { SeoJsonLd } from "@/shared/ui";
 import { BlogPost } from "@/widgets/marketing/blog-post/ui/BlogPost";
 import { BlogPostPageShell } from "./BlogPostPageShell";
 
 export function BlogPostPage() {
+  const breadcrumbs = buildDetailBreadcrumbs("Блог", "/blog", blogPost.title);
+
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <BlogPostPageShell breadcrumbs={breadcrumbItems} currentPath={blogPost.canonicalPath}>
+      <SeoJsonLd data={articleSchema} />
+      <SeoJsonLd data={faqSchema} />
+      <BlogPostPageShell breadcrumbs={breadcrumbs} currentPath={blogPost.canonicalPath}>
         <BlogPost />
       </BlogPostPageShell>
     </>

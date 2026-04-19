@@ -2,8 +2,8 @@ import Link from "next/link";
 import { blogHeroStats, heroGradients } from "@/entities/blog/model/content";
 import { blogListingSchema } from "@/entities/blog/model/structuredData";
 import { blogHeaderNav, blogFooterColumns } from "@/shared/config/marketing";
-import { getBlogHubCommercialLinkGroups } from "@/shared/seo";
-import { SeoBreadcrumbs, SeoLinkSection } from "@/shared/ui";
+import { buildCollectionPageSchema, buildHubBreadcrumbs, getBlogHubCommercialLinkGroups } from "@/shared/seo";
+import { SeoBreadcrumbs, SeoJsonLd, SeoLinkSection } from "@/shared/ui";
 import { Button } from "@/shared/ui/primitives/Primitives";
 import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
 import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
@@ -18,19 +18,24 @@ export function BlogPage({ content = fallbackBlogPageContent }: BlogPageProps) {
   const hasNextPage = content.pagination.page < content.pagination.totalPages;
   const nextPageHref = `/blog?page=${content.pagination.page + 1}`;
   const currentPath = content.pagination.page > 1 ? `/blog?page=${content.pagination.page}` : "/blog";
+  const breadcrumbs = buildHubBreadcrumbs("Блог");
+  const collectionPageSchema = buildCollectionPageSchema({
+    name: content.pagination.page > 1 ? `Блог kartochki.online, страница ${content.pagination.page}` : "Блог kartochki.online",
+    description: "Статьи для продавцов на маркетплейсах: фото, инфографика, SEO и оформление карточек.",
+    path: currentPath,
+    items: [content.featuredPost, ...content.feedPosts, ...content.morePosts].map((post) => ({
+      label: post.title,
+      href: post.href ?? content.featuredPost.href,
+    })),
+  });
 
   return (
     <main className={styles.page}>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogListingSchema) }} />
+      <SeoJsonLd data={blogListingSchema} />
+      <SeoJsonLd data={collectionPageSchema} />
 
       <SiteHeader nav={blogHeaderNav} />
-      <SeoBreadcrumbs
-        items={[
-          { label: "Главная", href: "/" },
-          { label: "Блог" },
-        ]}
-        currentPath={currentPath}
-      />
+      <SeoBreadcrumbs items={breadcrumbs} currentPath={currentPath} />
 
       <section className={[styles.hero, styles.reveal].join(" ")}>
         <div>
@@ -210,7 +215,6 @@ export function BlogPage({ content = fallbackBlogPageContent }: BlogPageProps) {
               </div>
             </div>
           </section>
-
         </aside>
       </div>
 

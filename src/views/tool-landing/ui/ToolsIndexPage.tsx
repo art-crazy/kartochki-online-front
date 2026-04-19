@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { marketingFooterColumns, marketingHeaderNav } from "@/shared/config/marketing";
-import { getToolsHubLinkGroups } from "@/shared/seo";
-import { SeoBreadcrumbs, SeoLinkSection } from "@/shared/ui";
+import { buildCollectionPageSchema, buildHubBreadcrumbs, getToolsHubLinkGroups } from "@/shared/seo";
+import { SeoBreadcrumbs, SeoJsonLd, SeoLinkSection } from "@/shared/ui";
 import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
 import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
 import landing from "@/shared/ui/landing/LandingPage.module.scss";
@@ -9,15 +9,23 @@ import styles from "@/shared/ui/landing/LandingIndex.module.scss";
 import { getAllToolPages } from "../model/tools";
 
 const pages = getAllToolPages();
+const breadcrumbs = buildHubBreadcrumbs("Инструменты");
+const collectionPageSchema = buildCollectionPageSchema({
+  name: "Инструменты для карточек товаров",
+  description: "Каталог инструментов для генерации карточек, инфографики и контента для маркетплейсов.",
+  path: "/tools",
+  items: pages.map((page) => ({
+    label: page.hero.heading,
+    href: `/tools/${page.slug}`,
+  })),
+});
 
 export function ToolsIndexPage() {
   return (
     <div className={landing.page}>
+      <SeoJsonLd data={collectionPageSchema} />
       <SiteHeader nav={marketingHeaderNav} />
-      <SeoBreadcrumbs
-        items={[{ label: "Главная", href: "/" }, { label: "Инструменты" }]}
-        currentPath="/tools"
-      />
+      <SeoBreadcrumbs items={breadcrumbs} currentPath="/tools" />
 
       <main>
         <section className={landing.hero}>

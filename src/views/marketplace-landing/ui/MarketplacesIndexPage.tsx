@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { marketingHeaderNav, marketingFooterColumns } from "@/shared/config/marketing";
-import { getMarketplacesHubLinkGroups } from "@/shared/seo";
-import { SeoBreadcrumbs, SeoLinkSection } from "@/shared/ui";
+import { buildCollectionPageSchema, buildHubBreadcrumbs, getMarketplacesHubLinkGroups } from "@/shared/seo";
+import { SeoBreadcrumbs, SeoJsonLd, SeoLinkSection } from "@/shared/ui";
 import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
 import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
 import { getAllMarketplacePages } from "../model/marketplaces";
@@ -9,22 +9,30 @@ import landing from "@/shared/ui/landing/LandingPage.module.scss";
 import styles from "@/shared/ui/landing/LandingIndex.module.scss";
 
 const pages = getAllMarketplacePages();
+const breadcrumbs = buildHubBreadcrumbs("Маркетплейсы");
+const collectionPageSchema = buildCollectionPageSchema({
+  name: "Маркетплейсы для генерации карточек товаров",
+  description: "Каталог посадочных страниц по маркетплейсам: Wildberries, Ozon и Яндекс Маркет.",
+  path: "/marketplaces",
+  items: pages.map((page) => ({
+    label: page.name,
+    href: `/marketplaces/${page.slug}`,
+  })),
+});
 
 export function MarketplacesIndexPage() {
   return (
     <div className={landing.page}>
+      <SeoJsonLd data={collectionPageSchema} />
       <SiteHeader nav={marketingHeaderNav} />
-      <SeoBreadcrumbs
-        items={[{ label: "Главная", href: "/" }, { label: "Маркетплейсы" }]}
-        currentPath="/marketplaces"
-      />
+      <SeoBreadcrumbs items={breadcrumbs} currentPath="/marketplaces" />
 
       <main>
         <section className={landing.hero}>
           <h1 className={landing.heroHeading}>Карточки товаров для каждого маркетплейса</h1>
           <p className={landing.heroSubheading}>
-            Выберите площадку: сервис автоматически применит правильные размеры, фон и требования к
-            инфографике под Wildberries, Ozon или Яндекс Маркет.
+            Выберите площадку: сервис автоматически применит правильные размеры, фон и требования к инфографике
+            под Wildberries, Ozon или Яндекс Маркет.
           </p>
         </section>
 

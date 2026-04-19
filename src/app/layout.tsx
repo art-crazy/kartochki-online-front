@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { buildSiteUrl, siteConfig } from "@/shared/config/site";
 import { AppProviders } from "@/shared/providers/AppProviders";
-import { buildCanonicalUrl, buildNoindexRobots } from "@/shared/seo";
+import { buildCanonicalUrl } from "@/shared/seo";
 import "./globals.scss";
 
 const geistSans = localFont({
@@ -78,7 +78,6 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
   },
-  robots: buildNoindexRobots(),
   category: "business",
 };
 

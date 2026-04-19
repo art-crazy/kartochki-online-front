@@ -1,5 +1,5 @@
 import { getHomeLinkGroups } from "@/shared/seo";
-import { SeoLinkSection } from "@/shared/ui";
+import { SeoJsonLd, SeoLinkSection } from "@/shared/ui";
 import { HomeFooter } from "@/widgets/marketing/home-footer/ui/HomeFooter";
 import { HomeHeader } from "@/widgets/marketing/home-header/ui/HomeHeader";
 import { HomeHero } from "@/widgets/marketing/home-hero/ui/HomeHero";
@@ -10,10 +10,10 @@ import styles from "./HomePage.module.scss";
 export function HomePage() {
   return (
     <main className={styles.page}>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <SeoJsonLd data={organizationSchema} />
+      <SeoJsonLd data={webSiteSchema} />
+      <SeoJsonLd data={softwareSchema} />
+      <SeoJsonLd data={faqSchema} />
       <HomeHeader />
       <HomeHero />
       <HomeSections />

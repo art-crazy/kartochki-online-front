@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { buildItemListSchema, type SeoLinkGroup } from "@/shared/seo";
+import { SeoJsonLd } from "../seo-json-ld/SeoJsonLd";
 import styles from "./SeoLinkSection.module.scss";
 
 type SeoLinkSectionProps = {
@@ -21,7 +22,7 @@ export function SeoLinkSection({ title, groups, eyebrow, intro }: SeoLinkSection
 
   return (
     <section className={styles.section} aria-label={title}>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+      <SeoJsonLd data={itemListSchema} />
       <div className={styles.surface}>
         {eyebrow ? <div className={styles.eyebrow}>{eyebrow}</div> : null}
         <h2 className={styles.title}>{title}</h2>

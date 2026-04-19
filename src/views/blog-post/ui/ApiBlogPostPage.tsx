@@ -1,5 +1,5 @@
 import type { BlogPostResponse } from "@/shared/api";
-import type { SeoBreadcrumbItem } from "@/shared/ui";
+import { buildDetailBreadcrumbs } from "@/shared/seo";
 import { ApiBlogPost } from "@/widgets/marketing/blog-post/ui/ApiBlogPost";
 import { BlogPostPageShell } from "./BlogPostPageShell";
 
@@ -8,11 +8,7 @@ type ApiBlogPostPageProps = {
 };
 
 export function ApiBlogPostPage({ content }: ApiBlogPostPageProps) {
-  const breadcrumbs: ReadonlyArray<SeoBreadcrumbItem> = [
-    { label: "Главная", href: "/" },
-    { label: "Блог", href: "/blog" },
-    { label: content.post.title },
-  ];
+  const breadcrumbs = buildDetailBreadcrumbs("Блог", "/blog", content.post.title);
 
   return (
     <BlogPostPageShell breadcrumbs={breadcrumbs} currentPath={content.post.canonical_path}>

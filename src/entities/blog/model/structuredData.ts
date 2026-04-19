@@ -1,10 +1,10 @@
 import { seoBlogImageUrl, seoPublisher } from "@/shared/config/seo";
-import { buildCanonicalUrl } from "@/shared/seo";
+import { buildCanonicalUrl, buildFaqPageSchema } from "@/shared/seo";
 import { blogPost, faqItems } from "./content";
 
 export const articleSchema = {
   "@context": "https://schema.org",
-  "@type": "Article",
+  "@type": "BlogPosting",
   headline: blogPost.title,
   description: "Полный гайд по требованиям к фото для трёх крупнейших маркетплейсов России.",
   datePublished: blogPost.publishedAt,
@@ -22,18 +22,7 @@ export const articleSchema = {
   },
 } as const;
 
-export const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqItems.map((item) => ({
-    "@type": "Question",
-    name: item.question,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: item.answer,
-    },
-  })),
-} as const;
+export const faqSchema = buildFaqPageSchema(faqItems);
 
 export const blogListingSchema = {
   "@context": "https://schema.org",

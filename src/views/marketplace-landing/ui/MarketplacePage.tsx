@@ -1,8 +1,13 @@
 import Link from "next/link";
 import { marketingHeaderNav, marketingFooterColumns } from "@/shared/config/marketing";
-import { getMarketplacePageLinkGroups } from "@/shared/seo";
+import {
+  buildDetailBreadcrumbs,
+  buildFaqPageSchema,
+  buildSoftwareApplicationSchema,
+  getMarketplacePageLinkGroups,
+} from "@/shared/seo";
 import landing from "@/shared/ui/landing/LandingPage.module.scss";
-import { SeoBreadcrumbs, SeoLinkSection } from "@/shared/ui";
+import { SeoBreadcrumbs, SeoJsonLd, SeoLinkSection } from "@/shared/ui";
 import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
 import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
 import type { MarketplacePage } from "../model/marketplaces";
@@ -13,17 +18,21 @@ type MarketplacePageProps = {
 };
 
 export function MarketplaceLandingPage({ content }: MarketplacePageProps) {
+  const currentPath = `/marketplaces/${content.slug}`;
+  const breadcrumbs = buildDetailBreadcrumbs("Маркетплейсы", "/marketplaces", content.name);
+  const faqSchema = buildFaqPageSchema(content.faq);
+  const softwareApplicationSchema = buildSoftwareApplicationSchema({
+    name: `kartochki.online для ${content.name}`,
+    description: content.description,
+    path: currentPath,
+  });
+
   return (
     <div className={landing.page}>
+      <SeoJsonLd data={faqSchema} />
+      <SeoJsonLd data={softwareApplicationSchema} />
       <SiteHeader nav={marketingHeaderNav} />
-      <SeoBreadcrumbs
-        items={[
-          { label: "Главная", href: "/" },
-          { label: "Маркетплейсы", href: "/marketplaces" },
-          { label: content.name },
-        ]}
-        currentPath={`/marketplaces/${content.slug}`}
-      />
+      <SeoBreadcrumbs items={breadcrumbs} currentPath={currentPath} />
 
       <main>
         <section className={landing.hero}>

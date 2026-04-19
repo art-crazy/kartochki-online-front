@@ -1,13 +1,9 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { classNames } from "@/shared/lib/classNames";
-import { buildCanonicalUrl } from "@/shared/seo";
+import { buildCanonicalUrl, type SeoBreadcrumbItem } from "@/shared/seo";
+import { SeoJsonLd } from "../seo-json-ld/SeoJsonLd";
 import styles from "./SeoBreadcrumbs.module.scss";
-
-export type SeoBreadcrumbItem = {
-  label: string;
-  href?: string;
-};
 
 type SeoBreadcrumbsProps = {
   items: ReadonlyArray<SeoBreadcrumbItem>;
@@ -41,7 +37,7 @@ export function SeoBreadcrumbs({
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <SeoJsonLd data={schema} />
       <nav className={classNames(styles.breadcrumbs, compact && styles.compact)} aria-label={ariaLabel}>
         <ol className={styles.list}>
           {items.map((item, index) => {

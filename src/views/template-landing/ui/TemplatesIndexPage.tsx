@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { marketingFooterColumns, marketingHeaderNav } from "@/shared/config/marketing";
-import { getTemplatesHubLinkGroups } from "@/shared/seo";
-import { SeoBreadcrumbs, SeoLinkSection } from "@/shared/ui";
+import { buildCollectionPageSchema, buildHubBreadcrumbs, getTemplatesHubLinkGroups } from "@/shared/seo";
+import { SeoBreadcrumbs, SeoJsonLd, SeoLinkSection } from "@/shared/ui";
 import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
 import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
 import landing from "@/shared/ui/landing/LandingPage.module.scss";
@@ -9,22 +9,30 @@ import styles from "@/shared/ui/landing/LandingIndex.module.scss";
 import { getAllTemplatePages } from "../model/templates";
 
 const pages = getAllTemplatePages();
+const breadcrumbs = buildHubBreadcrumbs("Шаблоны");
+const collectionPageSchema = buildCollectionPageSchema({
+  name: "Шаблоны карточек товаров",
+  description: "Каталог шаблонов карточек товаров по категориям для маркетплейсов.",
+  path: "/templates",
+  items: pages.map((page) => ({
+    label: page.categoryName,
+    href: `/templates/${page.slug}`,
+  })),
+});
 
 export function TemplatesIndexPage() {
   return (
     <div className={landing.page}>
+      <SeoJsonLd data={collectionPageSchema} />
       <SiteHeader nav={marketingHeaderNav} />
-      <SeoBreadcrumbs
-        items={[{ label: "Главная", href: "/" }, { label: "Шаблоны" }]}
-        currentPath="/templates"
-      />
+      <SeoBreadcrumbs items={breadcrumbs} currentPath="/templates" />
 
       <main>
         <section className={landing.hero}>
           <h1 className={landing.heroHeading}>Шаблоны карточек товаров по категориям</h1>
           <p className={landing.heroSubheading}>
-            Готовые структуры карточек для одежды, электроники, косметики и товаров для дома. Выберите
-            категорию и откройте подходящий шаблон под маркетплейсы.
+            Готовые структуры карточек для одежды, электроники, косметики и товаров для дома. Выберите категорию
+            и откройте подходящий шаблон под маркетплейсы.
           </p>
         </section>
 
