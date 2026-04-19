@@ -1,6 +1,5 @@
 import { buildSiteUrl, siteConfig } from "@/shared/config/site";
 import { seoPublisher } from "@/shared/config/seo";
-import { buildCanonicalUrl } from "@/shared/seo";
 import { faqItems } from "@/widgets/marketing/home/model/content";
 
 export const organizationSchema = {
@@ -22,14 +21,6 @@ export const webSiteSchema = {
   name: "kartochki.online",
   url: buildSiteUrl("/"),
   inLanguage: "ru",
-  potentialAction: {
-    "@type": "SearchAction",
-    target: {
-      "@type": "EntryPoint",
-      urlTemplate: `${buildCanonicalUrl("/blog")}?q={search_term_string}`,
-    },
-    "query-input": "required name=search_term_string",
-  },
 };
 
 export const softwareSchema = {

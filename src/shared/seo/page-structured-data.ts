@@ -88,7 +88,6 @@ export function buildCollectionPageSchema({
 }
 
 function omitContext<T extends { "@context"?: string }>(schema: T): Omit<T, "@context"> {
-  const { ["@context"]: omittedContext, ...rest } = schema;
-  void omittedContext;
+  const { "@context": _context, ...rest } = schema;
   return rest;
 }

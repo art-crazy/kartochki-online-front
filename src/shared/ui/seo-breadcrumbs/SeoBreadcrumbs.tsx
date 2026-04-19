@@ -30,7 +30,7 @@ export function SeoBreadcrumbs({
         "@type": "ListItem",
         position: index + 1,
         name: item.label,
-        ...(resolvedHref ? { item: toAbsoluteUrl(resolvedHref) } : {}),
+        ...(resolvedHref ? { item: buildCanonicalUrl(resolvedHref) } : {}),
       };
     }),
   };
@@ -74,8 +74,4 @@ function renderItem({ item, isLast }: { item: SeoBreadcrumbItem; isLast: boolean
       {item.label}
     </Link>
   );
-}
-
-function toAbsoluteUrl(path: string) {
-  return buildCanonicalUrl(path);
 }
