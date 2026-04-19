@@ -6,3 +6,5 @@ export {
   buildNoindexRobots,
   buildPageMetadata,
 } from "./metadata";
+export * from "./internal-linking";
+export * from "./structured-data";

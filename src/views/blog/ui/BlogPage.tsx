@@ -2,7 +2,8 @@ import Link from "next/link";
 import { blogHeroStats, heroGradients } from "@/entities/blog/model/content";
 import { blogListingSchema } from "@/entities/blog/model/structuredData";
 import { blogHeaderNav, blogFooterColumns } from "@/shared/config/marketing";
-import { SeoBreadcrumbs } from "@/shared/ui";
+import { getBlogHubCommercialLinkGroups } from "@/shared/seo";
+import { SeoBreadcrumbs, SeoLinkSection } from "@/shared/ui";
 import { Button } from "@/shared/ui/primitives/Primitives";
 import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
 import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
@@ -212,6 +213,13 @@ export function BlogPage({ content = fallbackBlogPageContent }: BlogPageProps) {
 
         </aside>
       </div>
+
+      <SeoLinkSection
+        eyebrow="Коммерческие переходы"
+        title="Из блога в страницы с коммерческим интентом"
+        intro="Информационный трафик должен переводиться в коммерческие хабы. Поэтому блог дополнен прямыми серверными ссылками на marketplace pages, инструменты и шаблоны."
+        groups={getBlogHubCommercialLinkGroups()}
+      />
 
       <SiteFooter columns={blogFooterColumns} />
     </main>

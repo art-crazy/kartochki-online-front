@@ -219,6 +219,7 @@ Shared authenticated chrome such as sidebar navigation, mobile navigation, and t
 
 - Public pages should be indexable by default.
 - Centralize site metadata in shared config.
+- Centralize internal linking rules for marketing pages instead of hardcoding random related links per route.
 - Keep reusable metadata builders in `src/shared/seo` so route files stay declarative and consistent.
 - Use Next metadata APIs for canonical URLs, Open Graph, `robots`, and `sitemap`.
 - Add structured data to high-intent pages when they are implemented.

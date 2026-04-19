@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
-import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
 import { marketingHeaderNav, marketingFooterColumns } from "@/shared/config/marketing";
+import { getMarketplacePageLinkGroups } from "@/shared/seo";
 import landing from "@/shared/ui/landing/LandingPage.module.scss";
-import { SeoBreadcrumbs } from "@/shared/ui";
+import { SeoBreadcrumbs, SeoLinkSection } from "@/shared/ui";
+import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
+import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
 import type { MarketplacePage } from "../model/marketplaces";
 import styles from "./MarketplacePage.module.scss";
 
@@ -77,6 +78,13 @@ export function MarketplaceLandingPage({ content }: MarketplacePageProps) {
             </div>
           </div>
         </section>
+
+        <SeoLinkSection
+          eyebrow="Связанные разделы"
+          title={`Что ещё помогает продавцам на ${content.name}`}
+          intro="Коммерческая страница маркетплейса должна передавать вес дальше: в инструменты, шаблоны и смежные материалы по этому интенту."
+          groups={getMarketplacePageLinkGroups(content.slug)}
+        />
 
         <section className={landing.ctaSection}>
           <div className={landing.container}>

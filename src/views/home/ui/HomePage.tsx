@@ -1,3 +1,5 @@
+import { getHomeLinkGroups } from "@/shared/seo";
+import { SeoLinkSection } from "@/shared/ui";
 import { HomeFooter } from "@/widgets/marketing/home-footer/ui/HomeFooter";
 import { HomeHeader } from "@/widgets/marketing/home-header/ui/HomeHeader";
 import { HomeHero } from "@/widgets/marketing/home-hero/ui/HomeHero";
@@ -15,6 +17,12 @@ export function HomePage() {
       <HomeHeader />
       <HomeHero />
       <HomeSections />
+      <SeoLinkSection
+        eyebrow="SEO hub-and-spoke"
+        title="Навигация по основным разделам"
+        intro="Главная передаёт внутренний вес в коммерческие и информационные кластеры: маркетплейсы, инструменты и шаблоны карточек."
+        groups={getHomeLinkGroups()}
+      />
       <HomeFooter />
     </main>
   );

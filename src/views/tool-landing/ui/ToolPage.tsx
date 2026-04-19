@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
-import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
 import { marketingHeaderNav, marketingFooterColumns } from "@/shared/config/marketing";
+import { getToolPageLinkGroups } from "@/shared/seo";
 import landing from "@/shared/ui/landing/LandingPage.module.scss";
-import { SeoBreadcrumbs } from "@/shared/ui";
+import { SeoBreadcrumbs, SeoLinkSection } from "@/shared/ui";
+import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
+import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
 import type { ToolPage } from "../model/tools";
 import styles from "./ToolPage.module.scss";
 
@@ -78,6 +79,13 @@ export function ToolLandingPage({ content }: ToolPageProps) {
             </div>
           </div>
         </section>
+
+        <SeoLinkSection
+          eyebrow="Следующий шаг"
+          title="Где использовать этот инструмент дальше"
+          intro="Feature page должна вести в более конкретные страницы применения: маркетплейсы, подходящие шаблоны и соседние коммерческие разделы."
+          groups={getToolPageLinkGroups(content.slug)}
+        />
 
         <section className={landing.ctaSection}>
           <div className={landing.container}>

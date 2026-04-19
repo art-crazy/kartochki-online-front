@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
-import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
-import { SeoBreadcrumbs } from "@/shared/ui";
 import { marketingFooterColumns, marketingHeaderNav } from "@/shared/config/marketing";
+import { getTemplatesHubLinkGroups } from "@/shared/seo";
+import { SeoBreadcrumbs, SeoLinkSection } from "@/shared/ui";
+import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
+import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
 import landing from "@/shared/ui/landing/LandingPage.module.scss";
 import styles from "@/shared/ui/landing/LandingIndex.module.scss";
 import { getAllTemplatePages } from "../model/templates";
@@ -41,6 +42,13 @@ export function TemplatesIndexPage() {
             </div>
           </div>
         </section>
+
+        <SeoLinkSection
+          eyebrow="Внутренняя перелинковка"
+          title="Шаблоны связаны с площадками и инструментами"
+          intro="Категорийный хаб должен вести не только в шаблоны, но и в marketplace pages и feature pages, которые закрывают следующий шаг."
+          groups={getTemplatesHubLinkGroups()}
+        />
       </main>
 
       <SiteFooter columns={marketingFooterColumns} />

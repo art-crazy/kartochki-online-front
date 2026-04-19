@@ -17,6 +17,8 @@ import {
   yandexTable,
 } from "@/entities/blog/model/content";
 import { buildCanonicalUrl } from "@/shared/seo";
+import { getBlogPostCommercialLinkGroups } from "@/shared/seo";
+import { SeoLinkSection } from "@/shared/ui";
 import { Badge, Button } from "@/shared/ui/primitives/Primitives";
 import { BlogPostEnhancements } from "./BlogPostEnhancements";
 import { Callout, DataTable } from "./BlogPostParts";
@@ -218,17 +220,24 @@ export function BlogPost() {
               </div>
             </section>
 
+            <SeoLinkSection
+              eyebrow="Коммерческие хабы"
+              title="Полезные страницы по теме статьи"
+              intro="Чтобы информационная статья усиливала коммерческий кластер, она должна ссылаться на страницы площадок, инструменты и шаблоны, связанные с текущим интентом."
+              groups={getBlogPostCommercialLinkGroups(blogPost.canonicalPath)}
+            />
+
             <section className={styles.relatedSection}>
               <h2 className={styles.relatedTitle}>Читайте также</h2>
               <div className={styles.relatedGrid}>
                 {relatedPosts.map((post) => (
-                  <article key={post.title} className={styles.relatedCard}>
+                  <Link key={post.title} href={post.href ?? "/blog"} className={styles.relatedCard}>
                     <div className={styles.relatedVisual} style={{ background: post.gradient }} />
                     <div className={styles.relatedBody}>
                       <div className={styles.relatedTag}>{post.tag}</div>
                       <div className={styles.relatedCardTitle}>{post.title}</div>
                     </div>
-                  </article>
+                  </Link>
                 ))}
               </div>
             </section>

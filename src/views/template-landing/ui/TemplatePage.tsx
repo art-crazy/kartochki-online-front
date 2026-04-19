@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
-import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
-import { SeoBreadcrumbs } from "@/shared/ui";
 import { marketingHeaderNav, marketingFooterColumns } from "@/shared/config/marketing";
+import { getTemplatePageLinkGroups } from "@/shared/seo";
+import { SeoBreadcrumbs, SeoLinkSection } from "@/shared/ui";
+import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
+import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
 import landing from "@/shared/ui/landing/LandingPage.module.scss";
 import type { TemplatePage } from "../model/templates";
 import styles from "./TemplatePage.module.scss";
@@ -77,6 +78,13 @@ export function TemplateLandingPage({ content }: TemplatePageProps) {
             </div>
           </div>
         </section>
+
+        <SeoLinkSection
+          eyebrow="Связанные шаблоны"
+          title={`Куда перейти после шаблона «${content.categoryName}»`}
+          intro="Template page должна передавать вес в смежные шаблоны, marketplace pages и инструменты, которые помогают собрать финальную карточку."
+          groups={getTemplatePageLinkGroups(content.slug)}
+        />
 
         <section className={landing.ctaSection}>
           <div className={landing.container}>

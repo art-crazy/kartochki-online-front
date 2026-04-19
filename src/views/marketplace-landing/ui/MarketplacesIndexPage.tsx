@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
-import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
-import { SeoBreadcrumbs } from "@/shared/ui";
 import { marketingHeaderNav, marketingFooterColumns } from "@/shared/config/marketing";
+import { getMarketplacesHubLinkGroups } from "@/shared/seo";
+import { SeoBreadcrumbs, SeoLinkSection } from "@/shared/ui";
+import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
+import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
 import { getAllMarketplacePages } from "../model/marketplaces";
 import landing from "@/shared/ui/landing/LandingPage.module.scss";
 import styles from "@/shared/ui/landing/LandingIndex.module.scss";
@@ -43,6 +44,13 @@ export function MarketplacesIndexPage() {
             </div>
           </div>
         </section>
+
+        <SeoLinkSection
+          eyebrow="Внутренняя перелинковка"
+          title="Смежные разделы для подготовки карточек"
+          intro="Хаб маркетплейсов должен распределять вес дальше: в страницы площадок, инструменты и шаблоны под конкретные категории."
+          groups={getMarketplacesHubLinkGroups()}
+        />
       </main>
 
       <SiteFooter columns={marketingFooterColumns} />
