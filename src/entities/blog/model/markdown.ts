@@ -1,4 +1,5 @@
 import { readMarkdownCollection } from "@/shared/content/marketing/markdown";
+import type { MarkdownBlogPost } from "./toc";
 export { slugifyHeading, getMarkdownBlogToc, type MarkdownBlogTocItem, type MarkdownBlogPost } from "./toc";
 
 type BlogTagTone = "wb" | "ozon" | "ym" | "accent";
