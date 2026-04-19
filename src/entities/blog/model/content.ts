@@ -77,7 +77,7 @@ export const blogCategories = Object.entries(categoryCounts).map(([label, count]
 }));
 
 const tagCounts = allBlogPosts.reduce<Record<string, number>>((acc, post) => {
-  post.tags.forEach((tag) => {
+  post.tags.forEach((tag: MarkdownBlogPost["tags"][number]) => {
     acc[tag.label] = (acc[tag.label] ?? 0) + 1;
   });
   return acc;
