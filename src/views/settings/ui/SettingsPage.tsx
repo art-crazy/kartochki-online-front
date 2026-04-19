@@ -25,7 +25,7 @@ export function SettingsPage() {
     return (
       <AppShell title="Настройки" subtitle="Загружаем данные профиля" activeKey="settings">
         <main className={styles.page}>
-          <SettingsStatus title="Загружаем настройки" description="Получаем профиль, сессии и интеграции." />
+          <SettingsStatus title="Загружаем настройки" description="Получаем профиль и сессии." />
         </main>
       </AppShell>
     );
@@ -174,41 +174,6 @@ function SettingsPageContent({ settings }: { settings: SettingsResponse }) {
                     <div className={styles.listMetaMuted}>Уведомления о готовых карточках и событиях аккаунта.</div>
                   </div>
                   <Button variant="darkOutline" size="sm" onClick={() => page.showToast("Открываем Telegram-бота...")}>Подключить</Button>
-                </div>
-              </SettingsCard>
-            </section>
-
-            <section id="settings-panel-integrations" role="tabpanel" aria-labelledby="settings-tab-integrations" hidden={page.activeTab !== "integrations"} className={page.activeTab === "integrations" ? styles.panelActive : styles.panelHidden}>
-              <SettingsCard title="Подключенные аккаунты" subtitle="Для быстрого входа и внешних интеграций.">
-                <div className={styles.stack}>
-                  {settings.integrations.map((account) => (
-                    <div key={account.id ?? account.provider} className={styles.listRow}>
-                      <div className={styles.listIcon} aria-hidden="true">{account.provider === "google" ? "G" : "✈"}</div>
-                      <div className={styles.listBody}>
-                        <div className={styles.listTitle}>{account.provider}</div>
-                        <div className={account.connected ? styles.listMetaSuccess : styles.listMetaMuted}>
-                          {account.connected ? `Подключен${account.account_email ? ` · ${account.account_email}` : ""}` : "Не подключен"}
-                        </div>
-                      </div>
-                      <Button variant="darkOutline" size="sm" onClick={() => page.showToast(account.connected ? "Аккаунт отключен" : "Открываем подключение...")}>
-                        {account.connected ? "Отключить" : "Подключить"}
-                      </Button>
-                    </div>
-                  ))}
-                  {settings.integrations.length === 0 ? <p className={styles.listMetaMuted}>Нет подключенных аккаунтов</p> : null}
-                </div>
-              </SettingsCard>
-
-              <SettingsCard title="API-ключ" subtitle="Для интеграции с вашими системами на тарифе Бизнес.">
-                <div className={styles.stack}>
-                  <div className={styles.apiRow}>
-                    <Input dark label="Ваш API-ключ" readOnly type={page.showApiKey ? "text" : "password"} value={page.apiKey} />
-                    <div className={styles.apiActions}>
-                      <Button variant="darkOutline" onClick={() => page.setShowApiKey((c) => !c)}>{page.showApiKey ? "Скрыть" : "Показать"}</Button>
-                      <Button variant="darkOutline" onClick={() => void page.copyApiKey()}>Копировать</Button>
-                    </div>
-                  </div>
-                  {settings.api_key.can_rotate ? <Button variant="danger" disabled={page.rotateKeyMutation.isPending} onClick={() => page.rotateKeyMutation.mutate({})}>{page.rotateKeyMutation.isPending ? "Перевыпускаем..." : "Перевыпустить ключ"}</Button> : null}
                 </div>
               </SettingsCard>
             </section>

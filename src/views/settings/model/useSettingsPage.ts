@@ -12,7 +12,6 @@ import {
   patchSettingsNotificationsMutation,
   patchSettingsProfileMutation,
   postSettingsExportMutation,
-  rotateSettingsApiKeyMutation,
   type ErrorResponse,
   type SettingsResponse,
 } from "@/shared/api";
@@ -42,8 +41,6 @@ export function useSettingsPage(settings: SettingsResponse) {
     Object.fromEntries(settings.notifications.items.map((item) => [item.key, item.enabled])),
   );
   const [sessions, setSessions] = useState<SettingsSessionData[]>(() => settings.sessions.map(mapSession));
-  const [apiKey, setApiKey] = useState(settings.api_key.masked_value ?? "");
-  const [showApiKey, setShowApiKey] = useState(false);
   const [passwordForm, setPasswordForm] = useState({ current: "", next: "", confirm: "" });
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleteConfirmInput, setDeleteConfirmInput] = useState("");
@@ -100,16 +97,6 @@ export function useSettingsPage(settings: SettingsResponse) {
     onError: (err: ErrorResponse) => showToast(err.message ?? "Ошибка", "danger"),
   });
 
-  const rotateKeyMutation = useMutation({
-    ...rotateSettingsApiKeyMutation(),
-    onSuccess: (data) => {
-      setApiKey(data.masked_value ?? "");
-      invalidateSettings();
-      showToast("Ключ перевыпущен");
-    },
-    onError: (err: ErrorResponse) => showToast(err.message ?? "Ошибка", "danger"),
-  });
-
   const exportMutation = useMutation({
     ...postSettingsExportMutation(),
     onSuccess: () => showToast("Запрос на экспорт отправлен"),
@@ -149,19 +136,12 @@ export function useSettingsPage(settings: SettingsResponse) {
     );
   }
 
-  async function copyApiKey() {
-    try { await navigator.clipboard.writeText(apiKey); showToast("API-ключ скопирован"); }
-    catch { showToast("Не удалось скопировать ключ", "danger"); }
-  }
-
   function closeDeleteModal() { setDeleteModalOpen(false); setDeleteConfirmInput(""); }
 
   return {
     activeTab,
-    apiKey,
     changePassword,
     closeDeleteModal,
-    copyApiKey,
     defaultsForm,
     defaultsMutation,
     deleteAccountMutation,
@@ -174,7 +154,6 @@ export function useSettingsPage(settings: SettingsResponse) {
     passwordMutation,
     profileForm,
     profileMutation,
-    rotateKeyMutation,
     saveDefaults,
     saveProfile,
     sessionMutation,
@@ -185,8 +164,6 @@ export function useSettingsPage(settings: SettingsResponse) {
     setDeleteModalOpen,
     setPasswordForm,
     setProfileForm,
-    setShowApiKey,
-    showApiKey,
     showToast,
     toast,
     toggleNotification,

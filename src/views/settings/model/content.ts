@@ -1,10 +1,9 @@
-export type SettingsTabId = "profile" | "security" | "notifications" | "integrations" | "danger";
+export type SettingsTabId = "profile" | "security" | "notifications" | "danger";
 
 export const settingsTabs: ReadonlyArray<{ id: SettingsTabId; label: string; icon: string }> = [
   { id: "profile", label: "Профиль", icon: "◉" },
   { id: "security", label: "Безопасность", icon: "◎" },
   { id: "notifications", label: "Уведомления", icon: "◌" },
-  { id: "integrations", label: "Интеграции", icon: "◈" },
   { id: "danger", label: "Действия", icon: "⚠" },
 ];
 
