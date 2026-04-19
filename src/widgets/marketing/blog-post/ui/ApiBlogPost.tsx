@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { BlogArticleSection, BlogPostResponse, BlogSectionCallout, BlogSectionTable } from "@/shared/api";
 import { siteConfig } from "@/shared/config/site";
 import { Badge, Button } from "@/shared/ui/primitives/Primitives";
+import { buildArticleSchema } from "../model/structuredData";
 import { BlogPostEnhancements } from "./BlogPostEnhancements";
 import { BlogPostShare } from "./BlogPostShare";
 import styles from "./BlogPost.module.scss";
@@ -22,23 +23,10 @@ const RELATED_LABEL = "Читайте также";
 export function ApiBlogPost({ content }: ApiBlogPostProps) {
   const { post, article_sections: sections, related_posts: relatedPosts } = content;
   const canonicalUrl = `${siteConfig.defaultUrl}${post.canonical_path}`;
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: post.title,
-    description: post.description,
-    datePublished: post.published_at,
-    dateModified: post.updated_at,
-    mainEntityOfPage: canonicalUrl,
-    publisher: {
-      "@type": "Organization",
-      name: "kartochki.online",
-    },
-  };
 
   return (
     <main className={styles.page}>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildArticleSchema(post)) }} />
       <div id="read-progress" className={styles.readProgress} aria-hidden="true" />
       <BlogPostEnhancements />
 

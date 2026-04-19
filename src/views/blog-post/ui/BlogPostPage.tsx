@@ -1,4 +1,4 @@
-import { articleSchema, faqSchema } from "@/entities/blog/model/content";
+import { articleSchema, faqSchema } from "@/entities/blog/model/structuredData";
 import { blogPost, breadcrumbItems } from "@/entities/blog/model/content";
 import { BlogPost } from "@/widgets/marketing/blog-post/ui/BlogPost";
 import { BlogPostPageShell } from "./BlogPostPageShell";

@@ -1,5 +1,35 @@
 import { siteConfig } from "@/shared/config/site";
+import { seoPublisher } from "@/shared/config/seo";
 import { faqItems } from "@/widgets/marketing/home/model/content";
+
+export const organizationSchema = {
+  "@context": "https://schema.org",
+  ...seoPublisher,
+  alternateName: "карточки.онлайн",
+  contactPoint: {
+    "@type": "ContactPoint",
+    email: siteConfig.supportEmail,
+    contactType: "customer support",
+    availableLanguage: "Russian",
+  },
+  sameAs: [],
+};
+
+export const webSiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "kartochki.online",
+  url: siteConfig.defaultUrl,
+  inLanguage: "ru",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: `${siteConfig.defaultUrl}/blog?q={search_term_string}`,
+    },
+    "query-input": "required name=search_term_string",
+  },
+};
 
 export const softwareSchema = {
   "@context": "https://schema.org",

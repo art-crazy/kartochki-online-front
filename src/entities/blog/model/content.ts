@@ -497,48 +497,6 @@ export const faqItems = [
   },
 ] as const;
 
-export const articleSchema = {
-  "@context": "https://schema.org",
-  "@type": "Article",
-  headline: blogPost.title,
-  description: "Полный гайд по требованиям к фото для трёх крупнейших маркетплейсов России.",
-  datePublished: blogPost.publishedAt,
-  dateModified: blogPost.updatedAt,
-  author: {
-    "@type": "Organization",
-    name: blogPost.author,
-  },
-  publisher: {
-    "@type": "Organization",
-    name: "kartochki.online",
-  },
-  mainEntityOfPage: {
-    "@type": "WebPage",
-    "@id": `${siteConfig.defaultUrl}${blogPost.canonicalPath}`,
-  },
-} as const;
-
-export const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqItems.map((item) => ({
-    "@type": "Question",
-    name: item.question,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: item.answer,
-    },
-  })),
-} as const;
-
-export const blogListingSchema = {
-  "@context": "https://schema.org",
-  "@type": "Blog",
-  name: "Блог kartochki.online",
-  description: "Советы для продавцов на маркетплейсах: требования к фото, инфографика и оформление карточек.",
-  url: `${siteConfig.defaultUrl}/blog`,
-} as const;
-
 export function getBlogPostBySlug(slug: string) {
   return allBlogPosts.find((post) => post.slug === slug) ?? null;
 }

@@ -1,9 +1,6 @@
 import Link from "next/link";
-import {
-  blogHeroStats,
-  blogListingSchema,
-  heroGradients,
-} from "@/entities/blog/model/content";
+import { blogHeroStats, heroGradients } from "@/entities/blog/model/content";
+import { blogListingSchema } from "@/entities/blog/model/structuredData";
 import { blogHeaderLinks, legalFooterLinks } from "@/shared/config/marketing";
 import { SeoBreadcrumbs } from "@/shared/ui";
 import { Button } from "@/shared/ui/primitives/Primitives";
