@@ -1,140 +1,46 @@
 # Architecture
 
-## Purpose
+Frontend for `kartochki.online`, a SEO-first SaaS for marketplace sellers.
 
-This repository is the frontend for `kartochki.online`, a SEO-first SaaS product for marketplace sellers. It has two primary surfaces:
+## Goals
 
-- A public marketing website that must rank well in search and scale to many landing pages.
-- An authenticated application where users generate product-card visuals, manage templates, and work with marketplace assets.
-
-The architecture should optimize for crawlable public pages, predictable growth, and clean separation between route wiring and business code.
+- Public marketing pages must rank well, scale to many landing pages, and ship crawlable HTML.
+- The authenticated app should stay interactive without mixing route wiring and business code.
+- Growth should remain predictable through clear FSD ownership and thin route files.
 
 ## Core Stack
 
-- `Next.js 16` with App Router
+- `Next.js 16` App Router
 - `React 19`
 - `TypeScript`
 - `SCSS Modules`
 - `Jotai`
 
-## Why SCSS Modules
+## Defaults
 
-The product already has an HTML kit and page mockups. SCSS Modules are the most practical default:
+- Use `SCSS Modules`: they fit the existing HTML kit, keep styles close to components, preserve custom marketing UI without utility-class sprawl, and keep global styles limited to real tokens, resets, and primitives.
+- Use `Jotai` for lightweight client state such as editor UI, dialogs, local preferences, and cross-widget coordination; do not use it as a server cache.
+- Source files should stay at 300 lines or fewer; if a file grows past that, decompose it before adding more behavior or styles.
+- Choose decomposition by FSD owner: split page compositions into smaller `views` fragments or `widgets`, split large widgets and features into local `ui`, `model`, and helper files, split large SCSS Modules into narrower modules or colocated partials in the same slice; generated files and binary assets are outside this rule.
+- Do not introduce a second primary styling system unless the reason is documented.
 
-- Existing HTML and CSS can be migrated incrementally.
-- Marketing pages can preserve a custom visual identity without utility-class sprawl.
-- Styles stay close to their components.
-- There is no SEO advantage in using Tailwind, so styling should be chosen for implementation speed and maintainability.
+## FSD Structure
 
-Tailwind may be considered later for isolated internal tooling, but it should not become the main styling system unless the team makes that choice deliberately.
-
-## Why Jotai
-
-`Jotai` is a good fit for this project.
-
-- It is small, composable, and easy to scale gradually.
-- It works well for editor UI state, dialogs, local preferences, and cross-widget coordination.
-- It avoids heavy global boilerplate.
-
-Use Jotai for client state. Do not turn it into a server-cache layer.
-
-## File Size Rule
-
-Source files should stay at 300 lines or fewer. Files that need to grow beyond this limit should be decomposed before more behavior or styles are added.
-
-Use the FSD owner of the current code to choose the decomposition target:
-
-- Split large page compositions into smaller `views` fragments or `widgets`.
-- Split large widgets and features into local `ui`, `model`, and helper files.
-- Split large SCSS Modules into narrower modules or colocated partials for the same slice.
-- Keep generated files and binary assets outside this rule; they are controlled by tooling rather than manual decomposition.
-
-## FSD-Oriented Structure
-
-### `src/app`
-
-Framework integration layer only.
-
-- Route files
-- Layouts
-- Metadata files such as `robots.ts` and `sitemap.ts`
-- Route groups for product surfaces
-- Surface-specific layouts for marketing and authenticated areas
-
-Route files should stay thin and delegate to `src/views`.
-
-### `src/views`
-
-Route-facing compositions assembled from widgets and features.
-
-This repository uses `views` instead of the canonical FSD `pages` layer because `src/pages` is reserved by Next.js and would activate the legacy Pages Router.
-
-Examples:
-
-- Home page
-- Pricing page
-- Login page
-- Dashboard page
-- Template gallery page
-
-### `src/widgets`
-
-Large sections and blocks used to compose pages.
-
-Examples:
-
-- Hero
-- Pricing table
-- Feature grid
-- Dashboard shell
-- Editor sidebar
-
-### `src/features`
-
-Scenario-level user behavior and actions.
-
-Examples:
-
-- Sign in
-- Start generation
-- Upload product images
-- Edit marketplace settings
-- Export assets
-
-### `src/entities`
-
-Business entities and domain-focused types.
-
-Examples:
-
-- User
-- Project
-- ProductCard
-- Template
-- Marketplace
-- GenerationJob
-
-### `src/shared`
-
-Cross-cutting infrastructure and low-level reusable code.
-
-Examples:
-
-- Providers
-- Config
-- UI primitives
-- State atoms
-- Helpers
-- API transport
+- `src/app` - framework integration only: route files, layouts, metadata such as `robots.ts` and `sitemap.ts`, route groups, and surface-specific layouts; route files stay thin and delegate to `src/views`
+- `src/views` - route-facing compositions assembled from widgets and features; this replaces the canonical FSD `pages` layer because `src/pages` would activate the legacy Pages Router
+- `src/widgets` - large sections and blocks used to compose pages
+- `src/features` - scenario-level user behavior and actions
+- `src/entities` - business entities and domain-focused types
+- `src/shared` - cross-cutting infrastructure and low-level reusable code
 
 ## API Layer
 
 The API client is auto-generated from the backend OpenAPI spec via `@hey-api/openapi-ts`.
 
-- **Config:** `openapi-ts.config.ts` — reads `NEXT_PUBLIC_API_URL` from `.env.local`
-- **Generated code:** `src/shared/api/generated/` — do not edit manually
-- **Client config:** `src/shared/api/client.ts` — sets `baseUrl` from env
-- **Public surface:** `src/shared/api/index.ts` — re-exports SDK functions, TanStack Query options factories, and domain types
+- Config: `openapi-ts.config.ts` reads `NEXT_PUBLIC_API_URL` from `.env.local`
+- Generated code: `src/shared/api/generated/` - do not edit manually
+- Client config: `src/shared/api/client.ts` sets `baseUrl` from env
+- Public surface: `src/shared/api/index.ts` re-exports SDK functions, TanStack Query options factories, and domain types
 
 ### Regenerating
 
@@ -144,7 +50,7 @@ npm run generate:api
 
 Backend must be running at `NEXT_PUBLIC_API_URL` when generating.
 
-### Usage patterns
+### Usage
 
 ```ts
 // Server Component
@@ -160,7 +66,7 @@ const { data } = useQuery(listProjectsOptions());
 ### Rules
 
 - Import from `@/shared/api`, never from `@/shared/api/generated` directly.
-- TanStack Query is for client components only. Server components call SDK functions directly.
+- TanStack Query is for client components only; server components call SDK functions directly.
 - Do not use Jotai as a cache for server data.
 
 ## Authentication
@@ -168,10 +74,10 @@ const { data } = useQuery(listProjectsOptions());
 Authentication is implemented by calling the backend API directly through the generated client.
 
 - Auth forms call generated SDK functions from `@/shared/api`.
-- The API client is configured with `credentials: 'include'`, so browser-managed cookies from the backend are sent with API requests.
+- The API client uses `credentials: 'include'`, so browser-managed backend cookies are sent with API requests.
 - Session state is checked through `GET /api/v1/me` via `getCurrentUserOptions`.
 - Logout calls `POST /api/v1/auth/logout` via the generated SDK.
-- Recovery flows such as `forgot-password` and `reset-password` call the backend auth endpoints directly through the generated client.
+- Recovery flows such as `forgot-password` and `reset-password` call backend auth endpoints directly through the generated client.
 - OAuth entry points should use backend endpoints directly, preserving provider redirects and backend-owned session handling.
 
 Do not add a Next.js BFF auth layer unless the backend contract changes and the team explicitly decides to move session exchange into route handlers.
@@ -180,40 +86,17 @@ Do not add a Next.js BFF auth layer unless the backend contract changes and the 
 
 ### Marketing Surface
 
-This surface exists for SEO, acquisition, and conversion.
-
-In App Router it should live under a dedicated route group such as `src/app/(marketing)`.
-
-Likely route families:
-
-- `/`
-- `/features/[slug]`
-- `/marketplaces/[slug]`
-- `/templates/[slug]`
-- `/blog/[slug]`
-- `/compare/[slug]`
-
-Prefer static generation or server rendering and ensure these pages ship meaningful HTML.
+- Route group: `src/app/(marketing)`
+- Likely route families: `/`, `/features/[slug]`, `/marketplaces/[slug]`, `/marketplaces/[slug]/tools/[toolSlug]`, `/marketplaces/[slug]/templates/[templateSlug]`, `/templates/[slug]`, `/blog/[slug]`, `/compare/[slug]`
+- Prefer static generation or server rendering and ensure these pages ship meaningful HTML
 
 ### Application Surface
 
-This surface exists for authenticated users.
-
-In App Router it should live under a dedicated route group such as `src/app/(app)`.
-
-Likely route families:
-
-- `/app`
-- `/app/projects`
-- `/app/projects/[projectId]`
-- `/app/templates`
-- `/app/settings`
-
-This area can be more interactive, but route composition should still live in `src/views`.
-
-Authenticated routes should be `noindex` by default unless there is a specific reason to expose them to search engines.
-
-Shared authenticated chrome such as sidebar navigation, mobile navigation, and the top app header should live in reusable widgets instead of being duplicated per route.
+- Route group: `src/app/(app)`
+- Likely route families: `/app`, `/app/projects`, `/app/projects/[projectId]`, `/app/templates`, `/app/settings`
+- This area can be more interactive, but route composition should still live in `src/views`
+- Authenticated routes should be `noindex` by default unless there is a specific reason to expose them to search engines
+- Shared authenticated chrome such as sidebar navigation, mobile navigation, and the top app header should live in reusable widgets instead of being duplicated per route
 
 ## SEO Rules
 
@@ -224,25 +107,3 @@ Shared authenticated chrome such as sidebar navigation, mobile navigation, and t
 - Use Next metadata APIs for canonical URLs, Open Graph, `robots`, and `sitemap`.
 - Add structured data to high-intent pages when they are implemented.
 - Avoid client-only rendering for indexable content.
-
-## State Rules
-
-- Use Jotai for lightweight client state.
-- Keep atoms close to their owning slice.
-- Promote atoms into `shared` only when they are truly cross-cutting.
-- Keep remote data management outside Jotai.
-
-## Styling Rules
-
-- Use SCSS Modules as the default.
-- Keep styles local to components.
-- Put only true global tokens, resets, and primitives into global styles.
-- Avoid introducing a second primary styling system without a documented reason.
-
-## Suggested Near-Term Work
-
-1. Add a shared UI primitive layer in `src/shared/ui`.
-2. Migrate the external HTML kit into `views`, `widgets`, and `shared/ui`.
-3. Add core entities for templates, projects, and generation jobs.
-4. Build the marketing navigation and footer.
-5. Add the authenticated workspace shell under `/app`.

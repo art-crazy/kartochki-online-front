@@ -1,81 +1,46 @@
 # Project Guide For Coding Agents
 
-This repository contains the frontend for `kartochki.online`, a SEO-first SaaS product for marketplace sellers.
+Primary repo guide for the `kartochki.online` frontend. Use `docs/architecture.md` for details. Keep changes production-ready and avoid shortcuts that create migration debt.
 
-## Read This First
+## Product
 
-- Use this file as the high-signal entry point.
-- Use `docs/architecture.md` for deeper architectural context.
-- Keep changes production-ready. Avoid prototype shortcuts that create migration debt.
-
-## Product Context
-
-- Primary domains:
-  - `kartochki-online.ru`
-- Brand name: `kartochki.online`
-- The product helps users generate product-card visuals and content assets for marketplace listings.
-- SEO is a first-class concern for the public website.
+- Brand/domain: `kartochki.online`, `kartochki-online.ru`
+- Purpose: generate product-card visuals and content assets for marketplace sellers
+- Constraint: SEO is first-class on the public website
 
 ## Stack
 
-- Next.js 16 with App Router
+- Next.js 16 App Router
 - React 19
 - TypeScript
 - SCSS Modules
-- Jotai for client state
+- Jotai for lightweight client state
 
-## FSD Layers
+## Layers
 
-- `src/app`
-  - Next.js routing layer only
-- `src/views`
-  - route-facing page compositions
-- `src/widgets`
-  - larger page sections and blocks
-- `src/features`
-  - user scenarios and actions
-- `src/entities`
-  - domain models and business types
-- `src/shared`
-  - shared infrastructure, providers, config, ui, state, and utilities
+- `src/app` - routing and framework integration only
+- `src/views` - route-facing page compositions
+- `src/widgets` - larger page sections and blocks
+- `src/features` - user scenarios and actions
+- `src/entities` - domain models and business types
+- `src/shared` - shared infrastructure, providers, config, ui, state, and utilities
 
-## Architecture Rules
+## Rules
 
-- Keep route files thin and declarative.
-- Route files should import page components from `src/views`.
-- Do not place business logic directly in `src/app`.
-- Prefer explicit slice boundaries over generic utility folders.
-- Put new code in the narrowest layer that owns it.
-- Use `views` as the FSD page-equivalent because `src/pages` is reserved by Next.js.
-- Keep files at 300 lines or fewer. If a file needs to grow past that limit, decompose it into smaller components, helpers, model files, or style modules owned by the same FSD slice.
-
-## Styling Rules
-
-- Default to `SCSS Modules`.
-- Keep styles local to components unless they are truly global tokens or resets.
-- Reuse and progressively adapt the external HTML kit instead of rewriting it into a second styling paradigm.
-- Do not introduce Tailwind as a second primary styling system unless explicitly requested.
-
-## State Rules
-
-- Use Jotai for client UI state and light cross-component state.
-- Keep atoms close to the owning layer.
-- Do not use Jotai as a server cache.
+- Keep route files thin, declarative, and free of business logic; route files should import page components from `src/views`.
+- Treat `views` as the FSD page-equivalent because `src/pages` is reserved by Next.js.
+- Put new code in the narrowest owning layer; prefer explicit slice boundaries over generic utility folders.
+- Keep source files at 300 lines or fewer; if a file grows past that, split it within the same slice.
+- Default to `SCSS Modules`; keep styles local unless they are true global tokens or resets.
+- Reuse and progressively adapt the external HTML kit instead of introducing a second styling paradigm.
+- Do not add Tailwind as a second primary styling system unless explicitly requested.
+- Use Jotai for lightweight client UI state and cross-component state; keep atoms near the owning layer and never use Jotai as a server cache.
 - If server-state is needed, add a dedicated async data solution instead of stretching atoms.
-
-## SEO Rules
-
-- Public pages should render meaningful server HTML.
-- Prefer static generation or server rendering for landing pages.
+- Public pages should render meaningful server HTML; prefer static generation or server rendering for landing pages.
 - Use Next metadata APIs for titles, descriptions, canonical URLs, Open Graph, `robots`, and `sitemap`.
 - Do not hide indexable content behind client-only rendering.
-
-## HTML Kit Migration
-
-- The project will receive an HTML kit with all pages and UI building blocks.
-- Migrate it incrementally into `views`, `widgets`, and `shared/ui`.
-- Avoid copying large static HTML blobs into route files.
-- Preserve semantic structure where possible because it affects SEO quality.
+- Migrate the external HTML kit incrementally into `views`, `widgets`, and `shared/ui`; do not dump large static HTML blobs into route files.
+- Preserve semantic structure because it affects SEO quality.
 
 ## Commands
 
@@ -88,6 +53,6 @@ This repository contains the frontend for `kartochki.online`, a SEO-first SaaS p
 
 1. Identify the correct FSD layer before creating files.
 2. Keep route files minimal.
-3. Check file size while editing; files over 300 lines must be decomposed instead of extended further.
+3. Decompose files instead of extending them past 300 lines.
 4. Update `docs/architecture.md` when architecture decisions change.
 5. Prefer small, reviewable changes over broad speculative abstractions.
