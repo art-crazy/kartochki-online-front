@@ -12,7 +12,7 @@ export const siteConfig = {
     "изображения для маркетплейсов",
     "SEO для маркетплейсов",
   ],
-  domains: ["kartochki-online.ru", "xn----7sbabjowfpen9ag6h.xn--p1ai"],
+  domains: ["kartochki-online.ru"],
   defaultUrl: "https://kartochki-online.ru",
   appUrl: process.env.NEXT_PUBLIC_APP_URL ?? "https://kartochki-online.ru",
   supportEmail: "support@kartochki-online.ru",

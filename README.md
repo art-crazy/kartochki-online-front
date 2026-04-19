@@ -31,4 +31,3 @@ npm run dev
 ## Domains
 
 - `kartochki-online.ru`
-- `xn----7sbabjowfpen9ag6h.xn--p1ai`

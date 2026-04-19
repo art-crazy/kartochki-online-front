@@ -12,7 +12,6 @@ This repository contains the frontend for `kartochki.online`, a SEO-first SaaS p
 
 - Primary domains:
   - `kartochki-online.ru`
-  - `xn----7sbabjowfpen9ag6h.xn--p1ai`
 - Brand name: `kartochki.online`
 - The product helps users generate product-card visuals and content assets for marketplace listings.
 - SEO is a first-class concern for the public website.
