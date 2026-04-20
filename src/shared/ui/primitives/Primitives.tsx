@@ -150,13 +150,18 @@ export function Select({
   return (
     <label className={classNames(styles.field, className)}>
       {label ? <span className={styles.label}>{label}</span> : null}
-      <select
-        aria-invalid={isInvalid}
-        className={classNames(styles.control, error && styles.isError, dark && styles.isDark, controlClassName)}
-        {...props}
-      >
-        {children}
-      </select>
+      <span className={styles.selectWrap}>
+        <select
+          aria-invalid={isInvalid}
+          className={classNames(styles.control, styles.selectControl, error && styles.isError, dark && styles.isDark, controlClassName)}
+          {...props}
+        >
+          {children}
+        </select>
+        <svg className={styles.selectArrow} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </span>
       {error ? <span className={styles.error}>{error}</span> : null}
       {!error && hint ? <span className={styles.hint}>{hint}</span> : null}
     </label>

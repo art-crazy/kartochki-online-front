@@ -181,6 +181,26 @@
     background-color 0.15s ease;
 }
 
+.selectWrap {
+  position: relative;
+  display: block;
+}
+
+.selectControl {
+  padding-right: 36px;
+  appearance: none;
+  cursor: pointer;
+}
+
+.selectArrow {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  color: var(--muted-2);
+  pointer-events: none;
+}
+
 .control::placeholder {
   color: var(--muted-2);
 }
@@ -232,6 +252,7 @@
   border-color: var(--dark-border-2);
   color: var(--dark-text);
 }
+
 
 .isDark::placeholder {
   color: var(--dark-text-3);
