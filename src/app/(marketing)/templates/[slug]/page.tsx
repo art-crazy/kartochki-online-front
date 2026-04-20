@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { buildPageMetadata, MARKETING_PAGE_REVALIDATE } from "@/shared/seo";
+import { buildPageMetadata } from "@/shared/seo";
 import { getTemplatePage, getAllTemplateSlugs } from "@/views/template-landing/model/templates";
 import { TemplateLandingPage } from "@/views/template-landing/ui/TemplatePage";
 
@@ -8,7 +8,7 @@ type TemplateRouteProps = {
   params: Promise<{ slug: string }>;
 };
 
-export const revalidate = MARKETING_PAGE_REVALIDATE;
+export const revalidate = 86_400;
 
 export function generateStaticParams() {
   return getAllTemplateSlugs().map((slug) => ({ slug }));

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { buildPageMetadata, MARKETING_PAGE_REVALIDATE } from "@/shared/seo";
+import { buildPageMetadata } from "@/shared/seo";
 import { getToolPage, getAllToolSlugs } from "@/views/tool-landing/model/tools";
 import { ToolLandingPage } from "@/views/tool-landing/ui/ToolPage";
 
@@ -8,7 +8,7 @@ type ToolRouteProps = {
   params: Promise<{ slug: string }>;
 };
 
-export const revalidate = MARKETING_PAGE_REVALIDATE;
+export const revalidate = 86_400;
 
 export function generateStaticParams() {
   return getAllToolSlugs().map((slug) => ({ slug }));

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { buildPageMetadata, MARKETING_PAGE_REVALIDATE } from "@/shared/seo";
+import { buildPageMetadata } from "@/shared/seo";
 import { TemplatesIndexPage } from "@/views/template-landing/ui/TemplatesIndexPage";
 
-export const revalidate = MARKETING_PAGE_REVALIDATE;
+export const revalidate = 86_400;
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Шаблоны карточек товаров для маркетплейсов | kartochki.online",
