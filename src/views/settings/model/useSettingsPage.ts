@@ -22,7 +22,6 @@ import { mapSession } from "@/views/settings/model/mappers";
 import { validatePasswordForm, validateProfileEmail } from "@/views/settings/model/validation";
 
 type ToastState = { message: string; tone: "success" | "danger" };
-type ProfileErrors = { email?: string };
 
 export function useSettingsPage(settings: SettingsResponse) {
   const queryClient = useQueryClient();
@@ -35,7 +34,7 @@ export function useSettingsPage(settings: SettingsResponse) {
     phone: settings.profile.phone ?? "",
     company: settings.profile.company ?? "",
   }));
-  const [profileErrors, setProfileErrors] = useState<ProfileErrors>({});
+  const [profileEmailError, setProfileEmailError] = useState<string | null>(null);
   const [defaultsForm, setDefaultsForm] = useState(() => ({
     marketplaceId: settings.defaults.marketplace_id,
     cardsPerGeneration: String(settings.defaults.cards_per_generation),
@@ -126,22 +125,27 @@ export function useSettingsPage(settings: SettingsResponse) {
     onError: (err: ErrorResponse) => showToast(err.message ?? "Не удалось загрузить аватар", "danger"),
   });
 
+  const emailVerified = settings.profile.email_verified;
+
   function saveProfile() {
     const email = profileForm.email.trim();
-    const emailError = validateProfileEmail(email);
 
-    if (emailError) {
-      setProfileErrors({ email: emailError });
-      return;
+    if (!emailVerified) {
+      const emailError = validateProfileEmail(email);
+      if (emailError) {
+        setProfileEmailError(emailError);
+        return;
+      }
     }
 
-    setProfileErrors({});
+    setProfileEmailError(null);
     profileMutation.mutate({ body: { name: profileForm.name, email, phone: profileForm.phone || undefined, company: profileForm.company || undefined } });
   }
 
   function setProfileEmail(email: string) {
+    if (emailVerified) return;
     setProfileForm((current) => ({ ...current, email }));
-    setProfileErrors((current) => ({ ...current, email: validateProfileEmail(email) ?? undefined }));
+    setProfileEmailError(validateProfileEmail(email));
   }
 
   function saveDefaults() {
@@ -173,6 +177,7 @@ export function useSettingsPage(settings: SettingsResponse) {
   return {
     activeTab,
     changePassword,
+    emailVerified,
     closeDeleteModal,
     defaultsForm,
     defaultsMutation,
@@ -184,8 +189,8 @@ export function useSettingsPage(settings: SettingsResponse) {
     notificationsMutation,
     passwordForm,
     passwordMutation,
+    profileEmailError,
     profileForm,
-    profileErrors,
     profileMutation,
     saveDefaults,
     saveProfile,

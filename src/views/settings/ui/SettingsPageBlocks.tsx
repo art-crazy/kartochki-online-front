@@ -34,7 +34,10 @@ export function ProfileSettingsSection({
       hidden={!active}
       className={active ? styles.panelActive : styles.panelHidden}
     >
-      <SettingsCard title="Фото профиля" subtitle="Изображение аккаунта и публичные данные профиля.">
+      <SettingsCard
+        title="Фото профиля"
+        subtitle="Изображение аккаунта и публичные данные профиля."
+      >
         <div className={styles.avatarRow}>
           <AvatarPicker
             initials={initials}
@@ -50,7 +53,10 @@ export function ProfileSettingsSection({
         </div>
       </SettingsCard>
 
-      <SettingsCard title="Личные данные" subtitle="Контактные данные и информация о компании.">
+      <SettingsCard
+        title="Личные данные"
+        subtitle="Контактные данные и информация о компании."
+      >
         <div className={styles.formGrid}>
           <Input
             dark
@@ -63,7 +69,10 @@ export function ProfileSettingsSection({
             label="Email"
             type="email"
             value={page.profileForm.email}
-            error={page.profileErrors.email}
+            error={page.profileEmailError}
+            readOnly={page.emailVerified}
+            controlClassName={page.emailVerified ? styles.verifiedReadonlyControl : undefined}
+            endAdornment={page.emailVerified ? <span className={styles.verifiedReadonlyMark} aria-hidden="true">✓</span> : null}
             onChange={(e) => page.setProfileEmail(e.target.value)}
           />
           <Input
@@ -86,7 +95,10 @@ export function ProfileSettingsSection({
         </div>
       </SettingsCard>
 
-      <SettingsCard title="Настройки по умолчанию" subtitle="Базовые параметры новых генераций карточек.">
+      <SettingsCard
+        title="Настройки по умолчанию"
+        subtitle="Базовые параметры новых генераций карточек."
+      >
         <div className={styles.formGrid}>
           <Select
             dark

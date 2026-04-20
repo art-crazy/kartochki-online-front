@@ -205,6 +205,39 @@
   font-size: var(--settings-control-font-size);
 }
 
+.verifiedReadonlyControl {
+  border-color: rgba(74, 179, 126, 0.5);
+  background: linear-gradient(180deg, rgba(74, 179, 126, 0.1), rgba(74, 179, 126, 0.04)), var(--dark-bg-3);
+  color: var(--dark-text);
+  cursor: default;
+}
+
+.verifiedReadonlyControl:hover,
+.verifiedReadonlyControl:focus,
+.verifiedReadonlyControl:focus-visible {
+  border-color: rgba(74, 179, 126, 0.5);
+  box-shadow: none;
+}
+
+.verifiedReadonlyControl[readonly] {
+  caret-color: transparent;
+}
+
+.verifiedReadonlyMark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: rgba(74, 179, 126, 0.18);
+  color: var(--success);
+  font-size: 0.75rem;
+  font-weight: 800;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
 :is(.avatarActions, .rowActions, .apiActions, .modalActions) :global(button),
 .formGrid + :global(button),
 .stack > :global(button) {

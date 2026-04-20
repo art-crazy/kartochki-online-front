@@ -194,12 +194,27 @@
   padding-left: 40px;
 }
 
+.controlWithEndAdornment {
+  padding-right: 40px;
+}
+
 .icon {
   position: absolute;
   top: 50%;
   left: 14px;
   transform: translateY(-50%);
   color: var(--muted-2);
+  pointer-events: none;
+}
+
+.endAdornment {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-50%);
   pointer-events: none;
 }
 

@@ -379,6 +379,7 @@ export type SettingsResponse = {
 export type SettingsProfile = {
     name: string;
     email?: string;
+    email_verified: boolean;
     phone?: string;
     company?: string;
 };

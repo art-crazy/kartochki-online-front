@@ -80,10 +80,11 @@ export function Button<T extends ElementType = "button">({
 }
 
 type FieldProps = {
-  label?: string;
+  label?: ReactNode;
   hint?: string;
   error?: string;
   icon?: ReactNode;
+  endAdornment?: ReactNode;
   dark?: boolean;
   success?: boolean;
   className?: string;
@@ -97,6 +98,7 @@ export function Input({
   hint,
   error,
   icon,
+  endAdornment,
   dark = false,
   success = false,
   className,
@@ -115,6 +117,7 @@ export function Input({
           className={classNames(
             styles.control,
             icon && styles.controlWithIcon,
+            endAdornment && styles.controlWithEndAdornment,
             error && styles.isError,
             success && styles.isSuccess,
             dark && styles.isDark,
@@ -122,6 +125,7 @@ export function Input({
           )}
           {...props}
         />
+        {endAdornment ? <span className={styles.endAdornment}>{endAdornment}</span> : null}
       </span>
       {error ? <span className={styles.error}>{error}</span> : null}
       {!error && hint ? <span className={styles.hint}>{hint}</span> : null}

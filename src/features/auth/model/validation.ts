@@ -1,7 +1,7 @@
-const emailPattern = /\S+@\S+\.\S+/;
+import { isValidEmail } from "@/shared/lib/email";
 
 export function validateEmail(email: string) {
-  return emailPattern.test(email.trim());
+  return isValidEmail(email);
 }
 
 export function getPasswordStrength(password: string) {
