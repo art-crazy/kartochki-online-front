@@ -1,29 +1,28 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect } from "react";
 import Link from "next/link";
-import type { MarketingLink } from "@/shared/config/marketing";
+import type { NavDropdownItem } from "@/shared/config/marketing";
 import styles from "./NavDropdown.module.scss";
 
-type NavDropdownItem = MarketingLink & { href: string };
-
 type NavDropdownProps = {
+  index: number;
   label: string;
-  items: readonly NavDropdownItem[];
+  items: NavDropdownItem["items"];
+  open: boolean;
+  onOpen: (index: number) => void;
+  onClose: () => void;
 };
 
-export function NavDropdown({ label, items }: NavDropdownProps) {
-  const [open, setOpen] = useState(false);
+export function NavDropdown({ index, label, items, open, onOpen, onClose }: NavDropdownProps) {
   const ref = useRef<HTMLLIElement>(null);
-
-  const close = useCallback(() => setOpen(false), []);
 
   useEffect(() => {
     function onPointerDown(e: PointerEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) close();
+      if (ref.current && !ref.current.contains(e.target as Node)) onClose();
     }
     function onKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") close();
+      if (e.key === "Escape") onClose();
     }
     document.addEventListener("pointerdown", onPointerDown);
     document.addEventListener("keydown", onKeyDown);
@@ -31,7 +30,7 @@ export function NavDropdown({ label, items }: NavDropdownProps) {
       document.removeEventListener("pointerdown", onPointerDown);
       document.removeEventListener("keydown", onKeyDown);
     };
-  }, [close]);
+  }, [onClose]);
 
   return (
     <li ref={ref} className={styles.root}>
@@ -39,8 +38,8 @@ export function NavDropdown({ label, items }: NavDropdownProps) {
         className={styles.trigger}
         aria-expanded={open}
         aria-haspopup="menu"
-        onClick={() => setOpen((v) => !v)}
-        onMouseEnter={() => setOpen(true)}
+        onClick={() => (open ? onClose() : onOpen(index))}
+        onMouseEnter={() => onOpen(index)}
       >
         {label}
         <svg
@@ -57,14 +56,14 @@ export function NavDropdown({ label, items }: NavDropdownProps) {
       </button>
 
       {open && (
-        <ul className={styles.menu} role="menu" onMouseLeave={close}>
+        <ul className={styles.menu} role="menu" onMouseLeave={onClose}>
           {items.map((item) => (
             <li key={item.href} role="none">
               <Link
                 href={item.href}
                 role="menuitem"
                 className={styles.menuItem}
-                onClick={close}
+                onClick={onClose}
               >
                 {item.label}
               </Link>

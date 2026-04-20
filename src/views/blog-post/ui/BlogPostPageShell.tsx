@@ -2,8 +2,8 @@ import type { ReactNode } from "react";
 import { blogHeaderNav, blogFooterColumns } from "@/shared/config/marketing";
 import type { SeoBreadcrumbItem } from "@/shared/seo/breadcrumbs";
 import { SeoBreadcrumbs } from "@/shared/ui";
-import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
-import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
+import { SiteFooter } from "@/widgets/marketing/site-footer";
+import { SiteHeader } from "@/widgets/marketing/site-header";
 
 type BlogPostPageShellProps = {
   children: ReactNode;

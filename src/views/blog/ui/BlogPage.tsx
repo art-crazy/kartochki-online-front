@@ -6,8 +6,8 @@ import { buildCollectionPageSchema, buildHubBreadcrumbs } from "@/shared/seo";
 import { getBlogHubCommercialLinkGroups } from "@/shared/seo/internal-linking";
 import { SeoBreadcrumbs, SeoJsonLd, SeoLinkSection } from "@/shared/ui";
 import { Button } from "@/shared/ui/primitives/Primitives";
-import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
-import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
+import { SiteFooter } from "@/widgets/marketing/site-footer";
+import { SiteHeader } from "@/widgets/marketing/site-header";
 import { fallbackBlogPageContent, type BlogPageContent } from "@/views/blog/model/content";
 import styles from "./BlogPage.module.scss";
 

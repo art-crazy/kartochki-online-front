@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { legalFooterColumns, blogHeaderNav } from "@/shared/config/marketing";
 import { siteConfig } from "@/shared/config/site";
 import { buildNoindexMetadata } from "@/shared/seo";
-import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
-import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
+import { SiteFooter } from "@/widgets/marketing/site-footer";
+import { SiteHeader } from "@/widgets/marketing/site-header";
 import styles from "./RekvizityPage.module.scss";
 
 export const metadata: Metadata = buildNoindexMetadata({

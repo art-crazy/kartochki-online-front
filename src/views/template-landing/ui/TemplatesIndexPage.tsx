@@ -3,8 +3,8 @@ import { marketingFooterColumns, marketingHeaderNav } from "@/shared/config/mark
 import { buildCollectionPageSchema, buildHubBreadcrumbs } from "@/shared/seo";
 import { getTemplatesHubLinkGroups } from "@/shared/seo/internal-linking";
 import { SeoBreadcrumbs, SeoJsonLd, SeoLinkSection } from "@/shared/ui";
-import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
-import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
+import { SiteFooter } from "@/widgets/marketing/site-footer";
+import { SiteHeader } from "@/widgets/marketing/site-header";
 import landing from "@/shared/ui/landing/LandingPage.module.scss";
 import styles from "@/shared/ui/landing/LandingIndex.module.scss";
 import { getAllTemplatePages } from "../model/templates";

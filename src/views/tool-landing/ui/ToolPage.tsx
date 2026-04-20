@@ -4,8 +4,8 @@ import { buildDetailBreadcrumbs, buildFaqPageSchema, buildSoftwareApplicationSch
 import { getToolPageLinkGroups } from "@/shared/seo/internal-linking";
 import landing from "@/shared/ui/landing/LandingPage.module.scss";
 import { SeoBreadcrumbs, SeoJsonLd, SeoLinkSection } from "@/shared/ui";
-import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
-import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
+import { SiteFooter } from "@/widgets/marketing/site-footer";
+import { SiteHeader } from "@/widgets/marketing/site-header";
 import type { ToolPage } from "../model/tools";
 import styles from "./ToolPage.module.scss";
 

@@ -1,7 +1,7 @@
 import type { NavItem } from "@/shared/config/marketing";
 import { getOptionalServerAuthUser } from "@/shared/auth/model/getOptionalServerAuthUser";
 import Link from "next/link";
-import { NavDropdown } from "./NavDropdown";
+import { NavLinks } from "./NavLinks";
 import { SiteHeaderAuthActions } from "./SiteHeaderAuthActions";
 import styles from "./SiteHeader.module.scss";
 
@@ -20,20 +20,7 @@ export async function SiteHeader({ nav }: SiteHeaderProps) {
             карточки<span>.</span>онлайн
           </Link>
 
-          <ul className={styles.navLinks}>
-            {nav.map((item) => {
-              if (item.type === "dropdown") {
-                return (
-                  <NavDropdown key={item.label} label={item.label} items={item.items} />
-                );
-              }
-              return (
-                <li key={item.href}>
-                  <Link href={item.href}>{item.label}</Link>
-                </li>
-              );
-            })}
-          </ul>
+          <NavLinks nav={nav} />
 
           <div className={styles.navActions}>
             <SiteHeaderAuthActions user={user} />

@@ -50,10 +50,11 @@
 
 .section {
   padding: 64px 24px;
+  background: var(--background);
 }
 
 .section:nth-child(even) {
-  background: #f9fafb;
+  background: var(--background);
 }
 
 .container {
@@ -78,7 +79,7 @@
 
 .featureCard {
   padding: 24px;
-  background: #fff;
+  background: var(--background-elevated);
   border: 1px solid #e5e7eb;
   border-radius: 12px;
 }
@@ -111,7 +112,7 @@
 
 .faqItem {
   padding: 20px;
-  background: #fff;
+  background: var(--background-elevated);
   border: 1px solid #e5e7eb;
   border-radius: 10px;
 }

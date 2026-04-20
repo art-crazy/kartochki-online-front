@@ -4,8 +4,8 @@ import { buildFaqPageSchema, buildSoftwareApplicationSchema } from "@/shared/seo
 import { getMarketplaceToolPageLinkGroups } from "@/shared/seo/internal-linking-marketplace-tools";
 import landing from "@/shared/ui/landing/LandingPage.module.scss";
 import { SeoBreadcrumbs, SeoJsonLd, SeoLinkSection } from "@/shared/ui";
-import { SiteFooter } from "@/widgets/marketing/site-footer/ui/SiteFooter";
-import { SiteHeader } from "@/widgets/marketing/site-header/ui/SiteHeader";
+import { SiteFooter } from "@/widgets/marketing/site-footer";
+import { SiteHeader } from "@/widgets/marketing/site-header";
 import type { MarketplaceToolLanding } from "../model/solutions";
 import { buildMarketplaceToolHref } from "../model/solutions";
 import styles from "./MarketplaceToolPage.module.scss";
