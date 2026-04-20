@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import Link from "next/link";
 import type { NavDropdownItem } from "@/shared/config/marketing";
 import styles from "./NavDropdown.module.scss";
 
@@ -18,6 +17,8 @@ export function NavDropdown({ index, label, items, open, onOpen, onClose }: NavD
   const ref = useRef<HTMLLIElement>(null);
 
   useEffect(() => {
+    if (!open) return;
+
     function onPointerDown(e: PointerEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) onClose();
     }
@@ -30,7 +31,7 @@ export function NavDropdown({ index, label, items, open, onOpen, onClose }: NavD
       document.removeEventListener("pointerdown", onPointerDown);
       document.removeEventListener("keydown", onKeyDown);
     };
-  }, [onClose]);
+  }, [onClose, open]);
 
   return (
     <li ref={ref} className={styles.root}>
@@ -56,17 +57,12 @@ export function NavDropdown({ index, label, items, open, onOpen, onClose }: NavD
       </button>
 
       {open && (
-        <ul className={styles.menu} role="menu" onMouseLeave={onClose}>
+        <ul className={styles.menu} role="menu">
           {items.map((item) => (
             <li key={item.href} role="none">
-              <Link
-                href={item.href}
-                role="menuitem"
-                className={styles.menuItem}
-                onClick={onClose}
-              >
+              <a href={item.href} role="menuitem" className={styles.menuItem}>
                 {item.label}
-              </Link>
+              </a>
             </li>
           ))}
         </ul>
