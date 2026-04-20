@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { buildPageMetadata } from "@/shared/seo";
+import { buildPageMetadata, MARKETING_PAGE_REVALIDATE } from "@/shared/seo";
 import {
   getAllMarketplaceToolParams,
   getMarketplaceToolLanding,
@@ -15,7 +15,7 @@ type MarketplaceToolRouteProps = {
   }>;
 };
 
-export const dynamic = "force-static";
+export const revalidate = MARKETING_PAGE_REVALIDATE;
 
 export function generateStaticParams() {
   return getAllMarketplaceToolParams().map(({ marketplaceSlug, toolSlug }) => ({

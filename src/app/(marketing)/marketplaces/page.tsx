@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { buildPageMetadata } from "@/shared/seo";
+import { buildPageMetadata, MARKETING_PAGE_REVALIDATE } from "@/shared/seo";
 import { MarketplacesIndexPage } from "@/views/marketplace-landing/ui/MarketplacesIndexPage";
 
-export const dynamic = "force-static";
+export const revalidate = MARKETING_PAGE_REVALIDATE;
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Карточки для маркетплейсов — Wildberries, Ozon, Яндекс Маркет | kartochki.online",

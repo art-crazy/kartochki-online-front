@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { buildPageMetadata } from "@/shared/seo";
+import { buildPageMetadata, MARKETING_PAGE_REVALIDATE } from "@/shared/seo";
 import { getBlogPageContent, getBlogPageNumber } from "@/views/blog/model/server";
 import { BlogPage } from "@/views/blog/ui/BlogPage";
 
@@ -9,7 +9,7 @@ type BlogRouteProps = {
   }>;
 };
 
-export const revalidate = 86_400;
+export const revalidate = MARKETING_PAGE_REVALIDATE;
 
 export async function generateMetadata({ searchParams }: BlogRouteProps): Promise<Metadata> {
   const page = getBlogPageNumber((await searchParams)?.page);

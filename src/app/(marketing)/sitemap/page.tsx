@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { buildPageMetadata } from "@/shared/seo";
+import { buildPageMetadata, MARKETING_PAGE_REVALIDATE } from "@/shared/seo";
 import { SiteMapPage } from "@/views/site-map/ui/SiteMapPage";
 
-export const dynamic = "force-static";
+export const revalidate = MARKETING_PAGE_REVALIDATE;
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Карта сайта | kartochki.online",

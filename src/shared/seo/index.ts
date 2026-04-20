@@ -1,3 +1,4 @@
+export { MARKETING_PAGE_REVALIDATE } from "@/shared/config/seo";
 export {
   buildArticleMetadata,
   buildCanonicalUrl,

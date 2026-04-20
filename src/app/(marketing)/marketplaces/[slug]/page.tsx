@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { buildPageMetadata } from "@/shared/seo";
+import { buildPageMetadata, MARKETING_PAGE_REVALIDATE } from "@/shared/seo";
 import {
   getMarketplacePage,
   getAllMarketplaceSlugs,
@@ -11,7 +11,7 @@ type MarketplaceRouteProps = {
   params: Promise<{ slug: string }>;
 };
 
-export const dynamic = "force-static";
+export const revalidate = MARKETING_PAGE_REVALIDATE;
 
 export function generateStaticParams() {
   return getAllMarketplaceSlugs().map((slug) => ({ slug }));

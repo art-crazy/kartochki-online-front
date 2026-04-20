@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { MARKETING_PAGE_REVALIDATE } from "@/shared/seo";
 import { getApiBlogPost, getBlogPostMetadata, getStaticBlogPostParams, hasFallbackBlogPost } from "@/views/blog-post/model/server";
 import { ApiBlogPostPage } from "@/views/blog-post/ui/ApiBlogPostPage";
 import { BlogPostPage } from "@/views/blog-post/ui/BlogPostPage";
@@ -11,7 +12,7 @@ type BlogPostRouteProps = {
 };
 
 export const dynamicParams = true;
-export const revalidate = 86_400;
+export const revalidate = MARKETING_PAGE_REVALIDATE;
 
 export function generateStaticParams() {
   return getStaticBlogPostParams();
