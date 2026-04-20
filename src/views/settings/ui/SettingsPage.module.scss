@@ -206,8 +206,8 @@
 }
 
 .verifiedReadonlyControl {
-  border-color: rgba(74, 179, 126, 0.5);
-  background: linear-gradient(180deg, rgba(74, 179, 126, 0.1), rgba(74, 179, 126, 0.04)), var(--dark-bg-3);
+  border-color: rgba(183, 242, 143, 0.35);
+  background: linear-gradient(180deg, rgba(183, 242, 143, 0.08), rgba(183, 242, 143, 0.03)), var(--dark-bg-3);
   color: var(--dark-text);
   cursor: default;
 }
@@ -215,7 +215,7 @@
 .verifiedReadonlyControl:hover,
 .verifiedReadonlyControl:focus,
 .verifiedReadonlyControl:focus-visible {
-  border-color: rgba(74, 179, 126, 0.5);
+  border-color: rgba(183, 242, 143, 0.35);
   box-shadow: none;
 }
 
@@ -230,7 +230,7 @@
   width: 18px;
   height: 18px;
   border-radius: 999px;
-  background: rgba(74, 179, 126, 0.18);
+  background: rgba(183, 242, 143, 0.14);
   color: var(--success);
   font-size: 0.75rem;
   font-weight: 800;
