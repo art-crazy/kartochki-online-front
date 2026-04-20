@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState, type RefObject } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import { Button, Chip, Input } from "@/shared/ui";
 import type {
   CardTypeId,
@@ -67,6 +67,16 @@ export function GenerateControls({
 }: GenerateControlsProps) {
   const [cardCountInput, setCardCountInput] = useState(String(cardCount));
 
+  function pluralCards(n: number) {
+    const mod10 = n % 10;
+    const mod100 = n % 100;
+    if (mod10 === 1 && mod100 !== 11) return "карточка";
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return "карточки";
+    return "карточек";
+  }
+  const countInputRef = useRef<HTMLInputElement>(null);
+  const SLIDER_MAX = 20;
+
   useEffect(() => {
     setCardCountInput(String(cardCount));
   }, [cardCount]);
@@ -74,21 +84,11 @@ export function GenerateControls({
   function applyCardCountInput(nextValue: string) {
     const digitsOnly = nextValue.replace(/\D+/g, "");
     setCardCountInput(digitsOnly);
-
-    if (!digitsOnly) {
-      return;
-    }
-
-    onCardCountChange(Math.max(1, Number(digitsOnly)));
+    if (digitsOnly) onCardCountChange(Math.max(1, Number(digitsOnly)));
   }
 
   function commitCardCountInput() {
-    if (!cardCountInput) {
-      setCardCountInput(String(cardCount));
-      return;
-    }
-
-    const normalizedValue = Math.max(1, Number(cardCountInput));
+    const normalizedValue = cardCountInput ? Math.max(1, Number(cardCountInput)) : cardCount;
     setCardCountInput(String(normalizedValue));
     onCardCountChange(normalizedValue);
   }
@@ -176,35 +176,65 @@ export function GenerateControls({
 
       <section className={styles.section}>
         <h2 className={styles.label}>Количество карточек</h2>
-        <div className={styles.countSelector}>
-          <div className={styles.countPresets} role="group" aria-label="Быстрый выбор количества карточек">
-            {cardCounts.map((option) => (
-              <button
-                key={option}
-                type="button"
-                className={[styles.countButton, cardCount === option ? styles.countButtonActive : ""].join(" ")}
-                onClick={() => onCardCountChange(option)}
-              >
-                {option}
-              </button>
-            ))}
-          </div>
 
-          <Input
-            dark
-            type="text"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            label="Свое количество"
-            aria-label="Введите количество карточек"
-            className={styles.countInputField}
-            controlClassName={styles.countInput}
-            value={cardCountInput}
-            onChange={(event) => applyCardCountInput(event.target.value)}
-            onBlur={commitCardCountInput}
-          />
+        <div className={styles.countPresets} role="group" aria-label="Быстрый выбор количества">
+          {cardCounts.map((option) => (
+            <button
+              key={option}
+              type="button"
+              className={[styles.countChip, cardCount === option ? styles.countChipActive : ""].join(" ")}
+              onClick={() => onCardCountChange(option)}
+            >
+              {option}
+            </button>
+          ))}
         </div>
-        <p className={styles.countHint}>Можно ввести любое количество, начиная с 1.</p>
+
+        <div className={styles.countBox}>
+          <div className={styles.countBoxMain}>
+            <div className={styles.countInputWrap}>
+              <input
+                ref={countInputRef}
+                type="number"
+                min={1}
+                aria-label="Количество карточек"
+                className={styles.countNumberInput}
+                value={cardCountInput}
+                onChange={(event) => applyCardCountInput(event.target.value)}
+                onBlur={commitCardCountInput}
+                onKeyDown={(event) => { if (event.key === "Enter") (event.target as HTMLInputElement).blur(); }}
+              />
+              <span className={styles.countUnitLabel}>{pluralCards(cardCount)}</span>
+            </div>
+            <div className={styles.countSteppers} aria-label="Изменить количество">
+              <button
+                type="button"
+                className={styles.countStepper}
+                aria-label="Уменьшить"
+                onClick={() => onCardCountChange(Math.max(1, cardCount - 1))}
+              >−</button>
+              <button
+                type="button"
+                className={styles.countStepper}
+                aria-label="Увеличить"
+                onClick={() => onCardCountChange(cardCount + 1)}
+              >+</button>
+            </div>
+          </div>
+          <div className={styles.countRangeRow}>
+            <span>1</span>
+            <input
+              type="range"
+              min={1}
+              max={SLIDER_MAX}
+              value={Math.min(cardCount, SLIDER_MAX)}
+              aria-label="Количество карточек"
+              className={styles.countSlider}
+              onChange={(event) => onCardCountChange(Number(event.target.value))}
+            />
+            <span>{SLIDER_MAX}+</span>
+          </div>
+        </div>
       </section>
 
       <Input

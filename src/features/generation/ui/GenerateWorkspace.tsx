@@ -45,7 +45,7 @@ export function GenerateWorkspace({
   const availableMarketplaces = config.marketplaces.length ? config.marketplaces : marketplaceOptions;
   const availableStyles = config.styles.length ? config.styles : styleOptions;
   const availableCardTypes = config.cardTypes.length ? config.cardTypes : cardTypeOptions;
-  const availableCardCounts = config.cardCountOptions.length ? config.cardCountOptions : cardCountOptions;
+  const availableCardCounts = cardCountOptions;
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const objectUrlRef = useRef<string | null>(null);

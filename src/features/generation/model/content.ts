@@ -68,7 +68,7 @@ export const defaultSelectedCardTypes = cardTypeOptions
   .filter((item) => item.defaultSelected)
   .map((item) => item.id);
 
-export const cardCountOptions: ReadonlyArray<number> = [3, 6, 8];
+export const cardCountOptions: ReadonlyArray<number> = [3, 6, 9];
 
 export const fallbackGenerateConfigContent: GenerateConfigContent = {
   marketplaces: marketplaceOptions,
