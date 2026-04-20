@@ -1,4 +1,13 @@
 .surface {
+  --accent: var(--app-accent);
+  --accent-button: var(--app-accent-button);
+  --accent-strong: var(--app-accent-strong);
+  --accent-text: var(--app-accent-text);
+  --accent-dim: var(--app-accent-dim);
+  --accent-border: var(--app-accent-border);
+  --success: var(--app-success);
+  --success-dim: var(--app-success-dim);
+
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr);
   height: 100vh;
