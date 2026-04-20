@@ -6,15 +6,11 @@ import { getSettingsOptions, type SettingsResponse } from "@/shared/api";
 import { useAuthSession } from "@/shared/auth/ui/AuthSessionProvider";
 import { classNames } from "@/shared/lib/classNames";
 import { getUserInitials } from "@/shared/lib/user";
-import { Avatar, Button, CardSurface, Input, Select } from "@/shared/ui";
+import { Button, CardSurface, Input } from "@/shared/ui";
 import { AppShell } from "@/widgets/app/app-shell/ui/AppShell";
-import {
-  deleteConfirmWord,
-  notificationLabels,
-  settingsTabs,
-  type SettingsTabId,
-} from "@/views/settings/model/content";
+import { notificationLabels, settingsTabs, type SettingsTabId } from "@/views/settings/model/content";
 import { useSettingsPage } from "@/views/settings/model/useSettingsPage";
+import { DeleteAccountModal, ProfileSettingsSection } from "./SettingsPageBlocks";
 import { SettingsCard, SettingsStatus, SwitchRow } from "./SettingsPageParts";
 import styles from "./SettingsPage.module.scss";
 
@@ -52,7 +48,6 @@ function SettingsPageContent({ settings }: { settings: SettingsResponse }) {
   const { user } = useAuthSession();
   const page = useSettingsPage(settings);
   const emailNotifications = Object.entries(notificationLabels).filter(([, v]) => v.group === "email");
-  const securityNotifications = Object.entries(notificationLabels).filter(([, v]) => v.group === "security");
   const initials = getUserInitials(settings.profile.name, settings.profile.email);
   const profileEmail = settings.profile.email ?? "Email не указан";
 
@@ -63,61 +58,14 @@ function SettingsPageContent({ settings }: { settings: SettingsResponse }) {
           <SettingsTabs activeTab={page.activeTab} onChange={page.setActiveTab} />
 
           <div className={styles.panels}>
-            <section id="settings-panel-profile" role="tabpanel" aria-labelledby="settings-tab-profile" hidden={page.activeTab !== "profile"} className={page.activeTab === "profile" ? styles.panelActive : styles.panelHidden}>
-              <SettingsCard title="Фото профиля" subtitle="Изображение аккаунта и публичные данные профиля.">
-                <div className={styles.avatarRow}>
-                  <div className={styles.avatarWrap}>
-                    <Avatar initials={initials} src={user?.avatar_url} alt={settings.profile.name} size="xl" />
-                    <span className={styles.avatarEdit} aria-hidden="true">✎</span>
-                  </div>
-                  <div className={styles.avatarMeta}>
-                    <div className={styles.avatarName}>{settings.profile.name}</div>
-                    <div className={styles.avatarEmail}>{profileEmail}</div>
-                    <div className={styles.avatarActions}>
-                      <Button variant="darkPrimary" size="sm" onClick={() => page.showToast("Загрузка аватара будет подключена позже")}>Загрузить фото</Button>
-                      <Button variant="darkOutline" size="sm" onClick={() => page.showToast("Аватар удален")}>Удалить</Button>
-                    </div>
-                  </div>
-                </div>
-              </SettingsCard>
-
-              <SettingsCard title="Личные данные" subtitle="Контактные данные и информация о компании.">
-                <div className={styles.formGrid}>
-                  <Input dark label="Имя и фамилия" value={page.profileForm.name} onChange={(e) => page.setProfileForm((c) => ({ ...c, name: e.target.value }))} />
-                  <Input dark label="Email" type="email" value={page.profileForm.email} onChange={(e) => page.setProfileForm((c) => ({ ...c, email: e.target.value }))} />
-                  <Input dark label="Телефон" value={page.profileForm.phone} onChange={(e) => page.setProfileForm((c) => ({ ...c, phone: e.target.value }))} />
-                  <Input dark label="Компания" value={page.profileForm.company} onChange={(e) => page.setProfileForm((c) => ({ ...c, company: e.target.value }))} />
-                </div>
-                <div className={styles.rowActions}>
-                  <Button variant="darkPrimary" disabled={page.profileMutation.isPending} onClick={page.saveProfile}>
-                    {page.profileMutation.isPending ? "Сохраняем..." : "Сохранить изменения"}
-                  </Button>
-                </div>
-              </SettingsCard>
-
-              <SettingsCard title="Настройки по умолчанию" subtitle="Базовые параметры новых генераций карточек.">
-                <div className={styles.formGrid}>
-                  <Select dark label="Основной маркетплейс" value={page.defaultsForm.marketplaceId} onChange={(e) => page.setDefaultsForm((c) => ({ ...c, marketplaceId: e.target.value }))}>
-                    <option value="wildberries">Wildberries</option>
-                    <option value="ozon">Ozon</option>
-                    <option value="yandex_market">Яндекс Маркет</option>
-                  </Select>
-                  <Select dark label="Карточек за генерацию" value={page.defaultsForm.cardsPerGeneration} onChange={(e) => page.setDefaultsForm((c) => ({ ...c, cardsPerGeneration: e.target.value }))}>
-                    <option value="6">6 карточек</option>
-                    <option value="10">10 карточек</option>
-                    <option value="15">15 карточек</option>
-                  </Select>
-                  <Select dark label="Формат" value={page.defaultsForm.format} onChange={(e) => page.setDefaultsForm((c) => ({ ...c, format: e.target.value as "png" | "jpg" | "webp" }))}>
-                    <option value="png">PNG</option>
-                    <option value="jpg">JPEG</option>
-                    <option value="webp">WebP</option>
-                  </Select>
-                </div>
-                <Button variant="darkOutline" disabled={page.defaultsMutation.isPending} onClick={page.saveDefaults}>
-                  {page.defaultsMutation.isPending ? "Сохраняем..." : "Сохранить по умолчанию"}
-                </Button>
-              </SettingsCard>
-            </section>
+            <ProfileSettingsSection
+              active={page.activeTab === "profile"}
+              avatarUrl={user?.avatar_url}
+              initials={initials}
+              page={page}
+              profileEmail={profileEmail}
+              profileName={settings.profile.name}
+            />
 
             <section id="settings-panel-security" role="tabpanel" aria-labelledby="settings-tab-security" hidden={page.activeTab !== "security"} className={page.activeTab === "security" ? styles.panelActive : styles.panelHidden}>
               <SettingsCard title="Смена пароля" subtitle="Последнее изменение: никогда.">
@@ -129,14 +77,6 @@ function SettingsPageContent({ settings }: { settings: SettingsResponse }) {
                 <Button variant="darkPrimary" disabled={page.passwordMutation.isPending} onClick={page.changePassword}>
                   {page.passwordMutation.isPending ? "Сохраняем..." : "Изменить пароль"}
                 </Button>
-              </SettingsCard>
-
-              <SettingsCard title="Двухфакторная аутентификация" subtitle="Дополнительная защита аккаунта при входе.">
-                <div className={styles.stack}>
-                  {securityNotifications.map(([key, meta]) => (
-                    <SwitchRow key={key} checked={page.notifications[key] ?? false} title={meta.title} description={meta.description} disabled={page.notificationsMutation.isPending} onToggle={() => page.toggleNotification(key)} />
-                  ))}
-                </div>
               </SettingsCard>
 
               <SettingsCard title="Активные сессии" subtitle="Устройства с активным входом в аккаунт.">
@@ -202,22 +142,7 @@ function SettingsPageContent({ settings }: { settings: SettingsResponse }) {
         </div>
       </main>
 
-      {page.deleteModalOpen ? (
-        <div className={styles.modalOverlay} role="presentation" onClick={page.closeDeleteModal}>
-          <div className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="delete-account-title" onClick={(e) => e.stopPropagation()}>
-            <div className={styles.modalIcon} aria-hidden="true">!</div>
-            <h2 id="delete-account-title" className={styles.modalTitle}>Удалить аккаунт?</h2>
-            <p className={styles.modalText}>Для подтверждения введите слово <strong>{deleteConfirmWord}</strong>.</p>
-            <Input dark label="Подтверждение" placeholder={deleteConfirmWord} value={page.deleteConfirmInput} onChange={(e) => page.setDeleteConfirmInput(e.target.value)} />
-            <div className={styles.modalActions}>
-              <Button variant="darkOutline" block onClick={page.closeDeleteModal}>Отмена</Button>
-              <Button variant="danger" block disabled={page.deleteConfirmInput !== deleteConfirmWord || page.deleteAccountMutation.isPending} onClick={() => page.deleteAccountMutation.mutate({ body: { confirm_word: page.deleteConfirmInput } })}>
-                {page.deleteAccountMutation.isPending ? "Удаляем..." : "Удалить навсегда"}
-              </Button>
-            </div>
-          </div>
-        </div>
-      ) : null}
+      <DeleteAccountModal page={page} />
 
       {page.toast ? (
         <div className={styles.toast} role="status" aria-live="polite">

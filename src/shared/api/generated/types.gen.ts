@@ -601,6 +601,10 @@ export type GenerateModel = {
     price_per_image: number;
 };
 
+export type SettingsAvatarResponse = {
+    avatar_url: string;
+};
+
 export type GetLiveHealthData = {
     body?: never;
     path?: never;
@@ -1464,6 +1468,41 @@ export type PatchSettingsProfileResponses = {
 };
 
 export type PatchSettingsProfileResponse = PatchSettingsProfileResponses[keyof PatchSettingsProfileResponses];
+
+export type UploadSettingsAvatarData = {
+    body: {
+        file: Blob | File;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/v1/settings/avatar';
+};
+
+export type UploadSettingsAvatarErrors = {
+    /**
+     * Файл отсутствует или тип изображения не поддерживается
+     */
+    400: ErrorResponse;
+    /**
+     * Токен отсутствует, истёк или недействителен
+     */
+    401: ErrorResponse;
+    /**
+     * Внутренняя ошибка при загрузке аватарки
+     */
+    500: ErrorResponse;
+};
+
+export type UploadSettingsAvatarError = UploadSettingsAvatarErrors[keyof UploadSettingsAvatarErrors];
+
+export type UploadSettingsAvatarResponses = {
+    /**
+     * Аватарка успешно загружена
+     */
+    201: SettingsAvatarResponse;
+};
+
+export type UploadSettingsAvatarResponse = UploadSettingsAvatarResponses[keyof UploadSettingsAvatarResponses];
 
 export type PatchSettingsDefaultsData = {
     body: UpdateDefaultsRequest;

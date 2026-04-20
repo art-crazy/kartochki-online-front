@@ -45,6 +45,7 @@ export {
   getSettingsQueryKey,
   getSettingsOptions,
   patchSettingsProfileMutation,
+  uploadSettingsAvatarMutation,
   patchSettingsDefaultsMutation,
   changeSettingsPasswordMutation,
   patchSettingsNotificationsMutation,

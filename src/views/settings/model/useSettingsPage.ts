@@ -7,11 +7,13 @@ import {
   changeSettingsPasswordMutation,
   deleteSettingsAccountMutation,
   deleteSettingsSessionMutation,
+  getCurrentUserQueryKey,
   getSettingsQueryKey,
   patchSettingsDefaultsMutation,
   patchSettingsNotificationsMutation,
   patchSettingsProfileMutation,
   postSettingsExportMutation,
+  uploadSettingsAvatarMutation,
   type ErrorResponse,
   type SettingsResponse,
 } from "@/shared/api";
@@ -57,6 +59,7 @@ export function useSettingsPage(settings: SettingsResponse) {
 
   function invalidateSettings() {
     void queryClient.invalidateQueries({ queryKey: getSettingsQueryKey() });
+    void queryClient.invalidateQueries({ queryKey: getCurrentUserQueryKey() });
   }
 
   const profileMutation = useMutation({
@@ -112,6 +115,15 @@ export function useSettingsPage(settings: SettingsResponse) {
     onError: (err: ErrorResponse) => showToast(err.message ?? "Ошибка", "danger"),
   });
 
+  const uploadAvatarMutation = useMutation({
+    ...uploadSettingsAvatarMutation(),
+    onSuccess: () => {
+      invalidateSettings();
+      showToast("Аватар обновлен");
+    },
+    onError: (err: ErrorResponse) => showToast(err.message ?? "Не удалось загрузить аватар", "danger"),
+  });
+
   function saveProfile() {
     profileMutation.mutate({ body: { name: profileForm.name, email: profileForm.email, phone: profileForm.phone || undefined, company: profileForm.company || undefined } });
   }
@@ -124,6 +136,10 @@ export function useSettingsPage(settings: SettingsResponse) {
     const error = validatePasswordForm(passwordForm);
     if (error) { showToast(error, "danger"); return; }
     passwordMutation.mutate({ body: { current_password: passwordForm.current, new_password: passwordForm.next } });
+  }
+
+  function uploadAvatar(file: File) {
+    uploadAvatarMutation.mutate({ body: { file } });
   }
 
   function toggleNotification(key: string) {
@@ -167,5 +183,7 @@ export function useSettingsPage(settings: SettingsResponse) {
     showToast,
     toast,
     toggleNotification,
+    uploadAvatar,
+    uploadAvatarMutation,
   };
 }
