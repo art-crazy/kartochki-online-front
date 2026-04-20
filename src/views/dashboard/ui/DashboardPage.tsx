@@ -25,19 +25,19 @@ export function DashboardPage() {
 
   if (isPending) {
     return (
-      <DashboardShell subtitle="\u0417\u0430\u0433\u0440\u0443\u0436\u0430\u0435\u043c \u0434\u0430\u043d\u043d\u044b\u0435 \u0430\u043a\u043a\u0430\u0443\u043d\u0442\u0430">
-        <DashboardStateCard title="\u0417\u0430\u0433\u0440\u0443\u0436\u0430\u0435\u043c \u0434\u0430\u0448\u0431\u043e\u0440\u0434" description="\u041f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u043b\u0438\u043c\u0438\u0442\u044b, \u043f\u0440\u043e\u0435\u043a\u0442\u044b \u0438 \u0431\u044b\u0441\u0442\u0440\u044b\u0439 \u0441\u0442\u0430\u0440\u0442." />
+      <DashboardShell subtitle="Загружаем данные аккаунта">
+        <DashboardStateCard title="Загружаем дашборд" description="Получаем лимиты, проекты и быстрый старт." />
       </DashboardShell>
     );
   }
 
   if (isError || !pageContent) {
     return (
-      <DashboardShell subtitle="\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u043f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u0434\u0430\u043d\u043d\u044b\u0435 \u0430\u043a\u043a\u0430\u0443\u043d\u0442\u0430">
+      <DashboardShell subtitle="Не удалось получить данные аккаунта">
         <DashboardStateCard
-          title="\u0414\u0430\u0448\u0431\u043e\u0440\u0434 \u043d\u0435 \u0437\u0430\u0433\u0440\u0443\u0437\u0438\u043b\u0441\u044f"
-          description="\u041f\u0440\u043e\u0432\u0435\u0440\u044c\u0442\u0435 API \u0438 \u043f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u0435 \u0437\u0430\u043f\u0440\u043e\u0441."
-          action={<Button variant="darkPrimary" onClick={() => void refetch()}>{ "\u041f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u044c" }</Button>}
+          title="Дашборд не загрузился"
+          description="Проверьте API и повторите запрос."
+          action={<Button variant="darkPrimary" onClick={() => void refetch()}>Повторить</Button>}
         />
       </DashboardShell>
     );
@@ -45,16 +45,16 @@ export function DashboardPage() {
 
   return (
     <AppShell
-      title="\u0414\u0430\u0448\u0431\u043e\u0440\u0434"
-      subtitle={new Intl.DateTimeFormat("ru-RU", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(new Date())}
+      title="Дашборд"
+      subtitle={new Intl.DateTimeFormat("ru-RU", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(new Date()).replace(/^./, (c) => c.toUpperCase())}
       activeKey="dashboard"
       action={(
         <>
-          <Button variant="darkOutline" size="md" iconOnly className={styles.notificationButton} aria-label="\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u044f">
+          <Button variant="darkOutline" size="md" iconOnly className={styles.notificationButton} aria-label="Уведомления">
             {"\uD83D\uDD14"}
           </Button>
           <Button as={Link} href="/app/generate" variant="darkPrimary" size="md">
-            {"+ \u0421\u043e\u0437\u0434\u0430\u0442\u044c \u043a\u0430\u0440\u0442\u043e\u0447\u043a\u0438"}
+            + Создать карточки
           </Button>
         </>
       )}
@@ -164,7 +164,7 @@ export function DashboardPage() {
 
 function DashboardShell({ children, subtitle }: { children: ReactNode; subtitle: string }) {
   return (
-    <AppShell title="\u0414\u0430\u0448\u0431\u043e\u0440\u0434" subtitle={subtitle} activeKey="dashboard">
+    <AppShell title="Дашборд" subtitle={subtitle} activeKey="dashboard">
       <main className={styles.page}>{children}</main>
     </AppShell>
   );
