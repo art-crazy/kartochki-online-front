@@ -134,7 +134,7 @@ export function ProfileSettingsSection({
           </Select>
         </div>
         <Button variant="darkOutline" disabled={page.defaultsMutation.isPending} onClick={page.saveDefaults}>
-          {page.defaultsMutation.isPending ? "Сохраняем..." : "Сохранить по умолчанию"}
+          {page.defaultsMutation.isPending ? "Сохраняем..." : "Сохранить"}
         </Button>
       </SettingsCard>
     </section>
