@@ -15,6 +15,23 @@ type NavDropdownProps = {
 
 export function NavDropdown({ index, label, items, open, onOpen, onClose }: NavDropdownProps) {
   const ref = useRef<HTMLLIElement>(null);
+  const closeTimerRef = useRef<number | null>(null);
+
+  const clearCloseTimer = () => {
+    if (!closeTimerRef.current) return;
+
+    window.clearTimeout(closeTimerRef.current);
+    closeTimerRef.current = null;
+  };
+
+  const handleMouseEnter = () => {
+    clearCloseTimer();
+  };
+
+  const handleMouseLeave = () => {
+    clearCloseTimer();
+    closeTimerRef.current = window.setTimeout(onClose, 120);
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -33,14 +50,23 @@ export function NavDropdown({ index, label, items, open, onOpen, onClose }: NavD
     };
   }, [onClose, open]);
 
+  useEffect(() => {
+    return () => {
+      if (closeTimerRef.current) window.clearTimeout(closeTimerRef.current);
+    };
+  }, []);
+
   return (
-    <li ref={ref} className={styles.root}>
+    <li ref={ref} className={styles.root} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <button
         className={styles.trigger}
         aria-expanded={open}
         aria-haspopup="menu"
         onClick={() => (open ? onClose() : onOpen(index))}
-        onMouseEnter={() => onOpen(index)}
+        onMouseEnter={() => {
+          clearCloseTimer();
+          onOpen(index);
+        }}
       >
         {label}
         <svg
@@ -57,7 +83,7 @@ export function NavDropdown({ index, label, items, open, onOpen, onClose }: NavD
       </button>
 
       {open && (
-        <ul className={styles.menu} role="menu">
+        <ul className={styles.menu} role="menu" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           {items.map((item) => (
             <li key={item.href} role="none">
               <a href={item.href} role="menuitem" className={styles.menuItem}>
