@@ -1,9 +1,9 @@
 "use client";
 
-import { useRef, type ChangeEvent } from "react";
-import { Avatar, Button, Input, Select } from "@/shared/ui";
+import { Button, Input, Select } from "@/shared/ui";
 import { deleteConfirmWord } from "@/views/settings/model/content";
 import { useSettingsPage } from "@/views/settings/model/useSettingsPage";
+import { AvatarPicker } from "./AvatarPicker";
 import { SettingsCard } from "./SettingsPageParts";
 import styles from "./SettingsPage.module.scss";
 
@@ -26,22 +26,6 @@ export function ProfileSettingsSection({
   profileEmail,
   profileName,
 }: ProfileSettingsSectionProps) {
-  const avatarInputRef = useRef<HTMLInputElement | null>(null);
-
-  function openAvatarPicker() {
-    avatarInputRef.current?.click();
-  }
-
-  function handleAvatarChange(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    event.target.value = "";
-    if (!file) {
-      return;
-    }
-
-    page.uploadAvatar(file);
-  }
-
   return (
     <section
       id="settings-panel-profile"
@@ -52,32 +36,16 @@ export function ProfileSettingsSection({
     >
       <SettingsCard title="Фото профиля" subtitle="Изображение аккаунта и публичные данные профиля.">
         <div className={styles.avatarRow}>
-          <div className={styles.avatarWrap}>
-            <Avatar initials={initials} src={avatarUrl} alt={profileName} size="xl" />
-            <span className={styles.avatarEdit} aria-hidden="true">
-              ✎
-            </span>
-          </div>
+          <AvatarPicker
+            initials={initials}
+            src={avatarUrl}
+            alt={profileName}
+            isPending={page.uploadAvatarMutation.isPending}
+            onUpload={page.uploadAvatar}
+          />
           <div className={styles.avatarMeta}>
             <div className={styles.avatarName}>{profileName}</div>
             <div className={styles.avatarEmail}>{profileEmail}</div>
-            <div className={styles.avatarActions}>
-              <input
-                ref={avatarInputRef}
-                type="file"
-                accept="image/png,image/jpeg,image/webp"
-                hidden
-                onChange={handleAvatarChange}
-              />
-              <Button
-                variant="darkPrimary"
-                size="sm"
-                disabled={page.uploadAvatarMutation.isPending}
-                onClick={openAvatarPicker}
-              >
-                {page.uploadAvatarMutation.isPending ? "Загружаем..." : "Загрузить фото"}
-              </Button>
-            </div>
           </div>
         </div>
       </SettingsCard>
@@ -95,7 +63,8 @@ export function ProfileSettingsSection({
             label="Email"
             type="email"
             value={page.profileForm.email}
-            onChange={(e) => page.setProfileForm((current) => ({ ...current, email: e.target.value }))}
+            error={page.profileErrors.email}
+            onChange={(e) => page.setProfileEmail(e.target.value)}
           />
           <Input
             dark

@@ -19,9 +19,10 @@ import {
 } from "@/shared/api";
 import type { SettingsSessionData, SettingsTabId } from "@/views/settings/model/content";
 import { mapSession } from "@/views/settings/model/mappers";
-import { validatePasswordForm } from "@/views/settings/model/validation";
+import { validatePasswordForm, validateProfileEmail } from "@/views/settings/model/validation";
 
 type ToastState = { message: string; tone: "success" | "danger" };
+type ProfileErrors = { email?: string };
 
 export function useSettingsPage(settings: SettingsResponse) {
   const queryClient = useQueryClient();
@@ -34,6 +35,7 @@ export function useSettingsPage(settings: SettingsResponse) {
     phone: settings.profile.phone ?? "",
     company: settings.profile.company ?? "",
   }));
+  const [profileErrors, setProfileErrors] = useState<ProfileErrors>({});
   const [defaultsForm, setDefaultsForm] = useState(() => ({
     marketplaceId: settings.defaults.marketplace_id,
     cardsPerGeneration: String(settings.defaults.cards_per_generation),
@@ -125,7 +127,21 @@ export function useSettingsPage(settings: SettingsResponse) {
   });
 
   function saveProfile() {
-    profileMutation.mutate({ body: { name: profileForm.name, email: profileForm.email, phone: profileForm.phone || undefined, company: profileForm.company || undefined } });
+    const email = profileForm.email.trim();
+    const emailError = validateProfileEmail(email);
+
+    if (emailError) {
+      setProfileErrors({ email: emailError });
+      return;
+    }
+
+    setProfileErrors({});
+    profileMutation.mutate({ body: { name: profileForm.name, email, phone: profileForm.phone || undefined, company: profileForm.company || undefined } });
+  }
+
+  function setProfileEmail(email: string) {
+    setProfileForm((current) => ({ ...current, email }));
+    setProfileErrors((current) => ({ ...current, email: validateProfileEmail(email) ?? undefined }));
   }
 
   function saveDefaults() {
@@ -169,6 +185,7 @@ export function useSettingsPage(settings: SettingsResponse) {
     passwordForm,
     passwordMutation,
     profileForm,
+    profileErrors,
     profileMutation,
     saveDefaults,
     saveProfile,
@@ -179,6 +196,7 @@ export function useSettingsPage(settings: SettingsResponse) {
     setDeleteConfirmInput,
     setDeleteModalOpen,
     setPasswordForm,
+    setProfileEmail,
     setProfileForm,
     showToast,
     toast,
