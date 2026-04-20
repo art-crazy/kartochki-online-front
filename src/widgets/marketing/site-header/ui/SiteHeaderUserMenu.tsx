@@ -29,8 +29,9 @@ export function SiteHeaderUserMenu({ user }: SiteHeaderUserMenuProps) {
   const { logout, isPending } = useLogout();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const userEmail = user.email?.trim();
 
-  const userName = user.name?.trim() || user.email || "Личный кабинет";
+  const userName = user.name?.trim() || userEmail || "Личный кабинет";
   const userInitials = getUserInitials(user.name, user.email) || "KO";
 
   useEffect(() => {
@@ -71,9 +72,11 @@ export function SiteHeaderUserMenu({ user }: SiteHeaderUserMenuProps) {
 
       {isOpen && (
         <div className={styles.dropdown} role="menu">
-          <div className={styles.dropdownHeader}>
-            <span className={styles.dropdownEmail}>{user.email}</span>
-          </div>
+          {userEmail ? (
+            <div className={styles.dropdownHeader}>
+              <span className={styles.dropdownEmail}>{userEmail}</span>
+            </div>
+          ) : null}
 
           <div className={styles.dropdownItems}>
             {menuItems.map(({ href, label, Icon }) => (

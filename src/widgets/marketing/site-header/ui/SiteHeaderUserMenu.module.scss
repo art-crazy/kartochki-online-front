@@ -60,6 +60,7 @@
     0 4px 6px -1px rgba(0, 0, 0, 0.06),
     0 16px 40px -4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  padding: 6px;
   animation: dropdownIn 0.15s ease;
 }
 
@@ -75,7 +76,7 @@
 }
 
 .dropdownHeader {
-  padding: 12px 14px 10px;
+  padding: 6px 8px 8px;
 }
 
 .dropdownEmail {
@@ -89,7 +90,7 @@
 }
 
 .dropdownItems {
-  padding: 4px 6px;
+  padding: 0;
 }
 
 .dropdownItem {
@@ -117,12 +118,12 @@
 
 .dropdownDivider {
   height: 1px;
-  margin: 0 6px;
+  margin: 2px 0;
   background: var(--line);
 }
 
 .dropdownFooter {
-  padding: 6px 6px 8px;
+  padding: 6px 0 0;
 }
 
 .logoutButton {
