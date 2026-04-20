@@ -69,7 +69,7 @@ export function ProfileSettingsSection({
             label="Email"
             type="email"
             value={page.profileForm.email}
-            error={page.profileEmailError}
+            error={page.profileEmailError ?? undefined}
             readOnly={page.emailVerified}
             controlClassName={page.emailVerified ? styles.verifiedReadonlyControl : undefined}
             endAdornment={page.emailVerified ? <span className={styles.verifiedReadonlyMark} aria-hidden="true">✓</span> : null}
