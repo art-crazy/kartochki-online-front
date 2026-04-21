@@ -11,13 +11,12 @@ import {
   uploadGenerationImageMutation,
 } from "@/shared/api";
 import { getApiErrorMessage, getGenerationStepIndex, mapGenerationCards } from "./apiMappers";
-import { type CardTypeId, type CardTypeOption, type MarketplaceId, type ModelId, type ResultState, type StyleId } from "./content";
+import { type CardTypeId, type CardTypeOption, type MarketplaceId, type ResultState, type StyleId } from "./content";
 
 type GenerationFlowParams = {
   availableCardTypes: ReadonlyArray<CardTypeOption>;
   cardCount: number;
   marketplace: MarketplaceId;
-  modelId: ModelId;
   projectName: string;
   selectedTypes: ReadonlyArray<CardTypeId>;
   showToast: (message: string) => void;
@@ -30,7 +29,6 @@ export function useGenerationFlow({
   availableCardTypes,
   cardCount,
   marketplace,
-  modelId,
   projectName,
   selectedTypes,
   showToast,
@@ -128,7 +126,6 @@ export function useGenerationFlow({
         project_name: projectName.trim() || undefined,
         marketplace_id: marketplace,
         style_id: style,
-        model_id: modelId,
         card_type_ids: selectedTypes.length ? [...selectedTypes] : [...fallbackCardTypes],
         card_count: cardCount,
         source_asset_id: sourceAssetId,
