@@ -1,0 +1,11 @@
+@use "@/shared/ui/scrollbar/vertical-scrollbar" as scrollbar;
+
+.surface {
+  --scrollbar-thumb: var(--dark-border);
+  --scrollbar-thumb-hover: var(--dark-border-2);
+}
+
+.surface,
+.surface :where(*) {
+  @include scrollbar.vertical-scrollbar;
+}

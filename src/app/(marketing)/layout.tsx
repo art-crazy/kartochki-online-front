@@ -8,5 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function MarketingLayout({ children }: PropsWithChildren) {
-  return <div className={styles.surface}>{children}</div>;
+  return (
+    <div className={styles.surface} data-scrollbar-theme="marketing">
+      {children}
+    </div>
+  );
 }
