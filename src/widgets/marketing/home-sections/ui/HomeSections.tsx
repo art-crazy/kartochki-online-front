@@ -10,11 +10,11 @@ import {
   featureCards,
   marqueeItems,
   platformCards,
-  pricingPlans,
   stats,
   steps,
   testimonials,
 } from "@/widgets/marketing/home/model/content";
+import { homeFreePlanSummary, homePricingNote, homePricingPlans } from "@/widgets/marketing/home/model/pricing";
 import styles from "./HomeSections.module.scss";
 
 function SectionHeading({
@@ -166,12 +166,12 @@ export function HomeSections() {
           <SectionHeading
             label="Тарифы"
             title={<>Простые цены без сюрпризов</>}
-            description="Начните бесплатно, переходите на платный тариф только когда это действительно нужно."
+            description={homePricingNote}
             centered
           />
 
-          <div className={styles.cardsThree}>
-            {pricingPlans.map((plan) => (
+          <div className={styles.pricingGrid}>
+            {homePricingPlans.map((plan, index) => (
               <PlanCard
                 key={plan.name}
                 name={plan.name}
@@ -179,6 +179,7 @@ export function HomeSections() {
                 period={plan.period}
                 features={plan.features}
                 popular={plan.popular}
+                wide={index === homePricingPlans.length - 1 && homePricingPlans.length % 3 !== 0}
                 action={
                   <Button as={Link} href="/auth" variant={plan.actionVariant} size="lg" block>
                     {plan.actionLabel}
@@ -187,6 +188,7 @@ export function HomeSections() {
               />
             ))}
           </div>
+          <p className={styles.pricingCaption}>Во всех тарифах доступен полный функционал. Вы выбираете только нужный месячный объем карточек.</p>
         </div>
       </section>
 
@@ -227,7 +229,7 @@ export function HomeSections() {
         <div className={styles.ctaCard}>
           <SectionHeading
             title={<>Попробуй прямо сейчас</>}
-            description="10 карточек бесплатно, без карты. Займёт 2 минуты."
+            description={homeFreePlanSummary}
             centered
           />
           <Button as={Link} href="/auth" size="xl" className={styles.ctaButton}>

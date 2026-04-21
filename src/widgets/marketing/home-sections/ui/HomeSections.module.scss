@@ -130,6 +130,25 @@
   gap: 20px;
 }
 
+.pricingGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+
+  > :last-child:nth-child(3n + 1) {
+    grid-column: 1 / -1;
+  }
+}
+
+.pricingCaption {
+  margin: 18px auto 0;
+  max-width: 720px;
+  color: var(--muted);
+  line-height: 1.7;
+  text-align: center;
+  text-wrap: balance;
+}
+
 .surfaceCard,
 .stepCard {
   border: 1px solid var(--line);
@@ -450,8 +469,13 @@
 
 @media (max-width: 900px) {
   .cardsThree,
+  .pricingGrid,
   .featuresGrid {
     grid-template-columns: 1fr;
+  }
+
+  .pricingGrid > :last-child:nth-child(3n + 1) {
+    grid-column: auto;
   }
 }
 

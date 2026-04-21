@@ -197,7 +197,10 @@
 
 .planCard {
   position: relative;
+  display: flex;
+  flex-direction: column;
   min-width: 0;
+  height: 100%;
   padding: 24px;
 }
 
@@ -257,6 +260,8 @@
 
 .planFeatures {
   display: grid;
+  flex: 1;
+  align-content: start;
   gap: 10px;
   margin: 0 0 20px;
   padding: 0;
@@ -264,17 +269,76 @@
 }
 
 .planFeatureItem {
-  display: flex;
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
   align-items: center;
-  gap: 8px;
+  column-gap: 10px;
 }
 
 .planYes {
   color: var(--success);
+  line-height: 1.4;
 }
 
 .planNo {
   color: var(--danger);
+  line-height: 1.4;
+}
+
+.planCardWide {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 32px;
+}
+
+.planWideLeft {
+  flex: 0 0 220px;
+}
+
+.planWideDivider {
+  width: 1px;
+  align-self: stretch;
+  background: var(--line);
+  flex-shrink: 0;
+}
+
+.planFeaturesWide {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin: 0;
+}
+
+.planWideAction {
+  flex: 0 0 180px;
+}
+
+@media (max-width: 900px) {
+  .planCardWide {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .planWideLeft {
+    flex: none;
+  }
+
+  .planWideDivider {
+    width: auto;
+    height: 1px;
+    margin: 18px 0;
+  }
+
+  .planFeaturesWide {
+    grid-template-columns: 1fr;
+    margin-bottom: 20px;
+  }
+
+  .planWideAction {
+    flex: none;
+  }
 }
 
 .resultCard {

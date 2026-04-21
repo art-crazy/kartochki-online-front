@@ -167,60 +167,6 @@ export const stats = [
   { value: "18", accent: "%", label: "средний рост конверсии по кейсам" },
 ];
 
-export const pricingPlans = [
-  {
-    name: "Старт",
-    price: "0 ₽",
-    period: "Навсегда бесплатно",
-    popular: false,
-    features: [
-      { label: "10 карточек в месяц", enabled: true },
-      { label: "Удаление фона", enabled: true },
-      { label: "WB, Ozon и Яндекс Маркет", enabled: true },
-      { label: "3 стиля оформления", enabled: true },
-      { label: "Batch-генерация", enabled: false },
-      { label: "ИИ-копирайтинг", enabled: false },
-      { label: "Бренд-шаблоны", enabled: false },
-    ],
-    actionLabel: "Начать бесплатно",
-    actionVariant: "outline" as const,
-  },
-  {
-    name: "Про",
-    price: "490 ₽/мес",
-    period: "50 карточек в месяц",
-    popular: true,
-    features: [
-      { label: "50 карточек в месяц", enabled: true },
-      { label: "Удаление фона", enabled: true },
-      { label: "WB, Ozon и Яндекс Маркет", enabled: true },
-      { label: "Все стили", enabled: true },
-      { label: "Batch до 20 товаров", enabled: true },
-      { label: "ИИ-копирайтинг", enabled: true },
-      { label: "Бренд-шаблоны", enabled: false },
-    ],
-    actionLabel: "Подключить",
-    actionVariant: "primary" as const,
-  },
-  {
-    name: "Бизнес",
-    price: "990 ₽/мес",
-    period: "200 карточек в месяц",
-    popular: false,
-    features: [
-      { label: "200 карточек в месяц", enabled: true },
-      { label: "Удаление фона", enabled: true },
-      { label: "WB, Ozon и Яндекс Маркет", enabled: true },
-      { label: "Все стили", enabled: true },
-      { label: "Batch до 50 товаров", enabled: true },
-      { label: "ИИ-копирайтинг", enabled: true },
-      { label: "Бренд-шаблоны", enabled: true },
-    ],
-    actionLabel: "Подключить",
-    actionVariant: "outline" as const,
-  },
-];
-
 export const blogPosts = [
   {
     title: "Требования к фото для WB, Ozon и Яндекс Маркет: полный гайд",

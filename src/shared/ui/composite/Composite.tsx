@@ -130,9 +130,33 @@ type PlanCardProps = {
   features: ReadonlyArray<{ label: string; enabled: boolean }>;
   popular?: boolean;
   action: ReactNode;
+  wide?: boolean;
 };
 
-export function PlanCard({ name, price, period, features, popular = false, action }: PlanCardProps) {
+export function PlanCard({ name, price, period, features, popular = false, action, wide = false }: PlanCardProps) {
+  if (wide) {
+    return (
+      <CardSurface className={classNames(styles.planCard, styles.planCardWide, popular && styles.planPopular)}>
+        {popular ? <div className={styles.planPopularBadge}>Популярный</div> : null}
+        <div className={styles.planWideLeft}>
+          <div className={styles.planName}>{name}</div>
+          <div className={styles.planPrice}>{price}</div>
+          <div className={styles.planPeriod}>{period}</div>
+        </div>
+        <div className={styles.planWideDivider} />
+        <ul className={classNames(styles.planFeatures, styles.planFeaturesWide)}>
+          {features.map((feature) => (
+            <li key={feature.label} className={styles.planFeatureItem}>
+              <span className={feature.enabled ? styles.planYes : styles.planNo}>{feature.enabled ? "✓" : "✗"}</span>
+              <span>{feature.label}</span>
+            </li>
+          ))}
+        </ul>
+        <div className={styles.planWideAction}>{action}</div>
+      </CardSurface>
+    );
+  }
+
   return (
     <CardSurface className={classNames(styles.planCard, popular && styles.planPopular)}>
       {popular ? <div className={styles.planPopularBadge}>Популярный</div> : null}

@@ -1,6 +1,7 @@
 import { buildSiteUrl, siteConfig } from "@/shared/config/site";
 import { seoPublisher } from "@/shared/config/seo";
 import { faqItems } from "@/widgets/marketing/home/model/content";
+import { homePricingOffers } from "@/widgets/marketing/home/model/pricing";
 
 export const organizationSchema = {
   "@context": "https://schema.org",
@@ -33,11 +34,7 @@ export const softwareSchema = {
   operatingSystem: "Web",
   inLanguage: "ru",
   url: buildSiteUrl("/"),
-  offers: [
-    { "@type": "Offer", name: "Старт", price: "0", priceCurrency: "RUB" },
-    { "@type": "Offer", name: "Про", price: "490", priceCurrency: "RUB" },
-    { "@type": "Offer", name: "Бизнес", price: "990", priceCurrency: "RUB" },
-  ],
+  offers: homePricingOffers,
 };
 
 export const faqSchema = {

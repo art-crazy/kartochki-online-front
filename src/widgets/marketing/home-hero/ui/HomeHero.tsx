@@ -5,6 +5,7 @@ import {
   mockupPreviews,
   mockupStyleOptions,
 } from "@/widgets/marketing/home/model/content";
+import { homeFreePlanSummary } from "@/widgets/marketing/home/model/pricing";
 import styles from "./HomeHero.module.scss";
 
 function MarketplaceTag({ label, tone }: { label: string; tone: "wb" | "ozon" | "ym" }) {
@@ -50,7 +51,7 @@ export function HomeHero() {
             </Button>
           </div>
 
-          <p className={styles.heroNote}>Бесплатно 10 карточек, без карты, отмена в любой момент.</p>
+          <p className={styles.heroNote}>{homeFreePlanSummary}</p>
 
           <div className={styles.mockupWrap}>
             <div className={styles.mockupCard}>
