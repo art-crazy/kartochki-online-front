@@ -1,21 +1,9 @@
 ﻿import type { ReactNode } from "react";
-import Link from "next/link";
 import { classNames } from "@/shared/lib/classNames";
 import styles from "./Composite.module.scss";
-
-type CardSurfaceProps = {
-  theme?: "light" | "dark";
-  className?: string;
-  children: ReactNode;
-};
-
-export function CardSurface({ theme = "light", className, children }: CardSurfaceProps) {
-  return (
-    <div className={classNames(styles.card, theme === "dark" ? styles.cardDark : styles.cardLight, className)}>
-      {children}
-    </div>
-  );
-}
+import { CardSurface } from "./CardSurface";
+export { BlogCard } from "./BlogCard";
+export { CardSurface } from "./CardSurface";
 
 type ProgressBarProps = {
   value: number;
@@ -202,39 +190,6 @@ export function ResultCard({ title, gradient }: ResultCardProps) {
   );
 }
 
-type BlogCardProps = {
-  title: string;
-  meta: string;
-  tag: ReactNode;
-  gradient: string;
-  href?: string;
-};
-
-export function BlogCard({ title, meta, tag, gradient, href }: BlogCardProps) {
-  const content = (
-    <CardSurface className={styles.blogCard}>
-      <div className={styles.blogVisual} style={{ background: gradient }}>
-        {tag}
-      </div>
-      <div className={styles.blogBody}>
-        <div className={styles.blogTitle}>{title}</div>
-        <div className={styles.blogMeta}>
-          <span>{meta}</span>
-          <span className={styles.blogRead}>Читать →</span>
-        </div>
-      </div>
-    </CardSurface>
-  );
-
-  return href ? (
-    <Link href={href} className={styles.blogCardLink}>
-      {content}
-    </Link>
-  ) : (
-    content
-  );
-}
-
 type SwitchProps = {
   checked: boolean;
   label: string;
@@ -334,4 +289,3 @@ export function CardPreviewGrid({ previews }: CardPreviewGridProps) {
     </div>
   );
 }
-

@@ -1,4 +1,7 @@
 import { blogPost } from "@/entities/blog/model/content";
+import blogCardMistakes from "@/widgets/marketing/home/assets/blog-card-mistakes.webp";
+import blogOzonConversion from "@/widgets/marketing/home/assets/blog-ozon-conversion.webp";
+import blogRequirementsGuide from "@/widgets/marketing/home/assets/blog-requirements-guide.webp";
 
 export const marketplaceBadges = [
   { label: "Wildberries", tone: "wb" as const },
@@ -174,6 +177,8 @@ export const blogPosts = [
     tag: "Wildberries",
     tone: "wb" as const,
     gradient: "linear-gradient(135deg, #e8f4fd, #b3d9f7)",
+    image: blogRequirementsGuide,
+    imageAlt: "Обложка статьи о требованиях к фото для Wildberries, Ozon и Яндекс Маркета",
     href: blogPost.canonicalPath,
   },
   {
@@ -182,6 +187,8 @@ export const blogPosts = [
     tag: "Ozon",
     tone: "ozon" as const,
     gradient: "linear-gradient(135deg, #fef3e2, #fdd89a)",
+    image: blogOzonConversion,
+    imageAlt: "Обложка статьи об инфографике для Ozon, которая повышает конверсию карточки товара",
     href: "/blog/infografika-dlya-ozon-conversion",
   },
   {
@@ -190,6 +197,8 @@ export const blogPosts = [
     tag: "WB + Ozon + ЯМ",
     tone: "accent" as const,
     gradient: "linear-gradient(135deg, #e8f8f2, #95d5b2)",
+    image: blogCardMistakes,
+    imageAlt: "Обложка статьи о типичных ошибках в карточках товаров на маркетплейсах",
     href: "/blog/pochemu-kartochka-ne-prodaet-7-oshibok",
   },
 ];

@@ -454,6 +454,10 @@
   padding: 14px;
 }
 
+.blogImage {
+  object-fit: cover;
+}
+
 .blogBody {
   display: flex;
   flex: 1;

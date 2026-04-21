@@ -203,6 +203,8 @@ export function HomeSections() {
                   title={post.title}
                   meta={post.meta}
                   gradient={post.gradient}
+                  image={post.image}
+                  imageAlt={post.imageAlt}
                   tag={<Badge tone={post.tone}>{post.tag}</Badge>}
                   href={post.href}
                 />
