@@ -257,6 +257,7 @@ export type CreateGenerationRequest = {
      * Идентификатор AI-модели из каталога /generate/config. Если не указан, используется первая модель по умолчанию.
      */
     model_id?: string;
+    product?: ProductContext;
 };
 
 export type CreateGenerationResponse = {
@@ -379,6 +380,9 @@ export type SettingsResponse = {
 export type SettingsProfile = {
     name: string;
     email?: string;
+    /**
+     * Подтверждён ли email пользователя.
+     */
     email_verified: boolean;
     phone?: string;
     company?: string;
@@ -600,6 +604,20 @@ export type GenerateModel = {
      * Стоимость одного изображения в копейках. Умножьте на card_count для итоговой цены.
      */
     price_per_image: number;
+};
+
+export type ProductCharacteristic = {
+    name: string;
+    value: string;
+};
+
+export type ProductContext = {
+    name: string;
+    category?: string;
+    brand?: string;
+    description?: string;
+    benefits?: Array<string>;
+    characteristics?: Array<ProductCharacteristic>;
 };
 
 export type SettingsAvatarResponse = {

@@ -1,0 +1,104 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.hint {
+  color: var(--dark-text-3);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.errorBanner {
+  border: 1px solid rgba(255, 107, 107, 0.35);
+  border-radius: 10px;
+  background: rgba(255, 107, 107, 0.08);
+  color: #ff9b9b;
+  padding: 10px 12px;
+  font-size: 0.76rem;
+  line-height: 1.4;
+}
+
+.field {
+  min-height: auto;
+  padding: 0.6rem 0.85rem;
+  border-radius: 8px;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.3;
+}
+
+.field::placeholder {
+  color: var(--dark-text-3);
+  opacity: 1;
+}
+
+.textarea {
+  min-height: 104px;
+  resize: vertical;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.groupHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.groupTitle {
+  color: var(--dark-text-2);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.groupHint {
+  color: var(--dark-text-3);
+  font-size: 0.74rem;
+  line-height: 1.5;
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.benefitRow,
+.characteristicRow {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.benefitField,
+.characteristicField {
+  flex: 1;
+}
+
+.removeButton {
+  flex-shrink: 0;
+  min-width: 40px;
+}
+
+.groupError {
+  color: #ff9b9b;
+  font-size: 0.74rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 560px) {
+  .characteristicRow {
+    flex-direction: column;
+  }
+
+  .removeButton {
+    width: 100%;
+  }
+}

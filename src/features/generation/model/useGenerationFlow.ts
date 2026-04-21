@@ -5,14 +5,12 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   createGenerationMutation,
   getGenerationByIdOptions,
+  type ErrorResponse,
   type GenerationStatusResponse,
+  type ProductContext,
   uploadGenerationImageMutation,
 } from "@/shared/api";
-import {
-  getApiErrorMessage,
-  getGenerationStepIndex,
-  mapGenerationCards,
-} from "./apiMappers";
+import { getApiErrorMessage, getGenerationStepIndex, mapGenerationCards } from "./apiMappers";
 import { type CardTypeId, type CardTypeOption, type MarketplaceId, type ResultState, type StyleId } from "./content";
 
 type GenerationFlowParams = {
@@ -24,6 +22,7 @@ type GenerationFlowParams = {
   showToast: (message: string) => void;
   style: StyleId;
   uploadedFileUrl: string;
+  onCreateError?: (error: ErrorResponse) => void;
 };
 
 export function useGenerationFlow({
@@ -35,6 +34,7 @@ export function useGenerationFlow({
   showToast,
   style,
   uploadedFileUrl,
+  onCreateError,
 }: GenerationFlowParams) {
   const [sourceAssetId, setSourceAssetId] = useState("");
   const [generationId, setGenerationId] = useState("");
@@ -48,11 +48,14 @@ export function useGenerationFlow({
     onSuccess: (response) => {
       setGenerationId(response.generation_id);
       setResultState("loading");
-      showToast("Генерация запущена");
+      showToast("Р“РµРЅРµСЂР°С†РёСЏ Р·Р°РїСѓС‰РµРЅР°");
     },
     onError: (error) => {
       setResultState("empty");
-      showToast(getApiErrorMessage(error, "Не удалось запустить генерацию"));
+      if (isErrorResponse(error)) {
+        onCreateError?.(error);
+      }
+      showToast(getApiErrorMessage(error, "РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РїСѓСЃС‚РёС‚СЊ РіРµРЅРµСЂР°С†РёСЋ"));
     },
   });
 
@@ -91,7 +94,7 @@ export function useGenerationFlow({
           }
 
           setSourceAssetId(response.asset_id);
-          showToast("Фото загружено");
+          showToast("Р¤РѕС‚Рѕ Р·Р°РіСЂСѓР¶РµРЅРѕ");
         },
         onError: (error) => {
           if (uploadRequestIdRef.current !== requestId) {
@@ -99,20 +102,20 @@ export function useGenerationFlow({
           }
 
           setSourceAssetId("");
-          showToast(getApiErrorMessage(error, "Не удалось загрузить фото"));
+          showToast(getApiErrorMessage(error, "РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ С„РѕС‚Рѕ"));
         },
       },
     );
   }
 
-  function startGeneration(fallbackCardTypes: ReadonlyArray<CardTypeId>) {
+  function startGeneration(fallbackCardTypes: ReadonlyArray<CardTypeId>, product?: ProductContext) {
     if (!uploadedFileUrl) {
-      showToast("Сначала загрузите фото товара");
+      showToast("РЎРЅР°С‡Р°Р»Р° Р·Р°РіСЂСѓР·РёС‚Рµ С„РѕС‚Рѕ С‚РѕРІР°СЂР°");
       return;
     }
 
     if (!sourceAssetId) {
-      showToast(uploadMutation.isPending ? "Дождитесь завершения загрузки фото" : "Загрузите фото еще раз");
+      showToast(uploadMutation.isPending ? "Р”РѕР¶РґРёС‚РµСЃСЊ Р·Р°РІРµСЂС€РµРЅРёСЏ Р·Р°РіСЂСѓР·РєРё С„РѕС‚Рѕ" : "Р—Р°РіСЂСѓР·РёС‚Рµ С„РѕС‚Рѕ РµС‰Рµ СЂР°Р·");
       return;
     }
 
@@ -126,6 +129,7 @@ export function useGenerationFlow({
         card_type_ids: selectedTypes.length ? [...selectedTypes] : [...fallbackCardTypes],
         card_count: cardCount,
         source_asset_id: sourceAssetId,
+        product,
       },
     });
   }
@@ -145,4 +149,14 @@ function getEffectiveResultState(resultState: ResultState, status: GenerationSta
   if (status === "completed") return "result";
   if (status === "failed") return "error";
   return resultState;
+}
+
+function isErrorResponse(error: unknown): error is ErrorResponse {
+  return Boolean(
+    error &&
+      typeof error === "object" &&
+      "code" in error &&
+      "message" in error &&
+      typeof (error as { message?: unknown }).message === "string",
+  );
 }

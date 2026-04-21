@@ -3,15 +3,9 @@
 import Image from "next/image";
 import { useEffect, useRef, useState, type RefObject } from "react";
 import { Button, Chip, Input } from "@/shared/ui";
-import type {
-  CardTypeId,
-  CardTypeOption,
-  MarketplaceId,
-  MarketplaceOption,
-  ResultState,
-  StyleId,
-  StyleOption,
-} from "../model/content";
+import type { CardTypeId, CardTypeOption, MarketplaceId, MarketplaceOption, ResultState, StyleId, StyleOption } from "../model/content";
+import type { ProductContextDraft, ProductContextFormErrors } from "../model/productContext";
+import { ProductContextSection } from "./ProductContextSection";
 import styles from "./GenerateWorkspace.module.scss";
 
 type GenerateControlsProps = {
@@ -25,6 +19,10 @@ type GenerateControlsProps = {
   selectedTypes: ReadonlyArray<CardTypeId>;
   cardCount: number;
   projectName: string;
+  productDraft: ProductContextDraft;
+  productErrors: ProductContextFormErrors;
+  canAddBenefit: boolean;
+  canAddCharacteristic: boolean;
   uploadedFileName: string;
   uploadedFileUrl: string;
   isDraggingFile: boolean;
@@ -35,6 +33,13 @@ type GenerateControlsProps = {
   onToggleCardType: (value: CardTypeId) => void;
   onCardCountChange: (value: number) => void;
   onProjectNameChange: (value: string) => void;
+  onProductFieldChange: (field: "name" | "category" | "brand" | "description", value: string) => void;
+  onProductBenefitChange: (index: number, value: string) => void;
+  onAddProductBenefit: () => void;
+  onRemoveProductBenefit: (index: number) => void;
+  onProductCharacteristicChange: (index: number, field: "name" | "value", value: string) => void;
+  onAddProductCharacteristic: () => void;
+  onRemoveProductCharacteristic: (index: number) => void;
   onDraggingFileChange: (value: boolean) => void;
   onFileSelection: (file: File | null) => void;
   onGenerate: () => void;
@@ -51,6 +56,10 @@ export function GenerateControls({
   selectedTypes,
   cardCount,
   projectName,
+  productDraft,
+  productErrors,
+  canAddBenefit,
+  canAddCharacteristic,
   uploadedFileName,
   uploadedFileUrl,
   isDraggingFile,
@@ -61,21 +70,20 @@ export function GenerateControls({
   onToggleCardType,
   onCardCountChange,
   onProjectNameChange,
+  onProductFieldChange,
+  onProductBenefitChange,
+  onAddProductBenefit,
+  onRemoveProductBenefit,
+  onProductCharacteristicChange,
+  onAddProductCharacteristic,
+  onRemoveProductCharacteristic,
   onDraggingFileChange,
   onFileSelection,
   onGenerate,
 }: GenerateControlsProps) {
   const [cardCountInput, setCardCountInput] = useState(String(cardCount));
-
-  function pluralCards(n: number) {
-    const mod10 = n % 10;
-    const mod100 = n % 100;
-    if (mod10 === 1 && mod100 !== 11) return "карточка";
-    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return "карточки";
-    return "карточек";
-  }
   const countInputRef = useRef<HTMLInputElement>(null);
-  const SLIDER_MAX = 20;
+  const sliderMax = 20;
 
   useEffect(() => {
     setCardCountInput(String(cardCount));
@@ -99,11 +107,7 @@ export function GenerateControls({
         <h2 className={styles.label}>Фото товара</h2>
         <button
           type="button"
-          className={[
-            styles.uploadZone,
-            isDraggingFile ? styles.uploadZoneDragging : "",
-            uploadedFileUrl ? styles.uploadZoneReady : "",
-          ].join(" ")}
+          className={[styles.uploadZone, isDraggingFile ? styles.uploadZoneDragging : "", uploadedFileUrl ? styles.uploadZoneReady : ""].join(" ")}
           onClick={() => fileInputRef.current?.click()}
           onDragOver={(event) => {
             event.preventDefault();
@@ -176,7 +180,6 @@ export function GenerateControls({
 
       <section className={styles.section}>
         <h2 className={styles.label}>Количество карточек</h2>
-
         <div className={styles.countPresets} role="group" aria-label="Быстрый выбор количества">
           {cardCounts.map((option) => (
             <button
@@ -202,23 +205,15 @@ export function GenerateControls({
                 value={cardCountInput}
                 onChange={(event) => applyCardCountInput(event.target.value)}
                 onBlur={commitCardCountInput}
-                onKeyDown={(event) => { if (event.key === "Enter") (event.target as HTMLInputElement).blur(); }}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") (event.target as HTMLInputElement).blur();
+                }}
               />
               <span className={styles.countUnitLabel}>{pluralCards(cardCount)}</span>
             </div>
             <div className={styles.countSteppers} aria-label="Изменить количество">
-              <button
-                type="button"
-                className={styles.countStepper}
-                aria-label="Уменьшить"
-                onClick={() => onCardCountChange(Math.max(1, cardCount - 1))}
-              >−</button>
-              <button
-                type="button"
-                className={styles.countStepper}
-                aria-label="Увеличить"
-                onClick={() => onCardCountChange(cardCount + 1)}
-              >+</button>
+              <button type="button" className={styles.countStepper} aria-label="Уменьшить" onClick={() => onCardCountChange(Math.max(1, cardCount - 1))}>−</button>
+              <button type="button" className={styles.countStepper} aria-label="Увеличить" onClick={() => onCardCountChange(cardCount + 1)}>+</button>
             </div>
           </div>
           <div className={styles.countRangeRow}>
@@ -226,13 +221,13 @@ export function GenerateControls({
             <input
               type="range"
               min={1}
-              max={SLIDER_MAX}
-              value={Math.min(cardCount, SLIDER_MAX)}
+              max={sliderMax}
+              value={Math.min(cardCount, sliderMax)}
               aria-label="Количество карточек"
               className={styles.countSlider}
               onChange={(event) => onCardCountChange(Number(event.target.value))}
             />
-            <span>{SLIDER_MAX}+</span>
+            <span>{sliderMax}+</span>
           </div>
         </div>
       </section>
@@ -246,11 +241,33 @@ export function GenerateControls({
         onChange={(event) => onProjectNameChange(event.target.value)}
       />
 
+      <ProductContextSection
+        draft={productDraft}
+        errors={productErrors}
+        canAddBenefit={canAddBenefit}
+        canAddCharacteristic={canAddCharacteristic}
+        onFieldChange={onProductFieldChange}
+        onBenefitChange={onProductBenefitChange}
+        onAddBenefit={onAddProductBenefit}
+        onRemoveBenefit={onRemoveProductBenefit}
+        onCharacteristicChange={onProductCharacteristicChange}
+        onAddCharacteristic={onAddProductCharacteristic}
+        onRemoveCharacteristic={onRemoveProductCharacteristic}
+      />
+
       <Button variant="darkPrimary" size="lg" block className={styles.generateButton} disabled={!canGenerate} onClick={onGenerate}>
         {resultState === "result" ? "⚡ Сгенерировать ещё" : "⚡ Сгенерировать карточки"}
       </Button>
     </form>
   );
+}
+
+function pluralCards(value: number) {
+  const mod10 = value % 10;
+  const mod100 = value % 100;
+  if (mod10 === 1 && mod100 !== 11) return "карточка";
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return "карточки";
+  return "карточек";
 }
 
 function shortenName(fileName: string) {

@@ -3,21 +3,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { downloadFileFromUrl } from "@/shared/lib/downloadFile";
 import { Button } from "@/shared/ui";
+import { cardCountOptions, cardTypeOptions, defaultSelectedCardTypes, fallbackGenerateConfigContent, loadingSteps, marketplaceOptions, styleOptions, type CardTypeId, type GenerateConfigContent, type MarketplaceId, type ResultCard, type StyleId } from "../model/content";
 import { useGenerationFlow } from "../model/useGenerationFlow";
-import {
-  cardCountOptions,
-  cardTypeOptions,
-  defaultSelectedCardTypes,
-  fallbackGenerateConfigContent,
-  loadingSteps,
-  marketplaceOptions,
-  styleOptions,
-  type CardTypeId,
-  type GenerateConfigContent,
-  type MarketplaceId,
-  type ResultCard,
-  type StyleId,
-} from "../model/content";
+import { useProductContextForm } from "../model/useProductContextForm";
 import { GenerateControls } from "./GenerateControls";
 import { EmptyState, ErrorState, LoadingState, ResultStateView } from "./GenerateResultStates";
 import styles from "./GenerateWorkspace.module.scss";
@@ -46,14 +34,13 @@ export function GenerateWorkspace({
   const availableStyles = config.styles.length ? config.styles : styleOptions;
   const availableCardTypes = config.cardTypes.length ? config.cardTypes : cardTypeOptions;
   const availableCardCounts = cardCountOptions;
+  const productForm = useProductContextForm();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const objectUrlRef = useRef<string | null>(null);
   const toastTimerRef = useRef<number | null>(null);
 
-  const [marketplace, setMarketplace] = useState<MarketplaceId>(
-    initialMarketplace ?? availableMarketplaces[0]?.id ?? "wildberries",
-  );
+  const [marketplace, setMarketplace] = useState<MarketplaceId>(initialMarketplace ?? availableMarketplaces[0]?.id ?? "wildberries");
   const [style, setStyle] = useState<StyleId>(initialStyle ?? availableStyles[0]?.id ?? "minimal");
   const [selectedTypes, setSelectedTypes] = useState<CardTypeId[]>(getDefaultCardTypeIds(availableCardTypes));
   const [cardCount, setCardCount] = useState(initialCount ?? availableCardCounts[0] ?? 6);
@@ -86,6 +73,11 @@ export function GenerateWorkspace({
     showToast,
     style,
     uploadedFileUrl,
+    onCreateError: (error) => {
+      if (error.details?.some((detail) => detail.field === "product" || detail.field?.startsWith("product."))) {
+        productForm.applyApiErrors(error);
+      }
+    },
   });
 
   const { activeStepIndex, canGenerate, effectiveResultState, generatedCards, generationStatus } = generationFlow;
@@ -147,7 +139,13 @@ export function GenerateWorkspace({
   }
 
   function startGenerate() {
-    generationFlow.startGeneration(getDefaultCardTypeIds(availableCardTypes));
+    const productValidation = productForm.validateAndBuildProduct();
+    if (!productValidation.ok) {
+      showToast("Проверьте информацию о товаре");
+      return;
+    }
+
+    generationFlow.startGeneration(getDefaultCardTypeIds(availableCardTypes), productValidation.product);
   }
 
   async function handleArchiveDownload() {
@@ -159,7 +157,6 @@ export function GenerateWorkspace({
     }
 
     setIsArchiveDownloading(true);
-
     try {
       await downloadFileFromUrl(archiveUrl, {
         defaultExtension: "zip",
@@ -179,7 +176,6 @@ export function GenerateWorkspace({
     }
 
     setDownloadingCardId(card.id);
-
     try {
       await downloadFileFromUrl(card.previewUrl, {
         defaultExtension: "png",
@@ -206,6 +202,10 @@ export function GenerateWorkspace({
           selectedTypes={selectedTypes}
           cardCount={cardCount}
           projectName={projectName}
+          productDraft={productForm.draft}
+          productErrors={productForm.errors}
+          canAddBenefit={productForm.canAddBenefit}
+          canAddCharacteristic={productForm.canAddCharacteristic}
           uploadedFileName={uploadedFileName}
           uploadedFileUrl={uploadedFileUrl}
           isDraggingFile={isDraggingFile}
@@ -216,6 +216,13 @@ export function GenerateWorkspace({
           onToggleCardType={toggleCardType}
           onCardCountChange={setCardCount}
           onProjectNameChange={setProjectName}
+          onProductFieldChange={productForm.setFieldValue}
+          onProductBenefitChange={productForm.setBenefitValue}
+          onAddProductBenefit={productForm.addBenefit}
+          onRemoveProductBenefit={productForm.removeBenefit}
+          onProductCharacteristicChange={productForm.setCharacteristicValue}
+          onAddProductCharacteristic={productForm.addCharacteristic}
+          onRemoveProductCharacteristic={productForm.removeCharacteristic}
           onDraggingFileChange={setIsDraggingFile}
           onFileSelection={handleFileSelection}
           onGenerate={startGenerate}
@@ -239,13 +246,7 @@ export function GenerateWorkspace({
             {effectiveResultState === "empty" ? <EmptyState /> : null}
             {effectiveResultState === "error" ? <ErrorState message={generationStatus?.error_message} /> : null}
             {effectiveResultState === "loading" ? <LoadingState activeStep={activeLoadingStep} activeStepIndex={activeStepIndex} /> : null}
-            {effectiveResultState === "result" ? (
-              <ResultStateView
-                cards={generatedCards}
-                downloadingCardId={downloadingCardId}
-                onDownload={(card) => void handleCardDownload(card)}
-              />
-            ) : null}
+            {effectiveResultState === "result" ? <ResultStateView cards={generatedCards} downloadingCardId={downloadingCardId} onDownload={(card) => void handleCardDownload(card)} /> : null}
           </div>
         </section>
       </section>
@@ -260,7 +261,6 @@ export function GenerateWorkspace({
 
 function getDefaultCardTypeIds(cardTypes: ReadonlyArray<{ id: CardTypeId; defaultSelected?: boolean }>) {
   const selected = cardTypes.filter((item) => item.defaultSelected).map((item) => item.id);
-
   if (selected.length) {
     return selected;
   }
