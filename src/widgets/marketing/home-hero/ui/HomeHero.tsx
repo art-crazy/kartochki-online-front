@@ -1,8 +1,9 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Badge, Button } from "@/shared/ui/primitives/Primitives";
+import { heroMockupPreviews } from "@/widgets/marketing/home-hero/model/content";
 import {
   marketplaceBadges,
-  mockupPreviews,
   mockupStyleOptions,
 } from "@/widgets/marketing/home/model/content";
 import { homeFreePlanSummary } from "@/widgets/marketing/home/model/pricing";
@@ -121,9 +122,16 @@ export function HomeHero() {
                 </aside>
 
                 <div className={styles.previewGrid}>
-                  {mockupPreviews.map((preview) => (
-                    <article key={preview.label} className={styles.previewCard} style={{ background: preview.gradient }}>
-                      <div className={styles.previewShine} />
+                  {heroMockupPreviews.map((preview, index) => (
+                    <article key={preview.label} className={styles.previewCard}>
+                      <Image
+                        className={styles.previewImage}
+                        src={preview.image}
+                        alt={preview.alt}
+                        fill
+                        sizes="(max-width: 560px) calc(100vw - 60px), (max-width: 768px) calc((100vw - 64px) / 2), 190px"
+                        priority={index === 0}
+                      />
                       <span className={styles.previewLabel}>{preview.label}</span>
                     </article>
                   ))}
