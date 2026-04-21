@@ -8,10 +8,10 @@ import { classNames } from "@/shared/lib/classNames";
 import { getUserInitials } from "@/shared/lib/user";
 import { Button, CardSurface, Input } from "@/shared/ui";
 import { AppShell } from "@/widgets/app/app-shell/ui/AppShell";
-import { notificationLabels, settingsTabs, type SettingsTabId } from "@/views/settings/model/content";
+import { settingsTabs, type SettingsTabId } from "@/views/settings/model/content";
 import { useSettingsPage } from "@/views/settings/model/useSettingsPage";
 import { DeleteAccountModal, ProfileSettingsSection } from "./SettingsPageBlocks";
-import { SettingsCard, SettingsStatus, SwitchRow } from "./SettingsPageParts";
+import { SettingsCard, SettingsStatus } from "./SettingsPageParts";
 import styles from "./SettingsPage.module.scss";
 
 export function SettingsPage() {
@@ -47,7 +47,6 @@ export function SettingsPage() {
 function SettingsPageContent({ settings }: { settings: SettingsResponse }) {
   const { user } = useAuthSession();
   const page = useSettingsPage(settings);
-  const emailNotifications = Object.entries(notificationLabels).filter(([, v]) => v.group === "email");
   const initials = getUserInitials(settings.profile.name, settings.profile.email);
   const profileEmail = settings.profile.email ?? "Email не указан";
 
@@ -98,25 +97,9 @@ function SettingsPageContent({ settings }: { settings: SettingsResponse }) {
               </SettingsCard>
             </section>
 
-            <section id="settings-panel-notifications" role="tabpanel" aria-labelledby="settings-tab-notifications" hidden={page.activeTab !== "notifications"} className={page.activeTab === "notifications" ? styles.panelActive : styles.panelHidden}>
-              <SettingsCard title="Email-уведомления" subtitle={`На адрес ${profileEmail}.`}>
-                <div className={styles.stack}>
-                  {emailNotifications.map(([key, meta]) => (
-                    <SwitchRow key={key} checked={page.notifications[key] ?? false} title={meta.title} description={meta.description} disabled={page.notificationsMutation.isPending} onToggle={() => page.toggleNotification(key)} />
-                  ))}
-                </div>
-              </SettingsCard>
-
-              <SettingsCard title="Telegram-уведомления" subtitle="Мгновенные оповещения в мессенджере.">
-                <div className={styles.listRow}>
-                  <div className={styles.listBody}>
-                    <div className={styles.listTitle}>Подключить Telegram-бота</div>
-                    <div className={styles.listMetaMuted}>Уведомления о готовых карточках и событиях аккаунта.</div>
-                  </div>
-                  <Button variant="darkOutline" size="sm" onClick={() => page.showToast("Открываем Telegram-бота...")}>Подключить</Button>
-                </div>
-              </SettingsCard>
-            </section>
+            {/* TODO: вернуть вкладку и панель уведомлений после согласования отдельного UX/UI-флоу.
+            <SettingsNotificationsSection active={page.activeTab === "notifications"} page={page} profileEmail={profileEmail} />
+            */}
 
             <section id="settings-panel-danger" role="tabpanel" aria-labelledby="settings-tab-danger" hidden={page.activeTab !== "danger"} className={page.activeTab === "danger" ? styles.panelActive : styles.panelHidden}>
               <SettingsCard title="Экспорт данных" subtitle="Скачать проекты, карточки и данные аккаунта.">

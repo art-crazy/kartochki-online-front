@@ -1,9 +1,10 @@
 export type SettingsTabId = "profile" | "security" | "notifications" | "danger";
 
-export const settingsTabs: ReadonlyArray<{ id: SettingsTabId; label: string; icon: string }> = [
+export const settingsTabs: ReadonlyArray<{ id: Exclude<SettingsTabId, "notifications">; label: string; icon: string }> = [
   { id: "profile", label: "Профиль", icon: "◉" },
   { id: "security", label: "Безопасность", icon: "◎" },
-  { id: "notifications", label: "Уведомления", icon: "◌" },
+  // TODO: вернуть вкладку уведомлений после отдельного UX/UI-флоу для управления каналами и подписками.
+  // { id: "notifications", label: "Уведомления", icon: "◌" },
   { id: "danger", label: "Действия", icon: "⚠" },
 ];
 
