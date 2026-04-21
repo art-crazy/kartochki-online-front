@@ -19,6 +19,20 @@
   gap: 10px;
 }
 
+.sectionHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sectionMeta {
+  color: var(--dark-text-3);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-align: right;
+}
+
 .label {
   color: var(--dark-text-3);
   font-size: 0.72rem;
@@ -163,6 +177,74 @@
   min-height: auto;
   padding: 0.35rem 0.75rem;
   line-height: 1.2;
+}
+
+.modelList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modelCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 1.5px solid var(--dark-border-2);
+  border-radius: 12px;
+  background: var(--dark-bg-2);
+  color: var(--dark-text);
+  text-align: left;
+  transition:
+    border-color 0.18s ease,
+    background-color 0.18s ease;
+
+  &:hover {
+    border-color: var(--dark-border);
+    background: var(--dark-bg-3);
+  }
+}
+
+.modelCardActive {
+  border-color: var(--accent);
+  background: rgba(var(--accent-rgb, 255 90 20) / 0.08);
+  box-shadow: 0 0 0 1px rgba(var(--accent-rgb, 255 90 20) / 0.16);
+}
+
+.modelCardHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.modelName,
+.modelPrice,
+.modelTotal {
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+.modelName {
+  font-weight: 700;
+}
+
+.modelPrice {
+  color: var(--dark-text-2);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.modelDescription {
+  margin: 0;
+  color: var(--dark-text-3);
+  font-size: 0.74rem;
+  line-height: 1.5;
+}
+
+.modelTotal {
+  color: var(--dark-text-2);
+  font-weight: 600;
 }
 
 .countPresets {

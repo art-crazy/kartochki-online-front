@@ -3,8 +3,19 @@
 import Image from "next/image";
 import { useEffect, useRef, useState, type RefObject } from "react";
 import { Button, Chip, Input } from "@/shared/ui";
-import type { CardTypeId, CardTypeOption, MarketplaceId, MarketplaceOption, ResultState, StyleId, StyleOption } from "../model/content";
+import type {
+  CardTypeId,
+  CardTypeOption,
+  MarketplaceId,
+  MarketplaceOption,
+  ModelId,
+  ModelOption,
+  ResultState,
+  StyleId,
+  StyleOption,
+} from "../model/content";
 import type { ProductContextDraft, ProductContextFormErrors } from "../model/productContext";
+import { GenerateModelSelector } from "./GenerateModelSelector";
 import { ProductContextSection } from "./ProductContextSection";
 import styles from "./GenerateWorkspace.module.scss";
 
@@ -14,8 +25,10 @@ type GenerateControlsProps = {
   styles: ReadonlyArray<StyleOption>;
   cardTypes: ReadonlyArray<CardTypeOption>;
   cardCounts: ReadonlyArray<number>;
+  models: ReadonlyArray<ModelOption>;
   marketplace: MarketplaceId;
   style: StyleId;
+  modelId: ModelId;
   selectedTypes: ReadonlyArray<CardTypeId>;
   cardCount: number;
   projectName: string;
@@ -30,6 +43,7 @@ type GenerateControlsProps = {
   resultState: ResultState;
   onMarketplaceChange: (value: MarketplaceId) => void;
   onStyleChange: (value: StyleId) => void;
+  onModelChange: (value: ModelId) => void;
   onToggleCardType: (value: CardTypeId) => void;
   onCardCountChange: (value: number) => void;
   onProjectNameChange: (value: string) => void;
@@ -51,8 +65,10 @@ export function GenerateControls({
   styles: styleOptions,
   cardTypes,
   cardCounts,
+  models,
   marketplace,
   style,
+  modelId,
   selectedTypes,
   cardCount,
   projectName,
@@ -67,6 +83,7 @@ export function GenerateControls({
   resultState,
   onMarketplaceChange,
   onStyleChange,
+  onModelChange,
   onToggleCardType,
   onCardCountChange,
   onProjectNameChange,
@@ -165,6 +182,15 @@ export function GenerateControls({
             </Chip>
           ))}
         </div>
+      </section>
+
+      <section className={styles.section}>
+        <GenerateModelSelector
+          models={models}
+          modelId={modelId}
+          cardCount={cardCount}
+          onModelChange={onModelChange}
+        />
       </section>
 
       <section className={styles.section}>

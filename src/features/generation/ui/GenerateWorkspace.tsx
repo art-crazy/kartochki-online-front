@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { downloadFileFromUrl } from "@/shared/lib/downloadFile";
 import { Button } from "@/shared/ui";
-import { cardCountOptions, cardTypeOptions, defaultSelectedCardTypes, fallbackGenerateConfigContent, loadingSteps, marketplaceOptions, styleOptions, type CardTypeId, type GenerateConfigContent, type MarketplaceId, type ResultCard, type StyleId } from "../model/content";
+import { cardCountOptions, cardTypeOptions, defaultSelectedCardTypes, fallbackGenerateConfigContent, loadingSteps, marketplaceOptions, modelOptions, styleOptions, type CardTypeId, type GenerateConfigContent, type MarketplaceId, type ModelId, type ResultCard, type StyleId } from "../model/content";
 import { useGenerationFlow } from "../model/useGenerationFlow";
 import { useProductContextForm } from "../model/useProductContextForm";
 import { GenerateControls } from "./GenerateControls";
@@ -33,6 +33,7 @@ export function GenerateWorkspace({
   const availableMarketplaces = config.marketplaces.length ? config.marketplaces : marketplaceOptions;
   const availableStyles = config.styles.length ? config.styles : styleOptions;
   const availableCardTypes = config.cardTypes.length ? config.cardTypes : cardTypeOptions;
+  const availableModels = config.models.length ? config.models : modelOptions;
   const availableCardCounts = cardCountOptions;
   const productForm = useProductContextForm();
 
@@ -42,6 +43,7 @@ export function GenerateWorkspace({
 
   const [marketplace, setMarketplace] = useState<MarketplaceId>(initialMarketplace ?? availableMarketplaces[0]?.id ?? "wildberries");
   const [style, setStyle] = useState<StyleId>(initialStyle ?? availableStyles[0]?.id ?? "minimal");
+  const [modelId, setModelId] = useState<ModelId>(availableModels[0]?.id ?? modelOptions[0]?.id ?? "");
   const [selectedTypes, setSelectedTypes] = useState<CardTypeId[]>(getDefaultCardTypeIds(availableCardTypes));
   const [cardCount, setCardCount] = useState(initialCount ?? availableCardCounts[0] ?? 6);
   const [projectName, setProjectName] = useState(initialProjectName);
@@ -68,6 +70,7 @@ export function GenerateWorkspace({
     availableCardTypes,
     cardCount,
     marketplace,
+    modelId,
     projectName,
     selectedTypes,
     showToast,
@@ -197,8 +200,10 @@ export function GenerateWorkspace({
           styles={availableStyles}
           cardTypes={availableCardTypes}
           cardCounts={availableCardCounts}
+          models={availableModels}
           marketplace={marketplace}
           style={style}
+          modelId={modelId}
           selectedTypes={selectedTypes}
           cardCount={cardCount}
           projectName={projectName}
@@ -213,6 +218,7 @@ export function GenerateWorkspace({
           resultState={effectiveResultState}
           onMarketplaceChange={setMarketplace}
           onStyleChange={setStyle}
+          onModelChange={setModelId}
           onToggleCardType={toggleCardType}
           onCardCountChange={setCardCount}
           onProjectNameChange={setProjectName}

@@ -1,6 +1,7 @@
 export type MarketplaceId = string;
 export type StyleId = string;
 export type CardTypeId = string;
+export type ModelId = string;
 export type ResultState = "empty" | "loading" | "result" | "error";
 
 export type MarketplaceOption = {
@@ -20,6 +21,13 @@ export type CardTypeOption = {
   defaultSelected?: boolean;
 };
 
+export type ModelOption = {
+  id: ModelId;
+  label: string;
+  description: string;
+  pricePerImage: number;
+};
+
 export type LoadingStep = {
   id: string;
   label: string;
@@ -32,6 +40,7 @@ export type GenerateConfigContent = {
   styles: ReadonlyArray<StyleOption>;
   cardTypes: ReadonlyArray<CardTypeOption>;
   cardCountOptions: ReadonlyArray<number>;
+  models: ReadonlyArray<ModelOption>;
 };
 
 export type ResultCard = {
@@ -70,11 +79,21 @@ export const defaultSelectedCardTypes = cardTypeOptions
 
 export const cardCountOptions: ReadonlyArray<number> = [3, 6, 9];
 
+export const modelOptions: ReadonlyArray<ModelOption> = [
+  {
+    id: "openai/gpt-5-image-mini",
+    label: "GPT-5 Image Mini",
+    description: "Хорошее соотношение цены и качества для большинства задач.",
+    pricePerImage: 15,
+  },
+];
+
 export const fallbackGenerateConfigContent: GenerateConfigContent = {
   marketplaces: marketplaceOptions,
   styles: styleOptions,
   cardTypes: cardTypeOptions,
   cardCountOptions,
+  models: modelOptions,
 };
 
 export const loadingSteps: ReadonlyArray<LoadingStep> = [

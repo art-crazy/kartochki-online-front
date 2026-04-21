@@ -1,8 +1,9 @@
-import type { GenerateCardType, GenerateConfigResponse, GenerateMarketplace, GenerateStyle } from "@/shared/api";
+import type { GenerateCardType, GenerateConfigResponse, GenerateMarketplace, GenerateModel, GenerateStyle } from "@/shared/api";
 import {
   type CardTypeOption,
   type GenerateConfigContent,
   type MarketplaceOption,
+  type ModelOption,
   type StyleOption,
 } from "@/features/generation/model/content";
 
@@ -16,7 +17,7 @@ const marketplaceDotMap: Record<string, string> = {
 
 export function mapGenerateConfigResponse(response: GenerateConfigResponse): GenerateConfigContent {
   const validCounts = response.card_count_options.filter((v) => Number.isInteger(v) && v > 0);
-  if (!response.marketplaces.length || !response.styles.length || !response.card_types.length || !validCounts.length) {
+  if (!response.marketplaces.length || !response.styles.length || !response.card_types.length || !response.models.length || !validCounts.length) {
     throw new Error("Generate config response is incomplete");
   }
 
@@ -25,6 +26,7 @@ export function mapGenerateConfigResponse(response: GenerateConfigResponse): Gen
     styles: response.styles.map(mapStyle),
     cardTypes: response.card_types.map(mapCardType),
     cardCountOptions: validCounts,
+    models: response.models.map(mapModel),
   };
 }
 
@@ -39,4 +41,13 @@ function mapStyle(item: GenerateStyle): StyleOption {
 
 function mapCardType(item: GenerateCardType): CardTypeOption {
   return { id: item.id, label: item.label, defaultSelected: item.default_selected };
+}
+
+function mapModel(item: GenerateModel): ModelOption {
+  return {
+    id: item.id,
+    label: item.label,
+    description: item.description,
+    pricePerImage: item.price_per_image,
+  };
 }
