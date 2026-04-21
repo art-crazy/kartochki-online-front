@@ -412,9 +412,19 @@
   box-shadow: var(--shadow-modal);
 }
 
-.modalIcon {
+.modalBadge {
+  display: inline-flex;
+  align-items: center;
   margin-bottom: 12px;
-  font-size: 1.8rem;
+  border: 1px solid rgba(192, 57, 43, 0.22);
+  border-radius: var(--radius-full);
+  background: rgba(192, 57, 43, 0.12);
+  color: var(--danger);
+  padding: 5px 10px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .modalTitle {
@@ -430,6 +440,17 @@
   color: var(--dark-text-3);
   font-size: var(--settings-modal-text-size);
   line-height: var(--settings-copy-line-height);
+}
+
+.modalActions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.modalActionButton {
+  width: 100%;
 }
 
 .toast {

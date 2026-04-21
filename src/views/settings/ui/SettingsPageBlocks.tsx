@@ -155,33 +155,31 @@ export function DeleteAccountModal({ page }: { page: SettingsPageModel }) {
         aria-labelledby="delete-account-title"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className={styles.modalIcon} aria-hidden="true">
-          !
-        </div>
+        <div className={styles.modalBadge}>Удаление аккаунта</div>
         <h2 id="delete-account-title" className={styles.modalTitle}>
           Удалить аккаунт?
         </h2>
         <p className={styles.modalText}>
-          Для подтверждения введите слово <strong>{deleteConfirmWord}</strong>.
+          Это действие нельзя отменить. Введите <strong>{deleteConfirmWord}</strong>, чтобы подтвердить удаление.
         </p>
         <Input
           dark
           label="Подтверждение"
-          placeholder={deleteConfirmWord}
+          placeholder={`Введите ${deleteConfirmWord}`}
           value={page.deleteConfirmInput}
           onChange={(e) => page.setDeleteConfirmInput(e.target.value)}
         />
         <div className={styles.modalActions}>
-          <Button variant="darkOutline" block onClick={page.closeDeleteModal}>
+          <Button variant="darkOutline" className={styles.modalActionButton} onClick={page.closeDeleteModal}>
             Отмена
           </Button>
           <Button
             variant="danger"
-            block
-            disabled={page.deleteConfirmInput !== deleteConfirmWord || page.deleteAccountMutation.isPending}
-            onClick={() => page.deleteAccountMutation.mutate({ body: { confirm_word: page.deleteConfirmInput } })}
+            className={styles.modalActionButton}
+            disabled={!page.canDeleteAccount || page.deleteAccountMutation.isPending}
+            onClick={page.submitDeleteAccount}
           >
-            {page.deleteAccountMutation.isPending ? "Удаляем..." : "Удалить навсегда"}
+            {page.deleteAccountMutation.isPending ? "Удаляем..." : "Удалить аккаунт"}
           </Button>
         </div>
       </div>

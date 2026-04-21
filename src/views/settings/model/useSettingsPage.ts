@@ -19,7 +19,12 @@ import {
 } from "@/shared/api";
 import type { SettingsSessionData, SettingsTabId } from "@/views/settings/model/content";
 import { mapSession } from "@/views/settings/model/mappers";
-import { validatePasswordForm, validateProfileEmail } from "@/views/settings/model/validation";
+import {
+  isDeleteConfirmWordValid,
+  normalizeDeleteConfirmInput,
+  validatePasswordForm,
+  validateProfileEmail,
+} from "@/views/settings/model/validation";
 
 type ToastState = { message: string; tone: "success" | "danger" };
 
@@ -126,6 +131,7 @@ export function useSettingsPage(settings: SettingsResponse) {
   });
 
   const emailVerified = settings.profile.email_verified;
+  const canDeleteAccount = isDeleteConfirmWordValid(deleteConfirmInput);
 
   function saveProfile() {
     const email = profileForm.email.trim();
@@ -174,11 +180,20 @@ export function useSettingsPage(settings: SettingsResponse) {
 
   function closeDeleteModal() { setDeleteModalOpen(false); setDeleteConfirmInput(""); }
 
+  function submitDeleteAccount() {
+    if (!canDeleteAccount || deleteAccountMutation.isPending) {
+      return;
+    }
+
+    deleteAccountMutation.mutate({ body: { confirm_word: normalizeDeleteConfirmInput(deleteConfirmInput) } });
+  }
+
   return {
     activeTab,
     changePassword,
     emailVerified,
     closeDeleteModal,
+    canDeleteAccount,
     defaultsForm,
     defaultsMutation,
     deleteAccountMutation,
@@ -204,6 +219,7 @@ export function useSettingsPage(settings: SettingsResponse) {
     setProfileEmail,
     setProfileForm,
     showToast,
+    submitDeleteAccount,
     toast,
     toggleNotification,
     uploadAvatar,

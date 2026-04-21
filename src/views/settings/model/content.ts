@@ -27,4 +27,4 @@ export const notificationLabels: Record<string, { title: string; description: st
   sms: { title: "SMS-подтверждение", description: "Код на номер телефона при каждом входе.", group: "security" },
 };
 
-export const deleteConfirmWord = "УДАЛИТЬ";
+export const deleteConfirmWord = "DELETE";
