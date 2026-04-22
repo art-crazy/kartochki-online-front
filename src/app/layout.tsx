@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { buildSiteUrl, siteConfig } from "@/shared/config/site";
 import { AppProviders } from "@/shared/providers/AppProviders";
@@ -79,6 +79,11 @@ export const metadata: Metadata = {
     description: siteConfig.description,
   },
   category: "business",
+};
+
+export const viewport: Viewport = {
+  themeColor: siteConfig.themeColor,
+  colorScheme: "light",
 };
 
 export default function RootLayout({
