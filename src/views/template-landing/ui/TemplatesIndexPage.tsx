@@ -13,7 +13,7 @@ const pages = getAllTemplatePages();
 const breadcrumbs = buildHubBreadcrumbs("Шаблоны");
 const collectionPageSchema = buildCollectionPageSchema({
   name: "Шаблоны карточек товаров",
-  description: "Каталог шаблонов карточек товаров по категориям для маркетплейсов.",
+  description: "Каталог шаблонов карточек товаров по категориям для маркетплейсов: одежда, электроника, косметика и товары для дома.",
   path: "/templates",
   items: pages.map((page) => ({
     label: page.categoryName,
@@ -32,8 +32,9 @@ export function TemplatesIndexPage() {
         <section className={landing.hero}>
           <h1 className={landing.heroHeading}>Шаблоны карточек товаров по категориям</h1>
           <p className={landing.heroSubheading}>
-            Готовые структуры карточек для одежды, электроники, косметики и товаров для дома. Выберите категорию
-            и откройте подходящий шаблон под маркетплейсы.
+            Готовые структуры карточек для популярных товарных категорий помогают быстрее оформить обложку,
+            дополнительные слайды и инфографику без хаотичной ручной сборки. Выберите категорию и возьмите за основу
+            шаблон, который ближе к вашему ассортименту.
           </p>
         </section>
 
@@ -53,9 +54,9 @@ export function TemplatesIndexPage() {
         </section>
 
         <SeoLinkSection
-          eyebrow="Внутренняя перелинковка"
-          title="Шаблоны связаны с площадками и инструментами"
-          intro="Категорийный хаб должен вести не только в шаблоны, но и в marketplace pages и feature pages, которые закрывают следующий шаг."
+          eyebrow="Полезные переходы"
+          title="Смежные разделы для подготовки карточки"
+          intro="После выбора шаблона обычно нужно посмотреть страницу нужного маркетплейса, подобрать инструмент и перейти в близкие по смыслу категории."
           groups={getTemplatesHubLinkGroups()}
         />
       </main>

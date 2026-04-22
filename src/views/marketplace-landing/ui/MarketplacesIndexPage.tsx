@@ -12,8 +12,8 @@ import styles from "@/shared/ui/landing/LandingIndex.module.scss";
 const pages = getAllMarketplacePages();
 const breadcrumbs = buildHubBreadcrumbs("Маркетплейсы");
 const collectionPageSchema = buildCollectionPageSchema({
-  name: "Маркетплейсы для генерации карточек товаров",
-  description: "Каталог посадочных страниц по маркетплейсам: Wildberries, Ozon и Яндекс Маркет.",
+  name: "Карточки товаров для маркетплейсов",
+  description: "Страницы по маркетплейсам: Wildberries, Ozon и Яндекс Маркет с рекомендациями по созданию карточек товаров.",
   path: "/marketplaces",
   items: pages.map((page) => ({
     label: page.name,
@@ -30,10 +30,11 @@ export function MarketplacesIndexPage() {
 
       <main>
         <section className={landing.hero}>
-          <h1 className={landing.heroHeading}>Карточки товаров для каждого маркетплейса</h1>
+          <h1 className={landing.heroHeading}>Карточки товаров под Wildberries, Ozon и Яндекс Маркет</h1>
           <p className={landing.heroSubheading}>
-            Выберите площадку: сервис автоматически применит правильные размеры, фон и требования к инфографике
-            под Wildberries, Ozon или Яндекс Маркет.
+            Выберите площадку и посмотрите, как лучше оформить карточку товара именно под ее выдачу, аудиторию и
+            формат контента. Это помогает быстрее запускать новые позиции, повышать качество карточек и не делать
+            один и тот же визуал вслепую под все маркетплейсы сразу.
           </p>
         </section>
 
@@ -55,9 +56,9 @@ export function MarketplacesIndexPage() {
         </section>
 
         <SeoLinkSection
-          eyebrow="Внутренняя перелинковка"
-          title="Смежные разделы для подготовки карточек"
-          intro="Хаб маркетплейсов должен распределять вес дальше: в страницы площадок, инструменты и шаблоны под конкретные категории."
+          eyebrow="Полезные разделы"
+          title="Что еще поможет подготовить карточки товаров"
+          intro="После выбора маркетплейса обычно нужен следующий шаг: подобрать инструмент, найти подходящий шаблон категории и посмотреть смежные страницы по задаче."
           groups={getMarketplacesHubLinkGroups()}
         />
       </main>

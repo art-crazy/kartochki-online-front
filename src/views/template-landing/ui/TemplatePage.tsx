@@ -88,7 +88,7 @@ export function TemplateLandingPage({ content }: TemplatePageProps) {
         <SeoLinkSection
           eyebrow="Связанные шаблоны"
           title={`Куда перейти после шаблона «${content.categoryName}»`}
-          intro="Template page должна передавать вес в смежные шаблоны, marketplace pages и инструменты, которые помогают собрать финальную карточку."
+          intro="После выбора шаблона обычно полезно посмотреть страницы по маркетплейсам, смежные категории и инструменты, которые помогают собрать финальную карточку товара."
           groups={getTemplatePageLinkGroups(content.slug)}
         />
 
