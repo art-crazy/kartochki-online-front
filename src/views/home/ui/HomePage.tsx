@@ -18,7 +18,7 @@ export function HomePage() {
       <HomeHero />
       <HomeSections />
       <SeoLinkSection
-        eyebrow="SEO hub-and-spoke"
+        eyebrow="Разделы сервиса"
         title="Навигация по основным разделам"
         intro="Главная страница ведёт в коммерческие и информационные разделы сервиса: страницы маркетплейсов, инструменты, шаблоны карточек и блог для продавцов."
         groups={getHomeLinkGroups()}
