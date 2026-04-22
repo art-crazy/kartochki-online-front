@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { marketingHeaderNav, marketingFooterColumns } from "@/shared/config/marketing";
+import { FREE_PLAN_CTA_DESCRIPTION } from "@/shared/config/pricing";
 import { buildDetailBreadcrumbs, buildFaqPageSchema, buildSoftwareApplicationSchema } from "@/shared/seo";
 import { getMarketplacePageLinkGroups } from "@/shared/seo/internal-linking";
 import landing from "@/shared/ui/landing/LandingPage.module.scss";
@@ -93,7 +94,7 @@ export function MarketplaceLandingPage({ content }: MarketplacePageProps) {
 
         <MarketingGlowCta
           title={<>Создайте первые карточки для {content.nameGenitive} бесплатно</>}
-          description="10 карточек в месяц без оплаты. Регистрация занимает 30 секунд."
+          description={FREE_PLAN_CTA_DESCRIPTION}
           buttonLabel={content.hero.ctaLabel}
         />
       </main>

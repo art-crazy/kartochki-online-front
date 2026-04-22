@@ -1,3 +1,9 @@
+import {
+  FREE_PLAN_CARDS_PER_MONTH_LABEL,
+  FREE_PLAN_CARDS_PER_MONTH_UP_TO_LABEL,
+  FREE_PLAN_SUMMARY,
+} from "@/shared/config/pricing";
+
 export type HomePricingFeature = {
   label: string;
   enabled: boolean;
@@ -18,10 +24,10 @@ export const homePricingPlans: ReadonlyArray<HomePricingPlan> = [
   {
     name: "Старт",
     price: "0 ₽/мес",
-    period: "Лимит 5 карточек в месяц",
+    period: `Лимит ${FREE_PLAN_CARDS_PER_MONTH_LABEL}`,
     features: [
       { label: "Для теста сервиса и первых запусков", enabled: true },
-      { label: "До 5 карточек в месяц", enabled: true },
+      { label: FREE_PLAN_CARDS_PER_MONTH_UP_TO_LABEL, enabled: true },
       { label: "Полный доступ ко всем функциям", enabled: true },
       { label: "Не для постоянной работы с каталогом", enabled: false },
     ],
@@ -83,5 +89,5 @@ export const homePricingOffers = homePricingPlans.map((plan) => ({
   priceCurrency: "RUB",
 }));
 
-export const homeFreePlanSummary = "5 карточек бесплатно, без карты, отмена в любой момент.";
+export const homeFreePlanSummary = FREE_PLAN_SUMMARY;
 export const homePricingNote = "Выберите тариф под свой сценарий работы и нужный месячный объем карточек.";

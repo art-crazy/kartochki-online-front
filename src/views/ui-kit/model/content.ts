@@ -1,4 +1,9 @@
 import { gradientPresets } from "@/shared/config/ui-kit";
+import {
+  FREE_PLAN_CARD_LIMIT,
+  FREE_PLAN_CARDS_LABEL,
+  formatCardsLabel,
+} from "@/shared/config/pricing";
 
 type NavigationItem = {
   icon: string;
@@ -63,14 +68,17 @@ export const typographyScale = [
   { meta: "monospace · 0.8rem", sample: "sk-kartochki-xxxxxxxxxxxx" },
 ] as const;
 
+const FREE_PLAN_USED_CARDS_DEMO = 3;
+const FREE_PLAN_REMAINING_CARDS_DEMO = FREE_PLAN_CARD_LIMIT - FREE_PLAN_USED_CARDS_DEMO;
+
 export const statCards = [
   {
     label: "Карточек создано",
-    value: "7",
-    valueSuffix: "/ 10",
+    value: String(FREE_PLAN_USED_CARDS_DEMO),
+    valueSuffix: `/ ${FREE_PLAN_CARD_LIMIT}`,
     description: "Осталось",
-    descriptionAccent: "3 карточки",
-    progress: { label: "Лимит", value: 7, max: 10 },
+    descriptionAccent: formatCardsLabel(FREE_PLAN_REMAINING_CARDS_DEMO),
+    progress: { label: "Лимит", value: FREE_PLAN_USED_CARDS_DEMO, max: FREE_PLAN_CARD_LIMIT },
   },
   {
     label: "Проектов",
@@ -96,7 +104,7 @@ export const planCards = [
     price: "0 ₽",
     period: "навсегда бесплатно",
     features: [
-      { label: "10 карточек/мес", enabled: true },
+      { label: `${FREE_PLAN_CARDS_LABEL}/мес`, enabled: true },
       { label: "WB, Ozon, Яндекс Маркет", enabled: true },
       { label: "Batch-генерация", enabled: false },
     ],

@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { useState } from "react";
+import { FREE_PLAN_CARD_LIMIT, formatCardsLabel } from "@/shared/config/pricing";
 import { gradientPresets, marketplaceOptions, mobileRules } from "@/shared/config/ui-kit";
 import {
   Accordion,
@@ -54,6 +55,10 @@ import {
   typographyScale,
 } from "../model/content";
 import styles from "./UIKitPage.module.scss";
+
+const FREE_PLAN_USED_CARDS_DEMO = 3;
+const FREE_PLAN_USAGE_DEMO = `${FREE_PLAN_USED_CARDS_DEMO} из ${formatCardsLabel(FREE_PLAN_CARD_LIMIT)}`;
+const FREE_PLAN_PROGRESS_DEMO = (FREE_PLAN_USED_CARDS_DEMO / FREE_PLAN_CARD_LIMIT) * 100;
 
 export function UIKitPage() {
   const [platform, setPlatform] = useState<string>(marketplaceOptions[0].value);
@@ -336,9 +341,16 @@ export function UIKitPage() {
             </div>
             <div className={classNames(styles.label, styles.darkLabel)}>ProgressBar</div>
             <div className={styles.gridAuto}>
-              <ProgressBar dark label="Карточек использовано" value={7} max={10} />
+              <ProgressBar dark label="Карточек использовано" value={FREE_PLAN_USED_CARDS_DEMO} max={FREE_PLAN_CARD_LIMIT} />
               <ProgressBar dark label="Загрузка фото" value={100} max={100} tone="success" valueLabel="100%" />
-              <ProgressBar dark label="Лимит исчерпан" value={10} max={10} tone="danger" valueLabel="10 / 10" />
+              <ProgressBar
+                dark
+                label="Лимит исчерпан"
+                value={FREE_PLAN_CARD_LIMIT}
+                max={FREE_PLAN_CARD_LIMIT}
+                tone="danger"
+                valueLabel={`${FREE_PLAN_CARD_LIMIT} / ${FREE_PLAN_CARD_LIMIT}`}
+              />
             </div>
           </Canvas>
           <Canvas dark title="UploadZone">
@@ -366,7 +378,7 @@ export function UIKitPage() {
               <div className={styles.sidebarColumn}>
                 <div className={classNames(styles.label, styles.darkLabel)}>SidebarPlanCard + Avatar</div>
                 <div className={styles.sidebarStack}>
-                <SidebarPlanCard />
+                  <SidebarPlanCard usage={FREE_PLAN_USAGE_DEMO} progress={FREE_PLAN_PROGRESS_DEMO} />
                   <SidebarProfileCard initials="ИИ" name="Иван Иванов" plan="Бесплатный план" />
                 </div>
               </div>

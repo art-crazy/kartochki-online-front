@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { FormEvent } from "react";
 import styles from "./AuthFlow.module.scss";
 import { classNames } from "@/shared/lib/classNames";
+import { FREE_PLAN_SHORT_SUMMARY } from "@/shared/config/pricing";
 import type { getPasswordStrength } from "../model/validation";
 import type { LoadingAction, RegisterErrors } from "../model/types";
 import { PasswordStrength } from "./PasswordStrength";
@@ -52,7 +53,7 @@ export function RegisterScreen({
       <h1 id="auth-register-title" className={styles.heading}>
         Создать аккаунт
       </h1>
-      <p className={styles.subheading}>10 карточек бесплатно, без карты</p>
+      <p className={styles.subheading}>{FREE_PLAN_SHORT_SUMMARY}</p>
 
       <form className={styles.form} onSubmit={onSubmit} noValidate>
         {errors.form ? <div className={styles.formError}>{errors.form}</div> : null}

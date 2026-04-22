@@ -27,8 +27,8 @@ export function NavItem({
 export function SidebarPlanCard({
   href = "/app",
   label = "Бесплатный план",
-  usage = "7 из 10 карточек",
-  progress = 70,
+  usage,
+  progress = 0,
   actionLabel = "Перейти на Pro →",
 }: {
   href?: string;
@@ -42,7 +42,7 @@ export function SidebarPlanCard({
   return (
     <div className={styles.sidebarPlan}>
       <div className={styles.sidebarPlanLabel}>{label}</div>
-      <div className={styles.sidebarPlanUsage}>{usage}</div>
+      {usage ? <div className={styles.sidebarPlanUsage}>{usage}</div> : null}
       <div className={styles.sidebarPlanBar} aria-hidden="true">
         <div className={styles.sidebarPlanFill} style={{ width: `${safeProgress}%` }} />
       </div>

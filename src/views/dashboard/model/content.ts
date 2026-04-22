@@ -1,3 +1,5 @@
+import { FREE_PLAN_CARD_LIMIT, formatCardsLabel } from "@/shared/config/pricing";
+
 export type DashboardStatVariant = "usage" | "default" | "tariff";
 
 export type DashboardStat = {
@@ -39,20 +41,23 @@ export type DashboardPageContent = {
   quickStart: DashboardQuickStart;
 };
 
+const FREE_PLAN_USED_CARDS_DEMO = 3;
+const FREE_PLAN_REMAINING_CARDS_DEMO = FREE_PLAN_CARD_LIMIT - FREE_PLAN_USED_CARDS_DEMO;
+
 export const dashboardStats: ReadonlyArray<DashboardStat> = [
   {
     label: "Карточек создано",
-    value: "7/10",
+    value: `${FREE_PLAN_USED_CARDS_DEMO}/${FREE_PLAN_CARD_LIMIT}`,
     valueParts: {
-      primary: "7",
-      secondary: "/ 10",
+      primary: String(FREE_PLAN_USED_CARDS_DEMO),
+      secondary: `/ ${FREE_PLAN_CARD_LIMIT}`,
     },
     description: "осталось",
-    accentText: "3 карточки",
+    accentText: formatCardsLabel(FREE_PLAN_REMAINING_CARDS_DEMO),
     variant: "usage",
     progress: {
-      value: 7,
-      max: 10,
+      value: FREE_PLAN_USED_CARDS_DEMO,
+      max: FREE_PLAN_CARD_LIMIT,
     },
   },
   {

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { marketingFooterColumns, marketingHeaderNav } from "@/shared/config/marketing";
+import { FREE_PLAN_CARDS_PER_MONTH_LABEL } from "@/shared/config/pricing";
 import { buildFaqPageSchema, buildSoftwareApplicationSchema } from "@/shared/seo";
 import { getMarketplaceToolPageLinkGroups } from "@/shared/seo/internal-linking-marketplace-tools";
 import landing from "@/shared/ui/landing/LandingPage.module.scss";
@@ -116,7 +117,7 @@ export function MarketplaceToolPage({ content }: MarketplaceToolPageProps) {
 
         <MarketingGlowCta
           title="Запустите этот сценарий бесплатно"
-          description={`10 карточек в месяц без оплаты. Начните с площадки ${content.marketplaceName} и протестируйте результат на реальном товаре.`}
+          description={`${FREE_PLAN_CARDS_PER_MONTH_LABEL} без оплаты. Начните с площадки ${content.marketplaceName} и протестируйте результат на реальном товаре.`}
           buttonLabel={content.hero.ctaLabel}
         />
       </main>

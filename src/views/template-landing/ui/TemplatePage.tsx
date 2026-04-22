@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { marketingHeaderNav, marketingFooterColumns } from "@/shared/config/marketing";
+import { FREE_PLAN_CTA_DESCRIPTION } from "@/shared/config/pricing";
 import { buildDetailBreadcrumbs, buildFaqPageSchema, buildSoftwareApplicationSchema } from "@/shared/seo";
 import { getTemplatePageLinkGroups } from "@/shared/seo/internal-linking";
 import { MarketingGlowCta, SeoBreadcrumbs, SeoJsonLd, SeoLinkSection } from "@/shared/ui";
@@ -93,7 +94,7 @@ export function TemplateLandingPage({ content }: TemplatePageProps) {
 
         <MarketingGlowCta
           title="Создайте карточку по шаблону бесплатно"
-          description="10 карточек в месяц без оплаты. Регистрация занимает 30 секунд."
+          description={FREE_PLAN_CTA_DESCRIPTION}
           buttonLabel={content.hero.ctaLabel}
         />
       </main>

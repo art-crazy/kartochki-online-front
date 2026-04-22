@@ -2,6 +2,7 @@ import Link from "next/link";
 import { blogHeroStats, heroGradients } from "@/entities/blog/model/content";
 import { blogListingSchema } from "@/entities/blog/model/structuredData";
 import { blogHeaderNav, blogFooterColumns } from "@/shared/config/marketing";
+import { FREE_PLAN_BLOG_CTA_DESCRIPTION } from "@/shared/config/pricing";
 import { buildCollectionPageSchema, buildHubBreadcrumbs } from "@/shared/seo";
 import { getBlogHubCommercialLinkGroups } from "@/shared/seo/internal-linking";
 import { SeoBreadcrumbs, SeoJsonLd, SeoLinkSection } from "@/shared/ui";
@@ -167,7 +168,7 @@ export function BlogPage({ content = fallbackBlogPageContent }: BlogPageProps) {
 
           <section className={[styles.ctaWidget, styles.reveal, styles.delay2].join(" ")}>
             <div className={styles.ctaTitle}>Попробуй бесплатно</div>
-            <div className={styles.ctaText}>10 карточек без карты. Загрузи фото и получи готовый сет за 30 секунд.</div>
+            <div className={styles.ctaText}>{FREE_PLAN_BLOG_CTA_DESCRIPTION}</div>
             <Button as={Link} href="/auth" size="lg" block>
               Начать →
             </Button>
