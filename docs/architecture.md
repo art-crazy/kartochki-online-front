@@ -26,7 +26,7 @@ Frontend for `kartochki.online`, a SEO-first SaaS for marketplace sellers.
 
 ## FSD Structure
 
-- `src/app` - framework integration only: route files, layouts, metadata such as `robots.ts` and `sitemap.ts`, route groups, and surface-specific layouts; route files stay thin and delegate to `src/views`
+- `src/app` - framework integration only: route files, layouts, metadata such as `robots.ts`, route groups, and surface-specific layouts; route files stay thin and delegate to `src/views`
 - `src/views` - route-facing compositions assembled from widgets and features; this replaces the canonical FSD `pages` layer because `src/pages` would activate the legacy Pages Router
 - `src/widgets` - large sections and blocks used to compose pages
 - `src/features` - scenario-level user behavior and actions
@@ -104,7 +104,8 @@ Do not add a Next.js BFF auth layer unless the backend contract changes and the 
 - Centralize site metadata in shared config.
 - Centralize internal linking rules for marketing pages instead of hardcoding random related links per route.
 - Keep reusable metadata builders in `src/shared/seo` so route files stay declarative and consistent.
-- Use Next metadata APIs for canonical URLs, Open Graph, `robots`, and `sitemap`.
+- Use Next metadata APIs for canonical URLs, Open Graph, and `robots`.
+- Generate XML sitemap explicitly with `npm run generate:sitemap` into `public/sitemap.xml`; do not rebuild it at request time.
 - Add structured data to high-intent pages when they are implemented.
 - Avoid client-only rendering for indexable content.
 
