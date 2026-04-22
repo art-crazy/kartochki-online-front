@@ -6,6 +6,7 @@ export * from "./navigation/Navigation";
 export * from "./feedback/Feedback";
 export * from "./feedback/Accordion";
 export * from "./domain/Domain";
+export * from "./landing/MarketingGlowCta";
 export * from "./seo-json-ld/SeoJsonLd";
 export * from "./seo-breadcrumbs/SeoBreadcrumbs";
 export * from "./internal-links/SeoLinkSection";

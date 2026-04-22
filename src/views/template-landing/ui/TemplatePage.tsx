@@ -2,7 +2,7 @@ import Link from "next/link";
 import { marketingHeaderNav, marketingFooterColumns } from "@/shared/config/marketing";
 import { buildDetailBreadcrumbs, buildFaqPageSchema, buildSoftwareApplicationSchema } from "@/shared/seo";
 import { getTemplatePageLinkGroups } from "@/shared/seo/internal-linking";
-import { SeoBreadcrumbs, SeoJsonLd, SeoLinkSection } from "@/shared/ui";
+import { MarketingGlowCta, SeoBreadcrumbs, SeoJsonLd, SeoLinkSection } from "@/shared/ui";
 import { SiteFooter } from "@/widgets/marketing/site-footer";
 import { SiteHeader } from "@/widgets/marketing/site-header";
 import landing from "@/shared/ui/landing/LandingPage.module.scss";
@@ -91,17 +91,11 @@ export function TemplateLandingPage({ content }: TemplatePageProps) {
           groups={getTemplatePageLinkGroups(content.slug)}
         />
 
-        <section className={landing.ctaSection}>
-          <div className={landing.container}>
-            <h2 className={landing.ctaTitle}>Создайте карточку по шаблону бесплатно</h2>
-            <p className={landing.ctaSubtitle}>
-              10 карточек в месяц без оплаты. Регистрация занимает 30 секунд.
-            </p>
-            <Link href="/auth" className={landing.ctaButton}>
-              {content.hero.ctaLabel}
-            </Link>
-          </div>
-        </section>
+        <MarketingGlowCta
+          title="Создайте карточку по шаблону бесплатно"
+          description="10 карточек в месяц без оплаты. Регистрация занимает 30 секунд."
+          buttonLabel={content.hero.ctaLabel}
+        />
       </main>
 
       <SiteFooter columns={marketingFooterColumns} />

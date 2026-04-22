@@ -3,7 +3,7 @@ import { marketingFooterColumns, marketingHeaderNav } from "@/shared/config/mark
 import { buildFaqPageSchema, buildSoftwareApplicationSchema } from "@/shared/seo";
 import { getMarketplaceTemplatePageLinkGroups } from "@/shared/seo/internal-linking-marketplace-templates";
 import landing from "@/shared/ui/landing/LandingPage.module.scss";
-import { SeoBreadcrumbs, SeoJsonLd, SeoLinkSection } from "@/shared/ui";
+import { MarketingGlowCta, SeoBreadcrumbs, SeoJsonLd, SeoLinkSection } from "@/shared/ui";
 import { SiteFooter } from "@/widgets/marketing/site-footer";
 import { SiteHeader } from "@/widgets/marketing/site-header";
 import type { MarketplaceTemplateLanding } from "../model/solutions";
@@ -99,18 +99,11 @@ export function MarketplaceTemplatePage({ content }: MarketplaceTemplatePageProp
           groups={getMarketplaceTemplatePageLinkGroups(content.marketplaceSlug, content.templateSlug)}
         />
 
-        <section className={landing.ctaSection}>
-          <div className={landing.container}>
-            <h2 className={landing.ctaTitle}>Соберите карточку по готовому шаблону</h2>
-            <p className={landing.ctaSubtitle}>
-              Используйте структуру для {content.templateName.toLowerCase()} и адаптируйте её под требования{" "}
-              {content.marketplaceName}.
-            </p>
-            <Link href="/auth" className={landing.ctaButton}>
-              {content.hero.ctaLabel}
-            </Link>
-          </div>
-        </section>
+        <MarketingGlowCta
+          title="Соберите карточку по готовому шаблону"
+          description={`Используйте структуру для ${content.templateName.toLowerCase()} и адаптируйте её под требования ${content.marketplaceName}.`}
+          buttonLabel={content.hero.ctaLabel}
+        />
       </main>
 
       <SiteFooter columns={marketingFooterColumns} />

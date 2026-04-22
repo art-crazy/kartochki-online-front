@@ -3,7 +3,7 @@ import { marketingFooterColumns, marketingHeaderNav } from "@/shared/config/mark
 import { buildFaqPageSchema, buildSoftwareApplicationSchema } from "@/shared/seo";
 import { getMarketplaceToolPageLinkGroups } from "@/shared/seo/internal-linking-marketplace-tools";
 import landing from "@/shared/ui/landing/LandingPage.module.scss";
-import { SeoBreadcrumbs, SeoJsonLd, SeoLinkSection } from "@/shared/ui";
+import { MarketingGlowCta, SeoBreadcrumbs, SeoJsonLd, SeoLinkSection } from "@/shared/ui";
 import { SiteFooter } from "@/widgets/marketing/site-footer";
 import { SiteHeader } from "@/widgets/marketing/site-header";
 import type { MarketplaceToolLanding } from "../model/solutions";
@@ -114,18 +114,11 @@ export function MarketplaceToolPage({ content }: MarketplaceToolPageProps) {
           groups={getMarketplaceToolPageLinkGroups(content.marketplaceSlug, content.toolSlug)}
         />
 
-        <section className={landing.ctaSection}>
-          <div className={landing.container}>
-            <h2 className={landing.ctaTitle}>Запустите этот сценарий бесплатно</h2>
-            <p className={landing.ctaSubtitle}>
-              10 карточек в месяц без оплаты. Начните с площадки {content.marketplaceName} и протестируйте результат на
-              реальном товаре.
-            </p>
-            <Link href="/auth" className={landing.ctaButton}>
-              {content.hero.ctaLabel}
-            </Link>
-          </div>
-        </section>
+        <MarketingGlowCta
+          title="Запустите этот сценарий бесплатно"
+          description={`10 карточек в месяц без оплаты. Начните с площадки ${content.marketplaceName} и протестируйте результат на реальном товаре.`}
+          buttonLabel={content.hero.ctaLabel}
+        />
       </main>
 
       <SiteFooter columns={marketingFooterColumns} />
