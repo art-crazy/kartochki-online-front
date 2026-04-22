@@ -529,8 +529,13 @@
 }
 
 .modalActions {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
+}
+
+.modalActionButton {
+  width: 100%;
 }
 
 .toast {
@@ -597,7 +602,7 @@
   }
 
   .modalActions {
-    flex-direction: column;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

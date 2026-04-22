@@ -157,8 +157,15 @@ export function BillingPricing({ plans }: BillingPricingProps) {
             </div>
 
             <div className={styles.modalActions}>
-              <Button variant="darkOutline" block onClick={() => setSelectedPlan(null)}>Отмена</Button>
-              <Button variant="darkPrimary" block disabled={checkoutMutation.isPending} onClick={handlePurchase}>
+              <Button variant="darkOutline" className={styles.modalActionButton} onClick={() => setSelectedPlan(null)}>
+                Отмена
+              </Button>
+              <Button
+                variant="darkPrimary"
+                className={styles.modalActionButton}
+                disabled={checkoutMutation.isPending}
+                onClick={handlePurchase}
+              >
                 {checkoutMutation.isPending ? "Открываем оплату..." : "Оплатить ->"}
               </Button>
             </div>
