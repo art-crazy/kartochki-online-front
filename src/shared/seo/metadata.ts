@@ -65,6 +65,11 @@ export function buildPageMetadata({
       description: openGraphDescription ?? description,
       url: canonical,
     },
+    twitter: {
+      card: "summary_large_image",
+      title: openGraphTitle ?? title,
+      description: openGraphDescription ?? description,
+    },
     ...(robots ? { robots } : {}),
   };
 }
@@ -96,6 +101,11 @@ export function buildArticleMetadata({
       url: canonical,
       ...(publishedTime ? { publishedTime } : {}),
       ...(modifiedTime ? { modifiedTime } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: openGraphTitle ?? title,
+      description: openGraphDescription ?? description,
     },
     ...(robots ? { robots } : {}),
   };
