@@ -173,12 +173,13 @@
 
 .projectsGrid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
   gap: 16px;
 }
 
 .cardLink {
   display: block;
+  min-width: 0;
   color: inherit;
   text-decoration: none;
 }
@@ -213,23 +214,33 @@
 }
 
 .projectBody {
+  display: grid;
+  gap: 8px;
   padding: 0.85rem;
+  min-width: 0;
 }
 
 .projectName {
-  margin-bottom: 0.3rem;
   color: var(--dark-text);
   font-size: var(--dashboard-card-title-size);
   font-weight: 600;
+  overflow-wrap: anywhere;
 }
 
 .projectMeta {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-width: 0;
   gap: 8px;
   color: var(--dark-text-3);
   font-size: var(--dashboard-card-meta-size);
+  flex-wrap: wrap;
+}
+
+.projectMeta > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .newProjectCard {
@@ -313,6 +324,7 @@
 .projectRow {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 16px;
   padding: 1rem 1.25rem;
   border: 1px solid var(--dark-border);
@@ -328,6 +340,14 @@
 .projectRow:hover {
   border-color: var(--dark-border-2);
   background: var(--dark-bg-3);
+}
+
+.projectRowLead {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  min-width: 0;
 }
 
 .projectThumbs {
@@ -374,6 +394,11 @@
   min-width: 0;
 }
 
+.projectInfoMeta {
+  color: var(--dark-text-3);
+  font-size: var(--dashboard-row-meta-size);
+}
+
 .projectTitle {
   margin-bottom: 0.2rem;
   color: var(--dark-text);
@@ -381,8 +406,16 @@
   font-weight: 600;
 }
 
-.projectInfo .projectMeta {
-  font-size: var(--dashboard-row-meta-size);
+.projectRowSide {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.projectRowBadge {
+  display: flex;
+  align-items: center;
 }
 
 .projectActions {
@@ -408,10 +441,6 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .projectsGrid > :last-child {
-    grid-column: span 2;
-  }
-
   .quickStartCard {
     align-items: flex-start;
     flex-direction: column;
@@ -430,10 +459,6 @@
     gap: 0.75rem;
   }
 
-  .projectsGrid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
   .sectionHeader {
     align-items: flex-start;
     flex-direction: column;
@@ -449,13 +474,43 @@
 
   .projectRow {
     display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
+    gap: 14px;
+    padding: 16px;
+  }
+
+  .projectRowLead {
+    display: grid;
+    gap: 12px;
+    justify-items: start;
+  }
+
+  .projectThumbs {
+    display: inline-flex;
+    width: fit-content;
+    max-width: 100%;
+    padding: 10px;
+    border: 1px solid var(--dark-border);
+    border-radius: 12px;
+    background: var(--dark-bg-3);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .projectThumbs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .projectThumb {
+    width: 44px;
+    border-radius: 6px;
+  }
+
+  .projectRowSide {
+    justify-content: space-between;
   }
 
   .projectActions {
-    grid-column: 1 / -1;
-    justify-content: flex-end;
+    display: none;
   }
 }
 
@@ -468,12 +523,23 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .projectRow {
-    grid-template-columns: 1fr;
+  .projectsGrid {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .projectThumbs,
-  .projectActions {
-    justify-content: flex-start;
+  .projectRow {
+    padding: 14px;
+  }
+
+  .projectThumbs {
+    padding: 8px;
+  }
+
+  .projectThumb {
+    width: 40px;
+  }
+
+  .projectInfoMeta {
+    line-height: 1.45;
   }
 }

@@ -139,19 +139,25 @@ export function DashboardPage() {
           <div className={styles.projectList}>
             {pageContent.allProjects.map((project) => (
               <Link key={project.id} href={project.href} className={styles.projectRow}>
-                <div className={styles.projectThumbs} aria-hidden="true">
-                  <ProjectPreviewStrip previewUrls={project.previewUrls} variant="row" />
-                </div>
-                <div className={styles.projectInfo}>
-                  <div className={styles.projectTitle}>{project.title}</div>
-                  <div className={styles.projectMeta}>
-                    {project.cardCount} { "\u043a\u0430\u0440\u0442\u043e\u0447\u0435\u043a \u00b7 " }{getMarketplaceLabel(project.marketplace)}{" \u00b7 "}{project.updatedAt}
+                <div className={styles.projectRowLead}>
+                  <div className={styles.projectThumbs} aria-hidden="true">
+                    <ProjectPreviewStrip previewUrls={project.previewUrls} variant="row" />
+                  </div>
+                  <div className={styles.projectInfo}>
+                    <div className={styles.projectTitle}>{project.title}</div>
+                    <div className={styles.projectInfoMeta}>
+                      {project.cardCount} { "\u043a\u0430\u0440\u0442\u043e\u0447\u0435\u043a \u00b7 " }{getMarketplaceLabel(project.marketplace)}{" \u00b7 "}{project.updatedAt}
+                    </div>
                   </div>
                 </div>
-                <MarketplaceBadge marketplace={project.marketplace} />
-                <div className={styles.projectActions} aria-hidden="true">
-                  <span className={styles.iconButton}>{"\u2193"}</span>
-                  <span className={styles.iconButton}>{"\u2192"}</span>
+                <div className={styles.projectRowSide}>
+                  <div className={styles.projectRowBadge}>
+                    <MarketplaceBadge marketplace={project.marketplace} />
+                  </div>
+                  <div className={styles.projectActions} aria-hidden="true">
+                    <span className={styles.iconButton}>{"\u2193"}</span>
+                    <span className={styles.iconButton}>{"\u2192"}</span>
+                  </div>
                 </div>
               </Link>
             ))}

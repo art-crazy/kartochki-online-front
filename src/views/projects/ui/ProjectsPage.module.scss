@@ -120,14 +120,22 @@
 .projectTitleRow {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 6px;
+  min-width: 0;
 }
 
 .projectTitle {
+  flex: 1 1 220px;
   overflow-wrap: anywhere;
   font-size: 0.98rem;
   font-weight: 700;
+}
+
+.projectMarketplaceBadge {
+  flex-shrink: 0;
+  max-width: 100%;
 }
 
 .projectMeta,
@@ -224,6 +232,10 @@
 
   .projectActions button {
     flex: 1;
+  }
+
+  .projectMarketplaceBadge {
+    max-width: fit-content;
   }
 
   .modalActions {

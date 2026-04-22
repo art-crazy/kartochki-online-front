@@ -71,7 +71,7 @@ export function ProjectRow({
       <div className={styles.projectBody}>
         <div className={styles.projectTitleRow}>
           <h2 className={styles.projectTitle}>{project.title}</h2>
-          <Badge tone="dark">{getMarketplaceLabel(project.marketplace)}</Badge>
+          <Badge tone="dark" className={styles.projectMarketplaceBadge}>{getMarketplaceLabel(project.marketplace)}</Badge>
         </div>
         <p className={styles.projectMeta}>Обновлен: {project.updatedAt}</p>
         {project.productName ? <p className={styles.projectCopy}>{project.productName}</p> : null}

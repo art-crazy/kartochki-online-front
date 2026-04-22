@@ -139,7 +139,8 @@
 }
 
 .avatarRow {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   gap: 20px;
 }
@@ -169,17 +170,22 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+  min-width: 0;
 }
 
 .avatarName {
   color: var(--dark-text);
   font-size: var(--settings-avatar-name-size);
   font-weight: 600;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
 }
 
 .avatarEmail {
   color: var(--dark-text-3);
   font-size: var(--settings-meta-size);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
 :is(.avatarActions, .rowActions, .modalActions, .apiActions) {
@@ -527,7 +533,6 @@
   .dangerZone,
   .switchRow,
   .listRow,
-  .avatarRow,
   .rowActions,
   .modalActions,
   .apiActions {
@@ -536,11 +541,9 @@
   }
 
   .avatarRow {
-    text-align: center;
-  }
-
-  .avatarWrap {
-    margin: 0 auto;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 16px;
   }
 }
 
@@ -560,5 +563,15 @@
     right: 16px;
     bottom: 80px;
     left: 16px;
+  }
+
+  .avatarRow {
+    grid-template-columns: 88px minmax(0, 1fr);
+    align-items: start;
+    gap: 14px;
+  }
+
+  .avatarMeta {
+    align-self: center;
   }
 }
