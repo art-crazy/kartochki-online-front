@@ -24,7 +24,7 @@ export function MarketplaceTemplatePage({ content }: MarketplaceTemplatePageProp
   ];
   const faqSchema = buildFaqPageSchema(content.faq);
   const softwareApplicationSchema = buildSoftwareApplicationSchema({
-    name: `Шаблон карточки ${content.templateName} для ${content.marketplaceName}`,
+    name: `Шаблон карточки ${content.templateName.toLowerCase()} для ${content.marketplaceName}`,
     description: content.description,
     path: currentPath,
   });
@@ -80,7 +80,7 @@ export function MarketplaceTemplatePage({ content }: MarketplaceTemplatePageProp
 
         <section className={landing.section}>
           <div className={landing.container}>
-            <h2 className={landing.sectionTitle}>Частые вопросы</h2>
+            <h2 className={landing.sectionTitle}>Частые вопросы продавцов</h2>
             <div className={landing.faqList}>
               {content.faq.map((item) => (
                 <div key={item.question} className={landing.faqItem}>
@@ -93,15 +93,15 @@ export function MarketplaceTemplatePage({ content }: MarketplaceTemplatePageProp
         </section>
 
         <SeoLinkSection
-          eyebrow="Категорийная перелинковка"
-          title={`Что смотреть после шаблона ${content.templateName} для ${content.marketplaceName}`}
-          intro="Страница шаблона должна вести в соседние категорийные сценарии, а не обрываться на одной посадочной."
+          eyebrow="Полезные сценарии"
+          title={`Что ещё посмотреть продавцу на ${content.marketplaceName} рядом с шаблоном ${content.templateName.toLowerCase()}`}
+          intro="Обычно одной категории недостаточно. Рядом полезно смотреть соседние шаблоны и инструменты, чтобы быстрее собрать карточку под весь ассортимент, а не только под один товар."
           groups={getMarketplaceTemplatePageLinkGroups(content.marketplaceSlug, content.templateSlug)}
         />
 
         <MarketingGlowCta
-          title="Соберите карточку по готовому шаблону"
-          description={`Используйте структуру для ${content.templateName.toLowerCase()} и адаптируйте её под требования ${content.marketplaceName}.`}
+          title={`Соберите карточку ${content.templateName.toLowerCase()} без долгой ручной сборки`}
+          description={`Используйте готовую структуру для ${content.templateName.toLowerCase()} и адаптируйте её под ${content.marketplaceName}, чтобы быстрее запустить товар, обновить карточку или масштабировать контент на линейку SKU.`}
           buttonLabel={content.hero.ctaLabel}
         />
       </main>

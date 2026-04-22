@@ -64,7 +64,7 @@ export function MarketplaceToolPage({ content }: MarketplaceToolPageProps) {
 
         <section className={landing.section}>
           <div className={landing.container}>
-            <h2 className={landing.sectionTitle}>Как использовать сценарий</h2>
+            <h2 className={landing.sectionTitle}>Как использовать инструмент</h2>
             <div className={styles.stepsList}>
               {content.steps.map((step) => (
                 <div key={step.step} className={styles.step}>
@@ -81,7 +81,7 @@ export function MarketplaceToolPage({ content }: MarketplaceToolPageProps) {
 
         <section className={landing.section}>
           <div className={landing.container}>
-            <h2 className={landing.sectionTitle}>Почему этот сценарий работает</h2>
+            <h2 className={landing.sectionTitle}>Почему этот инструмент помогает продавать</h2>
             <div className={landing.featuresGrid}>
               {content.features.map((feature) => (
                 <div key={feature.title} className={landing.featureCard}>
@@ -96,7 +96,7 @@ export function MarketplaceToolPage({ content }: MarketplaceToolPageProps) {
 
         <section className={landing.section}>
           <div className={landing.container}>
-            <h2 className={landing.sectionTitle}>Частые вопросы</h2>
+            <h2 className={landing.sectionTitle}>Частые вопросы продавцов</h2>
             <div className={landing.faqList}>
               {content.faq.map((item) => (
                 <div key={item.question} className={landing.faqItem}>
@@ -109,15 +109,15 @@ export function MarketplaceToolPage({ content }: MarketplaceToolPageProps) {
         </section>
 
         <SeoLinkSection
-          eyebrow="Глубокая перелинковка"
-          title={`Куда вести пользователя после страницы ${content.toolName.toLowerCase()} для ${content.marketplaceName}`}
-          intro="Эта страница не должна быть тупиком: она передаёт вес соседним сценариям, основным хабам и релевантным коммерческим разделам."
+          eyebrow="Полезные переходы"
+          title={`Что ещё пригодится рядом с ${content.toolName.toLowerCase()} для ${content.marketplaceName}`}
+          intro="После страницы инструмента продавцу обычно нужны соседние сценарии: шаблоны по категориям, смежные инструменты и страницы по площадке. Это помогает быстрее дойти до регистрации и собрать рабочий комплект материалов под товар."
           groups={getMarketplaceToolPageLinkGroups(content.marketplaceSlug, content.toolSlug)}
         />
 
         <MarketingGlowCta
-          title="Запустите этот сценарий бесплатно"
-          description={`${FREE_PLAN_CARDS_PER_MONTH_LABEL} без оплаты. Начните с площадки ${content.marketplaceName} и протестируйте результат на реальном товаре.`}
+          title={`Запустите ${content.toolName.toLowerCase()} для ${content.marketplaceName} бесплатно`}
+          description={`${FREE_PLAN_CARDS_PER_MONTH_LABEL} без оплаты. Проверьте инструмент на реальном товаре, соберите рабочий визуал под ${content.marketplaceName} и оцените, насколько быстрее можно выпускать карточки без ручной рутины.`}
           buttonLabel={content.hero.ctaLabel}
         />
       </main>
