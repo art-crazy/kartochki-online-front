@@ -10,6 +10,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ["/tools", 0.85],
     ["/templates", 0.8],
     ["/blog", 0.8],
+    ["/oferta", 0.45],
+    ["/privacy", 0.45],
+    ["/consent", 0.4],
+    ["/vozvrat", 0.45],
+    ["/rekvizity", 0.4],
   ]);
 
   return getIndexableSiteMapLinks().map((link) => ({

@@ -35,6 +35,14 @@ export const toolLinks = [
   { label: "Инфографика", href: "/tools/infografika" },
 ] as const satisfies readonly MarketingLink[];
 
+export const legalLinks = [
+  { label: "Оферта", href: "/oferta" },
+  { label: "Политика конфиденциальности", href: "/privacy" },
+  { label: "Согласие на обработку персональных данных", href: "/consent" },
+  { label: "Возвраты и отмена", href: "/vozvrat" },
+  { label: "Реквизиты", href: "/rekvizity" },
+] as const satisfies readonly MarketingLink[];
+
 export const marketingHeaderNav: readonly NavItem[] = [
   { type: "link", label: "Как работает", href: "/#how" },
   { type: "dropdown", label: "Площадки", items: marketplaceLinks },
@@ -68,6 +76,10 @@ export const marketingFooterColumns: readonly FooterColumn[] = [
       { label: "Поддержка", href: `mailto:${siteConfig.supportEmail}` },
     ],
   },
+  {
+    heading: "Правовая информация",
+    links: legalLinks,
+  },
 ];
 
 export const blogFooterColumns: readonly FooterColumn[] = [
@@ -84,6 +96,10 @@ export const blogFooterColumns: readonly FooterColumn[] = [
       { label: "Поддержка", href: `mailto:${siteConfig.supportEmail}` },
     ],
   },
+  {
+    heading: "Правовая информация",
+    links: legalLinks,
+  },
 ];
 
 export const legalFooterColumns: readonly FooterColumn[] = [
@@ -94,9 +110,7 @@ export const legalFooterColumns: readonly FooterColumn[] = [
   {
     heading: "Правовая информация",
     links: [
-      { label: "Политика конфиденциальности" },
-      { label: "Оферта" },
-      { label: "Реквизиты", href: "/rekvizity" },
+      ...legalLinks,
       { label: "Поддержка", href: `mailto:${siteConfig.supportEmail}` },
     ],
   },

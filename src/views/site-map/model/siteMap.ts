@@ -53,6 +53,34 @@ const coreLinks: readonly SiteMapLink[] = [
   },
 ] as const;
 
+const legalLinks: readonly SiteMapLink[] = [
+  {
+    href: "/oferta",
+    label: "Оферта",
+    description: "Публичная оферта на доступ к SaaS-сервису kartochki.online и платной подписке с автопродлением.",
+  },
+  {
+    href: "/privacy",
+    label: "Политика конфиденциальности",
+    description: "Правила обработки персональных данных, cookies, billing-событий и обращений пользователей.",
+  },
+  {
+    href: "/consent",
+    label: "Согласие на обработку ПДн",
+    description: "Публичный текст согласия на обработку персональных данных для регистрации, оплаты и поддержки.",
+  },
+  {
+    href: "/vozvrat",
+    label: "Возвраты и отмена",
+    description: "Порядок отключения автопродления, возвратов и действия подписки до конца оплаченного периода.",
+  },
+  {
+    href: "/rekvizity",
+    label: "Реквизиты",
+    description: "Реквизиты оператора сервиса для договорных, платежных и юридических сценариев.",
+  },
+] as const;
+
 export function getSiteMapSections(): SiteMapSection[] {
   return [
     {
@@ -131,6 +159,11 @@ export function getSiteMapSections(): SiteMapSection[] {
         label: post.title,
         description: post.description,
       })),
+    },
+    {
+      title: "Правовая информация",
+      summary: "Публичные документы сервиса: оферта, персональные данные, возвраты, согласия и реквизиты продавца.",
+      links: legalLinks,
     },
   ];
 }

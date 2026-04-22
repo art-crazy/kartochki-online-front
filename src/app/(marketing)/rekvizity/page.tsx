@@ -1,26 +1,18 @@
 import type { Metadata } from "next";
 import { legalFooterColumns, blogHeaderNav } from "@/shared/config/marketing";
-import { siteConfig } from "@/shared/config/site";
-import { buildNoindexMetadata } from "@/shared/seo";
+import { buildPageMetadata } from "@/shared/seo";
+import { rekvizityRows } from "@/views/legal";
 import { SiteFooter } from "@/widgets/marketing/site-footer";
 import { SiteHeader } from "@/widgets/marketing/site-header";
 import styles from "./RekvizityPage.module.scss";
 
-export const metadata: Metadata = buildNoindexMetadata({
+export const metadata: Metadata = buildPageMetadata({
   title: "Реквизиты — карточки.онлайн",
   description: "Реквизиты ИП Аржанников Михаил Алексеевич: ИНН, ОГРНИП.",
   path: "/rekvizity",
 });
 
-const rows = [
-  { label: "Организация", value: "Индивидуальный предприниматель Аржанников Михаил Алексеевич" },
-  { label: "ИНН", value: "420544415156" },
-  { label: "ОГРНИП", value: "324420500063173" },
-  { label: "Сайт", value: siteConfig.domains[0] },
-  { label: "Email", value: siteConfig.supportEmail },
-] as const;
-
-export default function RekvizityPage() {
+export default function RekvizityRoute() {
   return (
     <main className={styles.page}>
       <SiteHeader nav={blogHeaderNav} />
@@ -30,7 +22,7 @@ export default function RekvizityPage() {
         <h1 className={styles.title}>Реквизиты</h1>
 
         <div className={styles.card}>
-          {rows.map(({ label, value }) => (
+          {rekvizityRows.map(({ label, value }) => (
             <div key={label} className={styles.row}>
               <span className={styles.rowLabel}>{label}</span>
               <span className={styles.rowValue}>{value}</span>
