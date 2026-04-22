@@ -7,7 +7,7 @@ import { Button } from "@/shared/ui";
 import styles from "./CookieConsentBanner.module.scss";
 
 const consentMessage =
-  "Мы используем cookie и локальное хранилище, чтобы сайт работал стабильно, запоминал настройки и упрощал вход. Можно принять все cookie или оставить только необходимые.";
+  "Мы используем cookie и локальное хранилище, чтобы сайт работал стабильно, запоминал ваши настройки и упрощал вход.";
 
 export function CookieConsentBanner() {
   const consentStatus = useSyncExternalStore(subscribeToConsent, getStoredConsent, () => "unknown" satisfies ConsentStatus);
@@ -32,7 +32,7 @@ export function CookieConsentBanner() {
 
         <div className={styles.actions}>
           <Button size="md" variant="outline" className={styles.actionButton} onClick={() => handleConsent("necessary-only")}>
-            Только необходимые
+            Отклонить
           </Button>
           <Button size="md" className={styles.actionButton} onClick={() => handleConsent("accepted")}>
             Принять
