@@ -7,7 +7,7 @@ export type AppShellNavItem = {
 };
 
 export const primaryNavItems: ReadonlyArray<AppShellNavItem> = [
-  { key: "dashboard", href: "/app", label: "Дашборд", icon: "⊞" },
+  { key: "dashboard", href: "/app", label: "Главная", icon: "⊞" },
   { key: "generate", href: "/app/generate", label: "Генерация", icon: "⚡", badge: "Новое" },
   { key: "projects", href: "/app/projects", label: "Проекты", icon: "◫" },
 ];

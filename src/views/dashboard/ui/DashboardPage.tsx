@@ -26,7 +26,7 @@ export function DashboardPage() {
   if (isPending) {
     return (
       <DashboardShell subtitle="Загружаем данные аккаунта">
-        <DashboardStateCard title="Загружаем дашборд" description="Получаем лимиты, проекты и быстрый старт." />
+        <DashboardStateCard title="Загружаем главную" description="Получаем лимиты, проекты и быстрый старт." />
       </DashboardShell>
     );
   }
@@ -35,7 +35,7 @@ export function DashboardPage() {
     return (
       <DashboardShell subtitle="Не удалось получить данные аккаунта">
         <DashboardStateCard
-          title="Дашборд не загрузился"
+          title="Главная не загрузилась"
           description="Проверьте API и повторите запрос."
           action={<Button variant="darkPrimary" onClick={() => void refetch()}>Повторить</Button>}
         />
@@ -45,7 +45,7 @@ export function DashboardPage() {
 
   return (
     <AppShell
-      title="Дашборд"
+      title="Главная"
       subtitle={new Intl.DateTimeFormat("ru-RU", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(new Date()).replace(/^./, (c) => c.toUpperCase())}
       activeKey="dashboard"
       action={(
@@ -164,7 +164,7 @@ export function DashboardPage() {
 
 function DashboardShell({ children, subtitle }: { children: ReactNode; subtitle: string }) {
   return (
-    <AppShell title="Дашборд" subtitle={subtitle} activeKey="dashboard">
+    <AppShell title="Главная" subtitle={subtitle} activeKey="dashboard">
       <main className={styles.page}>{children}</main>
     </AppShell>
   );

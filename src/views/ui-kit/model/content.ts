@@ -186,7 +186,7 @@ export const loadingSteps = [
 ] as const;
 
 export const navigationItems: ReadonlyArray<NavigationItem> = [
-  { icon: "⊞", label: "Дашборд" },
+  { icon: "⊞", label: "Главная" },
   { icon: "⚡", label: "Генерация", active: true, badge: "Новое" },
   { icon: "◫", label: "Проекты" },
   { icon: "◈", label: "Тарифы" },
