@@ -27,7 +27,7 @@ const marketplaceLinks = {
   ozon: {
     href: "/marketplaces/ozon",
     label: "Карточки для Ozon",
-    description: "Форматы Ozon, white background, rich-контент и адаптация визуалов под конверсию.",
+    description: "Форматы Ozon, фото на белом фоне, rich-контент и адаптация визуалов под конверсию.",
   },
   yandexMarket: {
     href: "/marketplaces/yandex-market",
@@ -53,7 +53,7 @@ const templateLinks = {
   odezhda: {
     href: "/templates/odezhda",
     label: "Шаблоны для одежды",
-    description: "Готовые структуры карточек для fashion-категорий, размеров, тканей и посадки.",
+    description: "Готовые структуры карточек для одежды: размеры, ткани, посадка и ключевые преимущества товара.",
   },
   elektronika: {
     href: "/templates/elektronika",
@@ -63,7 +63,7 @@ const templateLinks = {
   kosmetika: {
     href: "/templates/kosmetika",
     label: "Шаблоны для косметики",
-    description: "Карточки для beauty-товаров с составом, эффектом, способом применения и преимуществами.",
+    description: "Карточки для косметики с составом, эффектом, способом применения и преимуществами.",
   },
   tovaryDlyaDoma: {
     href: "/templates/tovary-dlya-doma",
@@ -97,11 +97,11 @@ function withoutCurrent(groups: readonly SeoLinkGroup[], currentHref?: string): 
 export function getHomeLinkGroups(): SeoLinkGroup[] {
   return [
     {
-      title: "Хабы по маркетплейсам",
+      title: "Разделы по маркетплейсам",
       links: [marketplaceLinks.wildberries, marketplaceLinks.ozon, marketplaceLinks.yandexMarket],
     },
     {
-      title: "Инструменты по use-case",
+      title: "Инструменты для разных задач",
       links: [toolLinks.generator, toolLinks.infographics],
     },
     {
