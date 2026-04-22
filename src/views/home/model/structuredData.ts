@@ -29,7 +29,7 @@ export const softwareSchema = {
   "@type": "SoftwareApplication",
   name: siteConfig.applicationName,
   description:
-    "ИИ-генератор карточек товаров для Wildberries, Ozon и Яндекс Маркет с автоматической инфографикой, фонами и SEO-текстами.",
+    "Генератор карточек товаров для Wildberries, Ozon и Яндекс Маркета с автоматической инфографикой, обработкой фото и SEO-текстами.",
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
   inLanguage: "ru",

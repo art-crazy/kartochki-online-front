@@ -57,7 +57,10 @@ export function HomeSections() {
 
       <section className={styles.section}>
         <div className={styles.containerNarrow}>
-          <SectionHeading label="Отзывы продавцов" title={<>Уже используют 800+ продавцов</>} />
+          <SectionHeading
+            label="Отзывы продавцов"
+            title={<>Сервисом уже пользуются 800+ продавцов, менеджеров и агентств</>}
+          />
 
           <div className={styles.cardsThree}>
             {testimonials.map((testimonial) => (
@@ -81,7 +84,11 @@ export function HomeSections() {
 
       <section id="how" className={styles.section}>
         <div className={styles.containerNarrow}>
-          <SectionHeading label="Как это работает" title={<>Три шага до готовой карточки</>} />
+          <SectionHeading
+            label="Как это работает"
+            title={<>Три шага до готовой карточки товара</>}
+            description="От исходной фотографии до карточки для маркетплейса без дизайнера, долгих согласований и ручной подготовки каждого слайда."
+          />
 
           <div className={styles.cardsThree}>
             {steps.map((step, index) => (
@@ -98,7 +105,11 @@ export function HomeSections() {
 
       <section id="platforms" className={styles.sectionMuted}>
         <div className={styles.containerNarrow}>
-          <SectionHeading label="Поддерживаемые площадки" title={<>Знаем требования каждой площадки</>} />
+          <SectionHeading
+            label="Поддерживаемые площадки"
+            title={<>Карточки под требования Wildberries, Ozon и Яндекс Маркета</>}
+            description="Сервис учитывает формат изображений, требования к фону, композиции и подаче контента для каждой площадки."
+          />
 
           <div className={styles.cardsThree}>
             {platformCards.map((platform) => (
@@ -131,7 +142,11 @@ export function HomeSections() {
 
       <section id="features" className={styles.featuresSection}>
         <div className={styles.containerNarrow}>
-          <SectionHeading label="Возможности" title={<>Всё, что нужно для топовых карточек</>} />
+          <SectionHeading
+            label="Возможности"
+            title={<>Всё, что нужно для продающих карточек товаров</>}
+            description="Для селлеров, контент-менеджеров и агентств, которым нужен быстрый выпуск карточек без потери качества."
+          />
 
           <div className={styles.featuresGrid}>
             {featureCards.map((feature) => (
@@ -165,7 +180,7 @@ export function HomeSections() {
         <div className={styles.containerTight}>
           <SectionHeading
             label="Тарифы"
-            title={<>Простые цены без сюрпризов</>}
+            title={<>Тарифы для селлеров, команд и агентств</>}
             description={homePricingNote}
             centered
           />
@@ -188,13 +203,20 @@ export function HomeSections() {
               />
             ))}
           </div>
-          <p className={styles.pricingCaption}>Во всех тарифах доступен полный функционал. Вы выбираете только нужный месячный объем карточек.</p>
+          <p className={styles.pricingCaption}>
+            Во всех тарифах доступны генерация карточек, инфографика, обработка фото и тексты для маркетплейсов.
+            Отличается только месячный объём и условия для командной работы.
+          </p>
         </div>
       </section>
 
       <section id="blog" className={styles.section}>
         <div className={styles.containerNarrow}>
-          <SectionHeading label="Блог" title={<>Советы для продавцов</>} />
+          <SectionHeading
+            label="Блог"
+            title={<>Полезные статьи для продавцов на маркетплейсах</>}
+            description="Разбираем требования площадок, оформление карточек товаров, инфографику и способы повышать конверсию."
+          />
 
           <div className={styles.cardsThree}>
             {blogPosts.map((post) => (
@@ -222,7 +244,7 @@ export function HomeSections() {
 
       <section id="faq" className={styles.faqSection}>
         <div className={styles.containerFaq}>
-          <SectionHeading label="FAQ" title={<>Частые вопросы</>} centered />
+          <SectionHeading label="FAQ" title={<>Частые вопросы о генерации карточек товаров</>} centered />
           <Accordion items={faqItems} />
         </div>
       </section>
@@ -230,7 +252,7 @@ export function HomeSections() {
       <section className={styles.ctaSection}>
         <div className={styles.ctaCard}>
           <SectionHeading
-            title={<>Попробуй прямо сейчас</>}
+            title={<>Запустите первую генерацию бесплатно</>}
             description={homeFreePlanSummary}
             centered
           />

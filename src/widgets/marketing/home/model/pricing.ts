@@ -26,10 +26,10 @@ export const homePricingPlans: ReadonlyArray<HomePricingPlan> = [
     price: "0 ₽/мес",
     period: `Лимит ${FREE_PLAN_CARDS_PER_MONTH_LABEL}`,
     features: [
-      { label: "Для теста сервиса и первых запусков", enabled: true },
+      { label: "Для теста сервиса и первых карточек товара", enabled: true },
       { label: FREE_PLAN_CARDS_PER_MONTH_UP_TO_LABEL, enabled: true },
-      { label: "Полный доступ ко всем функциям", enabled: true },
-      { label: "Не для постоянной работы с каталогом", enabled: false },
+      { label: "Генерация инфографики, фото и текстов", enabled: true },
+      { label: "Подходит для знакомства, но не для постоянного потока", enabled: false },
     ],
     actionLabel: "Начать бесплатно",
     actionVariant: "outline",
@@ -40,9 +40,9 @@ export const homePricingPlans: ReadonlyArray<HomePricingPlan> = [
     price: "1 490 ₽/мес",
     period: "Лимит 75 карточек в месяц",
     features: [
-      { label: "Для регулярной работы с каталогом", enabled: true },
+      { label: "Для регулярной работы селлера с каталогом", enabled: true },
       { label: "До 75 карточек в месяц", enabled: true },
-      { label: "Полный доступ ко всем функциям", enabled: true },
+      { label: "Полный доступ к генерации изображений и текстов", enabled: true },
       { label: "Без интеграции по API", enabled: false },
     ],
     popular: true,
@@ -55,9 +55,9 @@ export const homePricingPlans: ReadonlyArray<HomePricingPlan> = [
     price: "4 990 ₽/мес",
     period: "Лимит 250 карточек в месяц",
     features: [
-      { label: "Для агентств и команд с несколькими клиентами", enabled: true },
+      { label: "Для агентств и команд с несколькими проектами", enabled: true },
       { label: "До 250 карточек в месяц", enabled: true },
-      { label: "Полный доступ ко всем функциям", enabled: true },
+      { label: "Полный доступ ко всем функциям сервиса", enabled: true },
       { label: "Приоритетная поддержка", enabled: true },
       { label: "Без интеграции по API", enabled: false },
     ],
@@ -70,9 +70,9 @@ export const homePricingPlans: ReadonlyArray<HomePricingPlan> = [
     price: "14 990 ₽/мес",
     period: "Лимит 750 карточек в месяц",
     features: [
-      { label: "Для крупных команд и автоматизации процессов", enabled: true },
+      { label: "Для крупных команд и потоковой генерации карточек", enabled: true },
       { label: "До 750 карточек в месяц", enabled: true },
-      { label: "Полный доступ ко всем функциям", enabled: true },
+      { label: "Полный доступ ко всем функциям сервиса", enabled: true },
       { label: "Приоритетная поддержка", enabled: true },
       { label: "Интеграция по API", enabled: true },
     ],
@@ -90,4 +90,5 @@ export const homePricingOffers = homePricingPlans.map((plan) => ({
 }));
 
 export const homeFreePlanSummary = FREE_PLAN_SUMMARY;
-export const homePricingNote = "Выберите тариф под свой сценарий работы и нужный месячный объем карточек.";
+export const homePricingNote =
+  "Выберите тариф под свой объём каталога: для старта, постоянной работы с карточками товаров или командного потока.";

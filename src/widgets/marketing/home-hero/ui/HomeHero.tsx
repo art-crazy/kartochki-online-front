@@ -20,16 +20,16 @@ export function HomeHero() {
         <div className={styles.hero}>
           <Badge tone="neutral" className={styles.heroBadge}>
             <span className={styles.heroBadgeDot} />
-            ИИ-генератор карточек для маркетплейсов
+            Генератор карточек товаров и инфографики
           </Badge>
 
           <h1 className={styles.heroTitle}>
-            Карточки товаров для{" "}
+            Генератор карточек товаров для{" "}
             <span className={styles.wb}>Wildberries,</span>{" "}
             <span className={styles.ozon}>Ozon</span>{" "}
             <span className={styles.ymConnector}>и</span>{" "}
             <span className={styles.ym}>Яндекс&nbsp;Маркет</span>{" "}
-            за 30 секунд
+            без ручной вёрстки
           </h1>
 
           <div className={styles.heroPlatforms}>
@@ -39,8 +39,9 @@ export function HomeHero() {
           </div>
 
           <p className={styles.heroDescription}>
-            Загрузите фото товара и получите готовый набор карточек с инфографикой, правильным фоном и текстами. Контент
-            соответствует требованиям Wildberries, Ozon и Яндекс Маркет с первого раза.
+            Загрузите фото товара и получите готовые карточки для маркетплейсов: главное изображение, инфографику,
+            белый или тематический фон, SEO-описание и тексты для карточки. Сервис помогает быстрее выводить товары
+            в каталог, экономить на дизайне и готовить контент под требования Wildberries, Ozon и Яндекс Маркета.
           </p>
 
           <div className={styles.heroActions}>
@@ -48,7 +49,7 @@ export function HomeHero() {
               Начать бесплатно
             </Button>
             <Button as="a" href="#how" variant="outline" size="xl">
-              Как это работает
+              Посмотреть как это работает
             </Button>
           </div>
 
@@ -117,7 +118,7 @@ export function HomeHero() {
                   </div>
 
                   <Button as={Link} href="/auth" size="lg" className={styles.mockupButton}>
-                    Сгенерировать
+                    Создать карточки
                   </Button>
                 </aside>
 
