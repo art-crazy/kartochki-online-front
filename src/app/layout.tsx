@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
+import { YandexMetrika } from "@/shared/ui/analytics/YandexMetrika";
 import { buildSiteUrl, siteConfig } from "@/shared/config/site";
 import { AppProviders } from "@/shared/providers/AppProviders";
 import { buildCanonicalUrl } from "@/shared/seo";
@@ -97,6 +98,7 @@ export default function RootLayout({
       className={[geistSans.variable, golosText.variable, geologica.variable].join(" ")}
     >
       <body>
+        <YandexMetrika />
         <AppProviders>{children}</AppProviders>
       </body>
     </html>
