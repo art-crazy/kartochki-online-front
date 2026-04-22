@@ -28,8 +28,7 @@ export function HomeHero() {
             <span className={styles.wb}>Wildberries,</span>{" "}
             <span className={styles.ozon}>Ozon</span>{" "}
             <span className={styles.ymConnector}>и</span>{" "}
-            <span className={styles.ym}>Яндекс&nbsp;Маркет</span>{" "}
-            без ручной вёрстки
+            <span className={styles.ym}>Яндекс&nbsp;Маркет</span>
           </h1>
 
           <div className={styles.heroPlatforms}>
@@ -39,9 +38,8 @@ export function HomeHero() {
           </div>
 
           <p className={styles.heroDescription}>
-            Загрузите фото товара и получите готовые карточки для маркетплейсов: главное изображение, инфографику,
-            белый или тематический фон, SEO-описание и тексты для карточки. Сервис помогает быстрее выводить товары
-            в каталог, экономить на дизайне и готовить контент под требования Wildberries, Ozon и Яндекс Маркета.
+            Загрузите фото товара и получите готовую карточку для Wildberries, Ozon и Яндекс Маркета: изображение,
+            инфографику, фон и текст.
           </p>
 
           <div className={styles.heroActions}>
