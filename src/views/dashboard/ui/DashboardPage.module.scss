@@ -29,6 +29,11 @@
   min-width: 44px;
   padding: 0;
   font-size: 1rem;
+  flex: 0 0 44px;
+}
+
+.primaryActionButton {
+  min-width: 0;
 }
 
 .stateCard {
@@ -432,6 +437,10 @@
   .sectionHeader {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .primaryActionButton {
+    flex: 1 1 220px;
   }
 
   .statCard {

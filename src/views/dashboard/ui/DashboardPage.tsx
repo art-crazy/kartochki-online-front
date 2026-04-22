@@ -53,7 +53,7 @@ export function DashboardPage() {
           <Button variant="darkOutline" size="md" iconOnly className={styles.notificationButton} aria-label="Уведомления">
             {"\uD83D\uDD14"}
           </Button>
-          <Button as={Link} href="/app/generate" variant="darkPrimary" size="md">
+          <Button as={Link} href="/app/generate" variant="darkPrimary" size="md" className={styles.primaryActionButton}>
             + Создать карточки
           </Button>
         </>

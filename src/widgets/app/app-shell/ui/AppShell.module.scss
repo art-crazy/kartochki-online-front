@@ -135,6 +135,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
 }
 
 .headerTitle {
@@ -153,6 +154,8 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
+  flex-wrap: wrap;
 }
 
 .menuToggle {
@@ -218,11 +221,19 @@
   }
 
   .header {
+    align-items: flex-start;
+    flex-wrap: wrap;
     padding: 0.85rem 1rem;
   }
 
   .headerActions {
+    width: 100%;
     gap: 8px;
+    justify-content: flex-start;
+  }
+
+  .headerActions > * {
+    min-width: 0;
   }
 
   .menuToggle {
