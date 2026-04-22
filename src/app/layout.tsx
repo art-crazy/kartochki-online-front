@@ -73,11 +73,25 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     title: siteConfig.name,
     description: siteConfig.description,
+    images: [
+      {
+        url: buildSiteUrl(siteConfig.openGraphImagePath),
+        width: 1200,
+        height: 630,
+        alt: siteConfig.applicationName,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: siteConfig.name,
     description: siteConfig.description,
+    images: [
+      {
+        url: buildSiteUrl(siteConfig.twitterImagePath),
+        alt: siteConfig.applicationName,
+      },
+    ],
   },
   category: "business",
 };

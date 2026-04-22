@@ -3,6 +3,8 @@ export const siteConfig = {
   applicationName: "kartochki.online",
   locale: "ru-RU",
   openGraphLocale: "ru_RU",
+  openGraphImagePath: "/opengraph-image.jpg",
+  twitterImagePath: "/twitter-image.jpg",
   themeColor: "#f5f2eb",
   description:
     "Сервис для создания карточек товаров, инфографики и изображений для продавцов на маркетплейсах.",
