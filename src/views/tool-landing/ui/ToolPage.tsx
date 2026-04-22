@@ -59,7 +59,7 @@ export function ToolLandingPage({ content }: ToolPageProps) {
 
         <section className={landing.section}>
           <div className={landing.container}>
-            <h2 className={landing.sectionTitle}>Возможности</h2>
+            <h2 className={landing.sectionTitle}>Что дает инструмент</h2>
             <div className={landing.featuresGrid}>
               {content.features.map((feature) => (
                 <div key={feature.title} className={landing.featureCard}>
@@ -88,8 +88,8 @@ export function ToolLandingPage({ content }: ToolPageProps) {
 
         <SeoLinkSection
           eyebrow="Следующий шаг"
-          title="Где использовать этот инструмент дальше"
-          intro="Feature page должна вести в более конкретные страницы применения: маркетплейсы, подходящие шаблоны и соседние коммерческие разделы."
+          title="Где этот инструмент пригодится дальше"
+          intro="После общего продуктового сценария пользователю обычно нужен более конкретный маршрут: выбрать маркетплейс, посмотреть подходящие шаблоны и перейти в соседние разделы."
           groups={getToolPageLinkGroups(content.slug)}
         />
 

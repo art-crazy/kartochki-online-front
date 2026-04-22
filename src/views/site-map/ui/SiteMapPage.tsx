@@ -12,7 +12,7 @@ const sections = getSiteMapSections();
 const breadcrumbs = buildHubBreadcrumbs("Карта сайта");
 const collectionPageSchema = buildCollectionPageSchema({
   name: "Карта сайта kartochki.online",
-  description: "Навигация по основным SEO-разделам, посадочным страницам и статьям блога.",
+  description: "Навигация по основным разделам, продуктовым страницам, шаблонам и статьям блога kartochki.online.",
   path: "/sitemap",
   items: sections.flatMap((section) =>
     section.links.map((link) => ({
@@ -34,8 +34,9 @@ export function SiteMapPage() {
           <div className={styles.intro}>
             <h1 className={landing.heroHeading}>Карта сайта</h1>
             <p className={landing.heroSubheading}>
-              Единая точка входа в коммерческие страницы, категорийные хабы и статьи блога. Эта страница усиливает
-              навигацию для пользователей и делает структуру сайта более явной для поисковых систем.
+              Здесь собраны основные страницы kartochki.online: инструменты, разделы по маркетплейсам, шаблоны
+              карточек и статьи блога. Если вы ищете конкретный сценарий для продавца на маркетплейсе, отсюда проще
+              всего перейти в нужный раздел.
             </p>
           </div>
         </section>

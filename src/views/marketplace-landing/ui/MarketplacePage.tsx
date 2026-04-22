@@ -58,7 +58,7 @@ export function MarketplaceLandingPage({ content }: MarketplacePageProps) {
 
         <section className={landing.section}>
           <div className={landing.container}>
-            <h2 className={landing.sectionTitle}>Что умеет генератор для {content.nameGenitive}</h2>
+            <h2 className={landing.sectionTitle}>Что помогает продавать на {content.nameGenitive}</h2>
             <div className={landing.featuresGrid}>
               {content.features.map((feature) => (
                 <div key={feature.title} className={landing.featureCard}>
@@ -87,8 +87,8 @@ export function MarketplaceLandingPage({ content }: MarketplacePageProps) {
 
         <SeoLinkSection
           eyebrow="Связанные разделы"
-          title={`Что ещё помогает продавцам на ${content.name}`}
-          intro="Коммерческая страница маркетплейса должна передавать вес дальше: в инструменты, шаблоны и смежные материалы по этому интенту."
+          title={`Что еще пригодится продавцу на ${content.name}`}
+          intro="Если вы оформляете карточки под конкретный маркетплейс, обычно рядом нужны шаблоны, инструменты для инфографики и соседние страницы под этот же спрос."
           groups={getMarketplacePageLinkGroups(content.slug)}
         />
 

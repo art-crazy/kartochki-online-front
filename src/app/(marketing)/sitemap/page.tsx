@@ -7,7 +7,7 @@ export const revalidate = 86_400;
 export const metadata: Metadata = buildPageMetadata({
   title: "Карта сайта | kartochki.online",
   description:
-    "HTML-карта сайта kartochki.online со ссылками на ключевые коммерческие страницы, категорийные хабы и статьи блога.",
+    "HTML-карта сайта kartochki.online со ссылками на основные разделы, страницы по маркетплейсам, инструменты, шаблоны и статьи блога.",
   path: "/sitemap",
   keywords: [
     "карта сайта kartochki.online",

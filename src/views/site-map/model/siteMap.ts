@@ -29,27 +29,27 @@ const coreLinks: readonly SiteMapLink[] = [
   {
     href: "/",
     label: "Главная",
-    description: "Главный вход в коммерческие и информационные разделы сервиса.",
+    description: "Главная страница сервиса с основными сценариями для продавцов маркетплейсов.",
   },
   {
     href: "/marketplaces",
     label: "Маркетплейсы",
-    description: "Хаб посадочных страниц по Wildberries, Ozon и Яндекс Маркету.",
+    description: "Подборка страниц по Wildberries, Ozon и Яндекс Маркету с отдельными сценариями оформления карточек.",
   },
   {
     href: "/tools",
     label: "Инструменты",
-    description: "Каталог продуктовых сценариев: генератор карточек и инфографика.",
+    description: "Продуктовые страницы сервиса: генератор карточек и инструмент для инфографики.",
   },
   {
     href: "/templates",
     label: "Шаблоны",
-    description: "Подборки шаблонов карточек по товарным категориям.",
+    description: "Категорийные шаблоны карточек товаров для разных ниш и типов ассортимента.",
   },
   {
     href: "/blog",
     label: "Блог",
-    description: "Информационный кластер со статьями для продавцов маркетплейсов.",
+    description: "Статьи для продавцов маркетплейсов: требования к фото, инфографика, ошибки карточек и практические советы.",
   },
 ] as const;
 
@@ -57,12 +57,12 @@ export function getSiteMapSections(): SiteMapSection[] {
   return [
     {
       title: "Основные разделы",
-      summary: "Ключевые hub-страницы, от которых строится вся навигация сайта.",
+      summary: "Быстрый вход в ключевые разделы сайта: инструменты, шаблоны, страницы по маркетплейсам и блог.",
       links: coreLinks,
     },
     {
       title: "Страницы маркетплейсов",
-      summary: "Коммерческие посадочные под требования конкретных площадок.",
+      summary: "Отдельные посадочные страницы по Wildberries, Ozon и Яндекс Маркету с упором на оформление карточек под площадку.",
       links: getAllMarketplacePages().map((page) => ({
         href: `/marketplaces/${page.slug}`,
         label: page.name,
@@ -71,7 +71,7 @@ export function getSiteMapSections(): SiteMapSection[] {
     },
     {
       title: "Инструменты",
-      summary: "Страницы с отдельными сценариями использования сервиса.",
+      summary: "Основные продуктовые сценарии сервиса: создание карточек товаров и инфографики для маркетплейсов.",
       links: getAllToolPages().map((page) => ({
         href: `/tools/${page.slug}`,
         label: page.hero.heading,
@@ -79,8 +79,8 @@ export function getSiteMapSections(): SiteMapSection[] {
       })),
     },
     {
-      title: "Сценарии по площадкам",
-      summary: "Глубокие коммерческие страницы пересечения инструмента и маркетплейса.",
+      title: "Инструменты по площадкам",
+      summary: "Более точные страницы, где инструмент привязан к конкретному маркетплейсу и пользовательскому запросу.",
       links: getAllMarketplaceToolParams()
         .map(({ marketplaceSlug, toolSlug }) => {
           const page = getMarketplaceToolLanding(marketplaceSlug, toolSlug);
@@ -98,7 +98,7 @@ export function getSiteMapSections(): SiteMapSection[] {
     },
     {
       title: "Шаблоны по площадкам",
-      summary: "Глубокие категорийные страницы пересечения маркетплейса и товарного шаблона.",
+      summary: "Страницы пересечения маркетплейса и категории товара для тех, кто ищет более конкретный шаблон карточки.",
       links: getAllMarketplaceTemplateParams()
         .map(({ marketplaceSlug, templateSlug }) => {
           const page = getMarketplaceTemplateLanding(marketplaceSlug, templateSlug);
@@ -116,7 +116,7 @@ export function getSiteMapSections(): SiteMapSection[] {
     },
     {
       title: "Шаблоны карточек",
-      summary: "Категорийные посадочные для шаблонов и заготовок карточек.",
+      summary: "Категорийные страницы с заготовками и ориентирами по оформлению карточек товаров.",
       links: getAllTemplatePages().map((page) => ({
         href: `/templates/${page.slug}`,
         label: page.categoryName,
@@ -125,7 +125,7 @@ export function getSiteMapSections(): SiteMapSection[] {
     },
     {
       title: "Статьи блога",
-      summary: "Информационные материалы, которые связывают спрос и коммерческие страницы.",
+      summary: "Полезные материалы для продавцов: требования маркетплейсов, советы по контенту и разбор типовых ошибок.",
       links: allBlogPosts.map((post) => ({
         href: post.canonicalPath,
         label: post.title,
