@@ -86,7 +86,7 @@ export function MarketplaceLandingPage({ content }: MarketplacePageProps) {
         </section>
 
         <SeoLinkSection
-          eyebrow="Связанные разделы"
+          eyebrow="Что еще может пригодиться"
           title={`Что еще пригодится продавцу на ${content.name}`}
           intro="Если вы оформляете карточки под конкретный маркетплейс, обычно рядом нужны шаблоны, инструменты для инфографики и соседние страницы под этот же спрос."
           groups={getMarketplacePageLinkGroups(content.slug)}

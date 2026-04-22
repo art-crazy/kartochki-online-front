@@ -87,7 +87,7 @@ export function ToolLandingPage({ content }: ToolPageProps) {
         </section>
 
         <SeoLinkSection
-          eyebrow="Следующий шаг"
+          eyebrow="Что еще может пригодиться"
           title="Где этот инструмент пригодится дальше"
           intro="После общего продуктового сценария пользователю обычно нужен более конкретный маршрут: выбрать маркетплейс, посмотреть подходящие шаблоны и перейти в соседние разделы."
           groups={getToolPageLinkGroups(content.slug)}
