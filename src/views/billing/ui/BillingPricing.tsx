@@ -3,17 +3,15 @@
 import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import {
-  createBillingAddonCheckoutMutation,
   createBillingCheckoutMutation,
   type ErrorResponse,
 } from "@/shared/api";
 import { classNames } from "@/shared/lib/classNames";
 import { Accordion, Badge, Button, CardSurface } from "@/shared/ui";
-import { billingFaqItems, type BillingAddon, type BillingPlan } from "@/views/billing/model/content";
+import { billingFaqItems, type BillingPlan } from "@/views/billing/model/content";
 import styles from "./BillingPage.module.scss";
 
 type BillingPricingProps = {
-  addons: ReadonlyArray<BillingAddon>;
   plans: ReadonlyArray<BillingPlan>;
 };
 
@@ -21,19 +19,13 @@ type ToastState = {
   message: string;
 };
 
-export function BillingPricing({ addons, plans }: BillingPricingProps) {
+export function BillingPricing({ plans }: BillingPricingProps) {
   const [isYearly, setIsYearly] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<BillingPlan | null>(null);
   const [toast, setToast] = useState<ToastState | null>(null);
 
   const checkoutMutation = useMutation({
     ...createBillingCheckoutMutation(),
-    onSuccess: ({ checkout_url }) => window.location.assign(checkout_url),
-    onError: (error: ErrorResponse) => setToast({ message: error.message ?? "Не удалось открыть оплату" }),
-  });
-
-  const addonMutation = useMutation({
-    ...createBillingAddonCheckoutMutation(),
     onSuccess: ({ checkout_url }) => window.location.assign(checkout_url),
     onError: (error: ErrorResponse) => setToast({ message: error.message ?? "Не удалось открыть оплату" }),
   });
@@ -138,31 +130,7 @@ export function BillingPricing({ addons, plans }: BillingPricingProps) {
         })}
       </section>
 
-      <section className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>Дополнительные пакеты</h2>
-          <p className={styles.sectionSubtitle}>Подойдут, если нужно быстро расширить месячный объем без смены тарифа.</p>
-        </div>
-
-        <div className={styles.addonsGrid}>
-          {addons.map((addon) => (
-            <button
-              key={addon.id}
-              type="button"
-              className={styles.addonCard}
-              disabled={addonMutation.isPending}
-              onClick={() => addonMutation.mutate({ body: { addon_id: addon.id } })}
-            >
-              <span className={styles.addonIcon} aria-hidden="true">+</span>
-              <span className={styles.addonBody}>
-                <span className={styles.addonTitle}>{addon.title}</span>
-                <span className={styles.addonDescription}>{addon.description}</span>
-              </span>
-              <span className={styles.addonPrice}>{addon.priceLabel}</span>
-            </button>
-          ))}
-        </div>
-      </section>
+      {/* TODO: вернуть секцию дополнительных пакетов после повторного согласования отображения на /app/billing */}
 
       <section className={styles.section}>
         <div className={styles.sectionHeader}>

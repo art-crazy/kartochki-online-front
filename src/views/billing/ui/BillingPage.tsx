@@ -135,7 +135,7 @@ export function BillingPage() {
           </div>
         </section>
 
-        <BillingPricing addons={pageContent.addons} plans={pageContent.plans} />
+        <BillingPricing plans={pageContent.plans} />
       </main>
 
       {cancelModalOpen ? (
