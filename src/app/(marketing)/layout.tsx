@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
 import { buildIndexRobots } from "@/shared/seo";
-import { CookieConsentBanner } from "@/widgets/marketing/cookie-consent";
+import { CookieConsentSlot } from "./CookieConsentSlot";
 import styles from "./layout.module.scss";
 
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export default function MarketingLayout({ children }: PropsWithChildren) {
   return (
     <div className={styles.surface} data-scrollbar-theme="marketing">
       {children}
-      <CookieConsentBanner />
+      <CookieConsentSlot />
     </div>
   );
 }
