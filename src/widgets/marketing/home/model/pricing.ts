@@ -51,11 +51,11 @@ export const homePricingPlans: ReadonlyArray<HomePricingPlan> = [
     offerPrice: "1490",
   },
   {
-    name: "Агентство",
+    name: "Профи",
     price: "4 990 ₽/мес",
     period: "Лимит 250 карточек в месяц",
     features: [
-      { label: "Для агентств и команд с несколькими проектами", enabled: true },
+      { label: "Для продавцов с регулярным обновлением каталога", enabled: true },
       { label: "До 250 карточек в месяц", enabled: true },
       { label: "Полный доступ ко всем функциям сервиса", enabled: true },
       { label: "Приоритетная поддержка", enabled: true },
@@ -66,11 +66,11 @@ export const homePricingPlans: ReadonlyArray<HomePricingPlan> = [
     offerPrice: "4990",
   },
   {
-    name: "Корпоративный",
+    name: "Максимум",
     price: "14 990 ₽/мес",
     period: "Лимит 750 карточек в месяц",
     features: [
-      { label: "Для крупных команд и потоковой генерации карточек", enabled: true },
+      { label: "Для большого каталога и постоянной генерации карточек", enabled: true },
       { label: "До 750 карточек в месяц", enabled: true },
       { label: "Полный доступ ко всем функциям сервиса", enabled: true },
       { label: "Приоритетная поддержка", enabled: true },
@@ -91,4 +91,4 @@ export const homePricingOffers = homePricingPlans.map((plan) => ({
 
 export const homeFreePlanSummary = FREE_PLAN_SUMMARY;
 export const homePricingNote =
-  "Выберите тариф под свой объём каталога: для старта, постоянной работы с карточками товаров или командного потока.";
+  "Выберите тариф под свой объём каталога: для старта, регулярной работы с карточками товаров или большого ассортимента.";

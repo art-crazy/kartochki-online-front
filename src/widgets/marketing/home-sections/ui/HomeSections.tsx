@@ -59,7 +59,7 @@ export function HomeSections() {
         <div className={styles.containerNarrow}>
           <SectionHeading
             label="Отзывы продавцов"
-            title={<>Сервисом уже пользуются 800+ продавцов, менеджеров и агентств</>}
+            title={<>Сервисом уже пользуются 800+ продавцов и менеджеров маркетплейсов</>}
           />
 
           <div className={styles.cardsThree}>
@@ -145,7 +145,7 @@ export function HomeSections() {
           <SectionHeading
             label="Возможности"
             title={<>Всё, что нужно для продающих карточек товаров</>}
-            description="Для селлеров, контент-менеджеров и агентств, которым нужен быстрый выпуск карточек без потери качества."
+            description="Для селлеров и менеджеров маркетплейсов, которым нужен быстрый выпуск карточек без потери качества."
           />
 
           <div className={styles.featuresGrid}>
@@ -180,7 +180,7 @@ export function HomeSections() {
         <div className={styles.containerTight}>
           <SectionHeading
             label="Тарифы"
-            title={<>Тарифы для селлеров, команд и агентств</>}
+            title={<>Тарифы для селлеров с разным объёмом каталога</>}
             description={homePricingNote}
             centered
           />
@@ -205,7 +205,7 @@ export function HomeSections() {
           </div>
           <p className={styles.pricingCaption}>
             Во всех тарифах доступны генерация карточек, инфографика, обработка фото и тексты для маркетплейсов.
-            Отличается только месячный объём и условия для командной работы.
+            Отличается только месячный объём и доступный лимит генерации.
           </p>
         </div>
       </section>
