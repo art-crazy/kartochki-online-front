@@ -48,14 +48,14 @@ export function useGenerationFlow({
     onSuccess: (response) => {
       setGenerationId(response.generation_id);
       setResultState("loading");
-      showToast("Р“РµРЅРµСЂР°С†РёСЏ Р·Р°РїСѓС‰РµРЅР°");
+      showToast("Генерация запущена");
     },
     onError: (error) => {
       setResultState("empty");
       if (isErrorResponse(error)) {
         onCreateError?.(error);
       }
-      showToast(getApiErrorMessage(error, "РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РїСѓСЃС‚РёС‚СЊ РіРµРЅРµСЂР°С†РёСЋ"));
+      showToast(getApiErrorMessage(error, "Не удалось запустить генерацию"));
     },
   });
 
@@ -94,7 +94,7 @@ export function useGenerationFlow({
           }
 
           setSourceAssetId(response.asset_id);
-          showToast("Р¤РѕС‚Рѕ Р·Р°РіСЂСѓР¶РµРЅРѕ");
+          showToast("Фото загружено");
         },
         onError: (error) => {
           if (uploadRequestIdRef.current !== requestId) {
@@ -102,7 +102,7 @@ export function useGenerationFlow({
           }
 
           setSourceAssetId("");
-          showToast(getApiErrorMessage(error, "РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ С„РѕС‚Рѕ"));
+          showToast(getApiErrorMessage(error, "Не удалось загрузить фото"));
         },
       },
     );
@@ -110,12 +110,12 @@ export function useGenerationFlow({
 
   function startGeneration(fallbackCardTypes: ReadonlyArray<CardTypeId>, product?: ProductContext) {
     if (!uploadedFileUrl) {
-      showToast("РЎРЅР°С‡Р°Р»Р° Р·Р°РіСЂСѓР·РёС‚Рµ С„РѕС‚Рѕ С‚РѕРІР°СЂР°");
+      showToast("Сначала загрузите фото товара");
       return;
     }
 
     if (!sourceAssetId) {
-      showToast(uploadMutation.isPending ? "Р”РѕР¶РґРёС‚РµСЃСЊ Р·Р°РІРµСЂС€РµРЅРёСЏ Р·Р°РіСЂСѓР·РєРё С„РѕС‚Рѕ" : "Р—Р°РіСЂСѓР·РёС‚Рµ С„РѕС‚Рѕ РµС‰Рµ СЂР°Р·");
+      showToast(uploadMutation.isPending ? "Дождитесь завершения загрузки фото" : "Загрузите фото еще раз");
       return;
     }
 
