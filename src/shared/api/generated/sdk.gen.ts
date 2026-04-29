@@ -620,8 +620,7 @@ export const cancelBillingSubscription = <ThrowOnError extends boolean = false>(
  * Webhook-уведомление от ЮКасса
  *
  * Принимает события payment.succeeded и payment.canceled от ЮКасса.
- * Подпись проверяется через заголовок YooKassa-Signature (HMAC-SHA256).
- * Endpoint не требует авторизации пользователя — он публичный, но защищён подписью.
+ * Endpoint не требует авторизации пользователя — он публичный, но backend сверяет актуальный статус платежа через API ЮКасса.
  * ЮКасса повторяет уведомление при ответах, отличных от 2xx, поэтому обработка идемпотентна.
  *
  */

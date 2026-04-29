@@ -359,6 +359,10 @@ export type YooKassaPaymentObject = {
         currency?: string;
     };
     captured_at?: string;
+    payment_method?: {
+        id?: string;
+        saved?: boolean;
+    };
     metadata: {
         user_id?: string;
         plan_code?: string;
@@ -1905,13 +1909,13 @@ export type BillingWebhookErrors = {
      */
     400: ErrorResponse;
     /**
-     * Неверная подпись YooKassa-Signature
-     */
-    401: ErrorResponse;
-    /**
      * Внутренняя ошибка при обработке события
      */
     500: ErrorResponse;
+    /**
+     * Не удалось проверить платёж в ЮКасса
+     */
+    502: ErrorResponse;
 };
 
 export type BillingWebhookError = BillingWebhookErrors[keyof BillingWebhookErrors];
