@@ -368,7 +368,7 @@ export type YooKassaPaymentObject = {
         plan_code?: string;
         addon_code?: string;
         period?: 'monthly' | 'yearly';
-        type?: 'subscription' | 'addon';
+        type?: 'subscription' | 'subscription_renewal' | 'addon';
     };
 };
 
