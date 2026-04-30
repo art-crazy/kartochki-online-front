@@ -45,6 +45,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: buildSiteUrl("/rekvizity"), changeFrequency: "yearly", priority: 0.3 },
     { url: buildSiteUrl("/vozvrat"), changeFrequency: "yearly", priority: 0.3 },
     { url: buildSiteUrl("/consent"), changeFrequency: "yearly", priority: 0.2 },
+    { url: buildSiteUrl("/sitemap"), changeFrequency: "monthly", priority: 0.3 },
   ];
 
   const marketplacePages: MetadataRoute.Sitemap = getAllMarketplaceSlugs().map((slug) => ({
