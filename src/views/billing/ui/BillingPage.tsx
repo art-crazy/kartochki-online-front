@@ -122,6 +122,13 @@ export function BillingPage() {
       title="Тарифы и оплата"
       subtitle="Управление подпиской, лимитами и пакетами карточек"
       activeKey="billing"
+      sidebarPlan={currentSubscription.planId === "free" ? {
+        actionLabel: "Выбрать тариф →",
+        href: "/app/billing",
+        label: "Бесплатный план",
+        progress: currentSubscription.usage.max > 0 ? (currentSubscription.usage.value / currentSubscription.usage.max) * 100 : 0,
+        usage: `${currentSubscription.usage.value} / ${currentSubscription.usage.max}`,
+      } : null}
     >
       <main className={styles.page}>
         <section className={styles.banner}>

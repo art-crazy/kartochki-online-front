@@ -15,6 +15,13 @@ type AppShellClientProps = {
   title: string;
   subtitle: string;
   activeKey: string;
+  sidebarPlan?: {
+    actionLabel: string;
+    href: string;
+    label: string;
+    progress?: number;
+    usage?: string;
+  } | null;
   action?: ReactNode;
   children: ReactNode;
 };
@@ -30,7 +37,7 @@ function isPlainLeftClick(event: MouseEvent<HTMLAnchorElement>) {
   );
 }
 
-export function AppShellClient({ title, subtitle, activeKey, action, children }: AppShellClientProps) {
+export function AppShellClient({ title, subtitle, activeKey, sidebarPlan, action, children }: AppShellClientProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { user } = useAuthSession();
   const pathname = usePathname();
@@ -67,7 +74,7 @@ export function AppShellClient({ title, subtitle, activeKey, action, children }:
         </nav>
 
         <div className={styles.sidebarBottom}>
-          <SidebarPlanCard />
+          {sidebarPlan ? <SidebarPlanCard {...sidebarPlan} /> : null}
           <SidebarProfileCard initials={userInitials} name={userName} avatarUrl={user?.avatar_url} />
           <LogoutButton />
         </div>

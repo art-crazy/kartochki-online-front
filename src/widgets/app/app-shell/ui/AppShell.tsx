@@ -5,6 +5,13 @@ type AppShellProps = {
   title: string;
   subtitle: string;
   activeKey: string;
+  sidebarPlan?: {
+    actionLabel: string;
+    href: string;
+    label: string;
+    progress?: number;
+    usage?: string;
+  } | null;
   action?: ReactNode;
   children: ReactNode;
 };

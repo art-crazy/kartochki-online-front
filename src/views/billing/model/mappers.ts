@@ -106,7 +106,7 @@ function getCardWord(value: number) {
 
 function getPlanCtaLabel(plan: ApiBillingPlan, current: boolean) {
   if (current) return "Текущий план";
-  return plan.id.toLowerCase().includes("pro") ? "Перейти на Про" : "Подключить";
+  return "Подключить";
 }
 
 function getYearlySavings(monthlyPrice: number, yearlyMonthlyPrice?: number) {
