@@ -27,7 +27,7 @@ export function BillingPricing({ plans }: BillingPricingProps) {
   const checkoutMutation = useMutation({
     ...createBillingCheckoutMutation(),
     onSuccess: ({ checkout_url }) => window.location.assign(checkout_url),
-    onError: (error: ErrorResponse) => setToast({ message: error.message ?? "Не удалось открыть оплату" }),
+    onError: (error: ErrorResponse) => setToast({ message: getCheckoutErrorMessage(error) }),
   });
 
   useEffect(() => {
@@ -190,6 +190,14 @@ function ModalRow({ label, value }: { label: string; value: string }) {
       <span className={styles.modalRowValue}>{value}</span>
     </div>
   );
+}
+
+function getCheckoutErrorMessage(error: ErrorResponse) {
+  const message = error.message?.trim();
+  const code = error.code?.trim();
+  if (message && code) return `${message} (${code})`;
+  if (message) return message;
+  return "Не удалось открыть оплату";
 }
 
 function getPlanPrice(plan: BillingPlan, isYearly: boolean) {
