@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   cancelBillingSubscriptionMutation,
@@ -19,6 +19,8 @@ export function BillingPage() {
   const queryClient = useQueryClient();
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  const checkoutPollingUntilRef = useRef(0);
+  const [expectedCheckoutPlan] = useState(() => getCheckoutReturnPlan());
   const {
     data: pageContent,
     isError,
@@ -26,6 +28,9 @@ export function BillingPage() {
     refetch,
   } = useQuery({
     ...getBillingOptions(),
+    staleTime: 0,
+    refetchOnMount: "always",
+    refetchOnWindowFocus: "always",
     select: mapBillingResponse,
   });
   const cancelMutation = useMutation({
@@ -43,6 +48,26 @@ export function BillingPage() {
     const timer = window.setTimeout(() => setToast(null), 2500);
     return () => window.clearTimeout(timer);
   }, [toast]);
+
+  useEffect(() => {
+    if (!expectedCheckoutPlan) return;
+    checkoutPollingUntilRef.current = Date.now() + 45_000;
+    void refetch();
+  }, [expectedCheckoutPlan, refetch]);
+
+  useEffect(() => {
+    if (!expectedCheckoutPlan || !pageContent || pageContent.currentSubscription.planId === expectedCheckoutPlan) return undefined;
+    if (checkoutPollingUntilRef.current <= Date.now()) return undefined;
+
+    const timer = window.setInterval(() => {
+      void refetch();
+      if (Date.now() >= checkoutPollingUntilRef.current) {
+        window.clearInterval(timer);
+      }
+    }, 2000);
+
+    return () => window.clearInterval(timer);
+  }, [expectedCheckoutPlan, pageContent, refetch]);
 
   useEffect(() => {
     if (!cancelModalOpen) return undefined;
@@ -179,4 +204,9 @@ function BillingStateCard({
       {action ? <div className={styles.stateAction}>{action}</div> : null}
     </CardSurface>
   );
+}
+
+function getCheckoutReturnPlan() {
+  if (typeof window === "undefined") return null;
+  return new URLSearchParams(window.location.search).get("billing_checkout");
 }

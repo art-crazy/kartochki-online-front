@@ -28,6 +28,7 @@ export function mapBillingResponse(response: BillingResponse): BillingPageConten
 function mapSubscription(subscription: BillingSubscription): BillingSubscriptionSummary {
   return {
     canCancel: subscription.has_payment_method && !subscription.cancels_at,
+    planId: subscription.plan_id,
     planName: subscription.plan_name,
     renewalLabel: getRenewalLabel(subscription),
     paymentLabel: subscription.has_payment_method
