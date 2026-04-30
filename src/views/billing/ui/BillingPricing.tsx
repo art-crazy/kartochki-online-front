@@ -55,7 +55,7 @@ export function BillingPricing({ plans }: BillingPricingProps) {
 
   function handlePurchase() {
     if (!selectedPlan) return;
-    checkoutMutation.mutate({ body: { plan_id: selectedPlan.id, period: isYearly ? "yearly" : "monthly" } });
+    checkoutMutation.mutate({ body: { plan_id: selectedPlan.id, period: getCheckoutPeriod(selectedPlan, isYearly) } });
   }
 
   return (
@@ -147,7 +147,7 @@ export function BillingPricing({ plans }: BillingPricingProps) {
 
             <div className={styles.modalRows}>
               <ModalRow label="Тариф" value={selectedPlan.name} />
-              <ModalRow label="Период" value={isYearly ? "1 год" : "1 месяц"} />
+              <ModalRow label="Период" value={getCheckoutPeriod(selectedPlan, isYearly) === "yearly" ? "1 год" : "1 месяц"} />
               <ModalRow label="Карточек в месяц" value={String(selectedPlan.cardsPerMonth)} />
             </div>
 
@@ -213,4 +213,8 @@ function getPlanPeriod(plan: BillingPlan, isYearly: boolean) {
 function getCheckoutLabel(plan: BillingPlan, isYearly: boolean) {
   if (!isYearly || !plan.yearlyCheckoutLabel) return plan.monthlyCheckoutLabel;
   return plan.yearlyCheckoutLabel;
+}
+
+function getCheckoutPeriod(plan: BillingPlan, isYearly: boolean): "monthly" | "yearly" {
+  return isYearly && plan.yearlyCheckoutLabel ? "yearly" : "monthly";
 }
