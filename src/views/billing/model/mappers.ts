@@ -20,7 +20,9 @@ const rubFormatter = new Intl.NumberFormat("ru-RU", {
 export function mapBillingResponse(response: BillingResponse): BillingPageContent {
   return {
     currentSubscription: mapSubscription(response.current_subscription),
-    plans: response.plans.map((plan) => mapPlan(plan, response.current_subscription.plan_id)),
+    plans: response.plans
+      .filter((plan) => plan.id !== "test")
+      .map((plan) => mapPlan(plan, response.current_subscription.plan_id)),
     addons: response.addons.map(mapAddon),
   };
 }
