@@ -77,6 +77,8 @@ export function buildPageMetadata({
     },
     openGraph: {
       type: "website",
+      locale: siteConfig.openGraphLocale,
+      siteName: siteConfig.name,
       title: openGraphTitle ?? title,
       description: openGraphDescription ?? description,
       url: canonical,
@@ -114,6 +116,8 @@ export function buildArticleMetadata({
     },
     openGraph: {
       type: "article",
+      locale: siteConfig.openGraphLocale,
+      siteName: siteConfig.name,
       title: openGraphTitle ?? title,
       description: openGraphDescription ?? description,
       url: canonical,
