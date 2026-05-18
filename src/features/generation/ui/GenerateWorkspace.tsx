@@ -61,7 +61,7 @@ export function GenerateWorkspace({
     toastTimerRef.current = window.setTimeout(() => {
       setToast((current) => ({ ...current, visible: false }));
       toastTimerRef.current = null;
-    }, 2500);
+    }, 7000);
   }, []);
 
   const generationFlow = useGenerationFlow({
