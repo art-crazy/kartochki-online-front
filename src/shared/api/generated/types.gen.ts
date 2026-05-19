@@ -294,6 +294,7 @@ export type BillingSubscription = {
     renews_at?: string;
     cancels_at?: string;
     has_payment_method: boolean;
+    payment_method?: BillingPaymentMethod;
     usage: BillingUsage;
 };
 
@@ -344,6 +345,22 @@ export type PurchaseAddonResponse = {
 
 export type CancelSubscriptionResponse = {
     status: 'scheduled_cancel';
+};
+
+export type DeletePaymentMethodResponse = {
+    has_payment_method: boolean;
+};
+
+export type BillingPaymentMethod = {
+    type: string;
+    card: BillingCard;
+};
+
+export type BillingCard = {
+    last4: string;
+    card_type: string;
+    expiry_month: string;
+    expiry_year: string;
 };
 
 export type YooKassaWebhookEvent = {
@@ -1895,6 +1912,39 @@ export type CancelBillingSubscriptionResponses = {
 };
 
 export type CancelBillingSubscriptionResponse = CancelBillingSubscriptionResponses[keyof CancelBillingSubscriptionResponses];
+
+export type DeleteBillingPaymentMethodData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/billing/payment-method';
+};
+
+export type DeleteBillingPaymentMethodErrors = {
+    /**
+     * Токен отсутствует, истёк или недействителен
+     */
+    401: ErrorResponse;
+    /**
+     * Привязанная карта не найдена
+     */
+    404: ErrorResponse;
+    /**
+     * Внутренняя ошибка при удалении карты
+     */
+    500: ErrorResponse;
+};
+
+export type DeleteBillingPaymentMethodError = DeleteBillingPaymentMethodErrors[keyof DeleteBillingPaymentMethodErrors];
+
+export type DeleteBillingPaymentMethodResponses = {
+    /**
+     * Карта успешно удалена
+     */
+    200: DeletePaymentMethodResponse;
+};
+
+export type DeleteBillingPaymentMethodResponse = DeleteBillingPaymentMethodResponses[keyof DeleteBillingPaymentMethodResponses];
 
 export type BillingWebhookData = {
     body: YooKassaWebhookEvent;

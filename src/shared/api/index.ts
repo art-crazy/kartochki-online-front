@@ -59,6 +59,7 @@ export {
   createBillingCheckoutMutation,
   createBillingAddonCheckoutMutation,
   cancelBillingSubscriptionMutation,
+  deleteBillingPaymentMethodMutation,
   billingWebhookMutation,
   // blog
   listPublicBlogPostsQueryKey,

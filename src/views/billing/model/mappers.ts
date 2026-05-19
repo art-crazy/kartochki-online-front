@@ -1,5 +1,6 @@
 import type {
   BillingAddon as ApiBillingAddon,
+  BillingPaymentMethod,
   BillingPlan as ApiBillingPlan,
   BillingResponse,
   BillingSubscription,
@@ -8,6 +9,7 @@ import type {
   BillingAddon,
   BillingPageContent,
   BillingPlan,
+  BillingSavedCard,
   BillingSubscriptionSummary,
 } from "./content";
 
@@ -30,13 +32,22 @@ export function mapBillingResponse(response: BillingResponse): BillingPageConten
 function mapSubscription(subscription: BillingSubscription): BillingSubscriptionSummary {
   return {
     canCancel: subscription.has_payment_method && !subscription.cancels_at,
+    hasPaymentMethod: subscription.has_payment_method,
     planId: subscription.plan_id,
     planName: subscription.plan_name,
     renewalLabel: getRenewalLabel(subscription),
-    paymentLabel: subscription.has_payment_method
-      ? "Платежные данные добавлены"
-      : "Платежные данные не добавлены",
+    savedCard: mapSavedCard(subscription.payment_method),
     usage: subscription.usage,
+  };
+}
+
+function mapSavedCard(method?: BillingPaymentMethod): BillingSavedCard | undefined {
+  if (!method?.card) return undefined;
+  return {
+    last4: method.card.last4,
+    cardType: method.card.card_type,
+    expiryMonth: method.card.expiry_month,
+    expiryYear: method.card.expiry_year,
   };
 }
 

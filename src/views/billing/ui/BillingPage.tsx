@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   cancelBillingSubscriptionMutation,
+  deleteBillingPaymentMethodMutation,
   getBillingOptions,
   getBillingQueryKey,
   type ErrorResponse,
@@ -18,6 +19,7 @@ import styles from "./BillingPage.module.scss";
 export function BillingPage() {
   const queryClient = useQueryClient();
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
+  const [deleteCardModalOpen, setDeleteCardModalOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const checkoutPollingUntilRef = useRef(0);
   const [expectedCheckoutPlan] = useState(() => getCheckoutReturnPlan());
@@ -41,6 +43,15 @@ export function BillingPage() {
       void queryClient.invalidateQueries({ queryKey: getBillingQueryKey() });
     },
     onError: (error: ErrorResponse) => setToast(error.message ?? "Не удалось отменить подписку"),
+  });
+  const deleteCardMutation = useMutation({
+    ...deleteBillingPaymentMethodMutation(),
+    onSuccess: () => {
+      setDeleteCardModalOpen(false);
+      setToast("Карта удалена");
+      void queryClient.invalidateQueries({ queryKey: getBillingQueryKey() });
+    },
+    onError: (error: ErrorResponse) => setToast(error.message ?? "Не удалось удалить карту"),
   });
 
   useEffect(() => {
@@ -70,21 +81,28 @@ export function BillingPage() {
   }, [expectedCheckoutPlan, pageContent, refetch]);
 
   useEffect(() => {
-    if (!cancelModalOpen) return undefined;
+    if (!cancelModalOpen && !deleteCardModalOpen) return undefined;
 
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape" && !cancelMutation.isPending) {
-        setCancelModalOpen(false);
+      if (event.key === "Escape") {
+        if (cancelModalOpen && !cancelMutation.isPending) setCancelModalOpen(false);
+        if (deleteCardModalOpen && !deleteCardMutation.isPending) setDeleteCardModalOpen(false);
       }
     }
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [cancelModalOpen, cancelMutation.isPending]);
+  }, [cancelModalOpen, cancelMutation.isPending, deleteCardModalOpen, deleteCardMutation.isPending]);
 
   function closeCancelModal() {
     if (!cancelMutation.isPending) {
       setCancelModalOpen(false);
+    }
+  }
+
+  function closeDeleteCardModal() {
+    if (!deleteCardMutation.isPending) {
+      setDeleteCardModalOpen(false);
     }
   }
 
@@ -136,9 +154,27 @@ export function BillingPage() {
 
           <div className={styles.bannerInfo}>
             <h1 className={styles.bannerTitle}>{currentSubscription.planName}</h1>
-            <p className={styles.bannerSubtitle}>
-              {currentSubscription.renewalLabel} · {currentSubscription.paymentLabel}
-            </p>
+            <p className={styles.bannerSubtitle}>{currentSubscription.renewalLabel}</p>
+            {currentSubscription.savedCard ? (
+              <div className={styles.bannerCard}>
+                <span className={styles.bannerCardIcon} aria-hidden="true">▣</span>
+                <span className={styles.bannerCardNumber}>
+                  {currentSubscription.savedCard.cardType} •••• {currentSubscription.savedCard.last4}
+                </span>
+                <span className={styles.bannerCardExpiry}>
+                  до {currentSubscription.savedCard.expiryMonth}/{currentSubscription.savedCard.expiryYear.slice(-2)}
+                </span>
+                <button
+                  type="button"
+                  className={styles.bannerCardRemove}
+                  onClick={() => setDeleteCardModalOpen(true)}
+                >
+                  Удалить карту
+                </button>
+              </div>
+            ) : currentSubscription.hasPaymentMethod ? (
+              <p className={styles.bannerSubtitle}>Платёжные данные добавлены</p>
+            ) : null}
             {currentSubscription.canCancel ? (
               <div className={styles.bannerActions}>
                 <Button variant="darkOutline" size="sm" onClick={() => setCancelModalOpen(true)}>
@@ -169,6 +205,21 @@ export function BillingPage() {
 
         <BillingPricing plans={pageContent.plans} />
       </main>
+
+      {deleteCardModalOpen ? (
+        <div className={styles.modalOverlay} role="presentation" onClick={closeDeleteCardModal}>
+          <div className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="billing-delete-card-title" onClick={(event) => event.stopPropagation()}>
+            <h2 id="billing-delete-card-title" className={styles.modalTitle}>Удалить привязанную карту?</h2>
+            <p className={styles.modalText}>Автопродление подписки будет отключено. Оплаченный доступ сохранится до конца текущего периода.</p>
+            <div className={styles.modalActions}>
+              <Button variant="darkOutline" block disabled={deleteCardMutation.isPending} onClick={closeDeleteCardModal}>Отмена</Button>
+              <Button variant="danger" block disabled={deleteCardMutation.isPending} onClick={() => deleteCardMutation.mutate({})}>
+                {deleteCardMutation.isPending ? "Удаляем..." : "Удалить карту"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       {cancelModalOpen ? (
         <div className={styles.modalOverlay} role="presentation" onClick={closeCancelModal}>

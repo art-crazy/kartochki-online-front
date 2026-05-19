@@ -29,12 +29,20 @@ export type BillingAddon = {
   priceLabel: string;
 };
 
+export type BillingSavedCard = {
+  last4: string;
+  cardType: string;
+  expiryMonth: string;
+  expiryYear: string;
+};
+
 export type BillingSubscriptionSummary = {
   canCancel: boolean;
+  hasPaymentMethod: boolean;
   planId: string;
   planName: string;
   renewalLabel: string;
-  paymentLabel: string;
+  savedCard?: BillingSavedCard;
   usage: {
     value: number;
     max: number;

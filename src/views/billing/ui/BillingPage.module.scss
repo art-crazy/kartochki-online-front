@@ -62,6 +62,43 @@
   line-height: 1.4;
 }
 
+.bannerCard {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.bannerCardIcon {
+  color: var(--dark-text-3);
+  font-size: 0.75rem;
+}
+
+.bannerCardNumber {
+  color: var(--dark-text-2);
+  font-size: var(--billing-meta-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.bannerCardExpiry {
+  color: var(--dark-text-3);
+  font-size: var(--billing-meta-size);
+}
+
+.bannerCardRemove {
+  border: 0;
+  background: none;
+  color: var(--danger);
+  cursor: pointer;
+  font-size: var(--billing-meta-size);
+  padding: 0;
+  transition: opacity 0.15s ease;
+}
+
+.bannerCardRemove:hover {
+  opacity: 0.75;
+}
+
 .bannerActions {
   margin-top: 12px;
 }
