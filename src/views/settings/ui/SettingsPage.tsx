@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { createBillingCheckoutMutation, getSettingsOptions, type SettingsResponse } from "@/shared/api";
+import { useQuery } from "@tanstack/react-query";
+import { getSettingsOptions, type SettingsResponse } from "@/shared/api";
 import { useAuthSession } from "@/shared/auth/ui/AuthSessionProvider";
 import { classNames } from "@/shared/lib/classNames";
 import { getUserInitials } from "@/shared/lib/user";
@@ -47,10 +47,6 @@ export function SettingsPage() {
 function SettingsPageContent({ settings }: { settings: SettingsResponse }) {
   const { user } = useAuthSession();
   const page = useSettingsPage(settings);
-  const testPlanMutation = useMutation({
-    ...createBillingCheckoutMutation(),
-    onSuccess: ({ checkout_url }) => window.location.assign(checkout_url),
-  });
   const initials = getUserInitials(settings.profile.name, settings.profile.email);
   const profileEmail = settings.profile.email ?? "Email не указан";
 
@@ -122,12 +118,6 @@ function SettingsPageContent({ settings }: { settings: SettingsResponse }) {
                 </div>
                 <Button variant="danger" onClick={() => page.setDeleteModalOpen(true)}>Удалить аккаунт</Button>
               </CardSurface>
-
-              <SettingsCard title="Тестовый тариф" subtitle="Подписка за 10 ₽ для проверки платёжных сценариев.">
-                <Button variant="darkOutline" disabled={testPlanMutation.isPending} onClick={() => testPlanMutation.mutate({ body: { plan_id: "test", period: "monthly" } })}>
-                  {testPlanMutation.isPending ? "Переходим..." : "Подключить тестовый тариф"}
-                </Button>
-              </SettingsCard>
 
               <p className={styles.note}>Нужен только новый тариф? Перейдите в <Link href="/app">раздел тарифов</Link> без удаления аккаунта.</p>
             </section>
