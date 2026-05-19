@@ -4,8 +4,8 @@ export const siteConfig = {
   applicationShortName: "Карточки",
   locale: "ru-RU",
   openGraphLocale: "ru_RU",
-  openGraphImagePath: "/opengraph-image.jpg",
-  twitterImagePath: "/twitter-image.jpg",
+  openGraphImagePath: "/opengraph-image-v2.jpg",
+  twitterImagePath: "/twitter-image-v2.jpg",
   themeColor: "#f5f2eb",
   description:
     "Сервис для создания карточек товаров, инфографики и изображений для продавцов на маркетплейсах.",
