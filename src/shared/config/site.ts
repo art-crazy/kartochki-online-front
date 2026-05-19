@@ -1,6 +1,7 @@
 export const siteConfig = {
   name: "карточки.онлайн",
-  applicationName: "kartochki.online",
+  applicationName: "Карточки Онлайн",
+  applicationShortName: "Карточки",
   locale: "ru-RU",
   openGraphLocale: "ru_RU",
   openGraphImagePath: "/opengraph-image.jpg",

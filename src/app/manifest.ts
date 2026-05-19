@@ -3,8 +3,8 @@ import { siteConfig } from "@/shared/config/site";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: siteConfig.name,
-    short_name: siteConfig.applicationName,
+    name: siteConfig.applicationName,
+    short_name: siteConfig.applicationShortName,
     description: siteConfig.description,
     start_url: "/",
     display: "standalone",
