@@ -172,8 +172,6 @@ export function BillingPage() {
                   Удалить карту
                 </button>
               </div>
-            ) : currentSubscription.hasPaymentMethod ? (
-              <p className={styles.bannerSubtitle}>Платёжные данные добавлены</p>
             ) : null}
             {currentSubscription.canCancel ? (
               <div className={styles.bannerActions}>
