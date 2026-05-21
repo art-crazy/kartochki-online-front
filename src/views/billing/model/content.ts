@@ -53,6 +53,9 @@ export type BillingPageContent = {
   currentSubscription: BillingSubscriptionSummary;
   plans: ReadonlyArray<BillingPlan>;
   addons: ReadonlyArray<BillingAddon>;
+  checkoutRequirements: {
+    emailRequired: boolean;
+  };
 };
 
 export const billingFaqItems = [

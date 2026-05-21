@@ -24,6 +24,9 @@ export function mapBillingResponse(response: BillingResponse): BillingPageConten
     currentSubscription: mapSubscription(response.current_subscription),
     plans: response.plans.map((plan) => mapPlan(plan, response.current_subscription.plan_id)),
     addons: response.addons.map(mapAddon),
+    checkoutRequirements: {
+      emailRequired: response.checkout_requirements?.email_required ?? false,
+    },
   };
 }
 

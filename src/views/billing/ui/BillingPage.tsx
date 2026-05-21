@@ -201,7 +201,11 @@ export function BillingPage() {
           </div>
         </section>
 
-        <BillingPricing plans={pageContent.plans} />
+        <BillingPricing
+          addons={pageContent.addons}
+          checkoutRequirements={pageContent.checkoutRequirements}
+          plans={pageContent.plans}
+        />
       </main>
 
       {deleteCardModalOpen ? (

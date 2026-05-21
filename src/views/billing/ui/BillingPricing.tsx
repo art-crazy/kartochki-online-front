@@ -1,17 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import {
-  createBillingCheckoutMutation,
-  type ErrorResponse,
-} from "@/shared/api";
+import { useCallback, useEffect, useState } from "react";
 import { classNames } from "@/shared/lib/classNames";
 import { Accordion, Badge, Button, CardSurface } from "@/shared/ui";
-import { billingFaqItems, type BillingPlan } from "@/views/billing/model/content";
+import { billingFaqItems, type BillingAddon, type BillingPlan } from "@/views/billing/model/content";
+import type { BillingCheckoutTarget } from "@/views/billing/model/checkout";
+import { BillingCheckoutModal } from "./BillingCheckoutModal";
 import styles from "./BillingPage.module.scss";
 
 type BillingPricingProps = {
+  addons: ReadonlyArray<BillingAddon>;
+  checkoutRequirements: {
+    emailRequired: boolean;
+  };
   plans: ReadonlyArray<BillingPlan>;
 };
 
@@ -19,16 +20,11 @@ type ToastState = {
   message: string;
 };
 
-export function BillingPricing({ plans }: BillingPricingProps) {
+export function BillingPricing({ addons, checkoutRequirements, plans }: BillingPricingProps) {
   const [isYearly, setIsYearly] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<BillingPlan | null>(null);
+  const [checkoutTarget, setCheckoutTarget] = useState<BillingCheckoutTarget | null>(null);
   const [toast, setToast] = useState<ToastState | null>(null);
-
-  const checkoutMutation = useMutation({
-    ...createBillingCheckoutMutation(),
-    onSuccess: ({ checkout_url }) => window.location.assign(checkout_url),
-    onError: (error: ErrorResponse) => setToast({ message: getCheckoutErrorMessage(error) }),
-  });
+  const closeCheckoutModal = useCallback(() => setCheckoutTarget(null), []);
 
   useEffect(() => {
     if (!toast) return undefined;
@@ -36,26 +32,17 @@ export function BillingPricing({ plans }: BillingPricingProps) {
     return () => window.clearTimeout(timer);
   }, [toast]);
 
-  useEffect(() => {
-    if (!selectedPlan) return undefined;
-
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setSelectedPlan(null);
-    }
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedPlan]);
-
   function openPlanModal(planId: BillingPlan["id"]) {
     const plan = plans.find((item) => item.id === planId);
     if (!plan || plan.current) return;
-    setSelectedPlan(plan);
-  }
-
-  function handlePurchase() {
-    if (!selectedPlan) return;
-    checkoutMutation.mutate({ body: { plan_id: selectedPlan.id, period: getCheckoutPeriod(selectedPlan, isYearly) } });
+    const period = getCheckoutPeriod(plan, isYearly);
+    setCheckoutTarget({
+      type: "plan",
+      plan,
+      period,
+      periodLabel: period === "yearly" ? "1 год" : "1 месяц",
+      totalLabel: getCheckoutLabel(plan, isYearly),
+    });
   }
 
   return (
@@ -130,7 +117,31 @@ export function BillingPricing({ plans }: BillingPricingProps) {
         })}
       </section>
 
-      {/* TODO: вернуть секцию дополнительных пакетов после повторного согласования отображения на /app/billing */}
+      {addons.length > 0 ? (
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Разовые пакеты</h2>
+            <p className={styles.sectionSubtitle}>Докупить карточки можно без смены тарифа.</p>
+          </div>
+          <div className={styles.addonsGrid}>
+            {addons.map((addon) => (
+              <button
+                key={addon.id}
+                type="button"
+                className={styles.addonCard}
+                onClick={() => setCheckoutTarget({ type: "addon", addon, totalLabel: addon.priceLabel })}
+              >
+                <span className={styles.addonIcon} aria-hidden="true">+</span>
+                <span className={styles.addonBody}>
+                  <span className={styles.addonTitle}>{addon.title}</span>
+                  <span className={styles.addonDescription}>{addon.description}</span>
+                </span>
+                <span className={styles.addonPrice}>{addon.priceLabel}</span>
+              </button>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <section className={styles.section}>
         <div className={styles.sectionHeader}>
@@ -139,39 +150,13 @@ export function BillingPricing({ plans }: BillingPricingProps) {
         <Accordion items={billingFaqItems} theme="dark" />
       </section>
 
-      {selectedPlan ? (
-        <div className={styles.modalOverlay} role="presentation" onClick={() => setSelectedPlan(null)}>
-          <div className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="billing-checkout-title" onClick={(event) => event.stopPropagation()}>
-            <h2 id="billing-checkout-title" className={styles.modalTitle}>{selectedPlan.ctaLabel}</h2>
-            <p className={styles.modalText}>Проверьте условия перед переходом к оплате.</p>
-
-            <div className={styles.modalRows}>
-              <ModalRow label="Тариф" value={selectedPlan.name} />
-              <ModalRow label="Период" value={getCheckoutPeriod(selectedPlan, isYearly) === "yearly" ? "1 год" : "1 месяц"} />
-              <ModalRow label="Карточек в месяц" value={String(selectedPlan.cardsPerMonth)} />
-              <ModalRow label="Отмена подписки" value="В любой момент" />
-            </div>
-
-            <div className={styles.modalTotal}>
-              <span className={styles.modalTotalLabel}>Итого</span>
-              <span className={styles.modalTotalPrice}>{getCheckoutLabel(selectedPlan, isYearly)}</span>
-            </div>
-
-            <div className={styles.modalActions}>
-              <Button variant="darkOutline" className={styles.modalActionButton} onClick={() => setSelectedPlan(null)}>
-                Отмена
-              </Button>
-              <Button
-                variant="darkPrimary"
-                className={styles.modalActionButton}
-                disabled={checkoutMutation.isPending}
-                onClick={handlePurchase}
-              >
-                {checkoutMutation.isPending ? "Открываем оплату..." : "Оплатить ->"}
-              </Button>
-            </div>
-          </div>
-        </div>
+      {checkoutTarget ? (
+        <BillingCheckoutModal
+          target={checkoutTarget}
+          emailRequired={checkoutRequirements.emailRequired}
+          onClose={closeCheckoutModal}
+          onFallbackError={(message) => setToast({ message })}
+        />
       ) : null}
 
       {toast ? (
@@ -182,23 +167,6 @@ export function BillingPricing({ plans }: BillingPricingProps) {
       ) : null}
     </>
   );
-}
-
-function ModalRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className={styles.modalRow}>
-      <span className={styles.modalRowLabel}>{label}</span>
-      <span className={styles.modalRowValue}>{value}</span>
-    </div>
-  );
-}
-
-function getCheckoutErrorMessage(error: ErrorResponse) {
-  const message = error.message?.trim();
-  const code = error.code?.trim();
-  if (message && code) return `${message} (${code})`;
-  if (message) return message;
-  return "Не удалось открыть оплату";
 }
 
 function getPlanPrice(plan: BillingPlan, isYearly: boolean) {

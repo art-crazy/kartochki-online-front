@@ -286,6 +286,7 @@ export type BillingResponse = {
     current_subscription: BillingSubscription;
     plans: Array<BillingPlan>;
     addons: Array<BillingAddon>;
+    checkout_requirements: BillingCheckoutRequirements;
 };
 
 export type BillingSubscription = {
@@ -329,6 +330,10 @@ export type BillingAddon = {
 export type CreateCheckoutRequest = {
     plan_id: string;
     period: 'monthly' | 'yearly';
+    /**
+     * Email для чека ЮКасса, если в профиле пользователя email отсутствует.
+     */
+    customer_email?: string;
 };
 
 export type CreateCheckoutResponse = {
@@ -337,6 +342,10 @@ export type CreateCheckoutResponse = {
 
 export type PurchaseAddonRequest = {
     addon_id: string;
+    /**
+     * Email для чека ЮКасса, если в профиле пользователя email отсутствует.
+     */
+    customer_email?: string;
 };
 
 export type PurchaseAddonResponse = {
@@ -643,6 +652,13 @@ export type ProductContext = {
 
 export type SettingsAvatarResponse = {
     avatar_url: string;
+};
+
+export type BillingCheckoutRequirements = {
+    /**
+     * Нужно ли запросить email перед созданием checkout.
+     */
+    email_required: boolean;
 };
 
 export type GetLiveHealthData = {
@@ -1823,7 +1839,7 @@ export type CreateBillingCheckoutErrors = {
      */
     404: ErrorResponse;
     /**
-     * Запрошенный тариф уже активен
+     * Запрошенный тариф уже активен или email для чека занят другим аккаунтом
      */
     409: ErrorResponse;
     /**
@@ -1863,6 +1879,10 @@ export type CreateBillingAddonCheckoutErrors = {
      * Запрошенный пакет не найден
      */
     404: ErrorResponse;
+    /**
+     * Email для чека занят другим аккаунтом
+     */
+    409: ErrorResponse;
     /**
      * Платёжный провайдер ещё не подключён
      */
