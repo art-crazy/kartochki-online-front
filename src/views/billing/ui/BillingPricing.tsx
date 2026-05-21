@@ -149,6 +149,7 @@ export function BillingPricing({ plans }: BillingPricingProps) {
               <ModalRow label="Тариф" value={selectedPlan.name} />
               <ModalRow label="Период" value={getCheckoutPeriod(selectedPlan, isYearly) === "yearly" ? "1 год" : "1 месяц"} />
               <ModalRow label="Карточек в месяц" value={String(selectedPlan.cardsPerMonth)} />
+              <ModalRow label="Отмена подписки" value="В любой момент" />
             </div>
 
             <div className={styles.modalTotal}>
