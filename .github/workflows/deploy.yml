@@ -10,6 +10,10 @@ permissions:
   contents: read
   packages: write
 
+concurrency:
+  group: kartochki-frontend-${{ github.ref }}
+  cancel-in-progress: false
+
 env:
   IMAGE_NAME: ghcr.io/art-crazy/kartochki-online-front:latest
   NEXT_PUBLIC_APP_URL: https://kartochki-online.ru
@@ -101,3 +105,6 @@ jobs:
             cd /opt/kartochki
             ./deploy.sh frontend
           '
+
+      - name: Check public HTTPS
+        run: curl --fail --retry 12 --retry-delay 5 --retry-all-errors https://kartochki-online.ru/ --output /dev/null

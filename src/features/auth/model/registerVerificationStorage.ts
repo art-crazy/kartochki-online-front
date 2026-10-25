@@ -8,12 +8,20 @@ type RegisterVerificationSnapshot = {
   resendAvailableAt: number | null;
 };
 
-export function loadRegisterVerificationSnapshot(): RegisterVerificationSnapshot | null {
+export function readRegisterVerificationSnapshot(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    return window.sessionStorage.getItem(STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+export function loadRegisterVerificationSnapshot(raw = readRegisterVerificationSnapshot()): RegisterVerificationSnapshot | null {
   if (typeof window === "undefined") {
     return null;
   }
 
-  const raw = window.sessionStorage.getItem(STORAGE_KEY);
   if (!raw) {
     return null;
   }

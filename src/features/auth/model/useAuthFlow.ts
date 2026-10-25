@@ -2,11 +2,12 @@
 
 import { useSearchParams } from "next/navigation";
 import type { FormEvent } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { forgotPassword, loginAuthUser, registerAuthUser, resendRegisterAuthCode, verifyRegisterAuthUser } from "@/shared/api";
 import { useAuthTransition } from "@/shared/auth/model/useAuthTransition";
 import { mapForgotErrors, mapLoginErrors, mapRegisterErrors, mapVerifyErrors } from "./mappers";
-import { clearRegisterVerificationSnapshot, loadRegisterVerificationSnapshot, saveRegisterVerificationSnapshot } from "./registerVerificationStorage";
+import { clearRegisterVerificationSnapshot } from "./registerVerificationStorage";
+import { useRegisterVerificationState } from "./useRegisterVerificationState";
 import { useCountdown } from "./useCountdown";
 import type { AuthScreen, ForgotErrors, LoadingAction, LoginErrors, RegisterErrors, VerifyErrors } from "./types";
 import { getPasswordStrength, getSafeNextPath, sanitizeVerificationCode, validateEmail } from "./validation";
@@ -15,7 +16,11 @@ import { useSocialAuthWidgets } from "./useSocialAuthWidgets";
 export function useAuthFlow() {
   const searchParams = useSearchParams();
   const { completeLogin } = useAuthTransition();
-  const [screen, setScreen] = useState<AuthScreen>("login");
+  const {
+    screen, setScreen, verificationId, setVerificationId,
+    verificationEmail, setVerificationEmail, verificationCodeLength, setVerificationCodeLength,
+    verificationExpiresAt, setVerificationExpiresAt, resendAvailableAt, setResendAvailableAt,
+  } = useRegisterVerificationState();
   const [sentEmail, setSentEmail] = useState("");
   const [loadingAction, setLoadingAction] = useState<LoadingAction | null>(null);
 
@@ -29,13 +34,8 @@ export function useAuthFlow() {
   const [registerPassword, setRegisterPassword] = useState("");
   const [registerErrors, setRegisterErrors] = useState<RegisterErrors>({});
   const [registerPasswordVisible, setRegisterPasswordVisible] = useState(false);
-  const [verificationId, setVerificationId] = useState("");
-  const [verificationEmail, setVerificationEmail] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
-  const [verificationCodeLength, setVerificationCodeLength] = useState(6);
   const [verifyErrors, setVerifyErrors] = useState<VerifyErrors>({});
-  const [verificationExpiresAt, setVerificationExpiresAt] = useState<number | null>(null);
-  const [resendAvailableAt, setResendAvailableAt] = useState<number | null>(null);
 
   const [forgotEmail, setForgotEmail] = useState("");
   const [forgotErrors, setForgotErrors] = useState<ForgotErrors>({});
@@ -45,35 +45,6 @@ export function useAuthFlow() {
   const verificationExpiresInSeconds = useCountdown(verificationExpiresAt);
   const nextPath = getSafeNextPath(searchParams.get("next"));
   const { socialAuthError, socialAuthPending, yandexAuthUrl, vkAuthUrl } = useSocialAuthWidgets();
-
-  useEffect(() => {
-    const snapshot = loadRegisterVerificationSnapshot();
-    if (!snapshot) {
-      return;
-    }
-
-    setVerificationId(snapshot.verificationId);
-    setVerificationEmail(snapshot.email);
-    setVerificationCodeLength(snapshot.codeLength);
-    setVerificationExpiresAt(snapshot.expiresAt);
-    setResendAvailableAt(snapshot.resendAvailableAt);
-    setScreen("register-verify");
-  }, []);
-
-  useEffect(() => {
-    if (screen !== "register-verify" || !verificationId) {
-      clearRegisterVerificationSnapshot();
-      return;
-    }
-
-    saveRegisterVerificationSnapshot({
-      email: verificationEmail,
-      codeLength: verificationCodeLength,
-      verificationId,
-      expiresAt: verificationExpiresAt,
-      resendAvailableAt,
-    });
-  }, [resendAvailableAt, screen, verificationCodeLength, verificationEmail, verificationExpiresAt, verificationId]);
 
   const changeScreen = (nextScreen: AuthScreen) => {
     setLoadingAction(null);

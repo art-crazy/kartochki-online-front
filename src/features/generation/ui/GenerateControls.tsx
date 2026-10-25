@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useRef, useState, type RefObject } from "react";
 import { Button, Chip, Input } from "@/shared/ui";
 import type {
   CardTypeId,
@@ -93,9 +93,12 @@ export function GenerateControls({
   const countInputRef = useRef<HTMLInputElement>(null);
   const sliderMax = 20;
 
-  useEffect(() => {
+  // Adjust the draft during render when a preset, stepper or slider changes the count.
+  const [previousCardCount, setPreviousCardCount] = useState(cardCount);
+  if (cardCount !== previousCardCount) {
+    setPreviousCardCount(cardCount);
     setCardCountInput(String(cardCount));
-  }, [cardCount]);
+  }
 
   function applyCardCountInput(nextValue: string) {
     const digitsOnly = nextValue.replace(/\D+/g, "");
