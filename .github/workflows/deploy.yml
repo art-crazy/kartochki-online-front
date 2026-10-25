@@ -100,8 +100,16 @@ jobs:
           '
 
       - name: Deploy frontend
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_USER: ${{ github.actor }}
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
         run: |
-          ssh -i ~/.ssh/server_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} '
+          target="$SERVER_USER@$SERVER_HOST"
+          printf '%s' "$GH_TOKEN" | ssh -i ~/.ssh/server_key "$target" "docker login ghcr.io -u '$GH_USER' --password-stdin"
+          ssh -i ~/.ssh/server_key "$target" '
+            set -e
             cd /opt/kartochki
             ./deploy.sh frontend
           '
