@@ -105,14 +105,16 @@ jobs:
       - name: Deploy frontend
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_USER: ${{ github.actor }}
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
         run: |
           target="$SERVER_USER@$SERVER_HOST"
-          printf '%s' "$GH_TOKEN" | ssh -i ~/.ssh/server_key "$target" "docker login ghcr.io -u '$GH_USER' --password-stdin"
-          ssh -i ~/.ssh/server_key "$target" '
+          printf '%s' "$GH_TOKEN" | ssh -i ~/.ssh/server_key "$target" '
             set -e
+            export DOCKER_CONFIG="$(mktemp -d /tmp/kartochki-registry.XXXXXX)"
+            cleanup_registry() { rm -rf -- "$DOCKER_CONFIG"; }
+            trap cleanup_registry EXIT
+            docker login ghcr.io -u art-crazy --password-stdin
             cd /opt/kartochki
             ./deploy.sh frontend
           '
